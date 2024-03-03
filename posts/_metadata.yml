@@ -1,0 +1,27 @@
+# options specified here will apply to all posts in this folder
+
+# freeze computational output
+# (see https://quarto.org/docs/projects/code-execution.html#freeze)
+execute:
+  freeze: auto  # re-render only when source changes
+
+# Enable banner style title blocks
+title-block-banner: false
+
+comments: 
+  utterances: 
+    repo: guebin/DL2024
+
+notebook-links: true
+cap-location: margin
+reference-location: margin
+citation-location: margin
+bibliography: ref.bib
+
+format:
+  html:
+    toc: true
+    code-fold: false
+    code-line-numbers: false
+    code-copy: true
+  ipynb: default
