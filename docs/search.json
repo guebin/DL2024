@@ -54,5 +54,12 @@
     "title": "01wk-1: 이미지 자료 분석 (겉핥기)",
     "section": "D. Step4: 예측",
     "text": "D. Step4: 예측\n\nlrnr.show_results()\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\ninter = Interpretation.from_learner(lrnr)\ninter.plot_top_losses(16)"
+  },
+  {
+    "objectID": "posts/01wk-1.html#크롤링을-활용한-이미지-자료-분석",
+    "href": "posts/01wk-1.html#크롤링을-활용한-이미지-자료-분석",
+    "title": "01wk-1: 이미지 자료 분석 (겉핥기)",
+    "section": "#. 크롤링을 활용한 이미지 자료 분석",
+    "text": "#. 크롤링을 활용한 이미지 자료 분석\n(1) 두 가지 키워드로 크롤링을 수행하여 이미지자료를 모아라. (키워드는 각자 마음에 드는 것으로 설정할 것, 단 (iu,hynn)는 제외)\n(2) ImageDataLoaders.from_folder() 를 이용하여 dls를 만들고 dls.show_batch()를 이용하여 만들어진 이미지를 확인하라.\n(3) vision_learner()를 이용하여 lrnr를 만들고 lrnr.fine_tune()을 이용하여 학습하라. 이때 모형의 arch는 resnet34를 사용하라.\n(4) requests.get()을 이용하여 (1)의 키워드에 해당하는 새로운 이미지를 한장씩 다운받고 (3)에서 학습한 lrnr를 이용하여 예측하라.\n\n제출은 ipynb파일로 할 것. 혹은 스크린샷을 제출해도 괜찮음."
   }
 ]
