@@ -2,14 +2,14 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.520">
+<meta name="generator" content="quarto-1.4.533">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="최규빈">
-<meta name="dcterms.date" content="2022-09-06">
+<meta name="dcterms.date" content="2024-03-04">
 
-<title>DL2024 - 01wk-1: 이미지자료분석</title>
+<title>DL2024 - 01wk-1: 이미지 자료 분석 (겉핥기)</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -109,6 +109,33 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
 <link rel="stylesheet" href="../styles.css">
 </head>
 
@@ -183,7 +210,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">01wk-1: 이미지자료분석</h1>
+<h1 class="title">01wk-1: 이미지 자료 분석 (겉핥기)</h1>
 </div>
 
 
@@ -200,7 +227,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">September 6, 2022</p>
+      <p class="date">March 4, 2024</p>
     </div>
   </div>
   
@@ -236,7 +263,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!ls /root/.fastai/data/oxford-iiit-pet/images</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p><code>-</code> Abyssinian_1.jpg 을 보고싶음</p>
-<div id="551a61a7" class="cell" data-scrolled="false" data-outputid="83ea239e-270b-4495-c6c0-3793d0f3ac9f" data-execution_count="85">
+<div id="551a61a7" class="cell" data-outputid="83ea239e-270b-4495-c6c0-3793d0f3ac9f" data-scrolled="false" data-execution_count="85">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>PILImage.create(<span class="st">'/root/.fastai/data/oxford-iiit-pet/images/Abyssinian_1.jpg'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="85">
 <div>
@@ -901,7 +928,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="크롤링" class="level1">
 <h1>8. 크롤링</h1>
-<div id="4510d511" class="cell" data-scrolled="true" data-outputid="633283fe-60ed-4957-cc43-71adcbb80c10" data-execution_count="124">
+<div id="4510d511" class="cell" data-outputid="633283fe-60ed-4957-cc43-71adcbb80c10" data-scrolled="true" data-execution_count="124">
 <div class="sourceCode cell-code" id="cb62"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 크롤링에 필요한 준비작업들</span></span>
 <span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>pip install <span class="op">-</span>U duckduckgo_search</span>
 <span id="cb62-3"><a href="#cb62-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> duckduckgo_search <span class="im">import</span> DDGS</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -945,7 +972,7 @@ Requirement already satisfied: pycparser in /usr/local/lib/python3.10/dist-packa
 <pre><code>(#9) [Path('images/train/iu/2bc76ae9-7955-40e5-b2f7-1284d983b549.jpg'),Path('images/train/iu/c8815e7b-d7d3-4f53-8f27-ea950c6cf19f.jpg'),Path('images/train/iu/ccd50b8f-60b4-4801-a9b4-790e5f764995.jpg'),Path('images/train/hynn/b2b36a47-c06e-4a45-b0ed-69217b7e9591.jpeg'),Path('images/train/hynn/cabe41a0-86cd-42c3-9c92-4cc69c218192.jpg'),Path('images/train/hynn/8ae280ea-5dc0-46a9-a2df-4f8c966639af.jpg'),Path('images/train/hynn/666c385a-1859-4e8d-b2d0-f94c62f2aa3c.jpg'),Path('images/train/hynn/a08ee3f0-ff85-487b-8168-6d4623c51984.jpg'),Path('images/train/hynn/53ccde07-f9b5-4c34-8c80-3971a948383e.jpg')]</code></pre>
 </div>
 </div>
-<div id="80efea1e" class="cell" data-scrolled="true" data-outputid="8b49217e-41c7-455c-f745-6e30fc75387a" data-execution_count="132">
+<div id="80efea1e" class="cell" data-outputid="8b49217e-41c7-455c-f745-6e30fc75387a" data-scrolled="true" data-execution_count="132">
 <div class="sourceCode cell-code" id="cb69"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a>bad_images.<span class="bu">map</span>(Path.unlink)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="132">
 <pre><code>(#9) [None,None,None,None,None,None,None,None,None]</code></pre>
@@ -1336,27 +1363,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       }
     }
     stripColumnClz(note)
-    const typesetMath = (el) => {
-      if (window.MathJax) {
-        // MathJax Typeset
-        window.MathJax.typeset([el]);
-      } else if (window.katex) {
-        // KaTeX Render
-        var mathElements = el.getElementsByClassName("math");
-        var macros = [];
-        for (var i = 0; i < mathElements.length; i++) {
-          var texText = mathElements[i].firstChild;
-          if (mathElements[i].tagName == "SPAN") {
-            window.katex.render(texText.data, mathElements[i], {
-              displayMode: mathElements[i].classList.contains('display'),
-              throwOnError: false,
-              macros: macros,
-              fleqn: false
-            });
-          }
-        }
-      }
-    }
     if (id === null || id.startsWith('sec-')) {
       // Special case sections, only their first couple elements
       const container = document.createElement("div");
@@ -1371,10 +1377,14 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             break;
           }
         }
-        typesetMath(container);
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
         return container.innerHTML
       } else {
-        typesetMath(note);
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
         return note.innerHTML;
       }
     } else {
@@ -1383,7 +1393,9 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       if (anchorLink) {
         anchorLink.remove();
       }
-      typesetMath(note);
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
       return note.innerHTML;
     }
   }
