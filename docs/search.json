@@ -11,35 +11,35 @@
     "href": "posts/01wk-1.html#a.-최하니",
     "title": "01wk-1: 이미지자료분석",
     "section": "A. 최하니",
-    "text": "A. 최하니\n\nhani1 = PILImage.create(requests.get('https://github.com/guebin/DL2024/blob/main/imgs/01wk-hani1.jpeg?raw=true').content)\nhani1\n\n\n\n\n\n\n\n\n\nlrnr.predict(hani1)\n\n\n\n\n\n\n\n\n('dog', tensor(1), tensor([4.8198e-08, 1.0000e+00]))\n\n\n\nhani2 = PILImage.create(requests.get('https://github.com/guebin/DL2024/blob/main/imgs/01wk-hani2.jpeg?raw=true').content)\nhani2\n\n\n\n\n\n\n\n\n\nlrnr.predict(hani2)\n\n\n\n\n\n\n\n\n('dog', tensor(1), tensor([2.8769e-07, 1.0000e+00]))\n\n\n\nhani3 = PILImage.create(requests.get('https://github.com/guebin/DL2024/blob/main/imgs/01wk-hani3.jpg?raw=true').content)\nhani3\n\n\n\n\n\n\n\n\n\nlrnr.predict(hani3)\n\n\n\n\n\n\n\n\n('dog', tensor(1), tensor([3.2586e-04, 9.9967e-01]))"
+    "text": "A. 최하니\n\nhani1 = PILImage.create(requests.get('https://github.com/guebin/DL2024/blob/main/imgs/01wk-hani1.jpeg?raw=true').content)\nhani1\n\n\n\n\n\n\n\n\n\nlrnr.predict(hani1)\n\n\n\n\n\n\n\n\n('dog', tensor(1), tensor([2.9308e-09, 1.0000e+00]))\n\n\n\nhani2 = PILImage.create(requests.get('https://github.com/guebin/DL2024/blob/main/imgs/01wk-hani2.jpeg?raw=true').content)\nhani2\n\n\n\n\n\n\n\n\n\nlrnr.predict(hani2)\n\n\n\n\n\n\n\n\n('dog', tensor(1), tensor([8.9153e-06, 9.9999e-01]))\n\n\n\nhani3 = PILImage.create(requests.get('https://github.com/guebin/DL2024/blob/main/imgs/01wk-hani3.jpg?raw=true').content)\nhani3\n\n\n\n\n\n\n\n\n\nlrnr.predict(hani3)\n\n\n\n\n\n\n\n\n('dog', tensor(1), tensor([3.9399e-04, 9.9961e-01]))"
   },
   {
     "objectID": "posts/01wk-1.html#b.-인터넷-고양이",
     "href": "posts/01wk-1.html#b.-인터넷-고양이",
     "title": "01wk-1: 이미지자료분석",
     "section": "B. 인터넷 고양이",
-    "text": "B. 인터넷 고양이\n\ncat1 = PILImage.create(requests.get('https://github.com/guebin/DL2024/blob/main/imgs/01wk-cat1.png?raw=true').content)\ncat1\n\n\n\n\n\n\n\n\n\nlrnr.predict(cat1)\n\n\n\n\n\n\n\n\n('cat', tensor(0), tensor([1.0000e+00, 6.1085e-07]))\n\n\n\ncat2 = PILImage.create(requests.get('https://github.com/guebin/DL2024/blob/main/imgs/01wk-cat2.jpeg?raw=true').content)\ncat2\n\n\n\n\n\n\n\n\n\nlrnr.predict(cat2)\n\n\n\n\n\n\n\n\n('cat', tensor(0), tensor([9.9999e-01, 9.8273e-06]))"
+    "text": "B. 인터넷 고양이\n\ncat1 = PILImage.create(requests.get('https://github.com/guebin/DL2024/blob/main/imgs/01wk-cat1.png?raw=true').content)\ncat1\n\n\n\n\n\n\n\n\n\nlrnr.predict(cat1)\n\n\n\n\n\n\n\n\n('cat', tensor(0), tensor([1.0000e+00, 2.2026e-11]))\n\n\n\ncat2 = PILImage.create(requests.get('https://github.com/guebin/DL2024/blob/main/imgs/01wk-cat2.jpeg?raw=true').content)\ncat2\n\n\n\n\n\n\n\n\n\nlrnr.predict(cat2)\n\n\n\n\n\n\n\n\n('cat', tensor(0), tensor([1.0000e+00, 9.4345e-07]))"
   },
   {
     "objectID": "posts/01wk-1.html#a.-step1-dls데이터-준비",
     "href": "posts/01wk-1.html#a.-step1-dls데이터-준비",
     "title": "01wk-1: 이미지자료분석",
     "section": "A. Step1: DLS(=데이터) 준비",
-    "text": "A. Step1: DLS(=데이터) 준비\n\ndls = ImageDataLoaders.from_folder(\n    path = './images', \n    train='train', \n    valid_pct = 0.2, \n    item_tfms=Resize(224),\n) \n\n\ndls.show_batch()"
+    "text": "A. Step1: DLS(=데이터) 준비\n\ndls = ImageDataLoaders.from_folder(\n    path = './images',\n    train='train',\n    valid_pct = 0.2,\n    item_tfms=Resize(224),\n)\n\n\ndls.show_batch()"
   },
   {
     "objectID": "posts/01wk-1.html#b.-step2-러너생성",
     "href": "posts/01wk-1.html#b.-step2-러너생성",
     "title": "01wk-1: 이미지자료분석",
     "section": "B. Step2: 러너생성",
-    "text": "B. Step2: 러너생성\n\nlrnr = vision_learner(\n    dls = dls,\n    arch = resnet34, \n    metrics = accuracy\n)"
+    "text": "B. Step2: 러너생성\n\nlrnr = vision_learner(\n    dls = dls,\n    arch = resnet34,\n    metrics = accuracy\n)"
   },
   {
     "objectID": "posts/01wk-1.html#c.-step3-학습",
     "href": "posts/01wk-1.html#c.-step3-학습",
     "title": "01wk-1: 이미지자료분석",
     "section": "C. Step3: 학습",
-    "text": "C. Step3: 학습\n\nlrnr.fine_tune(7)\n\n\n\n\n\n\n\n\nepoch\ntrain_loss\nvalid_loss\naccuracy\ntime\n\n\n\n\n0\n1.044313\n0.606833\n0.756757\n00:04\n\n\n\n\n\n\n\n\n\n\n\n\nepoch\ntrain_loss\nvalid_loss\naccuracy\ntime\n\n\n\n\n0\n0.544768\n0.506728\n0.783784\n00:04\n\n\n1\n0.471411\n0.559824\n0.824324\n00:04\n\n\n2\n0.366420\n0.796829\n0.783784\n00:04\n\n\n3\n0.282849\n0.773491\n0.783784\n00:04\n\n\n4\n0.236726\n0.674068\n0.837838\n00:04\n\n\n5\n0.199029\n0.615817\n0.851351\n00:04\n\n\n6\n0.166471\n0.551389\n0.837838\n00:04"
+    "text": "C. Step3: 학습\n\nlrnr.fine_tune(7)\n\n\n\n\n\n\n\n\nepoch\ntrain_loss\nvalid_loss\naccuracy\ntime\n\n\n\n\n0\n1.346890\n0.969989\n0.657534\n00:11\n\n\n\n\n\n\n\n\n\n\n\n\nepoch\ntrain_loss\nvalid_loss\naccuracy\ntime\n\n\n\n\n0\n0.734809\n0.817061\n0.698630\n00:10\n\n\n1\n0.581782\n0.937060\n0.739726\n00:11\n\n\n2\n0.426661\n0.901986\n0.835616\n00:12\n\n\n3\n0.332050\n0.899157\n0.835616\n00:10\n\n\n4\n0.263004\n0.844802\n0.849315\n00:10\n\n\n5\n0.220254\n0.762331\n0.849315\n00:11\n\n\n6\n0.185242\n0.716601\n0.849315\n00:11"
   },
   {
     "objectID": "posts/01wk-1.html#d.-step4-예측",
