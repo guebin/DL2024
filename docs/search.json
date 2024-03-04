@@ -7,6 +7,20 @@
     "text": "질문하는 방법\n\n이메일: guebin@jbnu.ac.kr\n직접방문: 자연과학대학 본관 205호\nZoom: 카카오톡이나 이메일로 미리 시간을 정할 것\n\n강의노트\n\n\n\n\n\n\n\n\n\nDate\n\n\nTitle\n\n\nAuthor\n\n\n\n\n\n\nSep 6, 2022\n\n\n01wk-1: 이미지자료분석\n\n\n최규빈 \n\n\n\n\n\nNo matching items"
   },
   {
+    "objectID": "posts/01wk-1.html#a.-최하니",
+    "href": "posts/01wk-1.html#a.-최하니",
+    "title": "01wk-1: 이미지자료분석",
+    "section": "A. 최하니",
+    "text": "A. 최하니\n\nhani1 = PILImage.create(requests.get('https://github.com/guebin/DL2024/blob/main/imgs/01wk-hani1.jpeg?raw=true').content)\nhani1\n\n\n\n\n\n\n\n\n\nlrnr.predict(hani1)\n\n\n\n\n\n\n\n\n('dog', tensor(1), tensor([4.8198e-08, 1.0000e+00]))\n\n\n\nhani2 = PILImage.create(requests.get('https://github.com/guebin/DL2024/blob/main/imgs/01wk-hani2.jpeg?raw=true').content)\nhani2\n\n\n\n\n\n\n\n\n\nlrnr.predict(hani2)\n\n\n\n\n\n\n\n\n('dog', tensor(1), tensor([2.8769e-07, 1.0000e+00]))\n\n\n\nhani3 = PILImage.create(requests.get('https://github.com/guebin/DL2024/blob/main/imgs/01wk-hani3.jpg?raw=true').content)\nhani3\n\n\n\n\n\n\n\n\n\nlrnr.predict(hani3)\n\n\n\n\n\n\n\n\n('dog', tensor(1), tensor([3.2586e-04, 9.9967e-01]))"
+  },
+  {
+    "objectID": "posts/01wk-1.html#b.-인터넷-고양이",
+    "href": "posts/01wk-1.html#b.-인터넷-고양이",
+    "title": "01wk-1: 이미지자료분석",
+    "section": "B. 인터넷 고양이",
+    "text": "B. 인터넷 고양이\n\ncat1 = PILImage.create(requests.get('https://github.com/guebin/DL2024/blob/main/imgs/01wk-cat1.png?raw=true').content)\ncat1\n\n\n\n\n\n\n\n\n\nlrnr.predict(cat1)\n\n\n\n\n\n\n\n\n('cat', tensor(0), tensor([1.0000e+00, 6.1085e-07]))\n\n\n\ncat2 = PILImage.create(requests.get('https://github.com/guebin/DL2024/blob/main/imgs/01wk-cat2.jpeg?raw=true').content)\ncat2\n\n\n\n\n\n\n\n\n\nlrnr.predict(cat2)\n\n\n\n\n\n\n\n\n('cat', tensor(0), tensor([9.9999e-01, 9.8273e-06]))"
+  },
+  {
     "objectID": "posts/01wk-1.html#a.-step1-dls데이터-준비",
     "href": "posts/01wk-1.html#a.-step1-dls데이터-준비",
     "title": "01wk-1: 이미지자료분석",
