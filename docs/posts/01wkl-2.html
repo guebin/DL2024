@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.520">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="최규빈">
+<meta name="dcterms.date" content="2024-03-04">
+
+<title>DL2024 - 01wk-2: 딥러닝의 기초 (1) –</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">DL2024</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/guebin/DL2024"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.youtube.com/channel/UCQk9RyBNgXc7ORIsYlOfQrg/playlists?view=50&amp;sort=dd&amp;shelf_id=2"> <i class="bi bi-youtube" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+          <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#강의영상" id="toc-강의영상" class="nav-link active" data-scroll-target="#강의영상">1. 강의영상</a></li>
+  <li><a href="#로드맵" id="toc-로드맵" class="nav-link" data-scroll-target="#로드맵">2. 로드맵</a></li>
+  <li><a href="#ref" id="toc-ref" class="nav-link" data-scroll-target="#ref">3. ref</a></li>
+  <li><a href="#회귀모형" id="toc-회귀모형" class="nav-link" data-scroll-target="#회귀모형">4. 회귀모형</a>
+  <ul class="collapse">
+  <li><a href="#a.-모형소개" id="toc-a.-모형소개" class="nav-link" data-scroll-target="#a.-모형소개">A. 모형소개</a></li>
+  <li><a href="#b.-회귀모형에서-데이터-생성" id="toc-b.-회귀모형에서-데이터-생성" class="nav-link" data-scroll-target="#b.-회귀모형에서-데이터-생성">B. 회귀모형에서 데이터 생성</a></li>
+  </ul></li>
+  <li><a href="#회귀모형에서-학습이란" id="toc-회귀모형에서-학습이란" class="nav-link" data-scroll-target="#회귀모형에서-학습이란">5. 회귀모형에서 학습이란?</a></li>
+  <li><a href="#학습전략" id="toc-학습전략" class="nav-link" data-scroll-target="#학습전략">6. 학습전략</a>
+  <ul class="collapse">
+  <li><a href="#단계-아무-점선이나-그어보자.." id="toc-단계-아무-점선이나-그어보자.." class="nav-link" data-scroll-target="#단계-아무-점선이나-그어보자.."><strong><em>1단계: 아무 점선이나 그어보자..</em></strong></a></li>
+  <li><a href="#단계-최초의-점선에-대한-적당한-정도를-판단하고-더-적당한-점선으로-업데이트-한다." id="toc-단계-최초의-점선에-대한-적당한-정도를-판단하고-더-적당한-점선으로-업데이트-한다." class="nav-link" data-scroll-target="#단계-최초의-점선에-대한-적당한-정도를-판단하고-더-적당한-점선으로-업데이트-한다."><strong><em>2단계: 최초의 점선에 대한 ‘적당한 정도’를 판단하고 더 ’적당한’ 점선으로 업데이트 한다.</em></strong></a></li>
+  <li><a href="#단계-learn-estimate-bfhatw" id="toc-단계-learn-estimate-bfhatw" class="nav-link" data-scroll-target="#단계-learn-estimate-bfhatw"><strong><em>3단계: Learn (=estimate <span class="math inline">\(\bf\hat{W})\)</span></em></strong></a></li>
+  </ul></li>
+  <li><a href="#숙제" id="toc-숙제" class="nav-link" data-scroll-target="#숙제">7. 숙제</a></li>
+  </ul>
+<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="01wkl-2.out.ipynb" download="01wkl-2.out.ipynb"><i class="bi bi-journal-code"></i>Jupyter</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">01wk-2: 딥러닝의 기초 (1) –</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>최규빈 </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">March 4, 2024</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p><a href="https://colab.research.google.com/github/guebin/DL2024/blob/main/posts/01wk-1.ipynb"><img src="https://colab.research.google.com/assets/colab-badge.svg" style="text-align: left"></a></p>
+<section id="강의영상" class="level1">
+<h1>1. 강의영상</h1>
+<div class="quarto-video ratio ratio-16x9"><iframe data-external="1" src="https://www.youtube.com/embed/playlist?list=PLQqh36zP38-yKD2iq8nJKXMrTG9n_hFBv&amp;si=QUiXul0DWcAYLyyy" title="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe></div>
+<div id="903d2bef-18cf-436f-aba0-bbf57ea3bbcb" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="로드맵" class="level1">
+<h1>2. 로드맵</h1>
+<p><code>-</code> 회귀분석 <span class="math inline">\(\to\)</span> 로지스틱 <span class="math inline">\(\to\)</span> 심층신경망(DNN) <span class="math inline">\(\to\)</span> 합성곱신경망(CNN)</p>
+</section>
+<section id="ref" class="level1">
+<h1>3. ref</h1>
+<p><code>-</code> 넘파이 문법이 약하다면? (reshape, concatenate, stack)</p>
+<ol type="1">
+<li><p><a href="https://guebin.github.io/IP2022/2022/04/06/(6%EC%A3%BC%EC%B0%A8)-4%EC%9B%946%EC%9D%BC.html">reshape</a>: 넘파이공부 2단계 reshape 참고</p></li>
+<li><p><a href="https://guebin.github.io/IP2022/2022/04/11/(6%EC%A3%BC%EC%B0%A8)-4%EC%9B%9411%EC%9D%BC.html">concatenate, stack</a>: 아래 링크의 넘파이공부 4단계 참고</p></li>
+</ol>
+</section>
+<section id="회귀모형" class="level1">
+<h1>4. 회귀모형</h1>
+<section id="a.-모형소개" class="level2">
+<h2 class="anchored" data-anchor-id="a.-모형소개">A. 모형소개</h2>
+<p><code>-</code> model: <span class="math inline">\(y_i= w_0+w_1 x_i +\epsilon_i = 2.5 + 4x_i +\epsilon_i, \quad i=1,2,\dots,n\)</span></p>
+<p><code>-</code> model: <span class="math inline">\({\bf y}={\bf X}{\bf W} +\boldsymbol{\epsilon}\)</span></p>
+<ul>
+<li><span class="math inline">\({\bf y}=\begin{bmatrix} y_1 \\ y_2 \\ \dots \\ y_n\end{bmatrix}, \quad {\bf X}=\begin{bmatrix} 1 &amp; x_1 \\ 1 &amp; x_2 \\ \dots \\ 1 &amp; x_n\end{bmatrix}, \quad {\bf W}=\begin{bmatrix} 2.5 \\ 4 \end{bmatrix}, \quad \boldsymbol{\epsilon}= \begin{bmatrix} \epsilon_1 \\ \dots \\ \epsilon_n\end{bmatrix}\)</span></li>
+</ul>
+</section>
+<section id="b.-회귀모형에서-데이터-생성" class="level2">
+<h2 class="anchored" data-anchor-id="b.-회귀모형에서-데이터-생성">B. 회귀모형에서 데이터 생성</h2>
+<div id="069b91c5-6a7a-432f-8916-c7c334c646c5" class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>torch.manual_seed(<span class="dv">43052</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>ones<span class="op">=</span> torch.ones(<span class="dv">100</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>x,_ <span class="op">=</span> torch.randn(<span class="dv">100</span>).sort()</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> torch.stack([ones,x]).T <span class="co"># torch.stack([ones,x],axis=1)</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>W <span class="op">=</span> torch.tensor([<span class="fl">2.5</span>,<span class="dv">4</span>])</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>ϵ <span class="op">=</span> torch.randn(<span class="dv">100</span>)<span class="op">*</span><span class="fl">0.5</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> X<span class="op">@</span>W <span class="op">+</span> ϵ</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="fb9fe438-f094-4e77-9ca5-39e8fd2c6fd3" class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>plt.plot(x,y,<span class="st">'o'</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>plt.plot(x,<span class="fl">2.5</span><span class="op">+</span><span class="dv">4</span><span class="op">*</span>x,<span class="st">'--'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="01wkl-2_files/figure-html/cell-4-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="회귀모형에서-학습이란" class="level1">
+<h1>5. 회귀모형에서 학습이란?</h1>
+<p><code>-</code> 파란점만 주어졌을때, 주황색 점선을 추정하는것. 좀 더 정확하게 말하면 given data로 <span class="math inline">\(\begin{bmatrix} \hat{w}_0 \\ \hat{w}_1 \end{bmatrix}\)</span>를 최대한 <span class="math inline">\(\begin{bmatrix} 2.5 \\ 4 \end{bmatrix}\)</span>와 비슷하게 찾는것.</p>
+<ul>
+<li><p>given data : <span class="math inline">\(\big\{(x_i,y_i) \big\}_{i=1}^{n}\)</span></p></li>
+<li><p>parameter: <span class="math inline">\({\bf W}=\begin{bmatrix} w_0 \\ w_1 \end{bmatrix}\)</span></p></li>
+<li><p>estimated parameter: <span class="math inline">\({\bf \hat{W}}=\begin{bmatrix} \hat{w}_0 \\ \hat{w}_1 \end{bmatrix}\)</span></p></li>
+</ul>
+<p><code>-</code> 더 쉽게 말하면 아래의 그림을 보고 <code>적당한</code> 추세선을 찾는것이다.</p>
+<div id="c19493ee-5e09-40b6-b15a-c6f6b5761d62" class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>plt.plot(x,y,<span class="st">'o'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="01wkl-2_files/figure-html/cell-5-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><code>-</code> 시도: <span class="math inline">\((\hat{w}_0,\hat{w}_1)=(-5,10)\)</span>을 선택하여 선을 그려보고 적당한지 판단.</p>
+<div id="31dd1fd0-7601-4466-b733-38935f3f2664" class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>plt.plot(x,y,<span class="st">'o'</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>plt.plot(x,<span class="op">-</span><span class="dv">5</span><span class="op">+</span><span class="dv">10</span><span class="op">*</span>x,<span class="st">'--'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="01wkl-2_files/figure-html/cell-6-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li><span class="math inline">\(\hat{y}_i=-5 +10 x_i\)</span> 와 같이 <span class="math inline">\(y_i\)</span>의 값을 적합시키겠다는 의미</li>
+</ul>
+<p><code>-</code> 벡터표현으로 주황색점선을 계산</p>
+<div id="5b8a5089-d9e0-400c-b3fb-c615131e9422" class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>What <span class="op">=</span> torch.tensor([<span class="op">-</span><span class="fl">5.0</span>,<span class="fl">10.0</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="41a2a793-e41c-43c2-af1a-317975286f7b" class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>X.shape</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="7">
+<pre><code>torch.Size([100, 2])</code></pre>
+</div>
+</div>
+<div id="003c7fcb-2862-45ae-8785-7bd440bacdbb" class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>plt.plot(x,y,<span class="st">'o'</span>)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>plt.plot(x,X<span class="op">@</span>What,<span class="st">'--'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="01wkl-2_files/figure-html/cell-9-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li>이건 일단 망한 학습같음..</li>
+</ul>
+</section>
+<section id="학습전략" class="level1">
+<h1>6. 학습전략</h1>
+<p><code>-</code> 이론적으로 추론 &lt;- 회귀분석시간에 배운것</p>
+<p><code>-</code> <strong>컴퓨터의 반복계산을 이용하여 추론 (손실함수도입 + 경사하강법)</strong> &lt;- 우리가 오늘 파이토치로 실습해볼 내용.</p>
+<p><code>-</code> 전략: 아래와 같은 3단계 전략을 취한다.</p>
+<ul>
+<li>1단계: 아무 점선이나 그어본다..</li>
+<li>2단계: 1단계에서 그은 점선보다 더 좋은 점선으로 바꾼다.</li>
+<li>3단계: 1-2단계를 반복한다.</li>
+</ul>
+<section id="단계-아무-점선이나-그어보자.." class="level2">
+<h2 class="anchored" data-anchor-id="단계-아무-점선이나-그어보자.."><strong><em>1단계: 아무 점선이나 그어보자..</em></strong></h2>
+<p><code>-</code> <span class="math inline">\(\hat{w}_0=-5, \hat{w}_1 = 10\)</span> 으로 설정하고 (왜? 그냥) 임의의 선을 그어보자.</p>
+<div id="02fbce78-fedf-487e-8649-7a629a4f9e5b" class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>What <span class="op">=</span> torch.tensor([<span class="op">-</span><span class="fl">5.0</span>,<span class="fl">10.0</span>],requires_grad<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>What</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="9">
+<pre><code>tensor([-5., 10.], requires_grad=True)</code></pre>
+</div>
+</div>
+<ul>
+<li><p>처음에는 <span class="math inline">\({\bf \hat{W}}=\begin{bmatrix} \hat{w}_0 \\ \hat{w}_1 \end{bmatrix}=\begin{bmatrix} -5 \\ 10 \end{bmatrix}\)</span> 를 대입해서 주황색 점선을 적당히 그려보자는 의미</p></li>
+<li><p>끝에 requires_grad=True는 나중에 미분을 위한 것</p></li>
+</ul>
+<div id="c0c5555c-c893-4f7f-bf37-608a3f0a64e5" class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>yhat <span class="op">=</span> X<span class="op">@</span>What </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="76e517a4-2268-49e9-aa9e-a805984ddd7f" class="cell" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>plt.plot(x,y,<span class="st">'o'</span>)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>plt.plot(x,yhat.data,<span class="st">'--'</span>) <span class="co"># 그림을 그리기 위해서 yhat의 미분꼬리표를 제거</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="01wkl-2_files/figure-html/cell-12-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="단계-최초의-점선에-대한-적당한-정도를-판단하고-더-적당한-점선으로-업데이트-한다." class="level2">
+<h2 class="anchored" data-anchor-id="단계-최초의-점선에-대한-적당한-정도를-판단하고-더-적당한-점선으로-업데이트-한다."><strong><em>2단계: 최초의 점선에 대한 ‘적당한 정도’를 판단하고 더 ’적당한’ 점선으로 업데이트 한다.</em></strong></h2>
+<p><code>-</code> ’적당한 정도’를 판단하기 위한 장치: loss function 도입!</p>
+<p><span class="math inline">\(loss=\sum_{i=1}^{n}(y_i-\hat{y}_i)^2=\sum_{i=1}^{n}(y_i-(\hat{w}_0+\hat{w}_1x_i))^2\)</span></p>
+<p><span class="math inline">\(=({\bf y}-{\bf\hat{y}})^\top({\bf y}-{\bf\hat{y}})=({\bf y}-{\bf X}{\bf \hat{W}})^\top({\bf y}-{\bf X}{\bf \hat{W}})\)</span></p>
+<p><code>-</code> loss 함수의 특징</p>
+<ul>
+<li><span class="math inline">\(y_i \approx \hat{y}_i\)</span> 일수록 loss값이 작다.</li>
+<li><span class="math inline">\(y_i \approx \hat{y}_i\)</span> 이 되도록 <span class="math inline">\((\hat{w}_0,\hat{w}_1)\)</span>을 잘 찍으면 loss값이 작다.</li>
+<li>(중요) 주황색 점선이 ‘적당할 수록’ loss값이 작다.</li>
+</ul>
+<div id="cf438ac1-92d4-4a97-a950-329e6556a91f" class="cell" data-execution_count="12">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>loss <span class="op">=</span> torch.<span class="bu">sum</span>((y<span class="op">-</span>yhat)<span class="op">**</span><span class="dv">2</span>)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>loss</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="12">
+<pre><code>tensor(8587.6875, grad_fn=&lt;SumBackward0&gt;)</code></pre>
+</div>
+</div>
+<p><code>-</code> 우리의 목표: 이 loss(=8587.6875)을 더 줄이자.</p>
+<ul>
+<li>궁극적으로는 아예모든 조합 <span class="math inline">\((\hat{w}_0,\hat{w}_1)\)</span>에 대하여 가장 작은 loss를 찾으면 좋겠다. (단계2에서 할일은 아님)</li>
+</ul>
+<p><code>-</code> 문제의 치환: 생각해보니까 우리의 문제는 아래와 같이 수학적으로 단순화 되었다.</p>
+<ul>
+<li>적당해보이는 주황색 선을 찾자 <span class="math inline">\(\to\)</span> <span class="math inline">\(loss(w_0,w_1)\)</span>를 최소로하는 <span class="math inline">\((w_0,w_1)\)</span>의 값을 찾자.</li>
+</ul>
+<p><code>-</code> 수정된 목표: <span class="math inline">\(loss(w_0,w_1)\)</span>를 최소로 하는 <span class="math inline">\((w_0,w_1)\)</span>을 구하라.</p>
+<ul>
+<li>단순한 수학문제가 되었다. 마치 <span class="math inline">\(loss(w)=w^2-2w+3\)</span> 을 최소화하는 <span class="math inline">\(w\)</span>를 찾으라는 것과 같음.</li>
+<li>즉 “적당한 선으로 업데이트 하라 = 파라메터를 학습하라 = 손실함수를 최소화 하라”</li>
+</ul>
+<p><code>-</code> 우리의 무기: 경사하강법, 벡터미분</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<code>#</code> <strong><em>경사하강법 복습(?)</em></strong>
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>경사하강법 아이디어 (1차원)</strong></p>
+<p>(step 1) 임의의 점을 찍는다.</p>
+<p>(step 2) 그 점에서 순간기울기를 구한다. (접선) &lt;– 미분</p>
+<p>(step 3) 순간기울기(=미분계수)의 부호를 살펴보고 부호와 반대방향으로 움직인다.</p>
+<p>(팁) 기울기의 절대값 크기와 비례하여 보폭(=움직이는 정도)을 조절한다.</p>
+<p><strong>경사하강법 아이디어 (2차원)</strong></p>
+<p>(step 1) 임의의 점을 찍는다.</p>
+<p>(step 2) 그 점에서 순간기울기를 구한다. (접평면) &lt;– 편미분</p>
+<p>(step 3) 순간기울기(=미분계수)의 부호를 살펴보고 부호와 반대방향으로 각각 움직인다.</p>
+<p>(팁) 기울기의 절대값 크기와 비례하여 보폭(=움직이는 정도)을 각각 조절한다.</p>
+<p><strong>loss를 줄이도록 <span class="math inline">\({\bf W}\)</span>를 개선하는 방법</strong></p>
+<p><code>-</code> $수정값 원래값 - 기울어진크기(=미분계수) $</p>
+<ul>
+<li>여기에서 <span class="math inline">\(\alpha\)</span>는 전체적인 보폭의 크기를 결정한다. 즉 <span class="math inline">\(\alpha\)</span>값이 클수록 한번의 update에 움직이는 양이 크다.</li>
+</ul>
+<p><code>-</code> <span class="math inline">\({\bf W} \leftarrow {\bf W} - \alpha \times \frac{\partial}{\partial {\bf W}}loss(w_0,w_1)\)</span></p>
+<ul>
+<li>마이너스의 의미: 기울기의 부호를 보고 반대방향으로 움직여라.</li>
+<li><span class="math inline">\(\frac{\partial}{\partial {\bf W}}loss(w_0,w_1):\)</span> 기울기의 절대값크기와 비례하여 움직이는 정도를 조정하라.</li>
+<li><span class="math inline">\(\alpha\)</span>의 의미: 전체적인 보폭의 속도를 조절, <span class="math inline">\(\alpha\)</span>가 크면 전체적으로 빠르게 움직인다. 다리의 길이로 비유할 수 있다.</li>
+</ul>
+</div>
+</div>
+<p><code>-</code> 우리의 목표: loss=8587.6875 인데, 이걸 줄이는 것이 목표라고 했었음. 이것을 줄이는 방법이 경사하강법이다.</p>
+<p><code>-</code> 경사하강법으로 loss를 줄이기 위해서는 <span class="math inline">\(\frac{\partial}{\partial {\bf W}}loss(w_0,w_1)\)</span>의 계산이 필요한데, 이를 위해서 벡터미분이 필요하다. (<code>loss.backward()</code>로 하면된다)</p>
+<div id="399b59f0-c793-4e51-b16d-31368c1922c4" class="cell" data-execution_count="13">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>loss</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="13">
+<pre><code>tensor(8587.6875, grad_fn=&lt;SumBackward0&gt;)</code></pre>
+</div>
+</div>
+<div id="c445ca24-b113-47bf-b7d0-661a19528f38" class="cell" data-execution_count="14">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>loss.backward() </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ul>
+<li>loss.backward()의 의미: loss를 미분해라! 뭘로? <code>requires_grad=True</code>를 가진 텐서로!!</li>
+</ul>
+<div class="sourceCode" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>loss<span class="op">=</span>torch.<span class="bu">sum</span>((y<span class="op">-</span>yhat)<span class="op">**</span><span class="dv">2</span>)<span class="op">=</span> torch.<span class="bu">sum</span>((y<span class="op">-</span>X<span class="op">@</span>What)<span class="op">**</span><span class="dv">2</span>)</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 이었고 </span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>What<span class="op">=</span>torch.tensor([<span class="op">-</span><span class="fl">5.0</span>,<span class="fl">10.0</span>],requires_grad<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 이므로 결국 What으로 미분하라는 의미. </span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="co"># 미분한 식이 나오는 것이 아니고, </span></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a><span class="co"># 그 식에 (-5.0, 10.0)을 대입한 계수값이 계산됨. </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><code>-</code> 위에서 <code>loss.backward()</code>의 과정은 미분을 활용하여 <span class="math inline">\((-5,10)\)</span>에서의 순간기울기를 구했다는 의미임.</p>
+<p><code>-</code> (-5,10)에서 loss의 순간기울기 값은 <code>What.grad</code>로 확인가능하다.</p>
+<div id="42b1e1e0-7138-4021-8169-e4e8b54705f0" class="cell" data-execution_count="15">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>What,What.grad</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="15">
+<pre><code>(tensor([-5., 10.], requires_grad=True), tensor([-1342.2522,  1188.9305]))</code></pre>
+</div>
+</div>
+<ul>
+<li>이것이 의미하는건 <span class="math inline">\((-5,10)\)</span>에서의 <span class="math inline">\(loss(w_0,w_1)\)</span>의 순간기울기가 <span class="math inline">\((-1342.2522, 1188.9305)\)</span> 이라는 의미</li>
+</ul>
+<p><code>-</code> (확인1) <code>loss.backward()</code>가 미분을 잘 계산해 주는 것이 맞는가? 손계산으로 검증하여 보자.</p>
+<ul>
+<li><p><span class="math inline">\(loss(w_0,w_1)=({\bf y}-\hat{\bf y})^\top ({\bf y}-\hat{\bf y})=({\bf y}-{\bf XW})^\top ({\bf y}-{\bf XW})\)</span></p></li>
+<li><p><span class="math inline">\(\frac{\partial}{\partial {\bf W} }loss(w_0,w_1)=-2{\bf X}^\top {\bf y}+2{\bf X}^\top {\bf X W}\)</span></p></li>
+</ul>
+<div id="5fc570ba-8916-4da6-9afa-967850cf40e7" class="cell" data-execution_count="16">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="op">-</span> <span class="dv">2</span> <span class="op">*</span> X.T <span class="op">@</span> y <span class="op">+</span> <span class="dv">2</span> <span class="op">*</span> X.T <span class="op">@</span> X <span class="op">@</span> What</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="16">
+<pre><code>tensor([-1342.2522,  1188.9308], grad_fn=&lt;AddBackward0&gt;)</code></pre>
+</div>
+</div>
+<div id="3ba77f12-70b7-46bd-8727-120cb6a9f630" class="cell" data-execution_count="17">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 슬프지만 손계산을 할 수 없다면?..</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><code>-</code> (확인2) <code>loss.backward()</code>가 미분을 잘 계산해 주는 것이 맞는가? 편미분을 간단히 구현하여 검증하여 보자.</p>
+<ul>
+<li><p><span class="math inline">\(\frac{\partial}{\partial {\bf W} } loss(w_0,w_1)=\begin{bmatrix}\frac{\partial}{\partial w_0} \\ \frac{\partial}{\partial w_1} \end{bmatrix}loss(w_0,w_1) =\begin{bmatrix}\frac{\partial}{\partial w_0}loss(w_0,w_1) \\ \frac{\partial}{\partial w_1}loss(w_0,w_1) \end{bmatrix}\)</span></p></li>
+<li><p><span class="math inline">\(\frac{\partial}{\partial w_0}loss(w_0,w_1) \approx \frac{loss(w_0+h,w_1)-loss(w_0,w_1)}{h}\)</span></p></li>
+<li><p><span class="math inline">\(\frac{\partial}{\partial w_1}loss(w_0,w_1) \approx \frac{loss(w_0,w_1+h)-loss(w_0,w_1)}{h}\)</span></p></li>
+</ul>
+<div id="296812b1-17ff-4510-b66b-22a6f7ef208a" class="cell" data-execution_count="21">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>l <span class="op">=</span> <span class="kw">lambda</span> w0,w1: torch.<span class="bu">sum</span>((y<span class="op">-</span>w0<span class="op">-</span>w1<span class="op">*</span>x)<span class="op">**</span><span class="dv">2</span>)</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>l(<span class="op">-</span><span class="dv">5</span>,<span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="21">
+<pre><code>tensor(8587.6875)</code></pre>
+</div>
+</div>
+<div id="096f141f-6f4f-4297-b69d-66e8191b1f7d" class="cell" data-execution_count="22">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>h<span class="op">=</span><span class="fl">0.001</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>(l(<span class="op">-</span><span class="dv">5</span><span class="op">+</span>h,<span class="dv">10</span>) <span class="op">-</span> l(<span class="op">-</span><span class="dv">5</span>,<span class="dv">10</span>))<span class="op">/</span>h,  (l(<span class="op">-</span><span class="dv">5</span>,<span class="dv">10</span><span class="op">+</span>h) <span class="op">-</span> l(<span class="op">-</span><span class="dv">5</span>,<span class="dv">10</span>))<span class="op">/</span>h</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="22">
+<pre><code>(tensor(-1341.7968), tensor(1190.4297))</code></pre>
+</div>
+</div>
+<ul>
+<li>약간 오차가 있지만 얼추비슷 <span class="math inline">\(\to\)</span> 잘 계산했다는 소리임</li>
+</ul>
+<p><code>-</code> 수정전, 수정하는폭, 수정후의 값은 차례로 아래와 같다.</p>
+<div id="156a11ee-8dc6-4dc3-8c41-3eae3072fd62" class="cell" data-execution_count="25">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>alpha<span class="op">=</span><span class="fl">0.001</span> </span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'수정전: </span><span class="sc">{</span>What<span class="sc">.</span>data<span class="sc">}</span><span class="ss">'</span>) <span class="co"># What 에서 미분꼬리표를 떼고 싶다면? What.data or What.detach()</span></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'수정하는폭: </span><span class="sc">{</span><span class="op">-</span>alpha <span class="op">*</span> What<span class="sc">.</span>grad<span class="sc">}</span><span class="ss">'</span>)</span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'수정후: </span><span class="sc">{</span>What<span class="sc">.</span>data<span class="op">-</span>alpha <span class="op">*</span> What<span class="sc">.</span>grad<span class="sc">}</span><span class="ss">'</span>)</span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'*참값: (2.5,4)'</span> )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>수정전: tensor([-5., 10.])
+수정하는폭: tensor([ 1.3423, -1.1889])
+수정후: tensor([-3.6577,  8.8111])
+*참값: (2.5,4)</code></pre>
+</div>
+</div>
+<p><code>-</code> Wbefore, Wafter 계산</p>
+<div id="34d952cf-eb04-4293-9bde-7c6ed03ecb67" class="cell" data-execution_count="26">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>Wbefore <span class="op">=</span> What.data</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>Wafter <span class="op">=</span> What.data <span class="op">-</span> alpha <span class="op">*</span> What.grad</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>Wbefore, Wafter</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="26">
+<pre><code>(tensor([-5., 10.]), tensor([-3.6577,  8.8111]))</code></pre>
+</div>
+</div>
+<p><code>-</code> Wbefore, Wafter의 시각화</p>
+<div id="2fdc00eb-d70d-4ff8-b994-c9ca621e4705" class="cell" data-execution_count="27">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>plt.plot(x,y,<span class="st">'o'</span>)</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>plt.plot(x,X<span class="op">@</span>Wbefore,<span class="st">'--'</span>)</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>plt.plot(x,X<span class="op">@</span>Wafter,<span class="st">'--'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="01wkl-2_files/figure-html/cell-23-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="단계-learn-estimate-bfhatw" class="level2">
+<h2 class="anchored" data-anchor-id="단계-learn-estimate-bfhatw"><strong><em>3단계: Learn (=estimate <span class="math inline">\(\bf\hat{W})\)</span></em></strong></h2>
+<p><code>-</code> 이 과정은 단계1-2를 반복하면 된다.</p>
+<div id="221d01e8-6fdd-41da-ba46-08bab38d9edb" class="cell" data-execution_count="28">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>What<span class="op">=</span> torch.tensor([<span class="op">-</span><span class="fl">5.0</span>,<span class="fl">10.0</span>],requires_grad<span class="op">=</span><span class="va">True</span>) <span class="co">#</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="27159dc9-d4e4-4c27-b3c0-0b1ae6795712" class="cell" data-execution_count="29">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>alpha<span class="op">=</span><span class="fl">0.001</span> </span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> epoc <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">30</span>): <span class="co">## 30번 반복합니다!! </span></span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>    yhat<span class="op">=</span>X<span class="op">@</span>What </span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>    loss<span class="op">=</span>torch.<span class="bu">sum</span>((y<span class="op">-</span>yhat)<span class="op">**</span><span class="dv">2</span>)</span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>    loss.backward() </span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>    What.data <span class="op">=</span> What.data<span class="op">-</span>alpha <span class="op">*</span> What.grad</span>
+<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a>    What.grad<span class="op">=</span><span class="va">None</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ul>
+<li>원래 철자는 epoch이 맞아요</li>
+</ul>
+<p><code>-</code> 반복결과는?! (최종적으로 구해지는 What의 값은?!) - 참고로 true</p>
+<div id="a267b78b-da6f-4ba2-98c1-e3c77ad53883" class="cell" data-execution_count="30">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>What.data <span class="co">## true인 (2.5,4)와 상당히 비슷함</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="30">
+<pre><code>tensor([2.4290, 4.0144])</code></pre>
+</div>
+</div>
+<p><code>-</code> 반복결과를 시각화하면?</p>
+<div id="0660bc18-8bf3-47b8-9928-a2835964c3d7" class="cell" data-execution_count="31">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>plt.plot(x,y,<span class="st">'o'</span>)</span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>plt.plot(x,X<span class="op">@</span>What.data,<span class="st">'--'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="01wkl-2_files/figure-html/cell-27-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="숙제" class="level1">
+<h1>7. 숙제</h1>
+<p><code>-</code> 뭐 할까? ㅎㅎ</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    const typesetMath = (el) => {
+      if (window.MathJax) {
+        // MathJax Typeset
+        window.MathJax.typeset([el]);
+      } else if (window.katex) {
+        // KaTeX Render
+        var mathElements = el.getElementsByClassName("math");
+        var macros = [];
+        for (var i = 0; i < mathElements.length; i++) {
+          var texText = mathElements[i].firstChild;
+          if (mathElements[i].tagName == "SPAN") {
+            window.katex.render(texText.data, mathElements[i], {
+              displayMode: mathElements[i].classList.contains('display'),
+              throwOnError: false,
+              macros: macros,
+              fleqn: false
+            });
+          }
+        }
+      }
+    }
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        typesetMath(container);
+        return container.innerHTML
+      } else {
+        typesetMath(note);
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      typesetMath(note);
+      return note.innerHTML;
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<script src="https://utteranc.es/client.js" repo="guebin/DL2024" issue-term="pathname" theme="github-light" crossorigin="anonymous" async="">
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
