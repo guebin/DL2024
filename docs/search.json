@@ -88,7 +88,7 @@
     "href": "posts/01wk-2.html#단계-learn-estimate-bfhatw",
     "title": "01wk-2: 딥러닝의 기초 (1) –",
     "section": "3단계: Learn (=estimate \\(\\bf\\hat{W})\\)",
-    "text": "3단계: Learn (=estimate \\(\\bf\\hat{W})\\)\n- 이 과정은 단계1-2를 반복하면 된다.\n\nWhat= torch.tensor([[-5.0],[10.0]],requires_grad=True) #\n\n\nalpha=0.001 \nfor epoc in range(30): ## 30번 반복합니다!! \n    yhat=X@What \n    loss=torch.sum((y-yhat)**2)\n    loss.backward() \n    What.data = What.data-alpha * What.grad\n    What.grad=None\n\n\n원래 철자는 epoch이 맞아요\n\n- 반복결과는?! (최종적으로 구해지는 What의 값은?!) - 참고로 true\n\nWhat.data ## true인 (2.5,4)와 상당히 비슷함\n\ntensor([[2.4290],\n        [4.0144]])\n\n\n- 반복결과를 시각화하면?\n\nplt.plot(x,y,'o')\nplt.plot(x,X@What.data,'--')"
+    "text": "3단계: Learn (=estimate \\(\\bf\\hat{W})\\)\n- 이 과정은 단계1-2를 반복하면 된다.\n\nWhat= torch.tensor([[-5.0],[10.0]],requires_grad=True) #\n\n\nalpha=0.001 \nfor epoc in range(30): ## 30번 반복합니다!! \n    yhat=X@What \n    loss=torch.sum((y-yhat)**2)\n    loss.backward() \n    What.data = What.data-alpha * What.grad\n    What.grad=None\n\n\n원래 철자는 epoch이 맞아요\n\n- 반복결과는?! (최종적으로 구해지는 What의 값은?!)\n\n참고로 true 는 (2.5, 4) 였음!!\n\n\nWhat.data ## true인 (2.5,4)와 상당히 비슷함\n\ntensor([[2.4290],\n        [4.0144]])\n\n\n- 반복결과를 시각화하면?\n\nplt.plot(x,y,'o')\nplt.plot(x,X@What.data,'--')"
   },
   {
     "objectID": "about.html",
