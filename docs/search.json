@@ -4,7 +4,7 @@
     "href": "index.html",
     "title": "딥러닝 (2024)",
     "section": "",
-    "text": "질문하는 방법\n\n이메일: guebin@jbnu.ac.kr\n직접방문: 자연과학대학 본관 205호\nZoom: 이메일로 미리 시간을 정할 것\n\n강의노트\n\n\n\n\n\n\n\n\n\nDate\n\n\nTitle\n\n\nAuthor\n\n\n\n\n\n\nMar 4, 2024\n\n\n01wk-2: 딥러닝의 기초 (1) –\n\n\n최규빈 \n\n\n\n\nMar 4, 2024\n\n\n01wk-1: 이미지 자료 분석 (겉핥기)\n\n\n최규빈 \n\n\n\n\n\nNo matching items"
+    "text": "질문하는 방법\n\n이메일: guebin@jbnu.ac.kr\n직접방문: 자연과학대학 본관 205호\nZoom: 이메일로 미리 시간을 정할 것\n\n강의노트\n\n\n\n\n\n\n\n\n\nDate\n\n\nTitle\n\n\nAuthor\n\n\n\n\n\n\nMar 4, 2024\n\n\n01wk-2: 딥러닝의 기초 (1)\n\n\n최규빈 \n\n\n\n\nMar 4, 2024\n\n\n01wk-1: 이미지 자료 분석 (겉핥기)\n\n\n최규빈 \n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "posts/01wk-1.html#a.-최하니",
@@ -58,37 +58,30 @@
   {
     "objectID": "posts/01wk-2.html#a.-모형소개",
     "href": "posts/01wk-2.html#a.-모형소개",
-    "title": "01wk-2: 딥러닝의 기초 (1) –",
+    "title": "01wk-2: 딥러닝의 기초 (1)",
     "section": "A. 모형소개",
     "text": "A. 모형소개\n- model: \\(y_i= w_0+w_1 x_i +\\epsilon_i = 2.5 + 4x_i +\\epsilon_i, \\quad i=1,2,\\dots,n\\)\n- model: \\({\\bf y}={\\bf X}{\\bf W} +\\boldsymbol{\\epsilon}\\)\n\n\\({\\bf y}=\\begin{bmatrix} y_1 \\\\ y_2 \\\\ \\dots \\\\ y_n\\end{bmatrix}, \\quad {\\bf X}=\\begin{bmatrix} 1 & x_1 \\\\ 1 & x_2 \\\\ \\dots \\\\ 1 & x_n\\end{bmatrix}, \\quad {\\bf W}=\\begin{bmatrix} 2.5 \\\\ 4 \\end{bmatrix}, \\quad \\boldsymbol{\\epsilon}= \\begin{bmatrix} \\epsilon_1 \\\\ \\dots \\\\ \\epsilon_n\\end{bmatrix}\\)"
   },
   {
     "objectID": "posts/01wk-2.html#b.-회귀모형에서-데이터-생성",
     "href": "posts/01wk-2.html#b.-회귀모형에서-데이터-생성",
-    "title": "01wk-2: 딥러닝의 기초 (1) –",
+    "title": "01wk-2: 딥러닝의 기초 (1)",
     "section": "B. 회귀모형에서 데이터 생성",
     "text": "B. 회귀모형에서 데이터 생성\n\ntorch.manual_seed(43052)\nones= torch.ones(100).reshape(-1,1)\nx,_ = torch.randn(100).sort()\nx = x.reshape(-1,1)\nX = torch.concat([ones,x],axis=-1)\nW = torch.tensor([[2.5],[4]])\nϵ = torch.randn(100).reshape(-1,1)*0.5\ny = X@W + ϵ\n\n\nplt.plot(x,y,'o')\nplt.plot(x,2.5+4*x,'--')"
   },
   {
-    "objectID": "posts/01wk-2.html#단계-초기화",
-    "href": "posts/01wk-2.html#단계-초기화",
-    "title": "01wk-2: 딥러닝의 기초 (1) –",
-    "section": "1단계: 초기화",
-    "text": "1단계: 초기화\n\n1단계 = 아무 점선이나 그어보자..\n\n- \\(\\hat{w}_0=-5, \\hat{w}_1 = 10\\) 으로 설정하고 (왜? 그냥) 임의의 선을 그어보자.\n\nWhat = torch.tensor([[-5.0],[10.0]],requires_grad=True)\nWhat\n\ntensor([[-5.],\n        [10.]], requires_grad=True)\n\n\n\n처음에는 \\({\\bf \\hat{W}}=\\begin{bmatrix} \\hat{w}_0 \\\\ \\hat{w}_1 \\end{bmatrix}=\\begin{bmatrix} -5 \\\\ 10 \\end{bmatrix}\\) 를 대입해서 주황색 점선을 적당히 그려보자는 의미\n끝에 requires_grad=True는 나중에 미분을 위한 것\n\n\nyhat = X@What \n\n\nplt.plot(x,y,'o')\nplt.plot(x,yhat.data,'--') # 그림을 그리기 위해서 yhat의 미분꼬리표를 제거"
+    "objectID": "posts/01wk-2.html#a.-손실함수",
+    "href": "posts/01wk-2.html#a.-손실함수",
+    "title": "01wk-2: 딥러닝의 기초 (1)",
+    "section": "A. 손실함수",
+    "text": "A. 손실함수\n- ’적당한 정도’를 판단하기 위한 장치: loss function 도입!\n\\(loss=\\sum_{i=1}^{n}(y_i-\\hat{y}_i)^2=\\sum_{i=1}^{n}(y_i-(\\hat{w}_0+\\hat{w}_1x_i))^2\\)\n\\(=({\\bf y}-{\\bf\\hat{y}})^\\top({\\bf y}-{\\bf\\hat{y}})=({\\bf y}-{\\bf X}{\\bf \\hat{W}})^\\top({\\bf y}-{\\bf X}{\\bf \\hat{W}})\\)\n- loss 함수의 특징\n\n\\(y_i \\approx \\hat{y}_i\\) 일수록 loss값이 작다.\n\\(y_i \\approx \\hat{y}_i\\) 이 되도록 \\((\\hat{w}_0,\\hat{w}_1)\\)을 잘 찍으면 loss값이 작다.\n(중요) 주황색 점선이 ‘적당할 수록’ loss값이 작다.\n\n\nloss = torch.sum((y-yhat)**2)\nloss\n\ntensor(8587.6875, grad_fn=&lt;SumBackward0&gt;)\n\n\n- 우리의 목표: 이 loss(=8587.6875)을 더 줄이자.\n\n궁극적으로는 아예 모든 조합 \\((\\hat{w}_0,\\hat{w}_1)\\)에 대하여 가장 작은 loss를 찾으면 좋겠다. (단계2에서 할일은 아님)\n\n- 문제의 치환: 생각해보니까 우리의 문제는 아래와 같이 수학적으로 단순화 되었다.\n\n적당해보이는 주황색 선을 찾자 \\(\\to\\) \\(loss(w_0,w_1)\\)를 최소로하는 \\((w_0,w_1)\\)의 값을 찾자.\n\n- 수정된 목표: \\(loss(w_0,w_1)\\)를 최소로 하는 \\((w_0,w_1)\\)을 구하라.\n\n단순한 수학문제가 되었다. 이것은 마치 \\(f(x,y)\\)를 최소화하는 \\((x,y)\\)를 찾으라는 것임.\n함수의 최대값 혹은 최소값을 컴퓨터를 이용하여 찾는것을 “최적화”라고 하며 이는 산공교수님들이 가장 잘하는 분야임. (산공교수님들에게 부탁하면 잘해줌, 산공교수님들은 보통 최적화해서 어디에 쓸지보다 최적화 자체에 더 관심을 가지고 연구하심)\n최적화를 하는 방법? 경사하강법"
   },
   {
-    "objectID": "posts/01wk-2.html#단계-업데이트",
-    "href": "posts/01wk-2.html#단계-업데이트",
-    "title": "01wk-2: 딥러닝의 기초 (1) –",
-    "section": "2단계: 업데이트",
-    "text": "2단계: 업데이트\n\n2단계 = 업데이트 = 최초의 점선에 대한 ‘적당한 정도’를 판단하고 더 ’적당한’ 점선으로 업데이트 한다.\n\n- ’적당한 정도’를 판단하기 위한 장치: loss function 도입!\n\\(loss=\\sum_{i=1}^{n}(y_i-\\hat{y}_i)^2=\\sum_{i=1}^{n}(y_i-(\\hat{w}_0+\\hat{w}_1x_i))^2\\)\n\\(=({\\bf y}-{\\bf\\hat{y}})^\\top({\\bf y}-{\\bf\\hat{y}})=({\\bf y}-{\\bf X}{\\bf \\hat{W}})^\\top({\\bf y}-{\\bf X}{\\bf \\hat{W}})\\)\n- loss 함수의 특징\n\n\\(y_i \\approx \\hat{y}_i\\) 일수록 loss값이 작다.\n\\(y_i \\approx \\hat{y}_i\\) 이 되도록 \\((\\hat{w}_0,\\hat{w}_1)\\)을 잘 찍으면 loss값이 작다.\n(중요) 주황색 점선이 ‘적당할 수록’ loss값이 작다.\n\n\nloss = torch.sum((y-yhat)**2)\nloss\n\ntensor(8587.6875, grad_fn=&lt;SumBackward0&gt;)\n\n\n- 우리의 목표: 이 loss(=8587.6875)을 더 줄이자.\n\n궁극적으로는 아예모든 조합 \\((\\hat{w}_0,\\hat{w}_1)\\)에 대하여 가장 작은 loss를 찾으면 좋겠다. (단계2에서 할일은 아님)\n\n- 문제의 치환: 생각해보니까 우리의 문제는 아래와 같이 수학적으로 단순화 되었다.\n\n적당해보이는 주황색 선을 찾자 \\(\\to\\) \\(loss(w_0,w_1)\\)를 최소로하는 \\((w_0,w_1)\\)의 값을 찾자.\n\n- 수정된 목표: \\(loss(w_0,w_1)\\)를 최소로 하는 \\((w_0,w_1)\\)을 구하라.\n\n단순한 수학문제가 되었다. 마치 \\(loss(w)=w^2-2w+3\\) 을 최소화하는 \\(w\\)를 찾으라는 것과 같음.\n즉 “적당한 선으로 업데이트 하라 = 파라메터를 학습하라 = 손실함수를 최소화 하라”\n\n- 우리의 무기: 경사하강법, 벡터미분\n\n\n\n\n\n\n# 경사하강법 복습(?)\n\n\n\n경사하강법 아이디어 (1차원)\n(step 1) 임의의 점을 찍는다.\n(step 2) 그 점에서 순간기울기를 구한다. (접선) &lt;– 미분\n(step 3) 순간기울기(=미분계수)의 부호를 살펴보고 부호와 반대방향으로 움직인다.\n(팁) 기울기의 절대값 크기와 비례하여 보폭(=움직이는 정도)을 조절한다.\n경사하강법 아이디어 (2차원)\n(step 1) 임의의 점을 찍는다.\n(step 2) 그 점에서 순간기울기를 구한다. (접평면) &lt;– 편미분\n(step 3) 순간기울기(=미분계수)의 부호를 살펴보고 부호와 반대방향으로 각각 움직인다.\n(팁) 기울기의 절대값 크기와 비례하여 보폭(=움직이는 정도)을 각각 조절한다.\nloss를 줄이도록 \\({\\bf W}\\)를 개선하는 방법\n- $수정값 원래값 - 기울어진크기(=미분계수) $\n\n여기에서 \\(\\alpha\\)는 전체적인 보폭의 크기를 결정한다. 즉 \\(\\alpha\\)값이 클수록 한번의 update에 움직이는 양이 크다.\n\n- \\({\\bf W} \\leftarrow {\\bf W} - \\alpha \\times \\frac{\\partial}{\\partial {\\bf W}}loss(w_0,w_1)\\)\n\n마이너스의 의미: 기울기의 부호를 보고 반대방향으로 움직여라.\n\\(\\frac{\\partial}{\\partial {\\bf W}}loss(w_0,w_1):\\) 기울기의 절대값크기와 비례하여 움직이는 정도를 조정하라.\n\\(\\alpha\\)의 의미: 전체적인 보폭의 속도를 조절, \\(\\alpha\\)가 크면 전체적으로 빠르게 움직인다. 다리의 길이로 비유할 수 있다.\n\n\n\n- 다시 상기하는 우리의 목표: loss=8587.6875 인데, 이걸 줄이는 것이 목표라고 했었음. 이것을 줄이는 방법이 경사하강법이다.\n- 경사하강법으로 loss를 줄이기 위해서는 \\(\\frac{\\partial}{\\partial {\\bf W}}loss(w_0,w_1)\\)의 계산이 필요한데, 이를 위해서 벡터미분이 필요하다. (loss.backward()로 하면된다)\n\nloss\n\ntensor(8587.6875, grad_fn=&lt;SumBackward0&gt;)\n\n\n\nloss.backward() \n\n\nloss.backward()의 의미: loss를 미분해라! 뭘로? requires_grad=True를 가진 텐서로!!\n\nloss=torch.sum((y-yhat)**2)= torch.sum((y-X@What)**2)\n# 이었고 \nWhat=torch.tensor([-5.0,10.0],requires_grad=True)\n# 이므로 결국 What으로 미분하라는 의미. \n# 미분한 식이 나오는 것이 아니고, \n# 그 식에 (-5.0, 10.0)을 대입한 계수값이 계산됨. \n- 위에서 loss.backward()의 과정은 미분을 활용하여 \\((-5,10)\\)에서의 순간기울기를 구했다는 의미임.\n- (-5,10)에서 loss의 순간기울기 값은 What.grad로 확인가능하다.\n\nWhat,What.grad\n\n(tensor([[-5.],\n         [10.]], requires_grad=True),\n tensor([[-1342.2524],\n         [ 1188.9305]]))\n\n\n\n이것이 의미하는건 \\((-5,10)\\)에서의 \\(loss(w_0,w_1)\\)의 순간기울기가 \\((-1342.2522, 1188.9305)\\) 이라는 의미\n\n- (확인1) loss.backward()가 미분을 잘 계산해 주는 것이 맞는가? 손계산으로 검증하여 보자.\n\n\\(loss(w_0,w_1)=({\\bf y}-\\hat{\\bf y})^\\top ({\\bf y}-\\hat{\\bf y})=({\\bf y}-{\\bf XW})^\\top ({\\bf y}-{\\bf XW})\\)\n\\(\\frac{\\partial}{\\partial {\\bf W} }loss(w_0,w_1)=-2{\\bf X}^\\top {\\bf y}+2{\\bf X}^\\top {\\bf X W}\\)\n\n\n- 2 * X.T @ y + 2 * X.T @ X @ What\n\ntensor([[-1342.2522],\n        [ 1188.9307]], grad_fn=&lt;AddBackward0&gt;)\n\n\n\n# 슬프지만 손계산을 할 수 없다면?..\n\n- (확인2) loss.backward()가 미분을 잘 계산해 주는 것이 맞는가? 편미분을 간단히 구현하여 검증하여 보자.\n\n\\(\\frac{\\partial}{\\partial {\\bf W} } loss(w_0,w_1)=\\begin{bmatrix}\\frac{\\partial}{\\partial w_0} \\\\ \\frac{\\partial}{\\partial w_1} \\end{bmatrix}loss(w_0,w_1) =\\begin{bmatrix}\\frac{\\partial}{\\partial w_0}loss(w_0,w_1) \\\\ \\frac{\\partial}{\\partial w_1}loss(w_0,w_1) \\end{bmatrix}\\)\n\\(\\frac{\\partial}{\\partial w_0}loss(w_0,w_1) \\approx \\frac{loss(w_0+h,w_1)-loss(w_0,w_1)}{h}\\)\n\\(\\frac{\\partial}{\\partial w_1}loss(w_0,w_1) \\approx \\frac{loss(w_0,w_1+h)-loss(w_0,w_1)}{h}\\)\n\n\nl = lambda w0,w1: torch.sum((y-w0-w1*x)**2)\nl(-5,10)\n\ntensor(8587.6875)\n\n\n\nh=0.001\n(l(-5+h,10) - l(-5,10))/h,  (l(-5,10+h) - l(-5,10))/h\n\n(tensor(-1341.7968), tensor(1190.4297))\n\n\n\n약간 오차가 있지만 얼추비슷 \\(\\to\\) 잘 계산했다는 소리임\n\n- 수정전, 수정하는폭, 수정후의 값은 차례로 아래와 같다.\n\nalpha=0.001 \nprint(f'{What.data}\\t\\t -- 수정전') # What 에서 미분꼬리표를 떼고 싶다면? What.data or What.detach()\nprint(f'{-alpha * What.grad}\\t -- 수정하는 폭')\nprint(f'{(What.data-alpha * What.grad)}\\t -- 수정이후')\nprint(f'*참값: (2.5,4)' )\n\ntensor([[-5.],\n        [10.]])      -- 수정전\ntensor([[ 1.3423],\n        [-1.1889]])  -- 수정하는 폭\ntensor([[-3.6577],\n        [ 8.8111]])  -- 수정이후\n*참값: (2.5,4)\n\n\n- Wbefore, Wafter 계산\n\nWbefore = What.data\nWafter = What.data - alpha * What.grad\nWbefore, Wafter\n\n(tensor([[-5.],\n         [10.]]),\n tensor([[-3.6577],\n         [ 8.8111]]))\n\n\n- Wbefore, Wafter의 시각화\n\nplt.plot(x,y,'o')\nplt.plot(x,X@Wbefore,'--')\nplt.plot(x,X@Wafter,'--')"
-  },
-  {
-    "objectID": "posts/01wk-2.html#단계-learn-estimate-bfhatw",
-    "href": "posts/01wk-2.html#단계-learn-estimate-bfhatw",
-    "title": "01wk-2: 딥러닝의 기초 (1) –",
-    "section": "3단계: Learn (=estimate \\(\\bf\\hat{W})\\)",
-    "text": "3단계: Learn (=estimate \\(\\bf\\hat{W})\\)\n- 이 과정은 단계1-2를 반복하면 된다.\n\nWhat= torch.tensor([[-5.0],[10.0]],requires_grad=True) #\n\n\nalpha=0.001 \nfor epoc in range(30): ## 30번 반복합니다!! \n    yhat=X@What \n    loss=torch.sum((y-yhat)**2)\n    loss.backward() \n    What.data = What.data-alpha * What.grad\n    What.grad=None\n\n\n원래 철자는 epoch이 맞아요\n\n- 반복결과는?! (최종적으로 구해지는 What의 값은?!)\n\n참고로 true 는 (2.5, 4) 였음!!\n\n\nWhat.data ## true인 (2.5,4)와 상당히 비슷함\n\ntensor([[2.4290],\n        [4.0144]])\n\n\n- 반복결과를 시각화하면?\n\nplt.plot(x,y,'o')\nplt.plot(x,X@What.data,'--')"
+    "objectID": "posts/01wk-2.html#b.-경사하강법",
+    "href": "posts/01wk-2.html#b.-경사하강법",
+    "title": "01wk-2: 딥러닝의 기초 (1)",
+    "section": "B. 경사하강법",
+    "text": "B. 경사하강법\n- 경사하강법 아이디어 (1차원)\n\n임의의 점을 찍는다.\n그 점에서 순간기울기를 구한다. (접선) &lt;– 미분\n순간기울기(=미분계수)의 부호를 살펴보고 부호와 반대방향으로 움직인다.\n\n\n팁: 기울기의 절대값 크기와 비례하여 보폭(=움직이는 정도)을 조절한다. \\(\\to\\) \\(\\alpha\\)를 도입\n\n\n최종수식: \\(w \\leftarrow w - \\alpha \\times \\frac{\\partial}{\\partial w}loss(w)\\)\n\n- 경사하강법 아이디어 (2차원)\n\n임의의 점을 찍는다.\n그 점에서 순간기울기를 구한다. (접평면) &lt;– 편미분\n순간기울기(=미분계수)의 부호를 살펴보고 부호와 반대방향으로 각각 움직인다.\n\n\n팁: 여기서도 기울기의 절대값 크기와 비례하여 보폭(=움직이는 정도)을 각각 조절한다. \\(\\to\\) \\(\\alpha\\)를 도입.\n\n- 경사하강법 = loss를 줄이도록 \\({\\bf W}\\)를 개선하는 방법\n\n업데이트 공식: 수정값 = 원래값 - \\(\\alpha\\) \\(\\times\\) 기울어진크기(=미분계수)\n여기에서 \\(\\alpha\\)는 전체적인 보폭의 크기를 결정한다. 즉 \\(\\alpha\\)값이 클수록 한번의 update에 움직이는 양이 크다."
   },
   {
     "objectID": "about.html",
