@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.533">
+<meta name="generator" content="quarto-1.4.520">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -101,33 +101,6 @@ ul.task-list li input[type="checkbox"] {
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
-
 <link rel="stylesheet" href="styles.css">
 </head>
 
@@ -222,9 +195,9 @@ Author
 </tr>
 </thead>
 <tbody class="list">
-<tr data-index="0" data-listing-date-sort="1710082800000" data-listing-file-modified-sort="1710283428893" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="122" data-listing-title-sort="02wk-2: 딥러닝의 기초 (3) -- Step1,2,4 의 변형" data-listing-filename-sort="02wk-2.ipynb">
+<tr data-index="0" data-listing-date-sort="1710255600000" data-listing-file-modified-sort="1710347967000" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="124" data-listing-title-sort="02wk-2: 딥러닝의 기초 (3) -- Step1,2,4 의 변형" data-listing-filename-sort="02wk-2.ipynb">
 <td>
-<span class="listing-date">Mar 11, 2024</span>
+<span class="listing-date">Mar 13, 2024</span>
 </td>
 <td>
 <a href="./posts/02wk-2.html" class="title listing-title">02wk-2: 딥러닝의 기초 (3) – Step1,2,4 의 변형</a>
@@ -233,7 +206,7 @@ Author
 <span class="listing-author">최규빈 </span>
 </td>
 </tr>
-<tr data-index="1" data-listing-date-sort="1710082800000" data-listing-file-modified-sort="1710283450285" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="778" data-listing-title-sort="02wk-1: 딥러닝의 기초 (2) -- Step1 ~ 4" data-listing-filename-sort="02wk-1.ipynb">
+<tr data-index="1" data-listing-date-sort="1710082800000" data-listing-file-modified-sort="1710283450000" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="778" data-listing-title-sort="02wk-1: 딥러닝의 기초 (2) -- Step1 ~ 4" data-listing-filename-sort="02wk-1.ipynb">
 <td>
 <span class="listing-date">Mar 11, 2024</span>
 </td>
@@ -244,7 +217,7 @@ Author
 <span class="listing-author">최규빈 </span>
 </td>
 </tr>
-<tr data-index="2" data-listing-date-sort="1709650800000" data-listing-file-modified-sort="1710283497733" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="588" data-listing-title-sort="01wk-2: 딥러닝의 기초 (1) -- 회귀모형, 경사하강법" data-listing-filename-sort="01wk-2.ipynb">
+<tr data-index="2" data-listing-date-sort="1709650800000" data-listing-file-modified-sort="1710283497000" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="588" data-listing-title-sort="01wk-2: 딥러닝의 기초 (1) -- 회귀모형, 경사하강법" data-listing-filename-sort="01wk-2.ipynb">
 <td>
 <span class="listing-date">Mar 6, 2024</span>
 </td>
@@ -255,7 +228,7 @@ Author
 <span class="listing-author">최규빈 </span>
 </td>
 </tr>
-<tr data-index="3" data-listing-date-sort="1709478000000" data-listing-file-modified-sort="1710283518397" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="328" data-listing-title-sort="01wk-1: 이미지 자료 분석 (겉핥기)" data-listing-filename-sort="01wk-1.ipynb">
+<tr data-index="3" data-listing-date-sort="1709478000000" data-listing-file-modified-sort="1710283518000" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="328" data-listing-title-sort="01wk-1: 이미지 자료 분석 (겉핥기)" data-listing-filename-sort="01wk-1.ipynb">
 <td>
 <span class="listing-date">Mar 4, 2024</span>
 </td>
@@ -400,6 +373,27 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       }
     }
     stripColumnClz(note)
+    const typesetMath = (el) => {
+      if (window.MathJax) {
+        // MathJax Typeset
+        window.MathJax.typeset([el]);
+      } else if (window.katex) {
+        // KaTeX Render
+        var mathElements = el.getElementsByClassName("math");
+        var macros = [];
+        for (var i = 0; i < mathElements.length; i++) {
+          var texText = mathElements[i].firstChild;
+          if (mathElements[i].tagName == "SPAN") {
+            window.katex.render(texText.data, mathElements[i], {
+              displayMode: mathElements[i].classList.contains('display'),
+              throwOnError: false,
+              macros: macros,
+              fleqn: false
+            });
+          }
+        }
+      }
+    }
     if (id === null || id.startsWith('sec-')) {
       // Special case sections, only their first couple elements
       const container = document.createElement("div");
@@ -414,14 +408,10 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             break;
           }
         }
-        if (window.Quarto?.typesetMath) {
-          window.Quarto.typesetMath(container);
-        }
+        typesetMath(container);
         return container.innerHTML
       } else {
-        if (window.Quarto?.typesetMath) {
-          window.Quarto.typesetMath(note);
-        }
+        typesetMath(note);
         return note.innerHTML;
       }
     } else {
@@ -430,9 +420,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       if (anchorLink) {
         anchorLink.remove();
       }
-      if (window.Quarto?.typesetMath) {
-        window.Quarto.typesetMath(note);
-      }
+      typesetMath(note);
       return note.innerHTML;
     }
   }
