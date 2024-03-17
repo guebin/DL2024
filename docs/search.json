@@ -4,7 +4,7 @@
     "href": "index.html",
     "title": "딥러닝 (2024)",
     "section": "",
-    "text": "질문하는 방법\n\n이메일: guebin@jbnu.ac.kr\n직접방문: 자연과학대학 본관 205호\nZoom: 이메일로 미리 시간을 정할 것\n카카오톡: http://pf.kakao.com/_txeIFG/chat\n\n강의노트\n\n\n\n\n\n\n\n\n\nDate\n\n\nTitle\n\n\nAuthor\n\n\n\n\n\n\nMar 13, 2024\n\n\n03wk-1: 로지스틱 – 로지스틱, BCELoss, Adam\n\n\n최규빈 \n\n\n\n\nMar 13, 2024\n\n\n02wk-2: 회귀분석 (3) – Step1,2,4 의 변형\n\n\n최규빈 \n\n\n\n\nMar 11, 2024\n\n\n02wk-1: 회귀분석 (2) – Step1~4 / 벡터미분\n\n\n최규빈 \n\n\n\n\nMar 6, 2024\n\n\n01wk-2: 회귀분석 (1) – 단순회귀의 학습전략, 경사하강법\n\n\n최규빈 \n\n\n\n\nMar 4, 2024\n\n\n01wk-1: 이미지 자료 분석 (겉핥기)\n\n\n최규빈 \n\n\n\n\n\nNo matching items"
+    "text": "질문하는 방법\n\n이메일: guebin@jbnu.ac.kr\n직접방문: 자연과학대학 본관 205호\nZoom: 이메일로 미리 시간을 정할 것\n카카오톡: http://pf.kakao.com/_txeIFG/chat\n\n강의노트\n\n\n\n\n\n\n\n\n\nDate\n\n\nTitle\n\n\nAuthor\n\n\n\n\n\n\nMar 13, 2024\n\n\n03wk-1: 로지스틱 – 로지스틱, BCELoss, Adam, 로지스틱의 한계\n\n\n최규빈 \n\n\n\n\nMar 13, 2024\n\n\n02wk-2: 회귀분석 (3) – Step1,2,4 의 변형\n\n\n최규빈 \n\n\n\n\nMar 11, 2024\n\n\n02wk-1: 회귀분석 (2) – Step1~4 / 벡터미분\n\n\n최규빈 \n\n\n\n\nMar 6, 2024\n\n\n01wk-2: 회귀분석 (1) – 단순회귀의 학습전략, 경사하강법\n\n\n최규빈 \n\n\n\n\nMar 4, 2024\n\n\n01wk-1: 이미지 자료 분석 (겉핥기)\n\n\n최규빈 \n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "posts/02wk-1.html#a.-소설",
@@ -184,93 +184,121 @@
   {
     "objectID": "posts/03wk-1.html#step1-net-설계-모델링",
     "href": "posts/03wk-1.html#step1-net-설계-모델링",
-    "title": "03wk-1: 로지스틱 – 로지스틱, BCELoss, Adam",
+    "title": "03wk-1: 로지스틱 – 로지스틱, BCELoss, Adam, 로지스틱의 한계",
     "section": "Step1: net 설계 (모델링)",
     "text": "Step1: net 설계 (모델링)\n- 최초의 곡선을 그려보자. (\\(net: x \\to yhat\\) 을 수행하는 네트워크를 설계해보자는 의미)\n\nw0hat = -0.8\nw1hat = -0.3\n\n\ndef sigmoid(x):\n    return torch.exp(x)/(1+torch.exp(x))\n\n\nplt.plot(x,y,'.',alpha=0.03)\nplt.plot(x[0],y[0],'o',label=r\"$(x_i,y_i)$\",color=\"C0\")\nplt.plot(x,v,'--r',label=r\"prob (true, unknown) = $\\frac{exp(-1+5x)}{1+exp(-1+5x)}$\")\nplt.plot(x,sigmoid(w0hat + w1hat*x),'--b', label=r\"prob (estimated) = $(x_i,\\hat{y}_i)$ -- first curve\")\nplt.legend()\n\n\n\n\n\n\n\n\n- w0hat + w1hat*x 이 부분을 torch.nn.Linear(bias = False)로 구현\n\nX = torch.concat([torch.ones(2000).reshape(-1,1),x],axis=1)\nl1 = torch.nn.Linear(in_features=2, out_features=1, bias = False)\nl1.weight\n\nParameter containing:\ntensor([[ 0.1145, -0.5273]], requires_grad=True)\n\n\n\nl1.weight.data = torch.tensor([[-0.8,  -0.3]])\n\n\nl1(X), w0hat + w1hat*x # 똑같죠\n\n(tensor([[-0.5000],\n         [-0.5003],\n         [-0.5006],\n         ...,\n         [-1.0994],\n         [-1.0997],\n         [-1.1000]], grad_fn=&lt;MmBackward0&gt;),\n tensor([[-0.5000],\n         [-0.5003],\n         [-0.5006],\n         ...,\n         [-1.0994],\n         [-1.0997],\n         [-1.1000]]))\n\n\n- w0hat + w1hat*x 이 부분을 torch.nn.Linear(bias = True)로 구현\n\n#X = torch.concat([torch.ones(2000).reshape(-1,1),x],axis=1)\nl1 = torch.nn.Linear(in_features=1, out_features=1)\nl1.weight, l1.bias\n\n(Parameter containing:\n tensor([[-0.4161]], requires_grad=True),\n Parameter containing:\n tensor([0.6812], requires_grad=True))\n\n\n\nl1.weight.data = torch.tensor([[-0.3]])\nl1.bias.data = torch.tensor([-0.8])\n\n\nl1(x), w0hat + w1hat*x # 이것도 똑같죠!\n\n(tensor([[-0.5000],\n         [-0.5003],\n         [-0.5006],\n         ...,\n         [-1.0994],\n         [-1.0997],\n         [-1.1000]], grad_fn=&lt;AddmmBackward0&gt;),\n tensor([[-0.5000],\n         [-0.5003],\n         [-0.5006],\n         ...,\n         [-1.0994],\n         [-1.0997],\n         [-1.1000]]))\n\n\n- 내가만든 sigmoid 대신에 토치에서 제공하는 sigmoid 사용\n\na1 = torch.nn.Sigmoid()\n\n\nsigmoid(l1(x)), a1(l1(x)) # 똑같아요\n\n(tensor([[0.3775],\n         [0.3775],\n         [0.3774],\n         ...,\n         [0.2499],\n         [0.2498],\n         [0.2497]], grad_fn=&lt;DivBackward0&gt;),\n tensor([[0.3775],\n         [0.3775],\n         [0.3774],\n         ...,\n         [0.2499],\n         [0.2498],\n         [0.2497]], grad_fn=&lt;SigmoidBackward0&gt;))\n\n\n- 지금까지의 구현 확인\n\nplt.plot(x,y,'.',alpha=0.03)\nplt.plot(x[0],y[0],'o',label=r\"$(x_i,y_i)$\",color=\"C0\")\nplt.plot(x,v,'--r',label=r\"prob (true, unknown) = $\\frac{exp(-1+5x)}{1+exp(-1+5x)}$\")\nplt.plot(x,sigmoid(w0hat + w1hat*x),'--b', label=r\"prob (estimated) = $(x_i,\\hat{y}_i)$ -- first curve\")\nplt.plot(x,a1(l1(x)).data,'--b', label=r\"prob (estimated) = $(x_i,\\hat{y}_i)$ -- first curve with $(a_1 \\circ l_1)(x)$\")\nplt.legend()\n\n\n\n\n\n\n\n\n- 관찰: 지금 아래의 구조이다.\n\\[{\\boldsymbol x} \\overset{l_1}{\\to} {\\boldsymbol u} \\overset{a_1}{\\to} {\\boldsymbol v} = \\hat{\\boldsymbol y}\\]\n- 소망: 함수 \\(l_1, a_1\\) 의 합성을 하나로 묶어서\n\\[(a_1\\circ l_1)({\\boldsymbol x}) := net({\\boldsymbol x})\\]\n이러한 기능을 하는 하나의 함수 \\(net\\)을 만들 수 없을까?\n\nnet = torch.nn.Sequential(l1,a1) #l1을 취하고 그다음에 a1을 취하라는 의미\n\n\nnet(x), a1(l1(x)), sigmoid(w0hat+ w1hat*x)\n\n(tensor([[0.3775],\n         [0.3775],\n         [0.3774],\n         ...,\n         [0.2499],\n         [0.2498],\n         [0.2497]], grad_fn=&lt;SigmoidBackward0&gt;),\n tensor([[0.3775],\n         [0.3775],\n         [0.3774],\n         ...,\n         [0.2499],\n         [0.2498],\n         [0.2497]], grad_fn=&lt;SigmoidBackward0&gt;),\n tensor([[0.3775],\n         [0.3775],\n         [0.3774],\n         ...,\n         [0.2499],\n         [0.2498],\n         [0.2497]]))\n\n\n- net 살펴보기: 초보버전 – “파이토치 30일만에 완성하기” 이런책에 보면 내용이 나올지도?\n\nnet\n\nSequential(\n  (0): Linear(in_features=1, out_features=1, bias=True)\n  (1): Sigmoid()\n)\n\n\n\n처음에는 선형변환하고, 그담에는 Sigmoid를 수행하라는 의미\n\n- net 살펴보기: 고수버전 – 책 안보고 코딩배우기\n\nset(dir(net)) & {'__call__', '__getitem__'}\n\n{'__call__', '__getitem__'}\n\n\n\n좋은거 가지고 있네 ㅎㅎ\ncallable 이면서 subscriptable 오브젝트..\n\n\nlst = [11,22,33]\nlst.__getitem__(-1) # lst[-1]\n\n33\n\n\n\nsigmoid.__call__(x) # sigmoid(x)\n\ntensor([[0.2689],\n        [0.2691],\n        [0.2693],\n        ...,\n        [0.7307],\n        [0.7309],\n        [0.7311]])\n\n\n\nsigmoid[0] # 난 스크립터블 하지 않은걸? (= 난 리스트처럼 인덱싱 못해요)\n\nTypeError: 'function' object is not subscriptable\n\n\n\nlst(x)# 난 컬러블하지 않은걸? (= 난 함수처럼 입력을 받고 출력을 주는 일은 못해요)\n\nTypeError: 'list' object is not callable\n\n\n\nnet(x) # 컬러블이면서\n\ntensor([[0.3775],\n        [0.3775],\n        [0.3774],\n        ...,\n        [0.2499],\n        [0.2498],\n        [0.2497]], grad_fn=&lt;SigmoidBackward0&gt;)\n\n\n\nnet[0],net[1] # 섭스크립터블\n\n(Linear(in_features=1, out_features=1, bias=True), Sigmoid())\n\n\n\n_l1, _a1 = net # 언패킹!! (섭스크립터블하니까..)\n\n\n_l1.weight, _l1.bias # 내가 설정한 웨이트도 그대로 들어가있음\n\n(Parameter containing:\n tensor([[-0.3000]], requires_grad=True),\n Parameter containing:\n tensor([-0.8000], requires_grad=True))"
   },
   {
     "objectID": "posts/03wk-1.html#step-14",
     "href": "posts/03wk-1.html#step-14",
-    "title": "03wk-1: 로지스틱 – 로지스틱, BCELoss, Adam",
+    "title": "03wk-1: 로지스틱 – 로지스틱, BCELoss, Adam, 로지스틱의 한계",
     "section": "Step 1~4",
     "text": "Step 1~4\n\nnet = torch.nn.Sequential(\n    torch.nn.Linear(in_features=1, out_features=1),\n    torch.nn.Sigmoid()\n)\nl1, a1 = net # 네트워크는 섭스크립터블 오브젝트이니까..\nl1.weight.data = torch.tensor([[-0.3]])\nl1.bias.data = torch.tensor([-0.8])\n#loss_fn = torch.nn.MSELoss() # -- 이 코드 일단 쓰지 않을게여\noptimizr = torch.optim.SGD(net.parameters(),lr=0.25)\n#---#\nfor epoc in range(100):\n    ## 1\n    yhat = net(x) \n    ## 2 \n    loss = torch.mean((y-yhat)**2)\n    ## 3\n    loss.backward()\n    ## 4 \n    optimizr.step()\n    optimizr.zero_grad()\n\n\nplt.plot(x,y,'.',alpha=0.05)\nplt.plot(x,v,'--r')\nplt.plot(x,yhat.data,'--b')\nplt.title('after 100 epochs')\n\nText(0.5, 1.0, 'after 100 epochs')\n\n\n\n\n\n\n\n\n\n\nfor epoc in range(4900):\n    ## 1\n    yhat = net(x) \n    ## 2 \n    loss = torch.mean((y-yhat)**2)\n    ## 3\n    loss.backward()\n    ## 4 \n    optimizr.step()\n    optimizr.zero_grad()\n\n\nplt.plot(x,y,'.',alpha=0.05)\nplt.plot(x,v,'--r')\nplt.plot(x,yhat.data,'--b')\nplt.title('after 5000 epochs')\n\nText(0.5, 1.0, 'after 5000 epochs')\n\n\n\n\n\n\n\n\n\n성공했나?"
   },
   {
     "objectID": "posts/03wk-1.html#a.-좋은-초기값",
     "href": "posts/03wk-1.html#a.-좋은-초기값",
-    "title": "03wk-1: 로지스틱 – 로지스틱, BCELoss, Adam",
+    "title": "03wk-1: 로지스틱 – 로지스틱, BCELoss, Adam, 로지스틱의 한계",
     "section": "A. 좋은 초기값",
     "text": "A. 좋은 초기값\n\nnet = torch.nn.Sequential(\n    torch.nn.Linear(1,1),\n    torch.nn.Sigmoid()\n) \nnet[0].bias.data = torch.tensor([-0.8])\nnet[0].weight.data = torch.tensor([[-0.3]])\nloss_fn = torch.nn.MSELoss()\noptimizr = torch.optim.SGD(net.parameters(),lr=0.25) \n#---#\nshow_animation(net,loss_fn,optimizr)\n\n\n\n\n\n\n\n\n  \n  \n    \n    \n      \n          \n      \n        \n      \n          \n      \n          \n      \n          \n      \n          \n      \n          \n      \n          \n      \n          \n    \n    \n      \n      Once\n      \n      Loop\n      \n      Reflect"
   },
   {
     "objectID": "posts/03wk-1.html#b.-가능성-있는-초기값",
     "href": "posts/03wk-1.html#b.-가능성-있는-초기값",
-    "title": "03wk-1: 로지스틱 – 로지스틱, BCELoss, Adam",
+    "title": "03wk-1: 로지스틱 – 로지스틱, BCELoss, Adam, 로지스틱의 한계",
     "section": "B. 가능성 있는 초기값",
     "text": "B. 가능성 있는 초기값\n\nnet = torch.nn.Sequential(\n    torch.nn.Linear(1,1),\n    torch.nn.Sigmoid()\n) \nnet[0].bias.data = torch.tensor([-3.0])\nnet[0].weight.data = torch.tensor([[-1.0]])\nloss_fn = torch.nn.MSELoss()\noptimizr = torch.optim.SGD(net.parameters(),lr=0.25) \n#---#\nshow_animation(net,loss_fn,optimizr)\n\n\n\n\n\n\n\n\n  \n  \n    \n    \n      \n          \n      \n        \n      \n          \n      \n          \n      \n          \n      \n          \n      \n          \n      \n          \n      \n          \n    \n    \n      \n      Once\n      \n      Loop\n      \n      Reflect"
   },
   {
     "objectID": "posts/03wk-1.html#c.-최악의-초기값",
     "href": "posts/03wk-1.html#c.-최악의-초기값",
-    "title": "03wk-1: 로지스틱 – 로지스틱, BCELoss, Adam",
+    "title": "03wk-1: 로지스틱 – 로지스틱, BCELoss, Adam, 로지스틱의 한계",
     "section": "C. 최악의 초기값",
     "text": "C. 최악의 초기값\n\nnet = torch.nn.Sequential(\n    torch.nn.Linear(1,1),\n    torch.nn.Sigmoid()\n) \nnet[0].bias.data = torch.tensor([-10.0])\nnet[0].weight.data = torch.tensor([[-1.0]])\nloss_fn = torch.nn.MSELoss()\noptimizr = torch.optim.SGD(net.parameters(),lr=0.25) \n#---#\nshow_animation(net,loss_fn,optimizr)\n\n\n\n\n\n\n\n\n  \n  \n    \n    \n      \n          \n      \n        \n      \n          \n      \n          \n      \n          \n      \n          \n      \n          \n      \n          \n      \n          \n    \n    \n      \n      Once\n      \n      Loop\n      \n      Reflect\n    \n  \n\n\n\n\n\n\n해결하는 접근법:\n\n컴공스타일: 에폭을 늘려볼까?\n산공스타일: 옵티마이저를 바꿔볼까?\n통계스타일: Loss를 바꿔볼까?"
   },
   {
     "objectID": "posts/03wk-1.html#a.-bce-loss를-사용하여-학습",
     "href": "posts/03wk-1.html#a.-bce-loss를-사용하여-학습",
-    "title": "03wk-1: 로지스틱 – 로지스틱, BCELoss, Adam",
+    "title": "03wk-1: 로지스틱 – 로지스틱, BCELoss, Adam, 로지스틱의 한계",
     "section": "A. BCE Loss를 사용하여 학습",
     "text": "A. BCE Loss를 사용하여 학습\n- BCE loss라는게 있음.\n\nhttps://en.wikipedia.org/wiki/Cross-entropy\n\n\nnet = torch.nn.Sequential(\n    torch.nn.Linear(in_features=1, out_features=1),\n    torch.nn.Sigmoid()\n)\nl1, a1 = net # 네트워크는 섭스크립터블 오브젝트이니까..\nl1.weight.data = torch.tensor([[-0.3467]])\nl1.bias.data = torch.tensor([-0.8470])\noptimizr = torch.optim.SGD(net.parameters(),lr=0.25)\n#---#\nfor epoc in range(100):\n    ## 1\n    yhat = net(x) \n    ## 2 \n    #loss = torch.mean((y-yhat)**2)\n    loss = -torch.mean(y*torch.log(yhat) + (1-y)*torch.log(1-yhat))\n    ## 3\n    loss.backward()\n    ## 4 \n    optimizr.step()\n    optimizr.zero_grad()\n\n\nplt.plot(x,y,'.',alpha=0.05)\nplt.plot(x,v,'--r')\nplt.plot(x,yhat.data,'--b')\nplt.title('after 100 epochs')\n\nText(0.5, 1.0, 'after 100 epochs')\n\n\n\n\n\n\n\n\n\n같은 100 에폭인데 훨씬 잘맞춤..\n- loss수식을 못외우겠다면?\n\nnet = torch.nn.Sequential(\n    torch.nn.Linear(in_features=1, out_features=1),\n    torch.nn.Sigmoid()\n)\nl1, a1 = net # 네트워크는 섭스크립터블 오브젝트이니까..\nl1.weight.data = torch.tensor([[-0.3467]])\nl1.bias.data = torch.tensor([-0.8470])\nloss_fn = torch.nn.BCELoss()\noptimizr = torch.optim.SGD(net.parameters(),lr=0.25)\n#---#\nfor epoc in range(100):\n    ## 1\n    yhat = net(x) \n    ## 2 \n    loss = loss_fn(yhat,y) # yhat부터 써야함\n    ## 3\n    loss.backward()\n    ## 4 \n    optimizr.step()\n    optimizr.zero_grad()\n\n\nplt.plot(x,y,'.',alpha=0.05)\nplt.plot(x,v,'--r')\nplt.plot(x,yhat.data,'--b')\nplt.title('after 100 epochs')\n\nText(0.5, 1.0, 'after 100 epochs')"
   },
   {
     "objectID": "posts/03wk-1.html#b.-loss-function-시각화",
     "href": "posts/03wk-1.html#b.-loss-function-시각화",
-    "title": "03wk-1: 로지스틱 – 로지스틱, BCELoss, Adam",
+    "title": "03wk-1: 로지스틱 – 로지스틱, BCELoss, Adam, 로지스틱의 한계",
     "section": "B. Loss Function 시각화",
     "text": "B. Loss Function 시각화\n\nplot_loss(torch.nn.MSELoss())\n\n\n\n\n\n\n\n\n\nplot_loss(torch.nn.BCELoss())\n\n\n\n\n\n\n\n\n- 비교해보자.\n\nfig = plt.figure()\nax1 = fig.add_subplot(1,2,1,projection='3d')\nax2 = fig.add_subplot(1,2,2,projection='3d')\nplot_loss(torch.nn.MSELoss(),ax1)\nplot_loss(torch.nn.BCELoss(),ax2)"
   },
   {
     "objectID": "posts/03wk-1.html#c.-학습과정-시각화-좋은-초기값",
     "href": "posts/03wk-1.html#c.-학습과정-시각화-좋은-초기값",
-    "title": "03wk-1: 로지스틱 – 로지스틱, BCELoss, Adam",
+    "title": "03wk-1: 로지스틱 – 로지스틱, BCELoss, Adam, 로지스틱의 한계",
     "section": "C. 학습과정 시각화 – 좋은 초기값",
     "text": "C. 학습과정 시각화 – 좋은 초기값\n- MSELoss\n\nnet = torch.nn.Sequential(\n    torch.nn.Linear(1,1),\n    torch.nn.Sigmoid()\n) \nnet[0].bias.data = torch.tensor([-0.8])\nnet[0].weight.data = torch.tensor([[-0.3]])\nloss_fn = torch.nn.MSELoss()\noptimizr = torch.optim.SGD(net.parameters(),lr=0.25) \n#---#\nshow_animation(net,loss_fn,optimizr)\n\n\n\n\n\n\n\n\n  \n  \n    \n    \n      \n          \n      \n        \n      \n          \n      \n          \n      \n          \n      \n          \n      \n          \n      \n          \n      \n          \n    \n    \n      \n      Once\n      \n      Loop\n      \n      Reflect\n    \n  \n\n\n\n\n\n\n- BCELoss\n\nnet = torch.nn.Sequential(\n    torch.nn.Linear(1,1),\n    torch.nn.Sigmoid()\n) \nnet[0].bias.data = torch.tensor([-0.8])\nnet[0].weight.data = torch.tensor([[-0.3]])\nloss_fn = torch.nn.BCELoss()\noptimizr = torch.optim.SGD(net.parameters(),lr=0.25) \n#---#\nshow_animation(net,loss_fn,optimizr)\n\n\n\n\n\n\n\n\n  \n  \n    \n    \n      \n          \n      \n        \n      \n          \n      \n          \n      \n          \n      \n          \n      \n          \n      \n          \n      \n          \n    \n    \n      \n      Once\n      \n      Loop\n      \n      Reflect"
   },
   {
     "objectID": "posts/03wk-1.html#d.-학습과정-시각화-가능성-있는-초기값",
     "href": "posts/03wk-1.html#d.-학습과정-시각화-가능성-있는-초기값",
-    "title": "03wk-1: 로지스틱 – 로지스틱, BCELoss, Adam",
+    "title": "03wk-1: 로지스틱 – 로지스틱, BCELoss, Adam, 로지스틱의 한계",
     "section": "D. 학습과정 시각화 – 가능성 있는 초기값",
     "text": "D. 학습과정 시각화 – 가능성 있는 초기값\n- MSELoss\n\nnet = torch.nn.Sequential(\n    torch.nn.Linear(1,1),\n    torch.nn.Sigmoid()\n) \nnet[0].bias.data = torch.tensor([-3.0])\nnet[0].weight.data = torch.tensor([[-1.0]])\nloss_fn = torch.nn.MSELoss()\noptimizr = torch.optim.SGD(net.parameters(),lr=0.25) \n#---#\nshow_animation(net,loss_fn,optimizr)\n\n\n\n\n\n\n\n\n  \n  \n    \n    \n      \n          \n      \n        \n      \n          \n      \n          \n      \n          \n      \n          \n      \n          \n      \n          \n      \n          \n    \n    \n      \n      Once\n      \n      Loop\n      \n      Reflect\n    \n  \n\n\n\n\n\n\n- BCELoss\n\nnet = torch.nn.Sequential(\n    torch.nn.Linear(1,1),\n    torch.nn.Sigmoid()\n) \nnet[0].bias.data = torch.tensor([-3.0])\nnet[0].weight.data = torch.tensor([[-1.0]])\nloss_fn = torch.nn.BCELoss()\noptimizr = torch.optim.SGD(net.parameters(),lr=0.25) \n#---#\nshow_animation(net,loss_fn,optimizr)\n\n\n\n\n\n\n\n\n  \n  \n    \n    \n      \n          \n      \n        \n      \n          \n      \n          \n      \n          \n      \n          \n      \n          \n      \n          \n      \n          \n    \n    \n      \n      Once\n      \n      Loop\n      \n      Reflect"
   },
   {
     "objectID": "posts/03wk-1.html#e.-학습과정-시각화-최악의-초기값",
     "href": "posts/03wk-1.html#e.-학습과정-시각화-최악의-초기값",
-    "title": "03wk-1: 로지스틱 – 로지스틱, BCELoss, Adam",
+    "title": "03wk-1: 로지스틱 – 로지스틱, BCELoss, Adam, 로지스틱의 한계",
     "section": "E. 학습과정 시각화 – 최악의 초기값",
     "text": "E. 학습과정 시각화 – 최악의 초기값\n- MSELoss\n\nnet = torch.nn.Sequential(\n    torch.nn.Linear(1,1),\n    torch.nn.Sigmoid()\n) \nnet[0].bias.data = torch.tensor([-10.0])\nnet[0].weight.data = torch.tensor([[-1.0]])\nloss_fn = torch.nn.MSELoss()\noptimizr = torch.optim.SGD(net.parameters(),lr=0.25) \n#---#\nshow_animation(net,loss_fn,optimizr)\n\n\n\n\n\n\n\n\n  \n  \n    \n    \n      \n          \n      \n        \n      \n          \n      \n          \n      \n          \n      \n          \n      \n          \n      \n          \n      \n          \n    \n    \n      \n      Once\n      \n      Loop\n      \n      Reflect\n    \n  \n\n\n\n\n\n\n- BCELoss\n\nnet = torch.nn.Sequential(\n    torch.nn.Linear(1,1),\n    torch.nn.Sigmoid()\n) \nnet[0].bias.data = torch.tensor([-10.0])\nnet[0].weight.data = torch.tensor([[-1.0]])\nloss_fn = torch.nn.BCELoss()\noptimizr = torch.optim.SGD(net.parameters(),lr=0.25) \n#---#\nshow_animation(net,loss_fn,optimizr)\n\n\n\n\n\n\n\n\n  \n  \n    \n    \n      \n          \n      \n        \n      \n          \n      \n          \n      \n          \n      \n          \n      \n          \n      \n          \n      \n          \n    \n    \n      \n      Once\n      \n      Loop\n      \n      Reflect"
   },
   {
     "objectID": "posts/03wk-1.html#c.-학습과정-시각화-좋은-초기값-1",
     "href": "posts/03wk-1.html#c.-학습과정-시각화-좋은-초기값-1",
-    "title": "03wk-1: 로지스틱 – 로지스틱, BCELoss, Adam",
+    "title": "03wk-1: 로지스틱 – 로지스틱, BCELoss, Adam, 로지스틱의 한계",
     "section": "C. 학습과정 시각화 – 좋은 초기값",
     "text": "C. 학습과정 시각화 – 좋은 초기값\n- MSELoss + SGD\n\n# net = torch.nn.Sequential(\n#     torch.nn.Linear(1,1),\n#     torch.nn.Sigmoid()\n# ) \n# net[0].bias.data = torch.tensor([-0.8470])\n# net[0].weight.data = torch.tensor([[-0.3467]])\n# loss_fn = torch.nn.MSELoss()\n# optimizr = torch.optim.SGD(net.parameters(),lr=0.25) \n# #---#\n# show_animation(net,loss_fn,optimizr)\n\n- MSELoss + Adam\n\nnet = torch.nn.Sequential(\n    torch.nn.Linear(1,1),\n    torch.nn.Sigmoid()\n) \nnet[0].bias.data = torch.tensor([-0.8470])\nnet[0].weight.data = torch.tensor([[-0.3467]])\nloss_fn = torch.nn.MSELoss()\noptimizr = torch.optim.Adam(net.parameters(),lr=0.25) \n#---#\nshow_animation(net,loss_fn,optimizr)\n\n\n\n\n\n\n\n\n  \n  \n    \n    \n      \n          \n      \n        \n      \n          \n      \n          \n      \n          \n      \n          \n      \n          \n      \n          \n      \n          \n    \n    \n      \n      Once\n      \n      Loop\n      \n      Reflect"
   },
   {
     "objectID": "posts/03wk-1.html#d.-학습과정-시각화-가능성-있는-초기값-1",
     "href": "posts/03wk-1.html#d.-학습과정-시각화-가능성-있는-초기값-1",
-    "title": "03wk-1: 로지스틱 – 로지스틱, BCELoss, Adam",
+    "title": "03wk-1: 로지스틱 – 로지스틱, BCELoss, Adam, 로지스틱의 한계",
     "section": "D. 학습과정 시각화 – 가능성 있는 초기값",
     "text": "D. 학습과정 시각화 – 가능성 있는 초기값\n- MSELoss + SGD\n\n# net = torch.nn.Sequential(\n#     torch.nn.Linear(1,1),\n#     torch.nn.Sigmoid()\n# ) \n# net[0].bias.data = torch.tensor([-3.0])\n# net[0].weight.data = torch.tensor([[-1.0]])\n# loss_fn = torch.nn.MSELoss()\n# optimizr = torch.optim.SGD(net.parameters(),lr=0.25) \n# #---#\n# show_animation(net,loss_fn,optimizr)\n\n- MSELoss + Adam\n\nnet = torch.nn.Sequential(\n    torch.nn.Linear(1,1),\n    torch.nn.Sigmoid()\n) \nnet[0].bias.data = torch.tensor([-3.0])\nnet[0].weight.data = torch.tensor([[-1.0]])\nloss_fn = torch.nn.MSELoss()\noptimizr = torch.optim.Adam(net.parameters(),lr=0.25) \n#---#\nshow_animation(net,loss_fn,optimizr)\n\n\n\n\n\n\n\n\n  \n  \n    \n    \n      \n          \n      \n        \n      \n          \n      \n          \n      \n          \n      \n          \n      \n          \n      \n          \n      \n          \n    \n    \n      \n      Once\n      \n      Loop\n      \n      Reflect"
   },
   {
     "objectID": "posts/03wk-1.html#e.-학습과정-시각화-최악의-초기값-1",
     "href": "posts/03wk-1.html#e.-학습과정-시각화-최악의-초기값-1",
-    "title": "03wk-1: 로지스틱 – 로지스틱, BCELoss, Adam",
+    "title": "03wk-1: 로지스틱 – 로지스틱, BCELoss, Adam, 로지스틱의 한계",
     "section": "E. 학습과정 시각화 – 최악의 초기값",
     "text": "E. 학습과정 시각화 – 최악의 초기값\n- MSELoss + SGD\n\n# net = torch.nn.Sequential(\n#     torch.nn.Linear(1,1),\n#     torch.nn.Sigmoid()\n# ) \n# net[0].bias.data = torch.tensor([-10.0])\n# net[0].weight.data = torch.tensor([[-1.0]])\n# loss_fn = torch.nn.MSELoss()\n# optimizr = torch.optim.SGD(net.parameters(),lr=0.05) \n# #---#\n# show_animation(net,loss_fn,optimizr)\n\n- MSELoss + Adam\n\nnet = torch.nn.Sequential(\n    torch.nn.Linear(1,1),\n    torch.nn.Sigmoid()\n) \nnet[0].bias.data = torch.tensor([-10.0])\nnet[0].weight.data = torch.tensor([[-1.0]])\nloss_fn = torch.nn.MSELoss()\noptimizr = torch.optim.Adam(net.parameters(),lr=0.25) \n#---#\nshow_animation(net,loss_fn,optimizr)\n\n\n\n\n\n\n\n\n  \n  \n    \n    \n      \n          \n      \n        \n      \n          \n      \n          \n      \n          \n      \n          \n      \n          \n      \n          \n      \n          \n    \n    \n      \n      Once\n      \n      Loop\n      \n      Reflect"
+  },
+  {
+    "objectID": "posts/03wk-1.html#a.-신문기사-데이터의-모티브",
+    "href": "posts/03wk-1.html#a.-신문기사-데이터의-모티브",
+    "title": "03wk-1: 로지스틱 – 로지스틱, BCELoss, Adam, 로지스틱의 한계",
+    "section": "A. 신문기사 (데이터의 모티브)",
+    "text": "A. 신문기사 (데이터의 모티브)\n- 스펙이 높아도 취업이 안된다고 합니다..\n중소·지방 기업 “뽑아봤자 그만두니까”\n중소기업 관계자들은 고스펙 지원자를 꺼리는 이유로 높은 퇴직률을 꼽는다. 여건이 좋은 대기업으로 이직하거나 회사를 관두는 경우가 많다는 하소연이다. 고용정보원이 지난 3일 공개한 자료에 따르면 중소기업 청년취업자 가운데 49.5%가 2년 내에 회사를 그만두는 것으로 나타났다.\n중소 IT업체 관계자는 “기업 입장에서 가장 뼈아픈 게 신입사원이 그만둬서 새로 뽑는 일”이라며 “명문대 나온 스펙 좋은 지원자를 뽑아놔도 1년을 채우지 않고 그만두는 사원이 대부분이라 우리도 눈을 낮춰 사람을 뽑는다”고 말했다."
+  },
+  {
+    "objectID": "posts/03wk-1.html#b.-가짜데이터",
+    "href": "posts/03wk-1.html#b.-가짜데이터",
+    "title": "03wk-1: 로지스틱 – 로지스틱, BCELoss, Adam, 로지스틱의 한계",
+    "section": "B. 가짜데이터",
+    "text": "B. 가짜데이터\n\ndf = pd.read_csv(\"https://raw.githubusercontent.com/guebin/DL2024/main/posts/dnnex.csv\")\ndf\n\n\n\n\n\n\n\n\nx\nprob\ny\n\n\n\n\n0\n-1.000000\n0.000045\n0.0\n\n\n1\n-0.998999\n0.000046\n0.0\n\n\n2\n-0.997999\n0.000047\n0.0\n\n\n3\n-0.996998\n0.000047\n0.0\n\n\n4\n-0.995998\n0.000048\n0.0\n\n\n...\n...\n...\n...\n\n\n1995\n0.995998\n0.505002\n0.0\n\n\n1996\n0.996998\n0.503752\n0.0\n\n\n1997\n0.997999\n0.502501\n0.0\n\n\n1998\n0.998999\n0.501251\n1.0\n\n\n1999\n1.000000\n0.500000\n1.0\n\n\n\n\n2000 rows × 3 columns\n\n\n\n\nx = torch.tensor(df.x).float().reshape(-1,1)\ny = torch.tensor(df.y).float().reshape(-1,1)\nprob = torch.tensor(df.prob).float().reshape(-1,1)\n\n\nplt.plot(x,y,'o',alpha=0.02)\nplt.plot(x[0],y[0],'o',label= r\"observed data = $(x_i,y_i)$\",color=\"C0\")\nplt.plot(x,prob,'--b',label= r\"prob (true, unknown)\")\nplt.legend()"
+  },
+  {
+    "objectID": "posts/03wk-1.html#c.-로지스틱으로-적합",
+    "href": "posts/03wk-1.html#c.-로지스틱으로-적합",
+    "title": "03wk-1: 로지스틱 – 로지스틱, BCELoss, Adam, 로지스틱의 한계",
+    "section": "C. 로지스틱으로 적합",
+    "text": "C. 로지스틱으로 적합\n\nnet = torch.nn.Sequential(\n    torch.nn.Linear(1,1),\n    torch.nn.Sigmoid()\n)\nloss_fn = torch.nn.BCELoss()\noptimizr = torch.optim.Adam(net.parameters())\n#---# \nfor epoc in range(5000):\n    ## 1 \n    yhat = net(x)\n    ## 2 \n    loss = loss_fn(yhat,y)\n    ## 3 \n    loss.backward()\n    ## 4 \n    optimizr.step()\n    optimizr.zero_grad()\n\n\nplt.plot(x,y,'o',alpha=0.02)\nplt.plot(x[0],y[0],'o',label= r\"observed data = $(x_i,y_i)$\",color=\"C0\")\nplt.plot(x,prob,'--b',label= r\"prob (true, unknown)\")\nplt.plot(x,net(x).data, '--', label= r\"prob (estimated) = $(x_i,\\hat{y}_i)$\")\nplt.legend()\n\n\n\n\n\n\n\n\n- Epoch을 10억번으로 설정해도 이건 못 맞출것 같음.\n\n결국 올라가다가 내려가는 언더라잉을 맞춰야 하는데 현재 모형으로는 이걸 표현할 수 없다.\n모형의 표현력이 낮다."
+  },
+  {
+    "objectID": "posts/03wk-1.html#d.-해결책-아이디어-수준만",
+    "href": "posts/03wk-1.html#d.-해결책-아이디어-수준만",
+    "title": "03wk-1: 로지스틱 – 로지스틱, BCELoss, Adam, 로지스틱의 한계",
+    "section": "D. 해결책 (아이디어 수준만)",
+    "text": "D. 해결책 (아이디어 수준만)\n- sigmoid를 넣기 전의 상태가 직선이 아니라 꺽이는 직선이야 한다.\n\na = torch.nn.Sigmoid()\n\n\nfig,ax = plt.subplots(4,2,figsize=(8,8))\nu1 = torch.tensor([-6,-4,-2,0,2,4,6])\nu2 = torch.tensor([6,4,2,0,-2,-4,-6])\nu3 = torch.tensor([-6,-2,2,6,2,-2,-6])\nu4 = torch.tensor([-6,-2,2,6,4,2,0])\nax[0,0].plot(u1,'--o',color='C0',label = r\"$u_1$\")\nax[0,0].legend()\nax[0,1].plot(a(u1),'--o',color='C0',label = r\"$a(u_1)=\\frac{exp(u_1)}{exp(u_1)+1}$\")\nax[0,1].legend()\nax[1,0].plot(u2,'--o',color='C1',label = r\"$u_2$\")\nax[1,0].legend()\nax[1,1].plot(a(u2),'--o',color='C1',label = r\"$a(u_2)=\\frac{exp(u_2)}{exp(u_2)+1}$\")\nax[1,1].legend()\nax[2,0].plot(u3,'--o',color='C2', label = r\"$u_3$\")\nax[2,0].legend()\nax[2,1].plot(a(u3),'--o',color='C2', label = r\"$a(u_3)=\\frac{exp(u_3)}{exp(u_3)+1}$\")\nax[2,1].legend()\nax[3,0].plot(u4,'--o',color='C3', label = r\"$u_4$\")\nax[3,0].legend()\nax[3,1].plot(a(u4),'--o',color='C3', label = r\"$a(u_4)=\\frac{exp(u_4)}{exp(u_4)+1}$\")\nax[3,1].legend()"
   },
   {
     "objectID": "posts/01wk-1.html#a.-최하니",
