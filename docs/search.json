@@ -4,7 +4,7 @@
     "href": "index.html",
     "title": "딥러닝 (2024)",
     "section": "",
-    "text": "질문하는 방법\n\n이메일: guebin@jbnu.ac.kr\n직접방문: 자연과학대학 본관 205호\nZoom: 이메일로 미리 시간을 정할 것\n카카오톡: http://pf.kakao.com/_txeIFG/chat\n\n강의노트\n\n\n\n\n\n\n\n\n\nDate\n\n\nTitle\n\n\nAuthor\n\n\n\n\n\n\nMar 13, 2024\n\n\n03wk-1: 로지스틱 – 로지스틱, BCELoss, Adam, 로지스틱의 한계\n\n\n최규빈 \n\n\n\n\nMar 13, 2024\n\n\n02wk-2: 회귀분석 (3) – Step1,2,4 의 변형\n\n\n최규빈 \n\n\n\n\nMar 11, 2024\n\n\n02wk-1: 회귀분석 (2) – Step1~4 / 벡터미분\n\n\n최규빈 \n\n\n\n\nMar 6, 2024\n\n\n01wk-2: 회귀분석 (1) – 단순회귀의 학습전략, 경사하강법\n\n\n최규빈 \n\n\n\n\nMar 4, 2024\n\n\n01wk-1: 이미지 자료 분석 (겉핥기)\n\n\n최규빈 \n\n\n\n\n\nNo matching items"
+    "text": "질문하는 방법\n\n이메일: guebin@jbnu.ac.kr\n직접방문: 자연과학대학 본관 205호\nZoom: 이메일로 미리 시간을 정할 것\n카카오톡: http://pf.kakao.com/_txeIFG/chat\n\n강의노트\n\n\n\n\n\n\n\n\n\nDate\n\n\nTitle\n\n\nAuthor\n\n\n\n\n\n\nMar 18, 2024\n\n\n03wk-1: 로지스틱 – 로지스틱, BCELoss, Adam, 로지스틱의 한계\n\n\n최규빈 \n\n\n\n\nMar 13, 2024\n\n\n02wk-2: 회귀분석 (3) – Step1,2,4 의 변형\n\n\n최규빈 \n\n\n\n\nMar 11, 2024\n\n\n02wk-1: 회귀분석 (2) – Step1~4 / 벡터미분\n\n\n최규빈 \n\n\n\n\nMar 6, 2024\n\n\n01wk-2: 회귀분석 (1) – 단순회귀의 학습전략, 경사하강법\n\n\n최규빈 \n\n\n\n\nMar 4, 2024\n\n\n01wk-1: 이미지 자료 분석 (겉핥기)\n\n\n최규빈 \n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "posts/02wk-1.html#a.-소설",
@@ -172,7 +172,7 @@
     "href": "posts/03wk-1.html#a.-로지스틱-모형",
     "title": "03wk-1: 로지스틱 – 로지스틱, BCELoss, Adam, 로지스틱의 한계",
     "section": "A. 로지스틱 모형",
-    "text": "A. 로지스틱 모형\n- \\(x\\)가 커질수록 \\(y=1\\)이 잘나오는 모형은 아래와 같이 설계할 수 있음 &lt;— 외우세요!!!\n\n\\(y_i \\sim Ber(\\pi_i),\\quad\\) where \\(\\pi_i = \\frac{\\exp(w_0+w_1x_i)}{1+\\exp(w_0+w_1x_i)}\\)\n\\(\\hat{y}_i= \\frac{\\exp(\\hat{w}_0+\\hat{w}_1x_i)}{1+\\exp(\\hat{w}_0+\\hat{w}_1x_i)}=\\frac{1}{1+\\exp(-\\hat{w}_0-\\hat{w}_1x_i)}\\)\n\\(loss= - \\sum_{i=1}^{n} \\big(y_i\\log(\\hat{y}_i)+(1-y_i)\\log(1-\\hat{y}_i)\\big)\\) &lt;— 외우세요!!\n\n- 회귀모형과 로지스틱 모형의 비교\n\n회귀모형: \\(y_i \\sim {\\cal N}(w_0+w_1x_i, \\sigma^2)\\)1\n로지스틱: \\(y_i \\sim {\\cal B}(\\frac{exp(w_0+w_1x_i}{1+exp(w_0+w_1x_i})\\)\n\n1 원래는 이렇게 썼었지.. \\(y_i = w_0 + w_1x_i + \\epsilon_i \\quad \\epsilon_i \\sim N(0,\\sigma^2)\\)"
+    "text": "A. 로지스틱 모형\n- \\(x\\)가 커질수록 \\(y=1\\)이 잘나오는 모형은 아래와 같이 설계할 수 있음 &lt;— 외우세요!!!\n\n\\(y_i \\sim Ber(\\pi_i),\\quad\\) where \\(\\pi_i = \\frac{\\exp(w_0+w_1x_i)}{1+\\exp(w_0+w_1x_i)}\\)\n\\(\\hat{y}_i= \\frac{\\exp(\\hat{w}_0+\\hat{w}_1x_i)}{1+\\exp(\\hat{w}_0+\\hat{w}_1x_i)}=\\frac{1}{1+\\exp(-\\hat{w}_0-\\hat{w}_1x_i)}\\)\n\\(loss= - \\sum_{i=1}^{n} \\big(y_i\\log(\\hat{y}_i)+(1-y_i)\\log(1-\\hat{y}_i)\\big)\\) &lt;— 외우세요!!\n\n- 회귀모형과 로지스틱 모형의 비교\n\n회귀모형: \\(y_i \\sim {\\cal N}(w_0+w_1x_i, \\sigma^2)\\)1\n로지스틱: \\(y_i \\sim {\\cal B}\\big(\\frac{\\exp(w_0+w_1x_i)}{1+\\exp(w_0+w_1x_i)}\\big)\\)\n\n1 원래는 이렇게 썼었지.. \\(y_i = w_0 + w_1x_i + \\epsilon_i \\quad \\epsilon_i \\sim N(0,\\sigma^2)\\)"
   },
   {
     "objectID": "posts/03wk-1.html#b.-데이터",
