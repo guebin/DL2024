@@ -119,46 +119,116 @@
     "text": "B. 해설강의 및 보충자료\n\nhttps://github.com/guebin/DL2024/blob/main/posts/02wksupp.pdf"
   },
   {
-    "objectID": "posts/03wk-2.html#a.-방법1",
-    "href": "posts/03wk-2.html#a.-방법1",
-    "title": "03wk-2: 깊은신경망 – 로지스틱의 한계 극복",
-    "section": "A. 방법1",
-    "text": "A. 방법1\n\ny = x*0 \ny[x&lt;0] = (9*x+4.5)[x&lt;0]\ny[x&gt;0] = (-4.5*x+4.5)[x&gt;0]\n\n\nplt.plot(y,'--')"
+    "objectID": "posts/01wk-1.html#a.-최하니",
+    "href": "posts/01wk-1.html#a.-최하니",
+    "title": "01wk-1: 이미지 자료 분석 (겉핥기)",
+    "section": "A. 최하니",
+    "text": "A. 최하니\n\nhani1 = PILImage.create(requests.get('https://github.com/guebin/DL2024/blob/main/imgs/01wk-hani1.jpeg?raw=true').content)\nhani1\n\n\n\n\n\n\n\n\n\nlrnr.predict(hani1)\n\n\n\n\n\n\n\n\n('dog', tensor(1), tensor([2.9308e-09, 1.0000e+00]))\n\n\n\nhani2 = PILImage.create(requests.get('https://github.com/guebin/DL2024/blob/main/imgs/01wk-hani2.jpeg?raw=true').content)\nhani2\n\n\n\n\n\n\n\n\n\nlrnr.predict(hani2)\n\n\n\n\n\n\n\n\n('dog', tensor(1), tensor([8.9153e-06, 9.9999e-01]))\n\n\n\nhani3 = PILImage.create(requests.get('https://github.com/guebin/DL2024/blob/main/imgs/01wk-hani3.jpg?raw=true').content)\nhani3\n\n\n\n\n\n\n\n\n\nlrnr.predict(hani3)\n\n\n\n\n\n\n\n\n('dog', tensor(1), tensor([3.9399e-04, 9.9961e-01]))"
   },
   {
-    "objectID": "posts/03wk-2.html#b.-방법2-렐루이용",
-    "href": "posts/03wk-2.html#b.-방법2-렐루이용",
-    "title": "03wk-2: 깊은신경망 – 로지스틱의 한계 극복",
-    "section": "B. 방법2 – 렐루이용",
-    "text": "B. 방법2 – 렐루이용\n\nrelu = torch.nn.ReLU()\n\n\nplt.plot(relu(x),'--',label=r'$relu(x)$')\nplt.plot(relu(-x),'--',label=r'$relu(-x)$')\nplt.legend()\n\n\n\n\n\n\n\n\n\nplt.plot(-4.5*relu(x),'--',label=r'$-4.5\\times relu(x) + 4.5$')\nplt.plot(-9*relu(-x),'--',label=r'$9\\times relu(-x) + 4.5$')\nplt.legend()\n\n\n\n\n\n\n\n\n\nplt.plot(-4.5*relu(x)-9*relu(-x),'--',label=r'$-4.5\\times relu(x) -9 \\times relu(-x)$')\nplt.plot(y,'--',label=r'$y$')\nplt.plot(-4.5*relu(x)-9*relu(-x)+4.5,'--',label=r'$-4.5\\times relu(x) -9 \\times relu(-x)+4.5$')\nplt.legend()\n\n\n\n\n\n\n\n\n- 우리의 목표: 저 초록선에서 시그모이드를 태우면된다. 즉 아래의 느낌임\n\nsig = torch.nn.Sigmoid()\n\n\nfig = plt.figure(figsize=(8, 4))\nspec = fig.add_gridspec(4, 4)\nax1 = fig.add_subplot(spec[:2,0]); ax1.set_title('x')\nax2 = fig.add_subplot(spec[2:,0]); ax2.set_title('-x')\nax3 = fig.add_subplot(spec[:2,1]); ax3.set_title('relu(x)')\nax4 = fig.add_subplot(spec[2:,1]); ax4.set_title('relu(-x)')\nax5 = fig.add_subplot(spec[1:3,2]); ax5.set_title('u')\nax6 = fig.add_subplot(spec[1:3,3]); ax6.set_title('yhat');\n#---#\nax1.plot(x,'--',color='C0')\nax2.plot(-x,'--',color='C1')\nax3.plot(relu(x),'--',color='C0')\nax4.plot(relu(-x),'--',color='C1')\nax5.plot(-4.5*relu(x)-9*relu(-x)+4.5,'--',color='C2')\nax6.plot(sig(-4.5*relu(x)-9*relu(-x)+4.5),'--',color='C2')\nfig.tight_layout()"
+    "objectID": "posts/01wk-1.html#b.-인터넷-고양이",
+    "href": "posts/01wk-1.html#b.-인터넷-고양이",
+    "title": "01wk-1: 이미지 자료 분석 (겉핥기)",
+    "section": "B. 인터넷 고양이",
+    "text": "B. 인터넷 고양이\n\ncat1 = PILImage.create(requests.get('https://github.com/guebin/DL2024/blob/main/imgs/01wk-cat1.png?raw=true').content)\ncat1\n\n\n\n\n\n\n\n\n\nlrnr.predict(cat1)\n\n\n\n\n\n\n\n\n('cat', tensor(0), tensor([1.0000e+00, 2.2026e-11]))\n\n\n\ncat2 = PILImage.create(requests.get('https://github.com/guebin/DL2024/blob/main/imgs/01wk-cat2.jpeg?raw=true').content)\ncat2\n\n\n\n\n\n\n\n\n\nlrnr.predict(cat2)\n\n\n\n\n\n\n\n\n('cat', tensor(0), tensor([1.0000e+00, 9.4345e-07]))"
   },
   {
-    "objectID": "posts/03wk-2.html#c.-방법2의-다른구현",
-    "href": "posts/03wk-2.html#c.-방법2의-다른구현",
-    "title": "03wk-2: 깊은신경망 – 로지스틱의 한계 극복",
-    "section": "C. 방법2의 다른구현",
-    "text": "C. 방법2의 다른구현\n- 렐루이용하여 만드는 방법 정리\n\n벡터 x와 relu함수를 준비한다.\nu = [x,-x] 를 계산한다.\nv = [relu(x), relu(-x)] 를 계산한다.\ny = -4.5 * relu(x) + 9 * relu(-x) +4.5 를 계산한다.\n\n- 1단계\n\nx,relu\n\n(tensor([[-1.0000],\n         [-0.9980],\n         [-0.9960],\n         ...,\n         [ 0.9960],\n         [ 0.9980],\n         [ 1.0000]]),\n ReLU())\n\n\n- 2단계\n\nu = torch.concat([x,-x],axis=1) # u = [x, -x] 같은것\nu\n\ntensor([[-1.0000,  1.0000],\n        [-0.9980,  0.9980],\n        [-0.9960,  0.9960],\n        ...,\n        [ 0.9960, -0.9960],\n        [ 0.9980, -0.9980],\n        [ 1.0000, -1.0000]])\n\n\n- 3단계\n\nv = relu(u) # 각각의 column에 렐루취함\nv\n\ntensor([[0.0000, 1.0000],\n        [0.0000, 0.9980],\n        [0.0000, 0.9960],\n        ...,\n        [0.9960, 0.0000],\n        [0.9980, 0.0000],\n        [1.0000, 0.0000]])\n\n\n- 4단계\n\n-4.5 * v[:,[0]] - 9.0 * v[:,[1]] +4.5\n\ntensor([[-4.5000],\n        [-4.4820],\n        [-4.4640],\n        ...,\n        [ 0.0180],\n        [ 0.0090],\n        [ 0.0000]])\n\n\n\ny\n\ntensor([[-4.5000],\n        [-4.4820],\n        [-4.4640],\n        ...,\n        [ 0.0180],\n        [ 0.0090],\n        [ 0.0000]])\n\n\n- 그런데, 4단계는 아래와 같이 볼 수 있다.\n\n\\({\\boldsymbol v}\\begin{bmatrix} -4.5 \\\\ -9.0 \\end{bmatrix} + 4.5 = \\begin{bmatrix} v_{11} & v_{12} \\\\ v_{21} & v_{22} \\\\ \\dots & \\dots \\\\ v_{n1} & v_{n2} \\\\ \\end{bmatrix}\\begin{bmatrix} -4.5 \\\\ -9.0 \\end{bmatrix} + 4.5 = \\begin{bmatrix} -4.5 v_{11} - 9.0 v_{12} + 4.5 \\\\ -4.5 v_{21} - 9.0 v_{22} + 4.5 \\\\ \\dots \\\\ -4.5 v_{n1} - 9.0 v_{n2} + 4.5 \\\\ \\end{bmatrix}\\)\n\n이를 정리하면\n\n#-4.5 * v[:,[0]] - 9.0 * v[:,[1]] +4.5\nWhat = torch.tensor([[-4.5],[-9.0]]) \nv @ What + 4.5 \n\ntensor([[-4.5000],\n        [-4.4820],\n        [-4.4640],\n        ...,\n        [ 0.0180],\n        [ 0.0090],\n        [ 0.0000]])\n\n\n이것은 다시 아래의 코드와 같다.\n\nl2 = torch.nn.Linear(\n    in_features=2,\n    out_features=1 \n)\n\n\nl2.weight.data = torch.tensor([[-4.5,-9.0]])\nl2.bias.data = torch.tensor([4.5])\n\n\nl2(v)\n\ntensor([[-4.5000],\n        [-4.4820],\n        [-4.4640],\n        ...,\n        [ 0.0180],\n        [ 0.0090],\n        [ 0.0000]], grad_fn=&lt;AddmmBackward0&gt;)\n\n\n- 사실 2단계도 아래와 같이 볼 수 있다.\n\\[\\begin{bmatrix}\nx_1 \\\\\nx_2 \\\\\n\\dots \\\\\nx_n\n\\end{bmatrix}\\begin{bmatrix} 1 & -1 \\end{bmatrix} = \\begin{bmatrix} x_1 & -x_1 \\\\ x_2 & -x_2 \\\\ \\dots & \\dots \\\\ x_n & -x_n \\end{bmatrix}\\]\n\n#u = torch.concat([x,-x],axis=1) # u1 = [x, -x] 같은것\n\n\nl1 = torch.nn.Linear(1,2)\nl1.weight.data = torch.tensor([[1.0],[-1.0]])\nl1.bias.data = torch.tensor([0.0,0.0])\n\n\nl1(x)\n\ntensor([[-1.0000,  1.0000],\n        [-0.9980,  0.9980],\n        [-0.9960,  0.9960],\n        ...,\n        [ 0.9960, -0.9960],\n        [ 0.9980, -0.9980],\n        [ 1.0000, -1.0000]], grad_fn=&lt;AddmmBackward0&gt;)\n\n\n- 따라서 최종적으로는 아래와 같이 구현할 수 있다.\n\nl1 = torch.nn.Linear(1,2)\nl1.weight.data = torch.tensor([[1.0],[-1.0]])\nl1.bias.data = torch.tensor([0.0,0.0])\na1 = torch.nn.ReLU()\nl2 = torch.nn.Linear(2,1)\nl2.weight.data = torch.tensor([[-4.5,-9.0]])\nl2.bias.data = torch.tensor([4.5])\n\n\nl2(a1(l1(x))), y\n\n(tensor([[-4.5000],\n         [-4.4820],\n         [-4.4640],\n         ...,\n         [ 0.0180],\n         [ 0.0090],\n         [ 0.0000]], grad_fn=&lt;AddmmBackward0&gt;),\n tensor([[-4.5000],\n         [-4.4820],\n         [-4.4640],\n         ...,\n         [ 0.0180],\n         [ 0.0090],\n         [ 0.0000]]))\n\n\n- 이것은 다시 아래와 같이 구현할 수 있다.\n\nnet = torch.nn.Sequential(\n    torch.nn.Linear(1,2),\n    torch.nn.ReLU(),\n    torch.nn.Linear(2,1)\n)\nl1,a1,l2 = net\nl1.weight.data = torch.tensor([[1.0],[-1.0]])\nl1.bias.data = torch.tensor([0.0,0.0])\nl2.weight.data = torch.tensor([[-4.5,-9.0]])\nl2.bias.data = torch.tensor([4.5])\n\n\nnet(x),y\n\n(tensor([[-4.5000],\n         [-4.4820],\n         [-4.4640],\n         ...,\n         [ 0.0180],\n         [ 0.0090],\n         [ 0.0000]], grad_fn=&lt;AddmmBackward0&gt;),\n tensor([[-4.5000],\n         [-4.4820],\n         [-4.4640],\n         ...,\n         [ 0.0180],\n         [ 0.0090],\n         [ 0.0000]]))"
+    "objectID": "posts/01wk-1.html#a.-step1-dls데이터-준비",
+    "href": "posts/01wk-1.html#a.-step1-dls데이터-준비",
+    "title": "01wk-1: 이미지 자료 분석 (겉핥기)",
+    "section": "A. Step1: DLS(=데이터) 준비",
+    "text": "A. Step1: DLS(=데이터) 준비\n\ndls = ImageDataLoaders.from_folder(\n    path = './images',\n    train='train',\n    valid_pct = 0.2,\n    item_tfms=Resize(224),\n)\n\n\ndls.show_batch()"
   },
   {
-    "objectID": "posts/03wk-2.html#d.-수식표현",
-    "href": "posts/03wk-2.html#d.-수식표현",
-    "title": "03wk-2: 깊은신경망 – 로지스틱의 한계 극복",
-    "section": "D. 수식표현",
-    "text": "D. 수식표현\n(1) \\({\\bf X}=\\begin{bmatrix} x_1 \\\\ \\dots \\\\ x_n \\end{bmatrix}\\)\n(2) \\(l_1({\\bf X})={\\bf X}{\\bf W}^{(1)}\\overset{bc}{+} {\\boldsymbol b}^{(1)}=\\begin{bmatrix} x_1 & -x_1 \\\\ x_2 & -x_2 \\\\ \\dots & \\dots \\\\ x_n & -x_n\\end{bmatrix}\\)\n\n\\({\\bf W}^{(1)}=\\begin{bmatrix} 1 & -1 \\end{bmatrix}\\)\n\\({\\boldsymbol b}^{(1)}=\\begin{bmatrix} 0 & 0 \\end{bmatrix}\\)\n\n(3) \\((a_1\\circ l_1)({\\bf X})=\\text{relu}\\big({\\bf X}{\\bf W}^{(1)}\\overset{bc}{+}{\\boldsymbol b}^{(1)}\\big)=\\begin{bmatrix} \\text{relu}(x_1) & \\text{relu}(-x_1) \\\\ \\text{relu}(x_2) & \\text{relu}(-x_2) \\\\ \\dots & \\dots \\\\ \\text{relu}(x_n) & \\text{relu}(-x_n)\\end{bmatrix}\\)\n(4) \\((l_2 \\circ a_1\\circ l_1)({\\bf X})=\\text{relu}\\big({\\bf X}{\\bf W}^{(1)}\\overset{bc}{+}{\\boldsymbol b}^{(1)}\\big){\\bf W}^{(2)}\\overset{bc}{+}b^{(2)}\\)\n\\(\\quad=\\begin{bmatrix} -4.5\\times\\text{relu}(x_1) -9.0 \\times \\text{relu}(-x_1) +4.5 \\\\ -4.5\\times\\text{relu}(x_2) -9.0 \\times\\text{relu}(-x_2) + 4.5 \\\\ \\dots \\\\ -4.5\\times \\text{relu}(x_n) -9.0 \\times\\text{relu}(-x_n)+4.5 \\end{bmatrix}\\)\n\n\\({\\bf W}^{(2)}=\\begin{bmatrix} -4.5 \\\\ -9 \\end{bmatrix}\\)\n\\(b^{(2)}=4.5\\)\n\n(5) \\(net({\\bf X})=(a_2 \\circ l_2 \\circ a_1\\circ l_1)({\\bf X})=\\text{sig}\\Big(\\text{relu}\\big({\\bf X}{\\bf W}^{(1)}\\overset{bc}{+}{\\boldsymbol b}^{(1)}\\big){\\bf W}^{(2)}\\overset{bc}{+}b^{(2)}\\Big)\\)\n\\(\\quad =\\begin{bmatrix} \\text{sig}\\Big(-4.5\\times\\text{relu}(x_1) -9.0 \\times \\text{relu}(-x_1) +4.5\\Big) \\\\ \\text{sig}\\Big(-4.5\\times\\text{relu}(x_2) -9.0 \\times\\text{relu}(-x_2) + 4.5 \\Big)\\\\ \\dots \\\\ \\text{sig}\\Big(-4.5\\times \\text{relu}(x_n) -9.0 \\times\\text{relu}(-x_n)+4.5 \\Big)\\end{bmatrix}\\)"
+    "objectID": "posts/01wk-1.html#b.-step2-러너생성",
+    "href": "posts/01wk-1.html#b.-step2-러너생성",
+    "title": "01wk-1: 이미지 자료 분석 (겉핥기)",
+    "section": "B. Step2: 러너생성",
+    "text": "B. Step2: 러너생성\n\nlrnr = vision_learner(\n    dls = dls,\n    arch = resnet34,\n    metrics = accuracy\n)"
   },
   {
-    "objectID": "posts/03wk-2.html#a.-데이터",
-    "href": "posts/03wk-2.html#a.-데이터",
-    "title": "03wk-2: 깊은신경망 – 로지스틱의 한계 극복",
-    "section": "A. 데이터",
-    "text": "A. 데이터\n\ndf = pd.read_csv(\"https://raw.githubusercontent.com/guebin/DL2024/main/posts/dnnex.csv\")\ndf\n\n\n\n\n\n\n\n\nx\nprob\ny\n\n\n\n\n0\n-1.000000\n0.000045\n0.0\n\n\n1\n-0.998999\n0.000046\n0.0\n\n\n2\n-0.997999\n0.000047\n0.0\n\n\n3\n-0.996998\n0.000047\n0.0\n\n\n4\n-0.995998\n0.000048\n0.0\n\n\n...\n...\n...\n...\n\n\n1995\n0.995998\n0.505002\n0.0\n\n\n1996\n0.996998\n0.503752\n0.0\n\n\n1997\n0.997999\n0.502501\n0.0\n\n\n1998\n0.998999\n0.501251\n1.0\n\n\n1999\n1.000000\n0.500000\n1.0\n\n\n\n\n2000 rows × 3 columns\n\n\n\n\nx = torch.tensor(df.x).float().reshape(-1,1)\ny = torch.tensor(df.y).float().reshape(-1,1)\nprob = torch.tensor(df.prob).float().reshape(-1,1)\n\n\nplt.plot(x,y,'o',alpha=0.02)\nplt.plot(x[0],y[0],'o',label= r\"observed data = $(x_i,y_i)$\",color=\"C0\")\nplt.plot(x,prob,'--b',label= r\"prob (true, unknown)\")\nplt.legend()"
+    "objectID": "posts/01wk-1.html#c.-step3-학습",
+    "href": "posts/01wk-1.html#c.-step3-학습",
+    "title": "01wk-1: 이미지 자료 분석 (겉핥기)",
+    "section": "C. Step3: 학습",
+    "text": "C. Step3: 학습\n\nlrnr.fine_tune(7)\n\n\n\n\n\n\n\n\nepoch\ntrain_loss\nvalid_loss\naccuracy\ntime\n\n\n\n\n0\n1.346890\n0.969989\n0.657534\n00:11\n\n\n\n\n\n\n\n\n\n\n\n\nepoch\ntrain_loss\nvalid_loss\naccuracy\ntime\n\n\n\n\n0\n0.734809\n0.817061\n0.698630\n00:10\n\n\n1\n0.581782\n0.937060\n0.739726\n00:11\n\n\n2\n0.426661\n0.901986\n0.835616\n00:12\n\n\n3\n0.332050\n0.899157\n0.835616\n00:10\n\n\n4\n0.263004\n0.844802\n0.849315\n00:10\n\n\n5\n0.220254\n0.762331\n0.849315\n00:11\n\n\n6\n0.185242\n0.716601\n0.849315\n00:11"
   },
   {
-    "objectID": "posts/03wk-2.html#b.-step-14",
-    "href": "posts/03wk-2.html#b.-step-14",
-    "title": "03wk-2: 깊은신경망 – 로지스틱의 한계 극복",
-    "section": "B. Step 1~4",
-    "text": "B. Step 1~4\n- Step1에 대한 생각: 네트워크를 어떻게 만들까? = 아키텍처를 어떻게 만들까? = 모델링\n\\[\\underset{(n,1)}{\\bf X} \\overset{l_1}{\\to} \\underset{(n,2)}{\\boldsymbol u^{(1)}} \\overset{a_1}{\\to} \\underset{(n,2)}{\\boldsymbol v^{(1)}} \\overset{l_1}{\\to} \\underset{(n,1)}{\\boldsymbol u^{(2)}} \\overset{a_2}{\\to} \\underset{(n,1)}{\\boldsymbol v^{(2)}}=\\underset{(n,1)}{\\hat{\\boldsymbol y}}\\]\n- Step2,3,4 는 너무 뻔해서..\n\ntorch.manual_seed(43052)\nnet = torch.nn.Sequential(\n    torch.nn.Linear(1,2),\n    torch.nn.ReLU(),\n    torch.nn.Linear(2,1),\n    torch.nn.Sigmoid()\n)\nloss_fn = torch.nn.BCELoss()\noptimizr = torch.optim.Adam(net.parameters())\n#---#\nfor epoc in range(3000):\n    ## \n    yhat = net(x)\n    ## \n    loss = loss_fn(yhat,y)\n    ## \n    loss.backward()\n    ## \n    optimizr.step()\n    optimizr.zero_grad()\n\n\nplt.plot(x,y,'o',alpha=0.02)\nplt.plot(x[0],y[0],'o',label= r\"observed data = $(x_i,y_i)$\",color=\"C0\")\nplt.plot(x,prob,'--b',label= r\"prob (true, unknown)\")\nplt.plot(x,net(x).data,'--',label=\"first curve\")\nplt.legend()\n\n\n\n\n\n\n\n\n\nfor epoc in range(3000):\n    ## \n    yhat = net(x)\n    ## \n    loss = loss_fn(yhat,y)\n    ## \n    loss.backward()\n    ## \n    optimizr.step()\n    optimizr.zero_grad()\n\n\nplt.plot(x,y,'o',alpha=0.02)\nplt.plot(x[0],y[0],'o',label= r\"observed data = $(x_i,y_i)$\",color=\"C0\")\nplt.plot(x,prob,'--b',label= r\"prob (true, unknown)\")\nplt.plot(x,net(x).data,'--',label=\"first curve\")\nplt.legend()"
+    "objectID": "posts/01wk-1.html#d.-step4-예측",
+    "href": "posts/01wk-1.html#d.-step4-예측",
+    "title": "01wk-1: 이미지 자료 분석 (겉핥기)",
+    "section": "D. Step4: 예측",
+    "text": "D. Step4: 예측\n\nlrnr.show_results()\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\ninter = Interpretation.from_learner(lrnr)\ninter.plot_top_losses(16)"
+  },
+  {
+    "objectID": "posts/01wk-1.html#크롤링을-활용한-이미지-자료-분석",
+    "href": "posts/01wk-1.html#크롤링을-활용한-이미지-자료-분석",
+    "title": "01wk-1: 이미지 자료 분석 (겉핥기)",
+    "section": "#. 크롤링을 활용한 이미지 자료 분석",
+    "text": "#. 크롤링을 활용한 이미지 자료 분석\n(1) 두 가지 키워드로 크롤링을 수행하여 이미지자료를 모아라. (키워드는 각자 마음에 드는 것으로 설정할 것, 단 (iu,hynn)는 제외)\n(2) ImageDataLoaders.from_folder() 를 이용하여 dls를 만들고 dls.show_batch()를 이용하여 만들어진 이미지를 확인하라.\n(3) vision_learner()를 이용하여 lrnr를 만들고 lrnr.fine_tune()을 이용하여 학습하라. 이때 모형의 arch는 resnet34를 사용하라.\n(4) requests.get()을 이용하여 (1)의 키워드에 해당하는 새로운 이미지를 한장씩 다운받고 (3)에서 학습한 lrnr를 이용하여 예측하라.\n\n제출은 ipynb파일로 할 것. 혹은 스크린샷을 제출해도 괜찮음."
+  },
+  {
+    "objectID": "posts/02wk-2.html#a.-data",
+    "href": "posts/02wk-2.html#a.-data",
+    "title": "02wk-2: 회귀분석 (3) – Step1,2,4 의 변형",
+    "section": "A. Data",
+    "text": "A. Data\n\ntemp = [-2.4821, -2.3621, -1.9973, -1.6239, -1.4792, -1.4635, -1.4509, -1.4435,\n        -1.3722, -1.3079, -1.1904, -1.1092, -1.1054, -1.0875, -0.9469, -0.9319,\n        -0.8643, -0.7858, -0.7549, -0.7421, -0.6948, -0.6103, -0.5830, -0.5621,\n        -0.5506, -0.5058, -0.4806, -0.4738, -0.4710, -0.4676, -0.3874, -0.3719,\n        -0.3688, -0.3159, -0.2775, -0.2772, -0.2734, -0.2721, -0.2668, -0.2155,\n        -0.2000, -0.1816, -0.1708, -0.1565, -0.1448, -0.1361, -0.1057, -0.0603,\n        -0.0559, -0.0214,  0.0655,  0.0684,  0.1195,  0.1420,  0.1521,  0.1568,\n         0.2646,  0.2656,  0.3157,  0.3220,  0.3461,  0.3984,  0.4190,  0.5443,\n         0.5579,  0.5913,  0.6148,  0.6469,  0.6469,  0.6523,  0.6674,  0.7059,\n         0.7141,  0.7822,  0.8154,  0.8668,  0.9291,  0.9804,  0.9853,  0.9941,\n         1.0376,  1.0393,  1.0697,  1.1024,  1.1126,  1.1532,  1.2289,  1.3403,\n         1.3494,  1.4279,  1.4994,  1.5031,  1.5437,  1.6789,  2.0832,  2.2444,\n         2.3935,  2.6056,  2.6057,  2.6632]\nsales= [-8.5420, -6.5767, -5.9496, -4.4794, -4.2516, -3.1326, -4.0239, -4.1862,\n        -3.3403, -2.2027, -2.0262, -2.5619, -1.3353, -2.0466, -0.4664, -1.3513,\n        -1.6472, -0.1089, -0.3071, -0.6299, -0.0438,  0.4163,  0.4166, -0.0943,\n         0.2662,  0.4591,  0.8905,  0.8998,  0.6314,  1.3845,  0.8085,  1.2594,\n         1.1211,  1.9232,  1.0619,  1.3552,  2.1161,  1.1437,  1.6245,  1.7639,\n         1.6022,  1.7465,  0.9830,  1.7824,  2.1116,  2.8621,  2.1165,  1.5226,\n         2.5572,  2.8361,  3.3956,  2.0679,  2.8140,  3.4852,  3.6059,  2.5966,\n         2.8854,  3.9173,  3.6527,  4.1029,  4.3125,  3.4026,  3.2180,  4.5686,\n         4.3772,  4.3075,  4.4895,  4.4827,  5.3170,  5.4987,  5.4632,  6.0328,\n         5.2842,  5.0539,  5.4538,  6.0337,  5.7250,  5.7587,  6.2020,  6.5992,\n         6.4621,  6.5140,  6.6846,  7.3497,  8.0909,  7.0794,  6.8667,  7.4229,\n         7.2544,  7.1967,  9.5006,  9.0339,  7.4887,  9.0759, 11.0946, 10.3260,\n        12.2665, 13.0983, 12.5468, 13.8340]\nx = torch.tensor(temp).reshape(-1,1)\nones = torch.ones(100).reshape(-1,1)\nX = torch.concat([ones,x],axis=1)\ny = torch.tensor(sales).reshape(-1,1)"
+  },
+  {
+    "objectID": "posts/02wk-2.html#b.-파이토치를-이용한-학습",
+    "href": "posts/02wk-2.html#b.-파이토치를-이용한-학습",
+    "title": "02wk-2: 회귀분석 (3) – Step1,2,4 의 변형",
+    "section": "B. 파이토치를 이용한 학습",
+    "text": "B. 파이토치를 이용한 학습\n- 외우세여\n\nWhat = torch.tensor([[-5.0],[10.0]],requires_grad = True)\nfor epoc in range(30):\n    # step1: yhat \n    yhat = X@What \n    # step2: loss\n    loss = torch.sum((y-yhat)**2)\n    # step3: 미분\n    loss.backward()\n    # step4: update\n    What.data = What.data - 0.001 * What.grad\n    What.grad = None\n\n- 결과 시각화\n\nplt.plot(x,y,'o')\nplt.plot(x,X@What.data,'--')\nplt.title(f'What={What.data.reshape(-1)}');"
+  },
+  {
+    "objectID": "posts/02wk-2.html#c.-step2의-수정",
+    "href": "posts/02wk-2.html#c.-step2의-수정",
+    "title": "02wk-2: 회귀분석 (3) – Step1,2,4 의 변형",
+    "section": "C. Step2의 수정",
+    "text": "C. Step2의 수정\n- 수정된 코드\n\nWhat = torch.tensor([[-5.0],[10.0]],requires_grad = True)\nloss_fn = torch.nn.MSELoss()\nfor epoc in range(30):\n    # step1: yhat \n    yhat = X@What \n    # step2: loss\n    #loss = torch.sum((y-yhat)**2)/100\n    #loss = torch.mean((y-yhat)**2) \n    loss = loss_fn(yhat,y) # 여기서는 큰 상관없지만 습관적으로 yhat을 먼저넣는 연습을 하자!!\n    # step3: 미분\n    loss.backward()\n    # step4: update\n    What.data = What.data - 0.1 * What.grad\n    What.grad = None\n\n- 결과확인\n\nplt.plot(x,y,'o')\nplt.plot(x,X@What.data,'--')\nplt.title(f'What={What.data.reshape(-1)}');"
+  },
+  {
+    "objectID": "posts/02wk-2.html#d.-step1의-수정-net의-이용",
+    "href": "posts/02wk-2.html#d.-step1의-수정-net의-이용",
+    "title": "02wk-2: 회귀분석 (3) – Step1,2,4 의 변형",
+    "section": "D. Step1의 수정 – net의 이용",
+    "text": "D. Step1의 수정 – net의 이용\n- net 오브젝트란?\n원래 yhat을 이런식으로 구했는데 ~\n\nWhat = torch.tensor([[-5.0],[10.0]],requires_grad = True)\n(X@What.data)[:5]\n\ntensor([[-29.8210],\n        [-28.6210],\n        [-24.9730],\n        [-21.2390],\n        [-19.7920]])\n\n\n이런식으로도 구할수 있음!\n\nnet = torch.nn.Linear(\n    in_features=2,\n    out_features=1,\n    bias=False\n)\n\n\nnet.weight.data = torch.tensor([[-5.0,  10.0]])\nnet.weight\n\nParameter containing:\ntensor([[-5., 10.]], requires_grad=True)\n\n\n\nnet(X)[:5]\n\ntensor([[-29.8210],\n        [-28.6210],\n        [-24.9730],\n        [-21.2390],\n        [-19.7920]], grad_fn=&lt;SliceBackward0&gt;)\n\n\n- 학습\n\n# step1을 위한 사전준비\nnet = torch.nn.Linear(\n    in_features=2,\n    out_features=1,\n    bias=False\n)\nnet.weight.data = torch.tensor([[-5.0,  10.0]])\n# step2를 위한 사전준비\nloss_fn = torch.nn.MSELoss()\nfor epoc in range(30):\n    # step1: yhat \n    yhat = net(X)\n    # step2: loss\n    loss = loss_fn(yhat,y)\n    # step3: 미분\n    loss.backward()\n    # step4: update\n    net.weight.data = net.weight.data - 0.1 * net.weight.grad\n    net.weight.grad = None\n\n- 결과확인\n\nplt.plot(x,y,'o')\nplt.plot(x,net(X).data,'--')\nplt.title(f'net.weight={net.weight.data.reshape(-1)}');"
+  },
+  {
+    "objectID": "posts/02wk-2.html#e.-step4의-수정-optimizer의-이용",
+    "href": "posts/02wk-2.html#e.-step4의-수정-optimizer의-이용",
+    "title": "02wk-2: 회귀분석 (3) – Step1,2,4 의 변형",
+    "section": "E. Step4의 수정 – optimizer의 이용",
+    "text": "E. Step4의 수정 – optimizer의 이용\n기존코드의 에폭별분해\n- 준비과정\n\n# step1을 위한 사전준비\nnet = torch.nn.Linear(\n    in_features=2,\n    out_features=1,\n    bias=False\n)\nnet.weight.data = torch.tensor([[-5.0,  10.0]])\n# step2를 위한 사전준비\nloss_fn = torch.nn.MSELoss()\n\n- 에폭별분해\n(미분전) – step1~2 완료\n\nyhat = net(X)\nloss = loss_fn(yhat,y)\n\n\nprint(f'파라메터 = {net.weight.data}')\nprint(f'미분값 = {net.weight.grad}')\n\n파라메터 = tensor([[-5., 10.]])\n미분값 = None\n\n\n(미분후, 업데이트 진행전) – step3 완료\n\nloss.backward()\n\n\nprint(f'파라메터 = {net.weight.data}')\nprint(f'미분값 = {net.weight.grad}')\n\n파라메터 = tensor([[-5., 10.]])\n미분값 = tensor([[-13.4225,  11.8892]])\n\n\n(업데이트 진행후) – step4 의 첫째줄 완료\n\nnet.weight.data = net.weight.data - 0.1 * net.weight.grad\n\n\nprint(f'파라메터 = {net.weight.data}')\nprint(f'미분값 = {net.weight.grad}')\n\n파라메터 = tensor([[-3.6578,  8.8111]])\n미분값 = tensor([[-13.4225,  11.8892]])\n\n\n(업데이트 완료 후 초기화까지 끝냄) – step4 의 두번째줄 완료\n\nnet.weight.grad = None\n\n\nprint(f'파라메터 = {net.weight.data}')\nprint(f'미분값 = {net.weight.grad}')\n\n파라메터 = tensor([[-3.6578,  8.8111]])\n미분값 = None\n\n\n새로운코드의 에폭별분해\n- 준비과정 – 옵티마이저라는 오브젝트를 셋팅한다!\n\n# step1을 위한 사전준비\nnet = torch.nn.Linear(\n    in_features=2,\n    out_features=1,\n    bias=False\n)\nnet.weight.data = torch.tensor([[-5.0,  10.0]])\n# step2를 위한 사전준비\nloss_fn = torch.nn.MSELoss()\n# step3을 위한 사전준비 \noptimizr = torch.optim.SGD(params=net.parameters(),lr=0.1)\n\n- 에폭별분해\n(미분전) – step1~2 완료\n\nyhat = net(X)\nloss = loss_fn(yhat,y)\n\n\nprint(f'파라메터 = {net.weight.data}')\nprint(f'미분값 = {net.weight.grad}')\n\n파라메터 = tensor([[-5., 10.]])\n미분값 = None\n\n\n(미분후, 업데이트 진행전) – step3 완료\n\nloss.backward()\n\n\nprint(f'파라메터 = {net.weight.data}')\nprint(f'미분값 = {net.weight.grad}')\n\n파라메터 = tensor([[-5., 10.]])\n미분값 = tensor([[-13.4225,  11.8892]])\n\n\n(업데이트 진행후) – step4 의 첫째줄 완료\n\n#net.weight.data = net.weight.data - 0.1 * net.weight.grad\noptimizr.step()\n\n\nprint(f'파라메터 = {net.weight.data}')\nprint(f'미분값 = {net.weight.grad}')\n\n파라메터 = tensor([[-3.6578,  8.8111]])\n미분값 = tensor([[-13.4225,  11.8892]])\n\n\n(업데이트 완료 후 초기화까지 끝냄) – step4 의 두번째줄 완료\n\n#net.weight.grad = None\noptimizr.zero_grad()\n\n\nprint(f'파라메터 = {net.weight.data}')\nprint(f'미분값 = {net.weight.grad}')\n\n파라메터 = tensor([[-3.6578,  8.8111]])\n미분값 = None\n\n\n최종코드\n- 학습\n\n# step1을 위한 사전준비\nnet = torch.nn.Linear(\n    in_features=2,\n    out_features=1,\n    bias=False\n)\nnet.weight.data = torch.tensor([[-5.0,  10.0]])\n# step2를 위한 사전준비\nloss_fn = torch.nn.MSELoss()\n# step4를 위한 사전준비 \noptimizr = torch.optim.SGD(net.parameters(),lr=0.1)\nfor epoc in range(30):\n    # step1: yhat \n    yhat = net(X)\n    # step2: loss\n    loss = loss_fn(yhat,y)\n    # step3: 미분\n    loss.backward()\n    # step4: update\n    optimizr.step()\n    optimizr.zero_grad()\n\n- 결과확인\n\nplt.plot(x,y,'o')\nplt.plot(x,yhat.data,'--')\nplt.title(f'net.weight={net.weight.data.reshape(-1)}');"
+  },
+  {
+    "objectID": "posts/01wk-2.html#a.-모형소개",
+    "href": "posts/01wk-2.html#a.-모형소개",
+    "title": "01wk-2: 회귀분석 (1) – 단순회귀의 학습전략, 경사하강법",
+    "section": "A. 모형소개",
+    "text": "A. 모형소개\n- model: \\(y_i= w_0+w_1 x_i +\\epsilon_i = 2.5 + 4x_i +\\epsilon_i, \\quad i=1,2,\\dots,n\\)\n- model: \\({\\bf y}={\\bf X}{\\bf W} +\\boldsymbol{\\epsilon}\\)\n\n\\({\\bf y}=\\begin{bmatrix} y_1 \\\\ y_2 \\\\ \\dots \\\\ y_n\\end{bmatrix}, \\quad {\\bf X}=\\begin{bmatrix} 1 & x_1 \\\\ 1 & x_2 \\\\ \\dots \\\\ 1 & x_n\\end{bmatrix}, \\quad {\\bf W}=\\begin{bmatrix} 2.5 \\\\ 4 \\end{bmatrix}, \\quad \\boldsymbol{\\epsilon}= \\begin{bmatrix} \\epsilon_1 \\\\ \\dots \\\\ \\epsilon_n\\end{bmatrix}\\)"
+  },
+  {
+    "objectID": "posts/01wk-2.html#b.-회귀모형에서-데이터-생성",
+    "href": "posts/01wk-2.html#b.-회귀모형에서-데이터-생성",
+    "title": "01wk-2: 회귀분석 (1) – 단순회귀의 학습전략, 경사하강법",
+    "section": "B. 회귀모형에서 데이터 생성",
+    "text": "B. 회귀모형에서 데이터 생성\n\ntorch.manual_seed(43052)\nones= torch.ones(100).reshape(-1,1)\nx,_ = torch.randn(100).sort()\nx = x.reshape(-1,1)\nX = torch.concat([ones,x],axis=-1)\nW = torch.tensor([[2.5],[4]])\nϵ = torch.randn(100).reshape(-1,1)*0.5\ny = X@W + ϵ\n\n\nplt.plot(x,y,'o')\nplt.plot(x,2.5+4*x,'--')"
+  },
+  {
+    "objectID": "posts/01wk-2.html#a.-손실함수",
+    "href": "posts/01wk-2.html#a.-손실함수",
+    "title": "01wk-2: 회귀분석 (1) – 단순회귀의 학습전략, 경사하강법",
+    "section": "A. 손실함수",
+    "text": "A. 손실함수\n- ’적당한 정도’를 판단하기 위한 장치: loss function 도입!\n\\(loss=\\sum_{i=1}^{n}(y_i-\\hat{y}_i)^2=\\sum_{i=1}^{n}(y_i-(\\hat{w}_0+\\hat{w}_1x_i))^2\\)\n\\(=({\\bf y}-{\\bf\\hat{y}})^\\top({\\bf y}-{\\bf\\hat{y}})=({\\bf y}-{\\bf X}{\\bf \\hat{W}})^\\top({\\bf y}-{\\bf X}{\\bf \\hat{W}})\\)\n- loss 함수의 특징\n\n\\(y_i \\approx \\hat{y}_i\\) 일수록 loss값이 작다.\n\\(y_i \\approx \\hat{y}_i\\) 이 되도록 \\((\\hat{w}_0,\\hat{w}_1)\\)을 잘 찍으면 loss값이 작다.\n(중요) 주황색 점선이 ‘적당할 수록’ loss값이 작다.\n\n\nloss = torch.sum((y-yhat)**2)\nloss\n\ntensor(8587.6875, grad_fn=&lt;SumBackward0&gt;)\n\n\n- 우리의 목표: 이 loss(=8587.6875)을 더 줄이자.\n\n궁극적으로는 아예 모든 조합 \\((\\hat{w}_0,\\hat{w}_1)\\)에 대하여 가장 작은 loss를 찾으면 좋겠다. (단계2에서 할일은 아님)\n\n- 문제의 치환: 생각해보니까 우리의 문제는 아래와 같이 수학적으로 단순화 되었다.\n\n적당해보이는 주황색 선을 찾자 \\(\\to\\) \\(loss(w_0,w_1)\\)를 최소로하는 \\((w_0,w_1)\\)의 값을 찾자.\n\n- 수정된 목표: \\(loss(w_0,w_1)\\)를 최소로 하는 \\((w_0,w_1)\\)을 구하라.\n\n단순한 수학문제가 되었다. 이것은 마치 \\(f(x,y)\\)를 최소화하는 \\((x,y)\\)를 찾으라는 것임.\n함수의 최대값 혹은 최소값을 컴퓨터를 이용하여 찾는것을 “최적화”라고 하며 이는 산공교수님들이 가장 잘하는 분야임. (산공교수님들에게 부탁하면 잘해줌, 산공교수님들은 보통 최적화해서 어디에 쓸지보다 최적화 자체에 더 관심을 가지고 연구하심)\n최적화를 하는 방법? 경사하강법"
+  },
+  {
+    "objectID": "posts/01wk-2.html#b.-경사하강법",
+    "href": "posts/01wk-2.html#b.-경사하강법",
+    "title": "01wk-2: 회귀분석 (1) – 단순회귀의 학습전략, 경사하강법",
+    "section": "B. 경사하강법",
+    "text": "B. 경사하강법\n- 경사하강법 아이디어 (1차원)\n\n임의의 점을 찍는다.\n그 점에서 순간기울기를 구한다. (접선) &lt;– 미분\n순간기울기(=미분계수)의 부호를 살펴보고 부호와 반대방향으로 움직인다.\n\n\n팁: 기울기의 절대값 크기와 비례하여 보폭(=움직이는 정도)을 조절한다. \\(\\to\\) \\(\\alpha\\)를 도입\n\n\n최종수식: \\(w \\leftarrow w - \\alpha \\times \\frac{\\partial}{\\partial w}loss(w)\\)\n\n- 경사하강법 아이디어 (2차원)\n\n임의의 점을 찍는다.\n그 점에서 순간기울기를 구한다. (접평면) &lt;– 편미분\n순간기울기(=미분계수)의 부호를 살펴보고 부호와 반대방향으로 각각 움직인다.\n\n\n팁: 여기서도 기울기의 절대값 크기와 비례하여 보폭(=움직이는 정도)을 각각 조절한다. \\(\\to\\) \\(\\alpha\\)를 도입.\n\n- 경사하강법 = loss를 줄이도록 \\({\\bf W}\\)를 개선하는 방법\n\n업데이트 공식: 수정값 = 원래값 - \\(\\alpha\\) \\(\\times\\) 기울어진크기(=미분계수)\n여기에서 \\(\\alpha\\)는 전체적인 보폭의 크기를 결정한다. 즉 \\(\\alpha\\)값이 클수록 한번의 update에 움직이는 양이 크다."
   },
   {
     "objectID": "posts/03wk-1.html#a.-로지스틱-모형",
@@ -294,116 +364,46 @@
     "text": "D. 해결책 (아이디어 수준만)\n- sigmoid를 넣기 전의 상태가 직선이 아니라 꺽이는 직선이야 한다.\n\na = torch.nn.Sigmoid()\n\n\nfig,ax = plt.subplots(4,2,figsize=(8,8))\nu1 = torch.tensor([-6,-4,-2,0,2,4,6])\nu2 = torch.tensor([6,4,2,0,-2,-4,-6])\nu3 = torch.tensor([-6,-2,2,6,2,-2,-6])\nu4 = torch.tensor([-6,-2,2,6,4,2,0])\nax[0,0].plot(u1,'--o',color='C0',label = r\"$u_1$\")\nax[0,0].legend()\nax[0,1].plot(a(u1),'--o',color='C0',label = r\"$a(u_1)=\\frac{exp(u_1)}{exp(u_1)+1}$\")\nax[0,1].legend()\nax[1,0].plot(u2,'--o',color='C1',label = r\"$u_2$\")\nax[1,0].legend()\nax[1,1].plot(a(u2),'--o',color='C1',label = r\"$a(u_2)=\\frac{exp(u_2)}{exp(u_2)+1}$\")\nax[1,1].legend()\nax[2,0].plot(u3,'--o',color='C2', label = r\"$u_3$\")\nax[2,0].legend()\nax[2,1].plot(a(u3),'--o',color='C2', label = r\"$a(u_3)=\\frac{exp(u_3)}{exp(u_3)+1}$\")\nax[2,1].legend()\nax[3,0].plot(u4,'--o',color='C3', label = r\"$u_4$\")\nax[3,0].legend()\nax[3,1].plot(a(u4),'--o',color='C3', label = r\"$a(u_4)=\\frac{exp(u_4)}{exp(u_4)+1}$\")\nax[3,1].legend()"
   },
   {
-    "objectID": "posts/01wk-2.html#a.-모형소개",
-    "href": "posts/01wk-2.html#a.-모형소개",
-    "title": "01wk-2: 회귀분석 (1) – 단순회귀의 학습전략, 경사하강법",
-    "section": "A. 모형소개",
-    "text": "A. 모형소개\n- model: \\(y_i= w_0+w_1 x_i +\\epsilon_i = 2.5 + 4x_i +\\epsilon_i, \\quad i=1,2,\\dots,n\\)\n- model: \\({\\bf y}={\\bf X}{\\bf W} +\\boldsymbol{\\epsilon}\\)\n\n\\({\\bf y}=\\begin{bmatrix} y_1 \\\\ y_2 \\\\ \\dots \\\\ y_n\\end{bmatrix}, \\quad {\\bf X}=\\begin{bmatrix} 1 & x_1 \\\\ 1 & x_2 \\\\ \\dots \\\\ 1 & x_n\\end{bmatrix}, \\quad {\\bf W}=\\begin{bmatrix} 2.5 \\\\ 4 \\end{bmatrix}, \\quad \\boldsymbol{\\epsilon}= \\begin{bmatrix} \\epsilon_1 \\\\ \\dots \\\\ \\epsilon_n\\end{bmatrix}\\)"
+    "objectID": "posts/03wk-2.html#a.-방법1",
+    "href": "posts/03wk-2.html#a.-방법1",
+    "title": "03wk-2: 깊은신경망 – 로지스틱의 한계 극복",
+    "section": "A. 방법1",
+    "text": "A. 방법1\n\ny = x*0 \ny[x&lt;0] = (9*x+4.5)[x&lt;0]\ny[x&gt;0] = (-4.5*x+4.5)[x&gt;0]\n\n\nplt.plot(y,'--')"
   },
   {
-    "objectID": "posts/01wk-2.html#b.-회귀모형에서-데이터-생성",
-    "href": "posts/01wk-2.html#b.-회귀모형에서-데이터-생성",
-    "title": "01wk-2: 회귀분석 (1) – 단순회귀의 학습전략, 경사하강법",
-    "section": "B. 회귀모형에서 데이터 생성",
-    "text": "B. 회귀모형에서 데이터 생성\n\ntorch.manual_seed(43052)\nones= torch.ones(100).reshape(-1,1)\nx,_ = torch.randn(100).sort()\nx = x.reshape(-1,1)\nX = torch.concat([ones,x],axis=-1)\nW = torch.tensor([[2.5],[4]])\nϵ = torch.randn(100).reshape(-1,1)*0.5\ny = X@W + ϵ\n\n\nplt.plot(x,y,'o')\nplt.plot(x,2.5+4*x,'--')"
+    "objectID": "posts/03wk-2.html#b.-방법2-렐루이용",
+    "href": "posts/03wk-2.html#b.-방법2-렐루이용",
+    "title": "03wk-2: 깊은신경망 – 로지스틱의 한계 극복",
+    "section": "B. 방법2 – 렐루이용",
+    "text": "B. 방법2 – 렐루이용\n\nrelu = torch.nn.ReLU()\n\n\nplt.plot(relu(x),'--',label=r'$relu(x)$')\nplt.plot(relu(-x),'--',label=r'$relu(-x)$')\nplt.legend()\n\n\n\n\n\n\n\n\n\nplt.plot(-4.5*relu(x),'--',label=r'$-4.5\\times relu(x) + 4.5$')\nplt.plot(-9*relu(-x),'--',label=r'$9\\times relu(-x) + 4.5$')\nplt.legend()\n\n\n\n\n\n\n\n\n\nplt.plot(-4.5*relu(x)-9*relu(-x),'--',label=r'$-4.5\\times relu(x) -9 \\times relu(-x)$')\nplt.plot(y,'--',label=r'$y$')\nplt.plot(-4.5*relu(x)-9*relu(-x)+4.5,'--',label=r'$-4.5\\times relu(x) -9 \\times relu(-x)+4.5$')\nplt.legend()\n\n\n\n\n\n\n\n\n- 우리의 목표: 저 초록선에서 시그모이드를 태우면된다. 즉 아래의 느낌임\n\nsig = torch.nn.Sigmoid()\n\n\nfig = plt.figure(figsize=(8, 4))\nspec = fig.add_gridspec(4, 4)\nax1 = fig.add_subplot(spec[:2,0]); ax1.set_title('x')\nax2 = fig.add_subplot(spec[2:,0]); ax2.set_title('-x')\nax3 = fig.add_subplot(spec[:2,1]); ax3.set_title('relu(x)')\nax4 = fig.add_subplot(spec[2:,1]); ax4.set_title('relu(-x)')\nax5 = fig.add_subplot(spec[1:3,2]); ax5.set_title('u')\nax6 = fig.add_subplot(spec[1:3,3]); ax6.set_title('yhat');\n#---#\nax1.plot(x,'--',color='C0')\nax2.plot(-x,'--',color='C1')\nax3.plot(relu(x),'--',color='C0')\nax4.plot(relu(-x),'--',color='C1')\nax5.plot(-4.5*relu(x)-9*relu(-x)+4.5,'--',color='C2')\nax6.plot(sig(-4.5*relu(x)-9*relu(-x)+4.5),'--',color='C2')\nfig.tight_layout()"
   },
   {
-    "objectID": "posts/01wk-2.html#a.-손실함수",
-    "href": "posts/01wk-2.html#a.-손실함수",
-    "title": "01wk-2: 회귀분석 (1) – 단순회귀의 학습전략, 경사하강법",
-    "section": "A. 손실함수",
-    "text": "A. 손실함수\n- ’적당한 정도’를 판단하기 위한 장치: loss function 도입!\n\\(loss=\\sum_{i=1}^{n}(y_i-\\hat{y}_i)^2=\\sum_{i=1}^{n}(y_i-(\\hat{w}_0+\\hat{w}_1x_i))^2\\)\n\\(=({\\bf y}-{\\bf\\hat{y}})^\\top({\\bf y}-{\\bf\\hat{y}})=({\\bf y}-{\\bf X}{\\bf \\hat{W}})^\\top({\\bf y}-{\\bf X}{\\bf \\hat{W}})\\)\n- loss 함수의 특징\n\n\\(y_i \\approx \\hat{y}_i\\) 일수록 loss값이 작다.\n\\(y_i \\approx \\hat{y}_i\\) 이 되도록 \\((\\hat{w}_0,\\hat{w}_1)\\)을 잘 찍으면 loss값이 작다.\n(중요) 주황색 점선이 ‘적당할 수록’ loss값이 작다.\n\n\nloss = torch.sum((y-yhat)**2)\nloss\n\ntensor(8587.6875, grad_fn=&lt;SumBackward0&gt;)\n\n\n- 우리의 목표: 이 loss(=8587.6875)을 더 줄이자.\n\n궁극적으로는 아예 모든 조합 \\((\\hat{w}_0,\\hat{w}_1)\\)에 대하여 가장 작은 loss를 찾으면 좋겠다. (단계2에서 할일은 아님)\n\n- 문제의 치환: 생각해보니까 우리의 문제는 아래와 같이 수학적으로 단순화 되었다.\n\n적당해보이는 주황색 선을 찾자 \\(\\to\\) \\(loss(w_0,w_1)\\)를 최소로하는 \\((w_0,w_1)\\)의 값을 찾자.\n\n- 수정된 목표: \\(loss(w_0,w_1)\\)를 최소로 하는 \\((w_0,w_1)\\)을 구하라.\n\n단순한 수학문제가 되었다. 이것은 마치 \\(f(x,y)\\)를 최소화하는 \\((x,y)\\)를 찾으라는 것임.\n함수의 최대값 혹은 최소값을 컴퓨터를 이용하여 찾는것을 “최적화”라고 하며 이는 산공교수님들이 가장 잘하는 분야임. (산공교수님들에게 부탁하면 잘해줌, 산공교수님들은 보통 최적화해서 어디에 쓸지보다 최적화 자체에 더 관심을 가지고 연구하심)\n최적화를 하는 방법? 경사하강법"
+    "objectID": "posts/03wk-2.html#c.-방법2의-다른구현",
+    "href": "posts/03wk-2.html#c.-방법2의-다른구현",
+    "title": "03wk-2: 깊은신경망 – 로지스틱의 한계 극복",
+    "section": "C. 방법2의 다른구현",
+    "text": "C. 방법2의 다른구현\n- 렐루이용하여 만드는 방법 정리\n\n벡터 x와 relu함수를 준비한다.\nu = [x,-x] 를 계산한다.\nv = [relu(x), relu(-x)] 를 계산한다.\ny = -4.5 * relu(x) + 9 * relu(-x) +4.5 를 계산한다.\n\n- 1단계\n\nx,relu\n\n(tensor([[-1.0000],\n         [-0.9980],\n         [-0.9960],\n         ...,\n         [ 0.9960],\n         [ 0.9980],\n         [ 1.0000]]),\n ReLU())\n\n\n- 2단계\n\nu = torch.concat([x,-x],axis=1) # u = [x, -x] 같은것\nu\n\ntensor([[-1.0000,  1.0000],\n        [-0.9980,  0.9980],\n        [-0.9960,  0.9960],\n        ...,\n        [ 0.9960, -0.9960],\n        [ 0.9980, -0.9980],\n        [ 1.0000, -1.0000]])\n\n\n- 3단계\n\nv = relu(u) # 각각의 column에 렐루취함\nv\n\ntensor([[0.0000, 1.0000],\n        [0.0000, 0.9980],\n        [0.0000, 0.9960],\n        ...,\n        [0.9960, 0.0000],\n        [0.9980, 0.0000],\n        [1.0000, 0.0000]])\n\n\n- 4단계\n\n-4.5 * v[:,[0]] - 9.0 * v[:,[1]] +4.5\n\ntensor([[-4.5000],\n        [-4.4820],\n        [-4.4640],\n        ...,\n        [ 0.0180],\n        [ 0.0090],\n        [ 0.0000]])\n\n\n\ny\n\ntensor([[-4.5000],\n        [-4.4820],\n        [-4.4640],\n        ...,\n        [ 0.0180],\n        [ 0.0090],\n        [ 0.0000]])\n\n\n- 그런데, 4단계는 아래와 같이 볼 수 있다.\n\n\\({\\boldsymbol v}\\begin{bmatrix} -4.5 \\\\ -9.0 \\end{bmatrix} + 4.5 = \\begin{bmatrix} v_{11} & v_{12} \\\\ v_{21} & v_{22} \\\\ \\dots & \\dots \\\\ v_{n1} & v_{n2} \\\\ \\end{bmatrix}\\begin{bmatrix} -4.5 \\\\ -9.0 \\end{bmatrix} + 4.5 = \\begin{bmatrix} -4.5 v_{11} - 9.0 v_{12} + 4.5 \\\\ -4.5 v_{21} - 9.0 v_{22} + 4.5 \\\\ \\dots \\\\ -4.5 v_{n1} - 9.0 v_{n2} + 4.5 \\\\ \\end{bmatrix}\\)\n\n위의 수식을 참고하여 매트릭스의 곱 형태로 다시 포현하면 아래와 같다.\n\n#-4.5 * v[:,[0]] - 9.0 * v[:,[1]] +4.5\nWhat = torch.tensor([[-4.5],[-9.0]]) \nv @ What + 4.5 \n\ntensor([[-4.5000],\n        [-4.4820],\n        [-4.4640],\n        ...,\n        [ 0.0180],\n        [ 0.0090],\n        [ 0.0000]])\n\n\n이제 매트릭스의 곱 대신에 torch.nn.Linear()를 이용하면 아래의 코드와 같아진다.\n\nl2 = torch.nn.Linear(\n    in_features=2,\n    out_features=1 \n)\n\n\nl2.weight.data = torch.tensor([[-4.5,-9.0]])\nl2.bias.data = torch.tensor([4.5])\n\n\nl2(v)\n\ntensor([[-4.5000],\n        [-4.4820],\n        [-4.4640],\n        ...,\n        [ 0.0180],\n        [ 0.0090],\n        [ 0.0000]], grad_fn=&lt;AddmmBackward0&gt;)\n\n\n- 사실 2단계도 아래와 같이 볼 수 있다.\n\\[\\begin{bmatrix}\nx_1 \\\\\nx_2 \\\\\n\\dots \\\\\nx_n\n\\end{bmatrix}\\begin{bmatrix} 1 & -1 \\end{bmatrix} = \\begin{bmatrix} x_1 & -x_1 \\\\ x_2 & -x_2 \\\\ \\dots & \\dots \\\\ x_n & -x_n \\end{bmatrix}\\]\n\n#u = torch.concat([x,-x],axis=1) # u1 = [x, -x] 같은것\n\n\nl1 = torch.nn.Linear(1,2)\nl1.weight.data = torch.tensor([[1.0],[-1.0]])\nl1.bias.data = torch.tensor([0.0,0.0])\n\n\nl1(x)\n\ntensor([[-1.0000,  1.0000],\n        [-0.9980,  0.9980],\n        [-0.9960,  0.9960],\n        ...,\n        [ 0.9960, -0.9960],\n        [ 0.9980, -0.9980],\n        [ 1.0000, -1.0000]], grad_fn=&lt;AddmmBackward0&gt;)\n\n\n- 따라서 torch.nn 에 포함된 레이어를 이용하면 아래와 같이 표현할 할 수 있다.\n\nl1 = torch.nn.Linear(1,2)\nl1.weight.data = torch.tensor([[1.0],[-1.0]])\nl1.bias.data = torch.tensor([0.0,0.0])\na1 = torch.nn.ReLU()\nl2 = torch.nn.Linear(2,1)\nl2.weight.data = torch.tensor([[-4.5,-9.0]])\nl2.bias.data = torch.tensor([4.5])\n\n\nl2(a1(l1(x))), y\n\n(tensor([[-4.5000],\n         [-4.4820],\n         [-4.4640],\n         ...,\n         [ 0.0180],\n         [ 0.0090],\n         [ 0.0000]], grad_fn=&lt;AddmmBackward0&gt;),\n tensor([[-4.5000],\n         [-4.4820],\n         [-4.4640],\n         ...,\n         [ 0.0180],\n         [ 0.0090],\n         [ 0.0000]]))\n\n\n- 각각의 layer를 torch.nn.Sequential() 로 묶으면 아래와 같이 정리할 수 있다.\n\nnet = torch.nn.Sequential(\n    torch.nn.Linear(1,2),\n    torch.nn.ReLU(),\n    torch.nn.Linear(2,1)\n)\nl1,a1,l2 = net\nl1.weight.data = torch.tensor([[1.0],[-1.0]])\nl1.bias.data = torch.tensor([0.0,0.0])\nl2.weight.data = torch.tensor([[-4.5,-9.0]])\nl2.bias.data = torch.tensor([4.5])\n\n\nnet(x),y\n\n(tensor([[-4.5000],\n         [-4.4820],\n         [-4.4640],\n         ...,\n         [ 0.0180],\n         [ 0.0090],\n         [ 0.0000]], grad_fn=&lt;AddmmBackward0&gt;),\n tensor([[-4.5000],\n         [-4.4820],\n         [-4.4640],\n         ...,\n         [ 0.0180],\n         [ 0.0090],\n         [ 0.0000]]))"
   },
   {
-    "objectID": "posts/01wk-2.html#b.-경사하강법",
-    "href": "posts/01wk-2.html#b.-경사하강법",
-    "title": "01wk-2: 회귀분석 (1) – 단순회귀의 학습전략, 경사하강법",
-    "section": "B. 경사하강법",
-    "text": "B. 경사하강법\n- 경사하강법 아이디어 (1차원)\n\n임의의 점을 찍는다.\n그 점에서 순간기울기를 구한다. (접선) &lt;– 미분\n순간기울기(=미분계수)의 부호를 살펴보고 부호와 반대방향으로 움직인다.\n\n\n팁: 기울기의 절대값 크기와 비례하여 보폭(=움직이는 정도)을 조절한다. \\(\\to\\) \\(\\alpha\\)를 도입\n\n\n최종수식: \\(w \\leftarrow w - \\alpha \\times \\frac{\\partial}{\\partial w}loss(w)\\)\n\n- 경사하강법 아이디어 (2차원)\n\n임의의 점을 찍는다.\n그 점에서 순간기울기를 구한다. (접평면) &lt;– 편미분\n순간기울기(=미분계수)의 부호를 살펴보고 부호와 반대방향으로 각각 움직인다.\n\n\n팁: 여기서도 기울기의 절대값 크기와 비례하여 보폭(=움직이는 정도)을 각각 조절한다. \\(\\to\\) \\(\\alpha\\)를 도입.\n\n- 경사하강법 = loss를 줄이도록 \\({\\bf W}\\)를 개선하는 방법\n\n업데이트 공식: 수정값 = 원래값 - \\(\\alpha\\) \\(\\times\\) 기울어진크기(=미분계수)\n여기에서 \\(\\alpha\\)는 전체적인 보폭의 크기를 결정한다. 즉 \\(\\alpha\\)값이 클수록 한번의 update에 움직이는 양이 크다."
+    "objectID": "posts/03wk-2.html#d.-수식표현",
+    "href": "posts/03wk-2.html#d.-수식표현",
+    "title": "03wk-2: 깊은신경망 – 로지스틱의 한계 극복",
+    "section": "D. 수식표현",
+    "text": "D. 수식표현\n(1) \\({\\bf X}=\\begin{bmatrix} x_1 \\\\ \\dots \\\\ x_n \\end{bmatrix}\\)\n(2) \\(l_1({\\bf X})={\\bf X}{\\bf W}^{(1)}\\overset{bc}{+} {\\boldsymbol b}^{(1)}=\\begin{bmatrix} x_1 & -x_1 \\\\ x_2 & -x_2 \\\\ \\dots & \\dots \\\\ x_n & -x_n\\end{bmatrix}\\)\n\n\\({\\bf W}^{(1)}=\\begin{bmatrix} 1 & -1 \\end{bmatrix}\\)\n\\({\\boldsymbol b}^{(1)}=\\begin{bmatrix} 0 & 0 \\end{bmatrix}\\)\n\n(3) \\((a_1\\circ l_1)({\\bf X})=\\text{relu}\\big({\\bf X}{\\bf W}^{(1)}\\overset{bc}{+}{\\boldsymbol b}^{(1)}\\big)=\\begin{bmatrix} \\text{relu}(x_1) & \\text{relu}(-x_1) \\\\ \\text{relu}(x_2) & \\text{relu}(-x_2) \\\\ \\dots & \\dots \\\\ \\text{relu}(x_n) & \\text{relu}(-x_n)\\end{bmatrix}\\)\n(4) \\((l_2 \\circ a_1\\circ l_1)({\\bf X})=\\text{relu}\\big({\\bf X}{\\bf W}^{(1)}\\overset{bc}{+}{\\boldsymbol b}^{(1)}\\big){\\bf W}^{(2)}\\overset{bc}{+}b^{(2)}\\)\n\\(\\quad=\\begin{bmatrix} -4.5\\times\\text{relu}(x_1) -9.0 \\times \\text{relu}(-x_1) +4.5 \\\\ -4.5\\times\\text{relu}(x_2) -9.0 \\times\\text{relu}(-x_2) + 4.5 \\\\ \\dots \\\\ -4.5\\times \\text{relu}(x_n) -9.0 \\times\\text{relu}(-x_n)+4.5 \\end{bmatrix}\\)\n\n\\({\\bf W}^{(2)}=\\begin{bmatrix} -4.5 \\\\ -9 \\end{bmatrix}\\)\n\\(b^{(2)}=4.5\\)\n\n(5) \\(net({\\bf X})=(l_2 \\circ a_1\\circ l_1)({\\bf X})=\\text{relu}\\big({\\bf X}{\\bf W}^{(1)}\\overset{bc}{+}{\\boldsymbol b}^{(1)}\\big){\\bf W}^{(2)}\\overset{bc}{+}b^{(2)}\\)\n\\(\\quad =\\begin{bmatrix} -4.5\\times\\text{relu}(x_1) -9.0 \\times \\text{relu}(-x_1) +4.5 \\\\ -4.5\\times\\text{relu}(x_2) -9.0 \\times\\text{relu}(-x_2) + 4.5 \\\\ \\dots \\\\ -4.5\\times \\text{relu}(x_n) -9.0 \\times\\text{relu}(-x_n)+4.5 \\end{bmatrix}\\)"
   },
   {
-    "objectID": "posts/02wk-2.html#a.-data",
-    "href": "posts/02wk-2.html#a.-data",
-    "title": "02wk-2: 회귀분석 (3) – Step1,2,4 의 변형",
-    "section": "A. Data",
-    "text": "A. Data\n\ntemp = [-2.4821, -2.3621, -1.9973, -1.6239, -1.4792, -1.4635, -1.4509, -1.4435,\n        -1.3722, -1.3079, -1.1904, -1.1092, -1.1054, -1.0875, -0.9469, -0.9319,\n        -0.8643, -0.7858, -0.7549, -0.7421, -0.6948, -0.6103, -0.5830, -0.5621,\n        -0.5506, -0.5058, -0.4806, -0.4738, -0.4710, -0.4676, -0.3874, -0.3719,\n        -0.3688, -0.3159, -0.2775, -0.2772, -0.2734, -0.2721, -0.2668, -0.2155,\n        -0.2000, -0.1816, -0.1708, -0.1565, -0.1448, -0.1361, -0.1057, -0.0603,\n        -0.0559, -0.0214,  0.0655,  0.0684,  0.1195,  0.1420,  0.1521,  0.1568,\n         0.2646,  0.2656,  0.3157,  0.3220,  0.3461,  0.3984,  0.4190,  0.5443,\n         0.5579,  0.5913,  0.6148,  0.6469,  0.6469,  0.6523,  0.6674,  0.7059,\n         0.7141,  0.7822,  0.8154,  0.8668,  0.9291,  0.9804,  0.9853,  0.9941,\n         1.0376,  1.0393,  1.0697,  1.1024,  1.1126,  1.1532,  1.2289,  1.3403,\n         1.3494,  1.4279,  1.4994,  1.5031,  1.5437,  1.6789,  2.0832,  2.2444,\n         2.3935,  2.6056,  2.6057,  2.6632]\nsales= [-8.5420, -6.5767, -5.9496, -4.4794, -4.2516, -3.1326, -4.0239, -4.1862,\n        -3.3403, -2.2027, -2.0262, -2.5619, -1.3353, -2.0466, -0.4664, -1.3513,\n        -1.6472, -0.1089, -0.3071, -0.6299, -0.0438,  0.4163,  0.4166, -0.0943,\n         0.2662,  0.4591,  0.8905,  0.8998,  0.6314,  1.3845,  0.8085,  1.2594,\n         1.1211,  1.9232,  1.0619,  1.3552,  2.1161,  1.1437,  1.6245,  1.7639,\n         1.6022,  1.7465,  0.9830,  1.7824,  2.1116,  2.8621,  2.1165,  1.5226,\n         2.5572,  2.8361,  3.3956,  2.0679,  2.8140,  3.4852,  3.6059,  2.5966,\n         2.8854,  3.9173,  3.6527,  4.1029,  4.3125,  3.4026,  3.2180,  4.5686,\n         4.3772,  4.3075,  4.4895,  4.4827,  5.3170,  5.4987,  5.4632,  6.0328,\n         5.2842,  5.0539,  5.4538,  6.0337,  5.7250,  5.7587,  6.2020,  6.5992,\n         6.4621,  6.5140,  6.6846,  7.3497,  8.0909,  7.0794,  6.8667,  7.4229,\n         7.2544,  7.1967,  9.5006,  9.0339,  7.4887,  9.0759, 11.0946, 10.3260,\n        12.2665, 13.0983, 12.5468, 13.8340]\nx = torch.tensor(temp).reshape(-1,1)\nones = torch.ones(100).reshape(-1,1)\nX = torch.concat([ones,x],axis=1)\ny = torch.tensor(sales).reshape(-1,1)"
+    "objectID": "posts/03wk-2.html#a.-데이터",
+    "href": "posts/03wk-2.html#a.-데이터",
+    "title": "03wk-2: 깊은신경망 – 로지스틱의 한계 극복",
+    "section": "A. 데이터",
+    "text": "A. 데이터\n\ndf = pd.read_csv(\"https://raw.githubusercontent.com/guebin/DL2024/main/posts/dnnex.csv\")\ndf\n\n\n\n\n\n\n\n\nx\nprob\ny\n\n\n\n\n0\n-1.000000\n0.000045\n0.0\n\n\n1\n-0.998999\n0.000046\n0.0\n\n\n2\n-0.997999\n0.000047\n0.0\n\n\n3\n-0.996998\n0.000047\n0.0\n\n\n4\n-0.995998\n0.000048\n0.0\n\n\n...\n...\n...\n...\n\n\n1995\n0.995998\n0.505002\n0.0\n\n\n1996\n0.996998\n0.503752\n0.0\n\n\n1997\n0.997999\n0.502501\n0.0\n\n\n1998\n0.998999\n0.501251\n1.0\n\n\n1999\n1.000000\n0.500000\n1.0\n\n\n\n\n2000 rows × 3 columns\n\n\n\n\nx = torch.tensor(df.x).float().reshape(-1,1)\ny = torch.tensor(df.y).float().reshape(-1,1)\nprob = torch.tensor(df.prob).float().reshape(-1,1)\n\n\nplt.plot(x,y,'o',alpha=0.02)\nplt.plot(x[0],y[0],'o',label= r\"observed data = $(x_i,y_i)$\",color=\"C0\")\nplt.plot(x,prob,'--b',label= r\"prob (true, unknown)\")\nplt.legend()"
   },
   {
-    "objectID": "posts/02wk-2.html#b.-파이토치를-이용한-학습",
-    "href": "posts/02wk-2.html#b.-파이토치를-이용한-학습",
-    "title": "02wk-2: 회귀분석 (3) – Step1,2,4 의 변형",
-    "section": "B. 파이토치를 이용한 학습",
-    "text": "B. 파이토치를 이용한 학습\n- 외우세여\n\nWhat = torch.tensor([[-5.0],[10.0]],requires_grad = True)\nfor epoc in range(30):\n    # step1: yhat \n    yhat = X@What \n    # step2: loss\n    loss = torch.sum((y-yhat)**2)\n    # step3: 미분\n    loss.backward()\n    # step4: update\n    What.data = What.data - 0.001 * What.grad\n    What.grad = None\n\n- 결과 시각화\n\nplt.plot(x,y,'o')\nplt.plot(x,X@What.data,'--')\nplt.title(f'What={What.data.reshape(-1)}');"
-  },
-  {
-    "objectID": "posts/02wk-2.html#c.-step2의-수정",
-    "href": "posts/02wk-2.html#c.-step2의-수정",
-    "title": "02wk-2: 회귀분석 (3) – Step1,2,4 의 변형",
-    "section": "C. Step2의 수정",
-    "text": "C. Step2의 수정\n- 수정된 코드\n\nWhat = torch.tensor([[-5.0],[10.0]],requires_grad = True)\nloss_fn = torch.nn.MSELoss()\nfor epoc in range(30):\n    # step1: yhat \n    yhat = X@What \n    # step2: loss\n    #loss = torch.sum((y-yhat)**2)/100\n    #loss = torch.mean((y-yhat)**2) \n    loss = loss_fn(yhat,y) # 여기서는 큰 상관없지만 습관적으로 yhat을 먼저넣는 연습을 하자!!\n    # step3: 미분\n    loss.backward()\n    # step4: update\n    What.data = What.data - 0.1 * What.grad\n    What.grad = None\n\n- 결과확인\n\nplt.plot(x,y,'o')\nplt.plot(x,X@What.data,'--')\nplt.title(f'What={What.data.reshape(-1)}');"
-  },
-  {
-    "objectID": "posts/02wk-2.html#d.-step1의-수정-net의-이용",
-    "href": "posts/02wk-2.html#d.-step1의-수정-net의-이용",
-    "title": "02wk-2: 회귀분석 (3) – Step1,2,4 의 변형",
-    "section": "D. Step1의 수정 – net의 이용",
-    "text": "D. Step1의 수정 – net의 이용\n- net 오브젝트란?\n원래 yhat을 이런식으로 구했는데 ~\n\nWhat = torch.tensor([[-5.0],[10.0]],requires_grad = True)\n(X@What.data)[:5]\n\ntensor([[-29.8210],\n        [-28.6210],\n        [-24.9730],\n        [-21.2390],\n        [-19.7920]])\n\n\n이런식으로도 구할수 있음!\n\nnet = torch.nn.Linear(\n    in_features=2,\n    out_features=1,\n    bias=False\n)\n\n\nnet.weight.data = torch.tensor([[-5.0,  10.0]])\nnet.weight\n\nParameter containing:\ntensor([[-5., 10.]], requires_grad=True)\n\n\n\nnet(X)[:5]\n\ntensor([[-29.8210],\n        [-28.6210],\n        [-24.9730],\n        [-21.2390],\n        [-19.7920]], grad_fn=&lt;SliceBackward0&gt;)\n\n\n- 학습\n\n# step1을 위한 사전준비\nnet = torch.nn.Linear(\n    in_features=2,\n    out_features=1,\n    bias=False\n)\nnet.weight.data = torch.tensor([[-5.0,  10.0]])\n# step2를 위한 사전준비\nloss_fn = torch.nn.MSELoss()\nfor epoc in range(30):\n    # step1: yhat \n    yhat = net(X)\n    # step2: loss\n    loss = loss_fn(yhat,y)\n    # step3: 미분\n    loss.backward()\n    # step4: update\n    net.weight.data = net.weight.data - 0.1 * net.weight.grad\n    net.weight.grad = None\n\n- 결과확인\n\nplt.plot(x,y,'o')\nplt.plot(x,net(X).data,'--')\nplt.title(f'net.weight={net.weight.data.reshape(-1)}');"
-  },
-  {
-    "objectID": "posts/02wk-2.html#e.-step4의-수정-optimizer의-이용",
-    "href": "posts/02wk-2.html#e.-step4의-수정-optimizer의-이용",
-    "title": "02wk-2: 회귀분석 (3) – Step1,2,4 의 변형",
-    "section": "E. Step4의 수정 – optimizer의 이용",
-    "text": "E. Step4의 수정 – optimizer의 이용\n기존코드의 에폭별분해\n- 준비과정\n\n# step1을 위한 사전준비\nnet = torch.nn.Linear(\n    in_features=2,\n    out_features=1,\n    bias=False\n)\nnet.weight.data = torch.tensor([[-5.0,  10.0]])\n# step2를 위한 사전준비\nloss_fn = torch.nn.MSELoss()\n\n- 에폭별분해\n(미분전) – step1~2 완료\n\nyhat = net(X)\nloss = loss_fn(yhat,y)\n\n\nprint(f'파라메터 = {net.weight.data}')\nprint(f'미분값 = {net.weight.grad}')\n\n파라메터 = tensor([[-5., 10.]])\n미분값 = None\n\n\n(미분후, 업데이트 진행전) – step3 완료\n\nloss.backward()\n\n\nprint(f'파라메터 = {net.weight.data}')\nprint(f'미분값 = {net.weight.grad}')\n\n파라메터 = tensor([[-5., 10.]])\n미분값 = tensor([[-13.4225,  11.8892]])\n\n\n(업데이트 진행후) – step4 의 첫째줄 완료\n\nnet.weight.data = net.weight.data - 0.1 * net.weight.grad\n\n\nprint(f'파라메터 = {net.weight.data}')\nprint(f'미분값 = {net.weight.grad}')\n\n파라메터 = tensor([[-3.6578,  8.8111]])\n미분값 = tensor([[-13.4225,  11.8892]])\n\n\n(업데이트 완료 후 초기화까지 끝냄) – step4 의 두번째줄 완료\n\nnet.weight.grad = None\n\n\nprint(f'파라메터 = {net.weight.data}')\nprint(f'미분값 = {net.weight.grad}')\n\n파라메터 = tensor([[-3.6578,  8.8111]])\n미분값 = None\n\n\n새로운코드의 에폭별분해\n- 준비과정 – 옵티마이저라는 오브젝트를 셋팅한다!\n\n# step1을 위한 사전준비\nnet = torch.nn.Linear(\n    in_features=2,\n    out_features=1,\n    bias=False\n)\nnet.weight.data = torch.tensor([[-5.0,  10.0]])\n# step2를 위한 사전준비\nloss_fn = torch.nn.MSELoss()\n# step3을 위한 사전준비 \noptimizr = torch.optim.SGD(params=net.parameters(),lr=0.1)\n\n- 에폭별분해\n(미분전) – step1~2 완료\n\nyhat = net(X)\nloss = loss_fn(yhat,y)\n\n\nprint(f'파라메터 = {net.weight.data}')\nprint(f'미분값 = {net.weight.grad}')\n\n파라메터 = tensor([[-5., 10.]])\n미분값 = None\n\n\n(미분후, 업데이트 진행전) – step3 완료\n\nloss.backward()\n\n\nprint(f'파라메터 = {net.weight.data}')\nprint(f'미분값 = {net.weight.grad}')\n\n파라메터 = tensor([[-5., 10.]])\n미분값 = tensor([[-13.4225,  11.8892]])\n\n\n(업데이트 진행후) – step4 의 첫째줄 완료\n\n#net.weight.data = net.weight.data - 0.1 * net.weight.grad\noptimizr.step()\n\n\nprint(f'파라메터 = {net.weight.data}')\nprint(f'미분값 = {net.weight.grad}')\n\n파라메터 = tensor([[-3.6578,  8.8111]])\n미분값 = tensor([[-13.4225,  11.8892]])\n\n\n(업데이트 완료 후 초기화까지 끝냄) – step4 의 두번째줄 완료\n\n#net.weight.grad = None\noptimizr.zero_grad()\n\n\nprint(f'파라메터 = {net.weight.data}')\nprint(f'미분값 = {net.weight.grad}')\n\n파라메터 = tensor([[-3.6578,  8.8111]])\n미분값 = None\n\n\n최종코드\n- 학습\n\n# step1을 위한 사전준비\nnet = torch.nn.Linear(\n    in_features=2,\n    out_features=1,\n    bias=False\n)\nnet.weight.data = torch.tensor([[-5.0,  10.0]])\n# step2를 위한 사전준비\nloss_fn = torch.nn.MSELoss()\n# step4를 위한 사전준비 \noptimizr = torch.optim.SGD(net.parameters(),lr=0.1)\nfor epoc in range(30):\n    # step1: yhat \n    yhat = net(X)\n    # step2: loss\n    loss = loss_fn(yhat,y)\n    # step3: 미분\n    loss.backward()\n    # step4: update\n    optimizr.step()\n    optimizr.zero_grad()\n\n- 결과확인\n\nplt.plot(x,y,'o')\nplt.plot(x,yhat.data,'--')\nplt.title(f'net.weight={net.weight.data.reshape(-1)}');"
-  },
-  {
-    "objectID": "posts/01wk-1.html#a.-최하니",
-    "href": "posts/01wk-1.html#a.-최하니",
-    "title": "01wk-1: 이미지 자료 분석 (겉핥기)",
-    "section": "A. 최하니",
-    "text": "A. 최하니\n\nhani1 = PILImage.create(requests.get('https://github.com/guebin/DL2024/blob/main/imgs/01wk-hani1.jpeg?raw=true').content)\nhani1\n\n\n\n\n\n\n\n\n\nlrnr.predict(hani1)\n\n\n\n\n\n\n\n\n('dog', tensor(1), tensor([2.9308e-09, 1.0000e+00]))\n\n\n\nhani2 = PILImage.create(requests.get('https://github.com/guebin/DL2024/blob/main/imgs/01wk-hani2.jpeg?raw=true').content)\nhani2\n\n\n\n\n\n\n\n\n\nlrnr.predict(hani2)\n\n\n\n\n\n\n\n\n('dog', tensor(1), tensor([8.9153e-06, 9.9999e-01]))\n\n\n\nhani3 = PILImage.create(requests.get('https://github.com/guebin/DL2024/blob/main/imgs/01wk-hani3.jpg?raw=true').content)\nhani3\n\n\n\n\n\n\n\n\n\nlrnr.predict(hani3)\n\n\n\n\n\n\n\n\n('dog', tensor(1), tensor([3.9399e-04, 9.9961e-01]))"
-  },
-  {
-    "objectID": "posts/01wk-1.html#b.-인터넷-고양이",
-    "href": "posts/01wk-1.html#b.-인터넷-고양이",
-    "title": "01wk-1: 이미지 자료 분석 (겉핥기)",
-    "section": "B. 인터넷 고양이",
-    "text": "B. 인터넷 고양이\n\ncat1 = PILImage.create(requests.get('https://github.com/guebin/DL2024/blob/main/imgs/01wk-cat1.png?raw=true').content)\ncat1\n\n\n\n\n\n\n\n\n\nlrnr.predict(cat1)\n\n\n\n\n\n\n\n\n('cat', tensor(0), tensor([1.0000e+00, 2.2026e-11]))\n\n\n\ncat2 = PILImage.create(requests.get('https://github.com/guebin/DL2024/blob/main/imgs/01wk-cat2.jpeg?raw=true').content)\ncat2\n\n\n\n\n\n\n\n\n\nlrnr.predict(cat2)\n\n\n\n\n\n\n\n\n('cat', tensor(0), tensor([1.0000e+00, 9.4345e-07]))"
-  },
-  {
-    "objectID": "posts/01wk-1.html#a.-step1-dls데이터-준비",
-    "href": "posts/01wk-1.html#a.-step1-dls데이터-준비",
-    "title": "01wk-1: 이미지 자료 분석 (겉핥기)",
-    "section": "A. Step1: DLS(=데이터) 준비",
-    "text": "A. Step1: DLS(=데이터) 준비\n\ndls = ImageDataLoaders.from_folder(\n    path = './images',\n    train='train',\n    valid_pct = 0.2,\n    item_tfms=Resize(224),\n)\n\n\ndls.show_batch()"
-  },
-  {
-    "objectID": "posts/01wk-1.html#b.-step2-러너생성",
-    "href": "posts/01wk-1.html#b.-step2-러너생성",
-    "title": "01wk-1: 이미지 자료 분석 (겉핥기)",
-    "section": "B. Step2: 러너생성",
-    "text": "B. Step2: 러너생성\n\nlrnr = vision_learner(\n    dls = dls,\n    arch = resnet34,\n    metrics = accuracy\n)"
-  },
-  {
-    "objectID": "posts/01wk-1.html#c.-step3-학습",
-    "href": "posts/01wk-1.html#c.-step3-학습",
-    "title": "01wk-1: 이미지 자료 분석 (겉핥기)",
-    "section": "C. Step3: 학습",
-    "text": "C. Step3: 학습\n\nlrnr.fine_tune(7)\n\n\n\n\n\n\n\n\nepoch\ntrain_loss\nvalid_loss\naccuracy\ntime\n\n\n\n\n0\n1.346890\n0.969989\n0.657534\n00:11\n\n\n\n\n\n\n\n\n\n\n\n\nepoch\ntrain_loss\nvalid_loss\naccuracy\ntime\n\n\n\n\n0\n0.734809\n0.817061\n0.698630\n00:10\n\n\n1\n0.581782\n0.937060\n0.739726\n00:11\n\n\n2\n0.426661\n0.901986\n0.835616\n00:12\n\n\n3\n0.332050\n0.899157\n0.835616\n00:10\n\n\n4\n0.263004\n0.844802\n0.849315\n00:10\n\n\n5\n0.220254\n0.762331\n0.849315\n00:11\n\n\n6\n0.185242\n0.716601\n0.849315\n00:11"
-  },
-  {
-    "objectID": "posts/01wk-1.html#d.-step4-예측",
-    "href": "posts/01wk-1.html#d.-step4-예측",
-    "title": "01wk-1: 이미지 자료 분석 (겉핥기)",
-    "section": "D. Step4: 예측",
-    "text": "D. Step4: 예측\n\nlrnr.show_results()\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\ninter = Interpretation.from_learner(lrnr)\ninter.plot_top_losses(16)"
-  },
-  {
-    "objectID": "posts/01wk-1.html#크롤링을-활용한-이미지-자료-분석",
-    "href": "posts/01wk-1.html#크롤링을-활용한-이미지-자료-분석",
-    "title": "01wk-1: 이미지 자료 분석 (겉핥기)",
-    "section": "#. 크롤링을 활용한 이미지 자료 분석",
-    "text": "#. 크롤링을 활용한 이미지 자료 분석\n(1) 두 가지 키워드로 크롤링을 수행하여 이미지자료를 모아라. (키워드는 각자 마음에 드는 것으로 설정할 것, 단 (iu,hynn)는 제외)\n(2) ImageDataLoaders.from_folder() 를 이용하여 dls를 만들고 dls.show_batch()를 이용하여 만들어진 이미지를 확인하라.\n(3) vision_learner()를 이용하여 lrnr를 만들고 lrnr.fine_tune()을 이용하여 학습하라. 이때 모형의 arch는 resnet34를 사용하라.\n(4) requests.get()을 이용하여 (1)의 키워드에 해당하는 새로운 이미지를 한장씩 다운받고 (3)에서 학습한 lrnr를 이용하여 예측하라.\n\n제출은 ipynb파일로 할 것. 혹은 스크린샷을 제출해도 괜찮음."
+    "objectID": "posts/03wk-2.html#b.-step-14",
+    "href": "posts/03wk-2.html#b.-step-14",
+    "title": "03wk-2: 깊은신경망 – 로지스틱의 한계 극복",
+    "section": "B. Step 1~4",
+    "text": "B. Step 1~4\n- Step1에 대한 생각: 네트워크를 어떻게 만들까? = 아키텍처를 어떻게 만들까? = 모델링\n\\[\\underset{(n,1)}{\\bf X} \\overset{l_1}{\\to} \\underset{(n,2)}{\\boldsymbol u^{(1)}} \\overset{a_1}{\\to} \\underset{(n,2)}{\\boldsymbol v^{(1)}} \\overset{l_1}{\\to} \\underset{(n,1)}{\\boldsymbol u^{(2)}} \\overset{a_2}{\\to} \\underset{(n,1)}{\\boldsymbol v^{(2)}}=\\underset{(n,1)}{\\hat{\\boldsymbol y}}\\]\n- Step2,3,4 는 너무 뻔해서..\n\ntorch.manual_seed(43052)\nnet = torch.nn.Sequential(\n    torch.nn.Linear(1,2),\n    torch.nn.ReLU(),\n    torch.nn.Linear(2,1),\n    torch.nn.Sigmoid()\n)\nloss_fn = torch.nn.BCELoss()\noptimizr = torch.optim.Adam(net.parameters())\n#---#\nfor epoc in range(3000):\n    ## \n    yhat = net(x)\n    ## \n    loss = loss_fn(yhat,y)\n    ## \n    loss.backward()\n    ## \n    optimizr.step()\n    optimizr.zero_grad()\n\n\nplt.plot(x,y,'o',alpha=0.02)\nplt.plot(x[0],y[0],'o',label= r\"observed data = $(x_i,y_i)$\",color=\"C0\")\nplt.plot(x,prob,'--b',label= r\"prob (true, unknown)\")\nplt.plot(x,net(x).data,'--',label=\"first curve\")\nplt.legend()\n\n\n\n\n\n\n\n\n\nfor epoc in range(3000):\n    ## \n    yhat = net(x)\n    ## \n    loss = loss_fn(yhat,y)\n    ## \n    loss.backward()\n    ## \n    optimizr.step()\n    optimizr.zero_grad()\n\n\nplt.plot(x,y,'o',alpha=0.02)\nplt.plot(x[0],y[0],'o',label= r\"observed data = $(x_i,y_i)$\",color=\"C0\")\nplt.plot(x,prob,'--b',label= r\"prob (true, unknown)\")\nplt.plot(x,net(x).data,'--',label=\"first curve\")\nplt.legend()"
   },
   {
     "objectID": "about.html",

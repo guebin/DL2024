@@ -209,13 +209,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><a href="https://colab.research.google.com/github/guebin/DL2024/blob/main/posts/03wk-2.ipynb"><img src="https://colab.research.google.com/assets/colab-badge.svg" style="text-align: left"></a></p>
 <section id="강의영상" class="level1">
 <h1>1. 강의영상</h1>
-<div id="3e0cf863-6474-4798-a3f7-557695007073" class="cell" data-tags="[]">
+<div id="3e0cf863-6474-4798-a3f7-557695007073" class="cell" data-tags="[]" data-execution_count="63">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># {{&lt;video https://youtu.be/playlist?list=PLQqh36zP38-wO_Mc_74QoweAxCWw5A86_&amp;si=iWAgttM-CIgsi1x3 &gt;}}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="imports" class="level1">
 <h1>2. Imports</h1>
-<div id="dd3e2acd-7950-4fb9-96cd-3a598686b677" class="cell" data-tags="[]" data-execution_count="2">
+<div id="dd3e2acd-7950-4fb9-96cd-3a598686b677" class="cell" data-tags="[]" data-execution_count="64">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt </span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -225,10 +225,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h1>3. 꺽인그래프를 만드는 방법</h1>
 <p><code>-</code> 로지스틱의 한계를 극복하기 위해서는 시그모이드를 취하기 전에 꺽인 그래프 모양을 만드는 기술이 있어야겠음.</p>
 <p><code>-</code> 아래와 같은 벡터 <span class="math inline">\({\boldsymbol x}\)</span>를 가정하자.</p>
-<div id="b7342520-6750-4952-a629-44a0d0fdec7f" class="cell" data-tags="[]" data-execution_count="3">
+<div id="b7342520-6750-4952-a629-44a0d0fdec7f" class="cell" data-tags="[]" data-execution_count="65">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> torch.linspace(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1001</span>).reshape(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>)</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>x</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="3">
+<div class="cell-output cell-output-display" data-execution_count="65">
 <pre><code>tensor([[-1.0000],
         [-0.9980],
         [-0.9960],
@@ -410,7 +410,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <ul>
 <li><span class="math inline">\({\boldsymbol v}\begin{bmatrix} -4.5 \\ -9.0 \end{bmatrix} + 4.5 = \begin{bmatrix} v_{11} &amp; v_{12} \\ v_{21} &amp; v_{22} \\ \dots &amp; \dots \\ v_{n1} &amp; v_{n2} \\ \end{bmatrix}\begin{bmatrix} -4.5 \\ -9.0 \end{bmatrix} + 4.5 = \begin{bmatrix} -4.5 v_{11} - 9.0 v_{12} + 4.5 \\ -4.5 v_{21} - 9.0 v_{22} + 4.5 \\ \dots \\ -4.5 v_{n1} - 9.0 v_{n2} + 4.5 \\ \end{bmatrix}\)</span></li>
 </ul>
-<p>이를 정리하면</p>
+<p>위의 수식을 참고하여 매트릭스의 곱 형태로 다시 포현하면 아래와 같다.</p>
 <div id="f1d597b6-709f-4cc9-8e59-731cc924015d" class="cell" data-tags="[]" data-execution_count="17">
 <div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co">#-4.5 * v[:,[0]] - 9.0 * v[:,[1]] +4.5</span></span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>What <span class="op">=</span> torch.tensor([[<span class="op">-</span><span class="fl">4.5</span>],[<span class="op">-</span><span class="fl">9.0</span>]]) </span>
@@ -425,7 +425,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         [ 0.0000]])</code></pre>
 </div>
 </div>
-<p>이것은 다시 아래의 코드와 같다.</p>
+<p>이제 매트릭스의 곱 대신에 <code>torch.nn.Linear()</code>를 이용하면 아래의 코드와 같아진다.</p>
 <div id="543f25db-81d4-4662-a708-0183d86764e8" class="cell" data-tags="[]" data-execution_count="18">
 <div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>l2 <span class="op">=</span> torch.nn.Linear(</span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>    in_features<span class="op">=</span><span class="dv">2</span>,</span>
@@ -475,7 +475,7 @@ x_n
         [ 1.0000, -1.0000]], grad_fn=&lt;AddmmBackward0&gt;)</code></pre>
 </div>
 </div>
-<p><code>-</code> 따라서 최종적으로는 아래와 같이 구현할 수 있다.</p>
+<p><code>-</code> 따라서 <code>torch.nn</code> 에 포함된 레이어를 이용하면 아래와 같이 표현할 할 수 있다.</p>
 <div id="5e0f02d7" class="cell" data-tags="[]" data-execution_count="24">
 <div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>l1 <span class="op">=</span> torch.nn.Linear(<span class="dv">1</span>,<span class="dv">2</span>)</span>
 <span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>l1.weight.data <span class="op">=</span> torch.tensor([[<span class="fl">1.0</span>],[<span class="op">-</span><span class="fl">1.0</span>]])</span>
@@ -504,7 +504,7 @@ x_n
          [ 0.0000]]))</code></pre>
 </div>
 </div>
-<p><code>-</code> 이것은 다시 아래와 같이 구현할 수 있다.</p>
+<p><code>-</code> 각각의 layer를 <code>torch.nn.Sequential()</code> 로 묶으면 아래와 같이 정리할 수 있다.</p>
 <div id="19054fca" class="cell" data-tags="[]" data-execution_count="26">
 <div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>net <span class="op">=</span> torch.nn.Sequential(</span>
 <span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>    torch.nn.Linear(<span class="dv">1</span>,<span class="dv">2</span>),</span>
@@ -552,8 +552,8 @@ x_n
 <li><span class="math inline">\({\bf W}^{(2)}=\begin{bmatrix} -4.5 \\ -9 \end{bmatrix}\)</span></li>
 <li><span class="math inline">\(b^{(2)}=4.5\)</span></li>
 </ul>
-<p><code>(5)</code> <span class="math inline">\(net({\bf X})=(a_2 \circ l_2 \circ a_1\circ l_1)({\bf X})=\text{sig}\Big(\text{relu}\big({\bf X}{\bf W}^{(1)}\overset{bc}{+}{\boldsymbol b}^{(1)}\big){\bf W}^{(2)}\overset{bc}{+}b^{(2)}\Big)\)</span></p>
-<p><span class="math inline">\(\quad =\begin{bmatrix} \text{sig}\Big(-4.5\times\text{relu}(x_1) -9.0 \times \text{relu}(-x_1) +4.5\Big) \\ \text{sig}\Big(-4.5\times\text{relu}(x_2) -9.0 \times\text{relu}(-x_2) + 4.5 \Big)\\ \dots \\ \text{sig}\Big(-4.5\times \text{relu}(x_n) -9.0 \times\text{relu}(-x_n)+4.5 \Big)\end{bmatrix}\)</span></p>
+<p><code>(5)</code> <span class="math inline">\(net({\bf X})=(l_2 \circ a_1\circ l_1)({\bf X})=\text{relu}\big({\bf X}{\bf W}^{(1)}\overset{bc}{+}{\boldsymbol b}^{(1)}\big){\bf W}^{(2)}\overset{bc}{+}b^{(2)}\)</span></p>
+<p><span class="math inline">\(\quad =\begin{bmatrix} -4.5\times\text{relu}(x_1) -9.0 \times \text{relu}(-x_1) +4.5 \\ -4.5\times\text{relu}(x_2) -9.0 \times\text{relu}(-x_2) + 4.5 \\ \dots \\ -4.5\times \text{relu}(x_n) -9.0 \times\text{relu}(-x_n)+4.5 \end{bmatrix}\)</span></p>
 </section>
 </section>
 <section id="로지스틱의-한계-극복" class="level1">
