@@ -213,7 +213,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="imports" class="level1">
 <h1>2. Imports</h1>
-<div id="dd3e2acd-7950-4fb9-96cd-3a598686b677" class="cell" data-tags="[]" data-execution_count="52">
+<div id="dd3e2acd-7950-4fb9-96cd-3a598686b677" class="cell" data-tags="[]" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt </span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -223,10 +223,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h1>3. 꺽인그래프를 만드는 방법</h1>
 <p><code>-</code> 로지스틱의 한계를 극복하기 위해서는 시그모이드를 취하기 전에 꺽인 그래프 모양을 만드는 기술이 있어야겠음.</p>
 <p><code>-</code> 아래와 같은 벡터 <span class="math inline">\({\boldsymbol x}\)</span>를 가정하자.</p>
-<div id="b7342520-6750-4952-a629-44a0d0fdec7f" class="cell" data-tags="[]" data-execution_count="53">
+<div id="b7342520-6750-4952-a629-44a0d0fdec7f" class="cell" data-tags="[]" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> torch.linspace(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1001</span>).reshape(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>x</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="53">
+<div class="cell-output cell-output-display" data-execution_count="2">
 <pre><code>tensor([[-1.0000],
         [-0.9980],
         [-0.9960],
@@ -240,12 +240,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><span class="math display">\[{\boldsymbol y} = [y_1,y_2,\dots,y_{n}], \quad y_i = \begin{cases} 9x_i +4.5&amp; x_i &lt;0 \\ -4.5x_i + 4.5&amp; x_i &gt;0 \end{cases}\]</span></p>
 <section id="a.-방법1" class="level2">
 <h2 class="anchored" data-anchor-id="a.-방법1">A. 방법1</h2>
-<div id="da54ec95-ed9f-4205-b4af-02f769e7d196" class="cell" data-tags="[]" data-execution_count="54">
+<div id="da54ec95-ed9f-4205-b4af-02f769e7d196" class="cell" data-tags="[]" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> x<span class="op">*</span><span class="dv">0</span> </span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>y[x<span class="op">&lt;</span><span class="dv">0</span>] <span class="op">=</span> (<span class="dv">9</span><span class="op">*</span>x<span class="op">+</span><span class="fl">4.5</span>)[x<span class="op">&lt;</span><span class="dv">0</span>]</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>y[x<span class="op">&gt;</span><span class="dv">0</span>] <span class="op">=</span> (<span class="op">-</span><span class="fl">4.5</span><span class="op">*</span>x<span class="op">+</span><span class="fl">4.5</span>)[x<span class="op">&gt;</span><span class="dv">0</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="19605fdc-b9b0-4b7e-8db7-b1f51be238ca" class="cell" data-tags="[]" data-execution_count="55">
+<div id="19605fdc-b9b0-4b7e-8db7-b1f51be238ca" class="cell" data-tags="[]" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>plt.plot(y,<span class="st">'--'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
@@ -287,10 +287,10 @@ Note
 </section>
 <section id="b.-방법2-렐루이용" class="level2">
 <h2 class="anchored" data-anchor-id="b.-방법2-렐루이용">B. 방법2 – 렐루이용</h2>
-<div id="8771d2bb-4dda-4c11-8479-0191a6582079" class="cell" data-tags="[]" data-execution_count="56">
+<div id="8771d2bb-4dda-4c11-8479-0191a6582079" class="cell" data-tags="[]" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>relu <span class="op">=</span> torch.nn.ReLU()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="15dfca77-f1ea-4ecc-bfe3-12199323e2fe" class="cell" data-tags="[]" data-execution_count="57">
+<div id="15dfca77-f1ea-4ecc-bfe3-12199323e2fe" class="cell" data-tags="[]" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>plt.plot(relu(x),<span class="st">'--'</span>,label<span class="op">=</span><span class="vs">r'$relu(x)$'</span>)</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>plt.plot(relu(<span class="op">-</span>x),<span class="st">'--'</span>,label<span class="op">=</span><span class="vs">r'$relu(-x)$'</span>)</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>plt.legend()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -302,9 +302,9 @@ Note
 </div>
 </div>
 </div>
-<div id="74392d57-82a2-4ca8-a216-d6e5bdf5dad4" class="cell" data-tags="[]" data-execution_count="58">
+<div id="74392d57-82a2-4ca8-a216-d6e5bdf5dad4" class="cell" data-tags="[]" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>plt.plot(<span class="op">-</span><span class="fl">4.5</span><span class="op">*</span>relu(x),<span class="st">'--'</span>,label<span class="op">=</span><span class="vs">r'$-4.5\times relu(x) + 4.5$'</span>)</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>plt.plot(<span class="op">-</span><span class="dv">9</span><span class="op">*</span>relu(<span class="op">-</span>x),<span class="st">'--'</span>,label<span class="op">=</span><span class="vs">r'$9\times relu(-x) + 4.5$'</span>)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>plt.plot(<span class="op">-</span><span class="dv">9</span><span class="op">*</span>relu(<span class="op">-</span>x),<span class="st">'--'</span>,label<span class="op">=</span><span class="vs">r'$-9\times relu(-x) + 4.5$'</span>)</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>plt.legend()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
@@ -314,7 +314,7 @@ Note
 </div>
 </div>
 </div>
-<div id="e22e7d43-df43-40e1-ac0d-3e4841e8ccc4" class="cell" data-tags="[]" data-execution_count="59">
+<div id="e22e7d43-df43-40e1-ac0d-3e4841e8ccc4" class="cell" data-tags="[]" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>plt.plot(<span class="op">-</span><span class="fl">4.5</span><span class="op">*</span>relu(x)<span class="op">-</span><span class="dv">9</span><span class="op">*</span>relu(<span class="op">-</span>x),<span class="st">'--'</span>,label<span class="op">=</span><span class="vs">r'$-4.5\times relu(x) -9 \times relu(-x)$'</span>)</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>plt.plot(y,<span class="st">'--'</span>,label<span class="op">=</span><span class="vs">r'$y$'</span>)</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>plt.plot(<span class="op">-</span><span class="fl">4.5</span><span class="op">*</span>relu(x)<span class="op">-</span><span class="dv">9</span><span class="op">*</span>relu(<span class="op">-</span>x)<span class="op">+</span><span class="fl">4.5</span>,<span class="st">'--'</span>,label<span class="op">=</span><span class="vs">r'$-4.5\times relu(x) -9 \times relu(-x)+4.5$'</span>)</span>
@@ -328,16 +328,16 @@ Note
 </div>
 </div>
 <p><code>-</code> 우리의 목표: 저 초록선에서 시그모이드를 태우면된다. 즉 아래의 느낌임</p>
-<div id="ad85c852-0782-4548-a215-ce1730cd8885" class="cell" data-tags="[]" data-execution_count="60">
+<div id="ad85c852-0782-4548-a215-ce1730cd8885" class="cell" data-tags="[]" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>sig <span class="op">=</span> torch.nn.Sigmoid()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="f2c297fd" class="cell" data-tags="[]" data-execution_count="61">
+<div id="f2c297fd" class="cell" data-tags="[]" data-execution_count="19">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">4</span>))</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>spec <span class="op">=</span> fig.add_gridspec(<span class="dv">4</span>, <span class="dv">4</span>)</span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>ax1 <span class="op">=</span> fig.add_subplot(spec[:<span class="dv">2</span>,<span class="dv">0</span>])<span class="op">;</span> ax1.set_title(<span class="vs">r'$x$'</span>)</span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>ax2 <span class="op">=</span> fig.add_subplot(spec[<span class="dv">2</span>:,<span class="dv">0</span>])<span class="op">;</span> ax2.set_title(<span class="vs">r'$-x$'</span>)</span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>ax3 <span class="op">=</span> fig.add_subplot(spec[:<span class="dv">2</span>,<span class="dv">1</span>])<span class="op">;</span> ax3.set_title(<span class="vs">r'$relu(x)$'</span>)</span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>ax4 <span class="op">=</span> fig.add_subplot(spec[<span class="dv">2</span>:,<span class="dv">1</span>])<span class="op">;</span> ax4.set_title(<span class="vs">r'$relu(-x)$'</span>)</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>ax1 <span class="op">=</span> fig.add_subplot(spec[:<span class="dv">2</span>,<span class="dv">0</span>])<span class="op">;</span> ax1.set_title(<span class="vs">r'$x$'</span>)<span class="op">;</span> ax1.set_ylim(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>)</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>ax2 <span class="op">=</span> fig.add_subplot(spec[<span class="dv">2</span>:,<span class="dv">0</span>])<span class="op">;</span> ax2.set_title(<span class="vs">r'$-x$'</span>)<span class="op">;</span> ax2.set_ylim(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>)</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>ax3 <span class="op">=</span> fig.add_subplot(spec[:<span class="dv">2</span>,<span class="dv">1</span>])<span class="op">;</span> ax3.set_title(<span class="vs">r'$relu(x)$'</span>)<span class="op">;</span> ax3.set_ylim(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>)</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>ax4 <span class="op">=</span> fig.add_subplot(spec[<span class="dv">2</span>:,<span class="dv">1</span>])<span class="op">;</span> ax4.set_title(<span class="vs">r'$relu(-x)$'</span>)<span class="op">;</span> ax4.set_ylim(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>)</span>
 <span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>ax5 <span class="op">=</span> fig.add_subplot(spec[<span class="dv">1</span>:<span class="dv">3</span>,<span class="dv">2</span>])<span class="op">;</span> ax5.set_title(<span class="vs">r'$-4.5 relu(x)-9 relu(-x)+4.5$'</span>)</span>
 <span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>ax6 <span class="op">=</span> fig.add_subplot(spec[<span class="dv">1</span>:<span class="dv">3</span>,<span class="dv">3</span>])<span class="op">;</span> ax6.set_title(<span class="st">'sig(...)'</span>)<span class="op">;</span></span>
 <span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a><span class="co">#---#</span></span>
@@ -367,9 +367,9 @@ Note
 <li>y = -4.5 * relu(x) + 9 * relu(-x) +4.5 를 계산한다.</li>
 </ol>
 <p><code>-</code> 1단계</p>
-<div id="034b25f9-ac00-4489-ad2d-2ddcc4867657" class="cell" data-tags="[]" data-execution_count="62">
+<div id="034b25f9-ac00-4489-ad2d-2ddcc4867657" class="cell" data-tags="[]" data-execution_count="12">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>x,relu</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="62">
+<div class="cell-output cell-output-display" data-execution_count="12">
 <pre><code>(tensor([[-1.0000],
          [-0.9980],
          [-0.9960],
@@ -381,10 +381,10 @@ Note
 </div>
 </div>
 <p><code>-</code> 2단계</p>
-<div id="11ece33a-b1dd-4a87-ad89-3f844a7fac7a" class="cell" data-tags="[]" data-execution_count="63">
+<div id="11ece33a-b1dd-4a87-ad89-3f844a7fac7a" class="cell" data-tags="[]" data-execution_count="13">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>u <span class="op">=</span> torch.concat([x,<span class="op">-</span>x],axis<span class="op">=</span><span class="dv">1</span>) <span class="co"># u = [x, -x] 같은것</span></span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>u</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="63">
+<div class="cell-output cell-output-display" data-execution_count="13">
 <pre><code>tensor([[-1.0000,  1.0000],
         [-0.9980,  0.9980],
         [-0.9960,  0.9960],
@@ -395,10 +395,10 @@ Note
 </div>
 </div>
 <p><code>-</code> 3단계</p>
-<div id="f9f574aa-a216-4051-86f2-67ff3c3a4de5" class="cell" data-tags="[]" data-execution_count="64">
+<div id="f9f574aa-a216-4051-86f2-67ff3c3a4de5" class="cell" data-tags="[]" data-execution_count="14">
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>v <span class="op">=</span> relu(u) <span class="co"># 각각의 column에 렐루취함</span></span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>v</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="64">
+<div class="cell-output cell-output-display" data-execution_count="14">
 <pre><code>tensor([[0.0000, 1.0000],
         [0.0000, 0.9980],
         [0.0000, 0.9960],
@@ -485,14 +485,14 @@ x_n
 <div id="c3679474-9661-4415-aa2f-eb9bff07ffe7" class="cell" data-tags="[]" data-execution_count="71">
 <div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co">#u = torch.concat([x,-x],axis=1) # u1 = [x, -x] 같은것</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="416a91c3" class="cell" data-tags="[]" data-execution_count="72">
+<div id="416a91c3" class="cell" data-tags="[]" data-execution_count="20">
 <div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>l1 <span class="op">=</span> torch.nn.Linear(<span class="dv">1</span>,<span class="dv">2</span>)</span>
 <span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>l1.weight.data <span class="op">=</span> torch.tensor([[<span class="fl">1.0</span>],[<span class="op">-</span><span class="fl">1.0</span>]])</span>
 <span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>l1.bias.data <span class="op">=</span> torch.tensor([<span class="fl">0.0</span>,<span class="fl">0.0</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="5741e0e4" class="cell" data-tags="[]" data-execution_count="73">
+<div id="5741e0e4" class="cell" data-tags="[]" data-execution_count="21">
 <div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>l1(x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="73">
+<div class="cell-output cell-output-display" data-execution_count="21">
 <pre><code>tensor([[-1.0000,  1.0000],
         [-0.9980,  0.9980],
         [-0.9960,  0.9960],
@@ -503,7 +503,7 @@ x_n
 </div>
 </div>
 <p><code>-</code> 따라서 <code>torch.nn</code> 에 포함된 레이어를 이용하면 아래와 같이 표현할 할 수 있다.</p>
-<div id="5e0f02d7" class="cell" data-tags="[]" data-execution_count="74">
+<div id="5e0f02d7" class="cell" data-tags="[]" data-execution_count="22">
 <div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>l1 <span class="op">=</span> torch.nn.Linear(<span class="dv">1</span>,<span class="dv">2</span>)</span>
 <span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>l1.weight.data <span class="op">=</span> torch.tensor([[<span class="fl">1.0</span>],[<span class="op">-</span><span class="fl">1.0</span>]])</span>
 <span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>l1.bias.data <span class="op">=</span> torch.tensor([<span class="fl">0.0</span>,<span class="fl">0.0</span>])</span>
@@ -512,9 +512,9 @@ x_n
 <span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a>l2.weight.data <span class="op">=</span> torch.tensor([[<span class="op">-</span><span class="fl">4.5</span>,<span class="op">-</span><span class="fl">9.0</span>]])</span>
 <span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a>l2.bias.data <span class="op">=</span> torch.tensor([<span class="fl">4.5</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="86d2a237" class="cell" data-tags="[]" data-execution_count="75">
+<div id="86d2a237" class="cell" data-tags="[]" data-execution_count="23">
 <div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>l2(a1(l1(x))), y</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="75">
+<div class="cell-output cell-output-display" data-execution_count="23">
 <pre><code>(tensor([[-4.5000],
          [-4.4820],
          [-4.4640],
@@ -532,7 +532,7 @@ x_n
 </div>
 </div>
 <p><code>-</code> 각각의 layer를 <code>torch.nn.Sequential()</code> 로 묶으면 아래와 같이 정리할 수 있다.</p>
-<div id="19054fca" class="cell" data-tags="[]" data-execution_count="76">
+<div id="19054fca" class="cell" data-tags="[]" data-execution_count="24">
 <div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>net <span class="op">=</span> torch.nn.Sequential(</span>
 <span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>    torch.nn.Linear(<span class="dv">1</span>,<span class="dv">2</span>),</span>
 <span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>    torch.nn.ReLU(),</span>
@@ -544,9 +544,9 @@ x_n
 <span id="cb37-9"><a href="#cb37-9" aria-hidden="true" tabindex="-1"></a>l2.weight.data <span class="op">=</span> torch.tensor([[<span class="op">-</span><span class="fl">4.5</span>,<span class="op">-</span><span class="fl">9.0</span>]])</span>
 <span id="cb37-10"><a href="#cb37-10" aria-hidden="true" tabindex="-1"></a>l2.bias.data <span class="op">=</span> torch.tensor([<span class="fl">4.5</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="d203e846" class="cell" data-tags="[]" data-execution_count="77">
+<div id="d203e846" class="cell" data-tags="[]" data-execution_count="25">
 <div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>net(x),y</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="77">
+<div class="cell-output cell-output-display" data-execution_count="25">
 <pre><code>(tensor([[-4.5000],
          [-4.4820],
          [-4.4640],
@@ -587,10 +587,10 @@ x_n
 <h1>4. 로지스틱의 한계 극복</h1>
 <section id="a.-데이터" class="level2">
 <h2 class="anchored" data-anchor-id="a.-데이터">A. 데이터</h2>
-<div id="9eef0054-a918-43dc-8c63-827c57b589dc" class="cell" data-tags="[]" data-execution_count="78">
+<div id="9eef0054-a918-43dc-8c63-827c57b589dc" class="cell" data-tags="[]" data-execution_count="26">
 <div class="sourceCode cell-code" id="cb40"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">"https://raw.githubusercontent.com/guebin/DL2024/main/posts/dnnex.csv"</span>)</span>
 <span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="78">
+<div class="cell-output cell-output-display" data-execution_count="26">
 <div>
 
 
@@ -677,12 +677,12 @@ x_n
 </div>
 </div>
 </div>
-<div id="f9c64252-10e4-436f-a33d-60232b7812b5" class="cell" data-tags="[]" data-execution_count="79">
+<div id="f9c64252-10e4-436f-a33d-60232b7812b5" class="cell" data-tags="[]" data-execution_count="27">
 <div class="sourceCode cell-code" id="cb41"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> torch.tensor(df.x).<span class="bu">float</span>().reshape(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>)</span>
 <span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> torch.tensor(df.y).<span class="bu">float</span>().reshape(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>)</span>
 <span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>prob <span class="op">=</span> torch.tensor(df.prob).<span class="bu">float</span>().reshape(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="625869c1-cdf7-46d1-84c0-a942b9b15ce6" class="cell" data-tags="[]" data-execution_count="80">
+<div id="625869c1-cdf7-46d1-84c0-a942b9b15ce6" class="cell" data-tags="[]" data-execution_count="28">
 <div class="sourceCode cell-code" id="cb42"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>plt.plot(x,y,<span class="st">'o'</span>,alpha<span class="op">=</span><span class="fl">0.02</span>)</span>
 <span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>plt.plot(x[<span class="dv">0</span>],y[<span class="dv">0</span>],<span class="st">'o'</span>,label<span class="op">=</span> <span class="vs">r"observed data = $(x_i,y_i)$"</span>,color<span class="op">=</span><span class="st">"C0"</span>)</span>
 <span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>plt.plot(x,prob,<span class="st">'--b'</span>,label<span class="op">=</span> <span class="vs">r"prob (true, unknown)"</span>)</span>
@@ -701,7 +701,7 @@ x_n
 <p><code>-</code> Step1에 대한 생각: 네트워크를 어떻게 만들까? = 아키텍처를 어떻게 만들까? = 모델링</p>
 <p><span class="math display">\[\underset{(n,1)}{\bf X} \overset{l_1}{\to} \underset{(n,2)}{\boldsymbol u^{(1)}} \overset{a_1}{\to} \underset{(n,2)}{\boldsymbol v^{(1)}} \overset{l_1}{\to} \underset{(n,1)}{\boldsymbol u^{(2)}} \overset{a_2}{\to} \underset{(n,1)}{\boldsymbol v^{(2)}}=\underset{(n,1)}{\hat{\boldsymbol y}}\]</span></p>
 <p><code>-</code> Step2,3,4 는 너무 뻔해서..</p>
-<div id="e3d05bed-d4d5-4266-b069-dba1f85d4d78" class="cell" data-tags="[]" data-execution_count="81">
+<div id="e3d05bed-d4d5-4266-b069-dba1f85d4d78" class="cell" data-tags="[]" data-execution_count="29">
 <div class="sourceCode cell-code" id="cb43"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>torch.manual_seed(<span class="dv">43052</span>)</span>
 <span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>net <span class="op">=</span> torch.nn.Sequential(</span>
 <span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>    torch.nn.Linear(<span class="dv">1</span>,<span class="dv">2</span>),</span>
@@ -723,7 +723,7 @@ x_n
 <span id="cb43-19"><a href="#cb43-19" aria-hidden="true" tabindex="-1"></a>    optimizr.step()</span>
 <span id="cb43-20"><a href="#cb43-20" aria-hidden="true" tabindex="-1"></a>    optimizr.zero_grad()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="ba69a29c-39b6-4714-920f-791956adf2a5" class="cell" data-tags="[]" data-execution_count="82">
+<div id="ba69a29c-39b6-4714-920f-791956adf2a5" class="cell" data-tags="[]" data-execution_count="30">
 <div class="sourceCode cell-code" id="cb44"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>plt.plot(x,y,<span class="st">'o'</span>,alpha<span class="op">=</span><span class="fl">0.02</span>)</span>
 <span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>plt.plot(x[<span class="dv">0</span>],y[<span class="dv">0</span>],<span class="st">'o'</span>,label<span class="op">=</span> <span class="vs">r"observed data = $(x_i,y_i)$"</span>,color<span class="op">=</span><span class="st">"C0"</span>)</span>
 <span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>plt.plot(x,prob,<span class="st">'--b'</span>,label<span class="op">=</span> <span class="vs">r"prob (true, unknown)"</span>)</span>
@@ -737,7 +737,7 @@ x_n
 </div>
 </div>
 </div>
-<div id="05f6f9a4-c15b-4c52-854a-515f30375865" class="cell" data-tags="[]" data-execution_count="83">
+<div id="05f6f9a4-c15b-4c52-854a-515f30375865" class="cell" data-tags="[]" data-execution_count="31">
 <div class="sourceCode cell-code" id="cb45"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> epoc <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">3000</span>):</span>
 <span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">## </span></span>
 <span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>    yhat <span class="op">=</span> net(x)</span>
@@ -749,7 +749,7 @@ x_n
 <span id="cb45-9"><a href="#cb45-9" aria-hidden="true" tabindex="-1"></a>    optimizr.step()</span>
 <span id="cb45-10"><a href="#cb45-10" aria-hidden="true" tabindex="-1"></a>    optimizr.zero_grad()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="72bfb73b-928a-4ac9-83ba-4fd790579516" class="cell" data-tags="[]" data-execution_count="84">
+<div id="72bfb73b-928a-4ac9-83ba-4fd790579516" class="cell" data-tags="[]" data-execution_count="32">
 <div class="sourceCode cell-code" id="cb46"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>plt.plot(x,y,<span class="st">'o'</span>,alpha<span class="op">=</span><span class="fl">0.02</span>)</span>
 <span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>plt.plot(x[<span class="dv">0</span>],y[<span class="dv">0</span>],<span class="st">'o'</span>,label<span class="op">=</span> <span class="vs">r"observed data = $(x_i,y_i)$"</span>,color<span class="op">=</span><span class="st">"C0"</span>)</span>
 <span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>plt.plot(x,prob,<span class="st">'--b'</span>,label<span class="op">=</span> <span class="vs">r"prob (true, unknown)"</span>)</span>
