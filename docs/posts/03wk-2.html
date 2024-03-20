@@ -257,17 +257,35 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<p>아래의 코드실행결과가 다른 이유가 궁금하다면 깊은복사 얕은복사 강의를 참고할 것. (그렇지만 가능하면 궁금해하지 말 것..)</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> torch.linspace(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1001</span>).reshape(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>)</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> x<span class="op">*</span><span class="dv">0</span> <span class="op">+</span> x </span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>y[x<span class="op">&lt;</span><span class="dv">0</span>] <span class="op">=</span> (<span class="dv">9</span><span class="op">*</span>x<span class="op">+</span><span class="fl">4.5</span>)[x<span class="op">&lt;</span><span class="dv">0</span>]</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>y[x<span class="op">&gt;</span><span class="dv">0</span>] <span class="op">=</span> (<span class="op">-</span><span class="fl">4.5</span><span class="op">*</span>x<span class="op">+</span><span class="fl">4.5</span>)[x<span class="op">&gt;</span><span class="dv">0</span>]</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>plt.plot(x,y)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> torch.linspace(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1001</span>).reshape(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>)</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> x </span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>y[x<span class="op">&lt;</span><span class="dv">0</span>] <span class="op">=</span> (<span class="dv">9</span><span class="op">*</span>x<span class="op">+</span><span class="fl">4.5</span>)[x<span class="op">&lt;</span><span class="dv">0</span>]</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>y[x<span class="op">&gt;</span><span class="dv">0</span>] <span class="op">=</span> (<span class="op">-</span><span class="fl">4.5</span><span class="op">*</span>x<span class="op">+</span><span class="fl">4.5</span>)[x<span class="op">&gt;</span><span class="dv">0</span>]</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>plt.plot(x,y)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>강의영상에 보셨듯이 아래의 코드실행결과는 다르게 나옵니다.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">## 아래를 실행하면 꺽인선이 나오는데용...</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> torch.linspace(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1001</span>).reshape(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> x<span class="op">*</span><span class="dv">0</span> <span class="op">+</span> x </span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>y[x<span class="op">&lt;</span><span class="dv">0</span>] <span class="op">=</span> (<span class="dv">9</span><span class="op">*</span>x<span class="op">+</span><span class="fl">4.5</span>)[x<span class="op">&lt;</span><span class="dv">0</span>]</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>y[x<span class="op">&gt;</span><span class="dv">0</span>] <span class="op">=</span> (<span class="op">-</span><span class="fl">4.5</span><span class="op">*</span>x<span class="op">+</span><span class="fl">4.5</span>)[x<span class="op">&gt;</span><span class="dv">0</span>]</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>plt.plot(x,y)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">## 이걸 실행하면 그냥 직선이 나옵니다...</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> torch.linspace(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1001</span>).reshape(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> x </span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>y[x<span class="op">&lt;</span><span class="dv">0</span>] <span class="op">=</span> (<span class="dv">9</span><span class="op">*</span>x<span class="op">+</span><span class="fl">4.5</span>)[x<span class="op">&lt;</span><span class="dv">0</span>]</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>y[x<span class="op">&gt;</span><span class="dv">0</span>] <span class="op">=</span> (<span class="op">-</span><span class="fl">4.5</span><span class="op">*</span>x<span class="op">+</span><span class="fl">4.5</span>)[x<span class="op">&gt;</span><span class="dv">0</span>]</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>plt.plot(x,y)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>다르게 나오는 이유가 너무 궁금하시다면 아래의 링크로 가셔서 깊은복사/얕은복사에 대한 개념을 이해하시면 됩니다. (그렇지만 가능하다면 궁금해하지 마세요…..)</p>
+<ul>
+<li><a href="https://guebin.github.io/PP2023/posts/2023-06-21-13wk-1.html">깊은복사 얕은복사 강의들으러 가기</a></li>
+</ul>
+</div>
+</div>
 </section>
 <section id="b.-방법2-렐루이용" class="level2">
 <h2 class="anchored" data-anchor-id="b.-방법2-렐루이용">B. 방법2 – 렐루이용</h2>
