@@ -8,6 +8,6 @@
 강의 자료를 다운로드하는 방법은 다음과 같습니다:
 
 - 방법1. 이 리포지토리를 직접 클론하여 모든 강의 자료를 다운로드.
-- 방법2. https://guebin.github.io/DV2024 에 접속하여 강의자료를 클릭하고 우측 하단의 "Other Formats -> Jupyter"을 클릭하여 다운로드. 
+- 방법2. https://guebin.github.io/DL2024 에 접속하여 강의자료를 클릭하고 우측 하단의 "Other Formats -> Jupyter"을 클릭하여 다운로드. 
 
 **문의**: guebin@jbnu.ac.kr
