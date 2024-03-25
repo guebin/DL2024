@@ -7,6 +7,251 @@
     "text": "질문하는 방법\n\n이메일: guebin@jbnu.ac.kr\n직접방문: 자연과학대학 본관 205호\nZoom: 이메일로 미리 시간을 정할 것\n카카오톡: http://pf.kakao.com/_txeIFG/chat\n\n강의노트\n\n\n\n\n\n\n\n\n\nDate\n\n\nTitle\n\n\nAuthor\n\n\n\n\n\n\nMar 20, 2024\n\n\n04wk-1: 깊은신경망 (2) – 꺽인그래프의 한계?, 시벤코정리, MNIST\n\n\n최규빈 \n\n\n\n\nMar 20, 2024\n\n\n03wk-2: 깊은신경망 (1) – 로지스틱의 한계 극복\n\n\n최규빈 \n\n\n\n\nMar 18, 2024\n\n\n03wk-1: 로지스틱 – 로지스틱 소개, BCELoss, Adam, 로지스틱의 한계\n\n\n최규빈 \n\n\n\n\nMar 13, 2024\n\n\n02wk-2: 회귀분석 (3) – Step1,2,4 의 변형\n\n\n최규빈 \n\n\n\n\nMar 11, 2024\n\n\n02wk-1: 회귀분석 (2) – Step1~4 / 벡터미분\n\n\n최규빈 \n\n\n\n\nMar 6, 2024\n\n\n01wk-2: 회귀분석 (1) – 단순회귀의 학습전략, 경사하강법\n\n\n최규빈 \n\n\n\n\nMar 4, 2024\n\n\n01wk-1: 이미지 자료 분석 (겉핥기)\n\n\n최규빈 \n\n\n\n\n\nNo matching items"
   },
   {
+    "objectID": "posts/01wk-2.html#a.-모형소개",
+    "href": "posts/01wk-2.html#a.-모형소개",
+    "title": "01wk-2: 회귀분석 (1) – 단순회귀의 학습전략, 경사하강법",
+    "section": "A. 모형소개",
+    "text": "A. 모형소개\n- model: \\(y_i= w_0+w_1 x_i +\\epsilon_i = 2.5 + 4x_i +\\epsilon_i, \\quad i=1,2,\\dots,n\\)\n- model: \\({\\bf y}={\\bf X}{\\bf W} +\\boldsymbol{\\epsilon}\\)\n\n\\({\\bf y}=\\begin{bmatrix} y_1 \\\\ y_2 \\\\ \\dots \\\\ y_n\\end{bmatrix}, \\quad {\\bf X}=\\begin{bmatrix} 1 & x_1 \\\\ 1 & x_2 \\\\ \\dots \\\\ 1 & x_n\\end{bmatrix}, \\quad {\\bf W}=\\begin{bmatrix} 2.5 \\\\ 4 \\end{bmatrix}, \\quad \\boldsymbol{\\epsilon}= \\begin{bmatrix} \\epsilon_1 \\\\ \\dots \\\\ \\epsilon_n\\end{bmatrix}\\)"
+  },
+  {
+    "objectID": "posts/01wk-2.html#b.-회귀모형에서-데이터-생성",
+    "href": "posts/01wk-2.html#b.-회귀모형에서-데이터-생성",
+    "title": "01wk-2: 회귀분석 (1) – 단순회귀의 학습전략, 경사하강법",
+    "section": "B. 회귀모형에서 데이터 생성",
+    "text": "B. 회귀모형에서 데이터 생성\n\ntorch.manual_seed(43052)\nones= torch.ones(100).reshape(-1,1)\nx,_ = torch.randn(100).sort()\nx = x.reshape(-1,1)\nX = torch.concat([ones,x],axis=-1)\nW = torch.tensor([[2.5],[4]])\nϵ = torch.randn(100).reshape(-1,1)*0.5\ny = X@W + ϵ\n\n\nplt.plot(x,y,'o')\nplt.plot(x,2.5+4*x,'--')"
+  },
+  {
+    "objectID": "posts/01wk-2.html#a.-손실함수",
+    "href": "posts/01wk-2.html#a.-손실함수",
+    "title": "01wk-2: 회귀분석 (1) – 단순회귀의 학습전략, 경사하강법",
+    "section": "A. 손실함수",
+    "text": "A. 손실함수\n- ’적당한 정도’를 판단하기 위한 장치: loss function 도입!\n\\(loss=\\sum_{i=1}^{n}(y_i-\\hat{y}_i)^2=\\sum_{i=1}^{n}(y_i-(\\hat{w}_0+\\hat{w}_1x_i))^2\\)\n\\(=({\\bf y}-{\\bf\\hat{y}})^\\top({\\bf y}-{\\bf\\hat{y}})=({\\bf y}-{\\bf X}{\\bf \\hat{W}})^\\top({\\bf y}-{\\bf X}{\\bf \\hat{W}})\\)\n- loss 함수의 특징\n\n\\(y_i \\approx \\hat{y}_i\\) 일수록 loss값이 작다.\n\\(y_i \\approx \\hat{y}_i\\) 이 되도록 \\((\\hat{w}_0,\\hat{w}_1)\\)을 잘 찍으면 loss값이 작다.\n(중요) 주황색 점선이 ‘적당할 수록’ loss값이 작다.\n\n\nloss = torch.sum((y-yhat)**2)\nloss\n\ntensor(8587.6875, grad_fn=&lt;SumBackward0&gt;)\n\n\n- 우리의 목표: 이 loss(=8587.6875)을 더 줄이자.\n\n궁극적으로는 아예 모든 조합 \\((\\hat{w}_0,\\hat{w}_1)\\)에 대하여 가장 작은 loss를 찾으면 좋겠다. (단계2에서 할일은 아님)\n\n- 문제의 치환: 생각해보니까 우리의 문제는 아래와 같이 수학적으로 단순화 되었다.\n\n적당해보이는 주황색 선을 찾자 \\(\\to\\) \\(loss(w_0,w_1)\\)를 최소로하는 \\((w_0,w_1)\\)의 값을 찾자.\n\n- 수정된 목표: \\(loss(w_0,w_1)\\)를 최소로 하는 \\((w_0,w_1)\\)을 구하라.\n\n단순한 수학문제가 되었다. 이것은 마치 \\(f(x,y)\\)를 최소화하는 \\((x,y)\\)를 찾으라는 것임.\n함수의 최대값 혹은 최소값을 컴퓨터를 이용하여 찾는것을 “최적화”라고 하며 이는 산공교수님들이 가장 잘하는 분야임. (산공교수님들에게 부탁하면 잘해줌, 산공교수님들은 보통 최적화해서 어디에 쓸지보다 최적화 자체에 더 관심을 가지고 연구하심)\n최적화를 하는 방법? 경사하강법"
+  },
+  {
+    "objectID": "posts/01wk-2.html#b.-경사하강법",
+    "href": "posts/01wk-2.html#b.-경사하강법",
+    "title": "01wk-2: 회귀분석 (1) – 단순회귀의 학습전략, 경사하강법",
+    "section": "B. 경사하강법",
+    "text": "B. 경사하강법\n- 경사하강법 아이디어 (1차원)\n\n임의의 점을 찍는다.\n그 점에서 순간기울기를 구한다. (접선) &lt;– 미분\n순간기울기(=미분계수)의 부호를 살펴보고 부호와 반대방향으로 움직인다.\n\n\n팁: 기울기의 절대값 크기와 비례하여 보폭(=움직이는 정도)을 조절한다. \\(\\to\\) \\(\\alpha\\)를 도입\n\n\n최종수식: \\(w \\leftarrow w - \\alpha \\times \\frac{\\partial}{\\partial w}loss(w)\\)\n\n- 경사하강법 아이디어 (2차원)\n\n임의의 점을 찍는다.\n그 점에서 순간기울기를 구한다. (접평면) &lt;– 편미분\n순간기울기(=미분계수)의 부호를 살펴보고 부호와 반대방향으로 각각 움직인다.\n\n\n팁: 여기서도 기울기의 절대값 크기와 비례하여 보폭(=움직이는 정도)을 각각 조절한다. \\(\\to\\) \\(\\alpha\\)를 도입.\n\n- 경사하강법 = loss를 줄이도록 \\({\\bf W}\\)를 개선하는 방법\n\n업데이트 공식: 수정값 = 원래값 - \\(\\alpha\\) \\(\\times\\) 기울어진크기(=미분계수)\n여기에서 \\(\\alpha\\)는 전체적인 보폭의 크기를 결정한다. 즉 \\(\\alpha\\)값이 클수록 한번의 update에 움직이는 양이 크다."
+  },
+  {
+    "objectID": "posts/02wk-2.html#a.-data",
+    "href": "posts/02wk-2.html#a.-data",
+    "title": "02wk-2: 회귀분석 (3) – Step1,2,4 의 변형",
+    "section": "A. Data",
+    "text": "A. Data\n\ntemp = [-2.4821, -2.3621, -1.9973, -1.6239, -1.4792, -1.4635, -1.4509, -1.4435,\n        -1.3722, -1.3079, -1.1904, -1.1092, -1.1054, -1.0875, -0.9469, -0.9319,\n        -0.8643, -0.7858, -0.7549, -0.7421, -0.6948, -0.6103, -0.5830, -0.5621,\n        -0.5506, -0.5058, -0.4806, -0.4738, -0.4710, -0.4676, -0.3874, -0.3719,\n        -0.3688, -0.3159, -0.2775, -0.2772, -0.2734, -0.2721, -0.2668, -0.2155,\n        -0.2000, -0.1816, -0.1708, -0.1565, -0.1448, -0.1361, -0.1057, -0.0603,\n        -0.0559, -0.0214,  0.0655,  0.0684,  0.1195,  0.1420,  0.1521,  0.1568,\n         0.2646,  0.2656,  0.3157,  0.3220,  0.3461,  0.3984,  0.4190,  0.5443,\n         0.5579,  0.5913,  0.6148,  0.6469,  0.6469,  0.6523,  0.6674,  0.7059,\n         0.7141,  0.7822,  0.8154,  0.8668,  0.9291,  0.9804,  0.9853,  0.9941,\n         1.0376,  1.0393,  1.0697,  1.1024,  1.1126,  1.1532,  1.2289,  1.3403,\n         1.3494,  1.4279,  1.4994,  1.5031,  1.5437,  1.6789,  2.0832,  2.2444,\n         2.3935,  2.6056,  2.6057,  2.6632]\nsales= [-8.5420, -6.5767, -5.9496, -4.4794, -4.2516, -3.1326, -4.0239, -4.1862,\n        -3.3403, -2.2027, -2.0262, -2.5619, -1.3353, -2.0466, -0.4664, -1.3513,\n        -1.6472, -0.1089, -0.3071, -0.6299, -0.0438,  0.4163,  0.4166, -0.0943,\n         0.2662,  0.4591,  0.8905,  0.8998,  0.6314,  1.3845,  0.8085,  1.2594,\n         1.1211,  1.9232,  1.0619,  1.3552,  2.1161,  1.1437,  1.6245,  1.7639,\n         1.6022,  1.7465,  0.9830,  1.7824,  2.1116,  2.8621,  2.1165,  1.5226,\n         2.5572,  2.8361,  3.3956,  2.0679,  2.8140,  3.4852,  3.6059,  2.5966,\n         2.8854,  3.9173,  3.6527,  4.1029,  4.3125,  3.4026,  3.2180,  4.5686,\n         4.3772,  4.3075,  4.4895,  4.4827,  5.3170,  5.4987,  5.4632,  6.0328,\n         5.2842,  5.0539,  5.4538,  6.0337,  5.7250,  5.7587,  6.2020,  6.5992,\n         6.4621,  6.5140,  6.6846,  7.3497,  8.0909,  7.0794,  6.8667,  7.4229,\n         7.2544,  7.1967,  9.5006,  9.0339,  7.4887,  9.0759, 11.0946, 10.3260,\n        12.2665, 13.0983, 12.5468, 13.8340]\nx = torch.tensor(temp).reshape(-1,1)\nones = torch.ones(100).reshape(-1,1)\nX = torch.concat([ones,x],axis=1)\ny = torch.tensor(sales).reshape(-1,1)"
+  },
+  {
+    "objectID": "posts/02wk-2.html#b.-파이토치를-이용한-학습",
+    "href": "posts/02wk-2.html#b.-파이토치를-이용한-학습",
+    "title": "02wk-2: 회귀분석 (3) – Step1,2,4 의 변형",
+    "section": "B. 파이토치를 이용한 학습",
+    "text": "B. 파이토치를 이용한 학습\n- 외우세여\n\nWhat = torch.tensor([[-5.0],[10.0]],requires_grad = True)\nfor epoc in range(30):\n    # step1: yhat \n    yhat = X@What \n    # step2: loss\n    loss = torch.sum((y-yhat)**2)\n    # step3: 미분\n    loss.backward()\n    # step4: update\n    What.data = What.data - 0.001 * What.grad\n    What.grad = None\n\n- 결과 시각화\n\nplt.plot(x,y,'o')\nplt.plot(x,X@What.data,'--')\nplt.title(f'What={What.data.reshape(-1)}');"
+  },
+  {
+    "objectID": "posts/02wk-2.html#c.-step2의-수정",
+    "href": "posts/02wk-2.html#c.-step2의-수정",
+    "title": "02wk-2: 회귀분석 (3) – Step1,2,4 의 변형",
+    "section": "C. Step2의 수정",
+    "text": "C. Step2의 수정\n- 수정된 코드\n\nWhat = torch.tensor([[-5.0],[10.0]],requires_grad = True)\nloss_fn = torch.nn.MSELoss()\nfor epoc in range(30):\n    # step1: yhat \n    yhat = X@What \n    # step2: loss\n    #loss = torch.sum((y-yhat)**2)/100\n    #loss = torch.mean((y-yhat)**2) \n    loss = loss_fn(yhat,y) # 여기서는 큰 상관없지만 습관적으로 yhat을 먼저넣는 연습을 하자!!\n    # step3: 미분\n    loss.backward()\n    # step4: update\n    What.data = What.data - 0.1 * What.grad\n    What.grad = None\n\n- 결과확인\n\nplt.plot(x,y,'o')\nplt.plot(x,X@What.data,'--')\nplt.title(f'What={What.data.reshape(-1)}');"
+  },
+  {
+    "objectID": "posts/02wk-2.html#d.-step1의-수정-net의-이용",
+    "href": "posts/02wk-2.html#d.-step1의-수정-net의-이용",
+    "title": "02wk-2: 회귀분석 (3) – Step1,2,4 의 변형",
+    "section": "D. Step1의 수정 – net의 이용",
+    "text": "D. Step1의 수정 – net의 이용\n- net 오브젝트란?\n원래 yhat을 이런식으로 구했는데 ~\n\nWhat = torch.tensor([[-5.0],[10.0]],requires_grad = True)\n(X@What.data)[:5]\n\ntensor([[-29.8210],\n        [-28.6210],\n        [-24.9730],\n        [-21.2390],\n        [-19.7920]])\n\n\n이런식으로도 구할수 있음!\n\nnet = torch.nn.Linear(\n    in_features=2,\n    out_features=1,\n    bias=False\n)\n\n\nnet.weight.data = torch.tensor([[-5.0,  10.0]])\nnet.weight\n\nParameter containing:\ntensor([[-5., 10.]], requires_grad=True)\n\n\n\nnet(X)[:5]\n\ntensor([[-29.8210],\n        [-28.6210],\n        [-24.9730],\n        [-21.2390],\n        [-19.7920]], grad_fn=&lt;SliceBackward0&gt;)\n\n\n- 학습\n\n# step1을 위한 사전준비\nnet = torch.nn.Linear(\n    in_features=2,\n    out_features=1,\n    bias=False\n)\nnet.weight.data = torch.tensor([[-5.0,  10.0]])\n# step2를 위한 사전준비\nloss_fn = torch.nn.MSELoss()\nfor epoc in range(30):\n    # step1: yhat \n    yhat = net(X)\n    # step2: loss\n    loss = loss_fn(yhat,y)\n    # step3: 미분\n    loss.backward()\n    # step4: update\n    net.weight.data = net.weight.data - 0.1 * net.weight.grad\n    net.weight.grad = None\n\n- 결과확인\n\nplt.plot(x,y,'o')\nplt.plot(x,net(X).data,'--')\nplt.title(f'net.weight={net.weight.data.reshape(-1)}');"
+  },
+  {
+    "objectID": "posts/02wk-2.html#e.-step4의-수정-optimizer의-이용",
+    "href": "posts/02wk-2.html#e.-step4의-수정-optimizer의-이용",
+    "title": "02wk-2: 회귀분석 (3) – Step1,2,4 의 변형",
+    "section": "E. Step4의 수정 – optimizer의 이용",
+    "text": "E. Step4의 수정 – optimizer의 이용\n기존코드의 에폭별분해\n- 준비과정\n\n# step1을 위한 사전준비\nnet = torch.nn.Linear(\n    in_features=2,\n    out_features=1,\n    bias=False\n)\nnet.weight.data = torch.tensor([[-5.0,  10.0]])\n# step2를 위한 사전준비\nloss_fn = torch.nn.MSELoss()\n\n- 에폭별분해\n(미분전) – step1~2 완료\n\nyhat = net(X)\nloss = loss_fn(yhat,y)\n\n\nprint(f'파라메터 = {net.weight.data}')\nprint(f'미분값 = {net.weight.grad}')\n\n파라메터 = tensor([[-5., 10.]])\n미분값 = None\n\n\n(미분후, 업데이트 진행전) – step3 완료\n\nloss.backward()\n\n\nprint(f'파라메터 = {net.weight.data}')\nprint(f'미분값 = {net.weight.grad}')\n\n파라메터 = tensor([[-5., 10.]])\n미분값 = tensor([[-13.4225,  11.8892]])\n\n\n(업데이트 진행후) – step4 의 첫째줄 완료\n\nnet.weight.data = net.weight.data - 0.1 * net.weight.grad\n\n\nprint(f'파라메터 = {net.weight.data}')\nprint(f'미분값 = {net.weight.grad}')\n\n파라메터 = tensor([[-3.6578,  8.8111]])\n미분값 = tensor([[-13.4225,  11.8892]])\n\n\n(업데이트 완료 후 초기화까지 끝냄) – step4 의 두번째줄 완료\n\nnet.weight.grad = None\n\n\nprint(f'파라메터 = {net.weight.data}')\nprint(f'미분값 = {net.weight.grad}')\n\n파라메터 = tensor([[-3.6578,  8.8111]])\n미분값 = None\n\n\n새로운코드의 에폭별분해\n- 준비과정 – 옵티마이저라는 오브젝트를 셋팅한다!\n\n# step1을 위한 사전준비\nnet = torch.nn.Linear(\n    in_features=2,\n    out_features=1,\n    bias=False\n)\nnet.weight.data = torch.tensor([[-5.0,  10.0]])\n# step2를 위한 사전준비\nloss_fn = torch.nn.MSELoss()\n# step3을 위한 사전준비 \noptimizr = torch.optim.SGD(params=net.parameters(),lr=0.1)\n\n- 에폭별분해\n(미분전) – step1~2 완료\n\nyhat = net(X)\nloss = loss_fn(yhat,y)\n\n\nprint(f'파라메터 = {net.weight.data}')\nprint(f'미분값 = {net.weight.grad}')\n\n파라메터 = tensor([[-5., 10.]])\n미분값 = None\n\n\n(미분후, 업데이트 진행전) – step3 완료\n\nloss.backward()\n\n\nprint(f'파라메터 = {net.weight.data}')\nprint(f'미분값 = {net.weight.grad}')\n\n파라메터 = tensor([[-5., 10.]])\n미분값 = tensor([[-13.4225,  11.8892]])\n\n\n(업데이트 진행후) – step4 의 첫째줄 완료\n\n#net.weight.data = net.weight.data - 0.1 * net.weight.grad\noptimizr.step()\n\n\nprint(f'파라메터 = {net.weight.data}')\nprint(f'미분값 = {net.weight.grad}')\n\n파라메터 = tensor([[-3.6578,  8.8111]])\n미분값 = tensor([[-13.4225,  11.8892]])\n\n\n(업데이트 완료 후 초기화까지 끝냄) – step4 의 두번째줄 완료\n\n#net.weight.grad = None\noptimizr.zero_grad()\n\n\nprint(f'파라메터 = {net.weight.data}')\nprint(f'미분값 = {net.weight.grad}')\n\n파라메터 = tensor([[-3.6578,  8.8111]])\n미분값 = None\n\n\n최종코드\n- 학습\n\n# step1을 위한 사전준비\nnet = torch.nn.Linear(\n    in_features=2,\n    out_features=1,\n    bias=False\n)\nnet.weight.data = torch.tensor([[-5.0,  10.0]])\n# step2를 위한 사전준비\nloss_fn = torch.nn.MSELoss()\n# step4를 위한 사전준비 \noptimizr = torch.optim.SGD(net.parameters(),lr=0.1)\nfor epoc in range(30):\n    # step1: yhat \n    yhat = net(X)\n    # step2: loss\n    loss = loss_fn(yhat,y)\n    # step3: 미분\n    loss.backward()\n    # step4: update\n    optimizr.step()\n    optimizr.zero_grad()\n\n- 결과확인\n\nplt.plot(x,y,'o')\nplt.plot(x,yhat.data,'--')\nplt.title(f'net.weight={net.weight.data.reshape(-1)}');"
+  },
+  {
+    "objectID": "posts/01wk-1.html#a.-최하니",
+    "href": "posts/01wk-1.html#a.-최하니",
+    "title": "01wk-1: 이미지 자료 분석 (겉핥기)",
+    "section": "A. 최하니",
+    "text": "A. 최하니\n\nhani1 = PILImage.create(requests.get('https://github.com/guebin/DL2024/blob/main/imgs/01wk-hani1.jpeg?raw=true').content)\nhani1\n\n\n\n\n\n\n\n\n\nlrnr.predict(hani1)\n\n\n\n\n\n\n\n\n('dog', tensor(1), tensor([2.9308e-09, 1.0000e+00]))\n\n\n\nhani2 = PILImage.create(requests.get('https://github.com/guebin/DL2024/blob/main/imgs/01wk-hani2.jpeg?raw=true').content)\nhani2\n\n\n\n\n\n\n\n\n\nlrnr.predict(hani2)\n\n\n\n\n\n\n\n\n('dog', tensor(1), tensor([8.9153e-06, 9.9999e-01]))\n\n\n\nhani3 = PILImage.create(requests.get('https://github.com/guebin/DL2024/blob/main/imgs/01wk-hani3.jpg?raw=true').content)\nhani3\n\n\n\n\n\n\n\n\n\nlrnr.predict(hani3)\n\n\n\n\n\n\n\n\n('dog', tensor(1), tensor([3.9399e-04, 9.9961e-01]))"
+  },
+  {
+    "objectID": "posts/01wk-1.html#b.-인터넷-고양이",
+    "href": "posts/01wk-1.html#b.-인터넷-고양이",
+    "title": "01wk-1: 이미지 자료 분석 (겉핥기)",
+    "section": "B. 인터넷 고양이",
+    "text": "B. 인터넷 고양이\n\ncat1 = PILImage.create(requests.get('https://github.com/guebin/DL2024/blob/main/imgs/01wk-cat1.png?raw=true').content)\ncat1\n\n\n\n\n\n\n\n\n\nlrnr.predict(cat1)\n\n\n\n\n\n\n\n\n('cat', tensor(0), tensor([1.0000e+00, 2.2026e-11]))\n\n\n\ncat2 = PILImage.create(requests.get('https://github.com/guebin/DL2024/blob/main/imgs/01wk-cat2.jpeg?raw=true').content)\ncat2\n\n\n\n\n\n\n\n\n\nlrnr.predict(cat2)\n\n\n\n\n\n\n\n\n('cat', tensor(0), tensor([1.0000e+00, 9.4345e-07]))"
+  },
+  {
+    "objectID": "posts/01wk-1.html#a.-step1-dls데이터-준비",
+    "href": "posts/01wk-1.html#a.-step1-dls데이터-준비",
+    "title": "01wk-1: 이미지 자료 분석 (겉핥기)",
+    "section": "A. Step1: DLS(=데이터) 준비",
+    "text": "A. Step1: DLS(=데이터) 준비\n\ndls = ImageDataLoaders.from_folder(\n    path = './images',\n    train='train',\n    valid_pct = 0.2,\n    item_tfms=Resize(224),\n)\n\n\ndls.show_batch()"
+  },
+  {
+    "objectID": "posts/01wk-1.html#b.-step2-러너생성",
+    "href": "posts/01wk-1.html#b.-step2-러너생성",
+    "title": "01wk-1: 이미지 자료 분석 (겉핥기)",
+    "section": "B. Step2: 러너생성",
+    "text": "B. Step2: 러너생성\n\nlrnr = vision_learner(\n    dls = dls,\n    arch = resnet34,\n    metrics = accuracy\n)"
+  },
+  {
+    "objectID": "posts/01wk-1.html#c.-step3-학습",
+    "href": "posts/01wk-1.html#c.-step3-학습",
+    "title": "01wk-1: 이미지 자료 분석 (겉핥기)",
+    "section": "C. Step3: 학습",
+    "text": "C. Step3: 학습\n\nlrnr.fine_tune(7)\n\n\n\n\n\n\n\n\nepoch\ntrain_loss\nvalid_loss\naccuracy\ntime\n\n\n\n\n0\n1.346890\n0.969989\n0.657534\n00:11\n\n\n\n\n\n\n\n\n\n\n\n\nepoch\ntrain_loss\nvalid_loss\naccuracy\ntime\n\n\n\n\n0\n0.734809\n0.817061\n0.698630\n00:10\n\n\n1\n0.581782\n0.937060\n0.739726\n00:11\n\n\n2\n0.426661\n0.901986\n0.835616\n00:12\n\n\n3\n0.332050\n0.899157\n0.835616\n00:10\n\n\n4\n0.263004\n0.844802\n0.849315\n00:10\n\n\n5\n0.220254\n0.762331\n0.849315\n00:11\n\n\n6\n0.185242\n0.716601\n0.849315\n00:11"
+  },
+  {
+    "objectID": "posts/01wk-1.html#d.-step4-예측",
+    "href": "posts/01wk-1.html#d.-step4-예측",
+    "title": "01wk-1: 이미지 자료 분석 (겉핥기)",
+    "section": "D. Step4: 예측",
+    "text": "D. Step4: 예측\n\nlrnr.show_results()\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\ninter = Interpretation.from_learner(lrnr)\ninter.plot_top_losses(16)"
+  },
+  {
+    "objectID": "posts/01wk-1.html#크롤링을-활용한-이미지-자료-분석",
+    "href": "posts/01wk-1.html#크롤링을-활용한-이미지-자료-분석",
+    "title": "01wk-1: 이미지 자료 분석 (겉핥기)",
+    "section": "#. 크롤링을 활용한 이미지 자료 분석",
+    "text": "#. 크롤링을 활용한 이미지 자료 분석\n(1) 두 가지 키워드로 크롤링을 수행하여 이미지자료를 모아라. (키워드는 각자 마음에 드는 것으로 설정할 것, 단 (iu,hynn)는 제외)\n(2) ImageDataLoaders.from_folder() 를 이용하여 dls를 만들고 dls.show_batch()를 이용하여 만들어진 이미지를 확인하라.\n(3) vision_learner()를 이용하여 lrnr를 만들고 lrnr.fine_tune()을 이용하여 학습하라. 이때 모형의 arch는 resnet34를 사용하라.\n(4) requests.get()을 이용하여 (1)의 키워드에 해당하는 새로운 이미지를 한장씩 다운받고 (3)에서 학습한 lrnr를 이용하여 예측하라.\n\n제출은 ipynb파일로 할 것. 혹은 스크린샷을 제출해도 괜찮음."
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "About this blog"
+  },
+  {
+    "objectID": "posts/04wk-1.html#a.-step은-표현-불가능하지-않나",
+    "href": "posts/04wk-1.html#a.-step은-표현-불가능하지-않나",
+    "title": "04wk-1: 깊은신경망 (2) – 꺽인그래프의 한계?, 시벤코정리, MNIST",
+    "section": "A. Step은 표현 불가능하지 않나?",
+    "text": "A. Step은 표현 불가능하지 않나?\n- 맞춰봐\n\ntorch.manual_seed(43052)\nx = torch.linspace(-1,1,2000).reshape(-1,1)\nu = 0*x-3\nu[x&lt;-0.2] = (15*x+6)[x&lt;-0.2]\nu[(-0.2&lt;x)&(x&lt;0.4)] = (0*x-1)[(-0.2&lt;x)&(x&lt;0.4)]\nsig = torch.nn.Sigmoid()\nv = π = sig(u)\ny = torch.bernoulli(v)\n\n\n#plt.plot(u,alpha=0.2)\nplt.plot(x,y,'.',alpha=0.01,color=\"C0\")\nplt.plot(x[0],y[0],'o',color=\"C0\",label=r\"observed data (with error): $(x_i,y_i)$\")\nplt.plot(x,v,'--',label=r\"prob (true, unknown): $(x_i,\\pi_i)$ or $(x_i,v_i)$\",color=\"C1\")\nplt.legend()\n\n\n\n\n\n\n\n\n- 저 주황색 구조를 어떻게 표현하지? \\(\\to\\) 선이 많이 꺽이면되는거아냐?\n\\[\\underset{(n,1)}{\\bf X} \\overset{l_1}{\\to} \\underset{(n,256)}{\\boldsymbol u^{(1)}} \\overset{a_1}{\\to} \\underset{(n,256)}{\\boldsymbol v^{(1)}} \\overset{l_1}{\\to} \\underset{(n,1)}{\\boldsymbol u^{(2)}} \\overset{a_2}{\\to} \\underset{(n,1)}{\\boldsymbol v^{(2)}}=\\underset{(n,1)}{\\hat{\\boldsymbol y}}\\]\n\n#torch.manual_seed(43052)\nnet = torch.nn.Sequential(\n    torch.nn.Linear(1,256),\n    torch.nn.ReLU(),\n    torch.nn.Linear(256,1),\n    #torch.nn.Sigmoid()\n)\n#loss_fn = torch.nn.BCELoss()\nloss_fn = torch.nn.BCEWithLogitsLoss()\noptimizr = torch.optim.Adam(net.parameters())\n#--#\nfor epoc in range(5000):\n    ## 1\n    yhat = net(x) \n    ## 2 \n    loss = loss_fn(yhat,y)\n    ## 3 \n    loss.backward()\n    ## 4 \n    optimizr.step()\n    optimizr.zero_grad()\n\n\nfig,ax = plt.subplots(1,2)\nax[0].plot(x,u,'--',label=r\"$(x_i,u_i)$\")\nax[0].plot(x,yhat.data,'--',label=r\"$(x_i,\\hat{u}_i)$\")\nax[0].legend()\nax[0].set_title(\"before sig\")\nax[1].plot(x,y,'.',alpha=0.02,color=\"blue\")\nax[1].plot(x,v,'--', color=\"C0\", label=r\"$(x_i,v_i)$ or $(x_i,\\pi_i)$\")\nax[1].plot(x,sig(yhat.data),'--',color=\"C1\",label=r\"$(x_i,\\hat{v}_i)$ or $(x_i,\\hat{\\pi}_i)$\")\nax[1].legend()\nax[1].set_title(\"after sig\")\n\nText(0.5, 1.0, 'after sig')"
+  },
+  {
+    "objectID": "posts/04wk-1.html#b.-곡선은-표현-불가능하지-않나",
+    "href": "posts/04wk-1.html#b.-곡선은-표현-불가능하지-않나",
+    "title": "04wk-1: 깊은신경망 (2) – 꺽인그래프의 한계?, 시벤코정리, MNIST",
+    "section": "B. 곡선은 표현 불가능하지 않나?",
+    "text": "B. 곡선은 표현 불가능하지 않나?\n- 맞춰봐1\n1 2024년 수능 미적30번 문제에 나온 함수응용\\[y_i = e^{-x_i} \\times  |\\cos(5x_i)| \\times \\sin(5x) + \\epsilon_i, \\quad \\epsilon_i \\sim N(0,\\sigma^2)\\]\n\ntorch.manual_seed(43052)\nx = torch.linspace(0,2,2000).reshape(-1,1)\neps = torch.randn(2000).reshape(-1,1)*0.05\nfx = torch.exp(-1*x)* torch.abs(torch.cos(3*x))*(torch.sin(3*x))\ny = fx + eps\n\n\nplt.plot(x,y,label=r\"observed data (with error): $(x_i,y_i)$\", alpha=0.2)\nplt.plot(x,fx,'--',color=\"C0\",label=r\"underlying (true, unknown): $e^{-x}|\\cos(3x)|\\sin(3x)$\")\nplt.legend()\n\n\n\n\n\n\n\n\n- 맞춰본다..\n\n\\(\\underset{(n,1)}{\\bf X} \\overset{l_1}{\\to} \\underset{(n,1024)}{\\boldsymbol u^{(1)}} \\overset{a_1}{\\to} \\underset{(n,1024)}{\\boldsymbol v^{(1)}} \\overset{l_1}{\\to} \\underset{(n,1)}{\\boldsymbol u^{(2)}} \\overset{a_2}{\\to} \\underset{(n,1)}{\\boldsymbol v^{(2)}}=\\underset{(n,1)}{\\hat{\\boldsymbol y}}\\)\n\n\n#torch.manual_seed(43052)\nnet = torch.nn.Sequential(\n    torch.nn.Linear(1,1024),\n    torch.nn.ReLU(),\n    torch.nn.Linear(1024,1)\n)\nloss_fn = torch.nn.MSELoss()\noptimizr = torch.optim.Adam(net.parameters())\n#--#\nfor epoc in range(5000):\n    ## 1\n    yhat = net(x) \n    ## 2 \n    loss = loss_fn(yhat,y)\n    ## 3 \n    loss.backward()\n    ## 4 \n    optimizr.step()\n    optimizr.zero_grad()\n\n\nplt.plot(x,y,label=r\"observed data: $(x_i,y_i)$\", alpha=0.2)\nplt.plot(x,fx,'--',color=\"C0\",label=r\"underlying (true, unkown): $e^{-x}|\\cos(3x)|\\sin(3x)$\")\nplt.plot(x,yhat.data,'--',color=\"C1\",label=r\"underlying (esimated): $(x_i,\\hat{y}_i)$\")\nplt.legend()"
+  },
+  {
+    "objectID": "posts/04wk-1.html#a.-시벤코의-정리-소개",
+    "href": "posts/04wk-1.html#a.-시벤코의-정리-소개",
+    "title": "04wk-1: 깊은신경망 (2) – 꺽인그래프의 한계?, 시벤코정리, MNIST",
+    "section": "A. 시벤코의 정리 소개",
+    "text": "A. 시벤코의 정리 소개\n\n\n\n\n\n\nUniversal Approximation Thm: (범용근사정리,보편근사정리,시벤코정리)\n\n\n\n하나의 은닉층을 가지는 아래와 같은 꼴의 네트워크 \\(net: {\\bf X}_{n \\times p} \\to {\\bf y}_{n\\times q}\\)는\nnet = torch.nn.Sequential(\n    torch.nn.Linear(p,???),\n    torch.nn.Sigmoid(),\n    torch.nn.Linear(???,q)\n)\n모든 continuous mapping\n\\[f: {\\bf X}_{n \\times p} \\to {\\bf y}_{n\\times q}\\]\n를 원하는 정확도로 “근사”시킬 수 있다. 쉽게 말하면 \\({\\bf X} \\to {\\bf y}\\) 인 어떠한 복잡한 규칙라도 하나의 은닉층을 가진 심층신경망(DNN)이 원하는 정확도로 근사시킨다는 의미이다. 예를들면 심층신경망은 아래와 같은 문제를 해결할 수 있다.\n\n\\({\\bf X}\\)는 토익점수, GPA, 공모전참가여부, \\({\\bf y}\\)는 취업여부일 경우 \\({\\bf X} \\to {\\bf y}\\)인 규칙을 심층신경망은 항상 찾을 수 있다.\n\\({\\bf X}\\)는 주택이미지, 지역정보, 주택면적, 주택에 대한 설명 \\({\\bf y}\\)는 주택가격일 경우 \\({\\bf X} \\to {\\bf y}\\)인 규칙을 심층신경망은 항상 찾을 수 있다.\n\n즉 하나의 은닉층을 가진 심층신경망 모델의 표현력은 무한대라 볼 수 있다."
+  },
+  {
+    "objectID": "posts/04wk-1.html#b.-왜-가능한가",
+    "href": "posts/04wk-1.html#b.-왜-가능한가",
+    "title": "04wk-1: 깊은신경망 (2) – 꺽인그래프의 한계?, 시벤코정리, MNIST",
+    "section": "B. 왜 가능한가?",
+    "text": "B. 왜 가능한가?\n- 데이터\n\nx = torch.linspace(-10,10,200).reshape(-1,1)\n\n- 아래와 같은 네트워크를 고려하자. (스펙올라도 취업못하는 예제에서 썼던 네크워크랑 비슷해요)\n\nl1 = torch.nn.Linear(in_features=1,out_features=2)\na1 = torch.nn.Sigmoid()\nl2 = torch.nn.Linear(in_features=2,out_features=1)\n\n- 직관1: \\(l_1\\),\\(l_2\\)의 가중치를 잘 결합하다보면 우연히 아래와 같이 만들 수 있다.\n\nl1.weight.data = torch.tensor([[-5.00],[5.00]])\nl1.bias.data = torch.tensor([+10.00,+10.00])\n\n\nl2.weight.data = torch.tensor([[1.00,1.00]])\nl2.bias.data = torch.tensor([-1.00])\n\n\nfig,ax = plt.subplots(1,3,figsize=(9,3))\nax[0].plot(x,l1(x)[:,[0]].data,label=r\"$-5x+10$\")\nax[0].plot(x,l1(x)[:,[1]].data,label=r\"$5x+10$\")\nax[0].set_title('$l_1(x)$')\nax[0].legend()\nax[1].plot(x,a1(l1(x))[:,[0]].data,label=r\"$v_1=sig(-5x+10)$\")\nax[1].plot(x,a1(l1(x))[:,[1]].data,label=r\"$v_2=sig(5x+10)$\")\nax[1].set_title('$(a_1 \\circ l_1)(x)$')\nax[1].legend()\nax[2].plot(x,l2(a1(l1(x))).data,color='C2',label=r\"$v_1+v_2-1$\")\nax[2].set_title('$(l_2 \\circ a_1 \\circ \\l_1)(x)$')\nax[2].legend()\n\n\n\n\n\n\n\n\n- 직관2: 아래들도 가능할듯?\n\nl1.weight.data = torch.tensor([[-5.00],[5.00]])\nl1.bias.data = torch.tensor([+0.00,+20.00])\nl2.weight.data = torch.tensor([[1.00,1.00]])\nl2.bias.data = torch.tensor([-1.00])\nfig,ax = plt.subplots(1,3,figsize=(9,3))\nax[0].plot(x,l1(x).data.numpy(),'--',color='C0'); ax[0].set_title('$l_1(x)$')\nax[1].plot(x,a1(l1(x)).data.numpy(),'--',color='C0'); ax[1].set_title('$(a_1 \\circ l_1)(x)$')\nax[2].plot(x,l2(a1(l1(x))).data,'--',color='C0'); ax[2].set_title('$(l_2 \\circ a_1 \\circ \\l_1)(x)$');\nax[2].set_ylim(-0.1,2.6)\n\n\n\n\n\n\n\n\n\nl1.weight.data = torch.tensor([[-5.00],[5.00]])\nl1.bias.data = torch.tensor([+20.00,+00.00])\nl2.weight.data = torch.tensor([[2.50,2.50]])\nl2.bias.data = torch.tensor([-2.50])\nfig,ax = plt.subplots(1,3,figsize=(9,3))\nax[0].plot(x,l1(x).data.numpy(),'--',color='C1'); ax[0].set_title('$l_1(x)$')\nax[1].plot(x,a1(l1(x)).data.numpy(),'--',color='C1'); ax[1].set_title('$(a_1 \\circ l_1)(x)$')\nax[2].plot(x,l2(a1(l1(x))).data,'--',color='C1'); ax[2].set_title('$(l_2 \\circ a_1 \\circ \\l_1)(x)$');\nax[2].set_ylim(-0.1,2.6)\n\n\n\n\n\n\n\n\n- 직관3: 은닉층의노드수=4로 하고 적당한 가중치를 조정하면 \\((l_2\\circ a_1 \\circ l_1)(x)\\)의 결과로 주황색선 + 파란색선도 가능할 것 같다. \\(\\to\\) 실제로 가능함\n\nl1 = torch.nn.Linear(in_features=1,out_features=4)\na1 = torch.nn.Sigmoid()\nl2 = torch.nn.Linear(in_features=4,out_features=1)\n\n\nl1.weight.data = torch.tensor([[-5.00],[5.00],[-5.00],[5.00]])\nl1.bias.data = torch.tensor([0.00, 20.00, 20.00, 0])\nl2.weight.data = torch.tensor([[1.00,  1.00, 2.50,  2.50]])\nl2.bias.data = torch.tensor([-1.0-2.5])\n\n\nplt.plot(l2(a1(l1(x))).data,'--')\nplt.title(r\"$(l_2 \\circ a_1 \\circ l_1)(x)$\")\n\nText(0.5, 1.0, '$(l_2 \\\\circ a_1 \\\\circ l_1)(x)$')\n\n\n\n\n\n\n\n\n\n\n이러한 함수는 계단모양이며, 0을 제외한 서로다른 계단의 높이는 2개가 된다. 이를 간단히 “2단계-계단함수”라고 칭하자.\n\n- 정리1: 2개의 시그모이드를 우연히 잘 결합하면 아래와 같은 “1단계-계단함수” 함수 \\(h\\)를 만들 수 있다.\n\nh = lambda x: torch.sigmoid(200*(x+0.5))+torch.sigmoid(-200*(x-0.5))-1.0\n\n\nplt.plot(x,h(x))\nplt.title(\"$h(x)$\")\n\nText(0.5, 1.0, '$h(x)$')\n\n\n\n\n\n\n\n\n\n- 정리2: 위와 같은 함수 \\(h\\)를 활성화함수로 하고 \\(m\\)개의 노드를 가지는 은닉층을 생각해보자. 이러한 은닉층을 사용한다면 “m단계-계단함수”와 같은 형태의 네트워크는 아래와 같이 표현할 수 있다.\n\\[\\underset{(n,1)}{\\bf X} \\overset{l_1}{\\to} \\underset{(n,m)}{\\boldsymbol u^{(1)}} \\overset{h}{\\to} \\underset{(n,m)}{\\boldsymbol v^{(1)}} \\overset{l_2}{\\to} \\underset{(n,1)}{\\hat{\\boldsymbol y}}\\]\n그리고 위의 네트워크와 동일한 효과를 주는 아래의 네트워크가 항상 존재함.\n\\[\\underset{(n,1)}{\\bf X} \\overset{l_1}{\\to} \\underset{(n,2m)}{\\boldsymbol u^{(1)}} \\overset{sig}{\\to} \\underset{(n,2m)}{\\boldsymbol v^{(1)}} \\overset{l_2}{\\to} \\underset{(n,1)}{\\hat{\\boldsymbol y}}\\]\n- 정리3: 그런데 어떠한 함수형태라도 구불구불한 “m단계-계단함수”로 다 근사할 수 있지 않나?"
+  },
+  {
+    "objectID": "posts/04wk-1.html#c.-h의-위력",
+    "href": "posts/04wk-1.html#c.-h의-위력",
+    "title": "04wk-1: 깊은신경망 (2) – 꺽인그래프의 한계?, 시벤코정리, MNIST",
+    "section": "C. \\(h\\)의 위력",
+    "text": "C. \\(h\\)의 위력\n- \\(h(x)\\)를 활성화함수로 가지는 네트워크를 설계하여 보자.\n\nclass MyActivation(torch.nn.Module): ## 사용자정의 활성화함수를 선언하는 방법\n    def __init__(self):\n        super().__init__() \n    def forward(self, input):\n        return h(input) # activation 의 출력 \n\n\na1 = MyActivation()\n# a1 = torch.nn.Sigmoid(), a1 = torch.nn.ReLU() 대신에 a1 = MyActivation()\n\n- 아래와 같이 하나의 은닉층을 가지고 있더라도 많은 노드수만 보장되면 매우 충분한 표현력을 가짐\n\\[\\underset{(n,1)}{\\bf X} \\overset{l_1}{\\to} \\underset{(n,m)}{\\boldsymbol u^{(1)}} \\overset{h}{\\to} \\underset{(n,m)}{\\boldsymbol v^{(1)}} \\overset{l_2}{\\to} \\underset{(n,1)}{\\hat{\\boldsymbol y}}\\]\n- \\(h\\)의 위력\n예제1 – 스펙높아도 취업이 안된다고??\n\ndf = pd.read_csv(\"https://raw.githubusercontent.com/guebin/DL2024/main/posts/dnnex.csv\")\nx = torch.tensor(df.x).float().reshape(-1,1)\ny = torch.tensor(df.y).float().reshape(-1,1)\nprob = torch.tensor(df.prob).float().reshape(-1,1)\n\n\ntorch.manual_seed(43052)\nh = lambda x: torch.sigmoid(200*(x+0.5))+torch.sigmoid(-200*(x-0.5))-1.0\nclass MyActivation(torch.nn.Module): ## 사용자정의 활성화함수를 선언하는 방법\n    def __init__(self):\n        super().__init__() \n    def forward(self, input):\n        return h(input) \n#---# \nnet = torch.nn.Sequential(\n    torch.nn.Linear(1,2048),\n    MyActivation(),\n    torch.nn.Linear(2048,1),\n    torch.nn.Sigmoid()\n)\nloss_fn = torch.nn.BCELoss()\noptimizr = torch.optim.Adam(net.parameters()) \n#---#\nfor epoc in range(100):\n    ## 1 \n    yhat = net(x) \n    ## 2 \n    loss = loss_fn(yhat,y)\n    ## 3 \n    loss.backward()\n    ## 4 \n    optimizr.step()\n    optimizr.zero_grad()\n\n\nplt.plot(x,y,'o',alpha=0.2)\nplt.plot(x,prob,'--')\nplt.plot(x,net(x).data,'--')\n\n\n\n\n\n\n\n\n예제2 – 수능에 나왔다던 이상한 곡선..?\n\ntorch.manual_seed(43052)\nx = torch.linspace(0,2,2000).reshape(-1,1)\neps = torch.randn(2000).reshape(-1,1)*0.05\nfx = torch.exp(-1*x)* torch.abs(torch.cos(3*x))*(torch.sin(3*x))\ny = fx + eps\n\n\ntorch.manual_seed(43052)\nh = lambda x: torch.sigmoid(200*(x+0.5))+torch.sigmoid(-200*(x-0.5))-1.0\nclass MyActivation(torch.nn.Module): ## 사용자정의 활성화함수를 선언하는 방법\n    def __init__(self):\n        super().__init__() \n    def forward(self, input):\n        return h(input) \n#---# \nnet = torch.nn.Sequential(\n    torch.nn.Linear(1,2048),\n    MyActivation(),\n    torch.nn.Linear(2048,1),\n)\nloss_fn = torch.nn.MSELoss()\noptimizr = torch.optim.Adam(net.parameters()) \n#---#\nfor epoc in range(100):\n    ## 1 \n    yhat = net(x) \n    ## 2 \n    loss = loss_fn(yhat,y)\n    ## 3 \n    loss.backward()\n    ## 4 \n    optimizr.step()\n    optimizr.zero_grad()\n\n\nplt.plot(x,y,alpha=0.2)\nplt.plot(x,fx,'--')\nplt.plot(x,net(x).data,'--')"
+  },
+  {
+    "objectID": "posts/04wk-1.html#d.-의문점",
+    "href": "posts/04wk-1.html#d.-의문점",
+    "title": "04wk-1: 깊은신경망 (2) – 꺽인그래프의 한계?, 시벤코정리, MNIST",
+    "section": "D. 의문점",
+    "text": "D. 의문점\n- 이 수업을 잘 이해한 사람: 그냥 활성화함수를 \\(h\\)로 쓰면 끝 아니야? 뭐하러 relu 를 쓰는거지?\n- 딥러닝을 좀 공부해본사람1: 왜 딥러닝이 2010년이 지나서야 떳지? 1989년에 세상의 모든 문제가 풀려야 하는것 아닌가?\n- 딥러닝을 좀 공부해본사람2: 하나의 은닉층을 표현하는 네크워크는 잘 안쓰지 않나? 은닉층이 많을수록 좋다고 들었는데?\n- 약간의 의구심이 있지만 아무튼 우리는 아래의 무기를 가진 꼴이 되었다.\n\n\n\n\n\n\n우리의 무기\n\n\n\n하나의 은닉층을 가지는 아래와 같은 꼴의 네트워크로,\nnet = torch.nn.Sequential(\n    torch.nn.Linear(p,???),\n    torch.nn.Sigmoid(),\n    torch.nn.Linear(???,q)\n)\n\\(f: {\\bf X}_{n \\times p} \\to {\\bf y}_{n\\times q}\\) 인 모든 continuous mapping \\(f\\) 을 원하는 정확도로 “근사”시킬 수 있다."
+  },
+  {
+    "objectID": "posts/04wk-1.html#a.-데이터-다운로드",
+    "href": "posts/04wk-1.html#a.-데이터-다운로드",
+    "title": "04wk-1: 깊은신경망 (2) – 꺽인그래프의 한계?, 시벤코정리, MNIST",
+    "section": "A. 데이터 다운로드",
+    "text": "A. 데이터 다운로드\n\nuntar_data('https://s3.amazonaws.com/fast-ai-imageclas/mnist_png.tgz')\n\n\n\n\n\n\n    \n      \n      100.03% [15687680/15683414 00:03&lt;00:00]\n    \n    \n\n\nPath('/home/cgb3/.fastai/data/mnist_png')\n\n\n\n!ls '/home/cgb3/.fastai/data/mnist_png'\n\ntesting  training\n\n\n\n!ls '/home/cgb3/.fastai/data/mnist_png/training/'\n\n0  1  2  3  4  5  6  7  8  9\n\n\n\n!ls '/home/cgb3/.fastai/data/mnist_png/training/3' | head\n\n10.png\n10000.png\n10011.png\n10031.png\n10034.png\n10042.png\n10052.png\n1007.png\n10074.png\n10091.png\nls: write error: Broken pipe\n\n\n\nimg3 = torchvision.io.read_image('/home/cgb3/.fastai/data/mnist_png/training/3/10.png')\nplt.imshow(img3.reshape(28,28),cmap=\"gray\")"
+  },
+  {
+    "objectID": "posts/04wk-1.html#b.-예비학습-plt.imshow",
+    "href": "posts/04wk-1.html#b.-예비학습-plt.imshow",
+    "title": "04wk-1: 깊은신경망 (2) – 꺽인그래프의 한계?, 시벤코정리, MNIST",
+    "section": "B. 예비학습 – `plt.imshow()",
+    "text": "B. 예비학습 – `plt.imshow()\n- plt.imshow(...) 에서 ...이 shape이 (??,??)이면 흑백이미지를 출력\n\nplt.imshow([[0,255],[0,255]],cmap='gray')\n\n\n\n\n\n\n\n\n- plt.imshow(...) 에서 ...의 shape이 (??,??,3)이면 칼라이미지를 출력\n\nr = [[0,255],[0,255]]\ng = [[255,0],[0,0]]\nb = [[0,0],[255,0]]\nplt.imshow(np.stack([r,g,b],axis=2))\n\n\n\n\n\n\n\n\n- plt.imshow(...) 에서 ...의 자료형이 int인지 float인지에 따라서 인식이 다름\n\nr = [[0,1],[0,1]]\ng = [[1,0],[0,0]]\nb = [[0,0],[1,0]]\nplt.imshow(np.stack([r,g,b],axis=2))\n\n\n\n\n\n\n\n\n\nr = [[0,1.0],[0,1.0]]\ng = [[1.0,0],[0,0]]\nb = [[0,0],[1.0,0]]\nplt.imshow(np.stack([r,g,b],axis=2))"
+  },
+  {
+    "objectID": "posts/04wk-1.html#c.-예비학습-pathlib",
+    "href": "posts/04wk-1.html#c.-예비학습-pathlib",
+    "title": "04wk-1: 깊은신경망 (2) – 꺽인그래프의 한계?, 시벤코정리, MNIST",
+    "section": "C. 예비학습 – pathlib",
+    "text": "C. 예비학습 – pathlib\n\nimport pathlib\n\n- 오브젝트 생성\n\npath = pathlib.Path('.')\npath\n\nPath('.')\n\n\n- 기능1 – .ls()\n\npath.ls()\n\n(#12) [Path('04wk-1.ipynb'),Path('01wk-1.ipynb'),Path('dnnex.csv'),Path('03wk-2.ipynb'),Path('02wksupp.pdf'),Path('02wk-2.ipynb'),Path('ref.bib'),Path('.ipynb_checkpoints'),Path('02wk-1.ipynb'),Path('_metadata.yml')...]\n\n\n- 이미지 파일이 저장된 경로로 새로운 path오브젝트를 만들고 기능1 수행\n\npath = pathlib.Path('/home/cgb3/.fastai/data/mnist_png')\npath\n\nPath('/home/cgb3/.fastai/data/mnist_png')\n\n\n\npath.ls()\n\n(#2) [Path('/home/cgb3/.fastai/data/mnist_png/training'),Path('/home/cgb3/.fastai/data/mnist_png/testing')]\n\n\n- 기능2: / 로 새로운 path 생성하기\n\n(path / 'training')\n\nPath('/home/cgb3/.fastai/data/mnist_png/training')\n\n\n- 기능1,2의 결합\n\n(path / 'training').ls()\n\n(#10) [Path('/home/cgb3/.fastai/data/mnist_png/training/1'),Path('/home/cgb3/.fastai/data/mnist_png/training/3'),Path('/home/cgb3/.fastai/data/mnist_png/training/2'),Path('/home/cgb3/.fastai/data/mnist_png/training/8'),Path('/home/cgb3/.fastai/data/mnist_png/training/7'),Path('/home/cgb3/.fastai/data/mnist_png/training/0'),Path('/home/cgb3/.fastai/data/mnist_png/training/4'),Path('/home/cgb3/.fastai/data/mnist_png/training/9'),Path('/home/cgb3/.fastai/data/mnist_png/training/6'),Path('/home/cgb3/.fastai/data/mnist_png/training/5')]"
+  },
+  {
+    "objectID": "posts/04wk-1.html#d.-데이터정리",
+    "href": "posts/04wk-1.html#d.-데이터정리",
+    "title": "04wk-1: 깊은신경망 (2) – 꺽인그래프의 한계?, 시벤코정리, MNIST",
+    "section": "D. 데이터정리",
+    "text": "D. 데이터정리\n- 데이터가 저장된 path 설정\n\npath = pathlib.Path('/home/cgb3/.fastai/data/mnist_png')\n\n- X ,y를 만듦\n\nX3 = torch.stack([torchvision.io.read_image(str(i)) for i in (path/'training/3').ls()],axis=0)\nX7 = torch.stack([torchvision.io.read_image(str(i)) for i in (path/'training/7').ls()],axis=0)\n\n\nX3.shape, X7.shape\n\n(torch.Size([6131, 1, 28, 28]), torch.Size([6265, 1, 28, 28]))\n\n\n\ny = torch.tensor([0.0]*6131+[1.0]*6265).reshape(-1,1)\n\n\nX = torch.concat([X3,X7],axis=0)\nX.shape\n\ntorch.Size([12396, 1, 28, 28])\n\n\n\nplt.plot(y,'o')\n\n\n\n\n\n\n\n\n\n“y=0.0” 은 숫자3을 의미함, “y=1.0” 은 숫자7을 의미함\n숫자3은 6131개, 숫자7은 6265개 있음\n\n- 우리는 \\({\\bf X}: (n,1,28,28)\\) 에서 \\({\\bf y}: (n,1)\\)으로 가는 맵핑을 배우고 싶음. \\(\\to\\) 이런건 배운적이 없는데?.. \\(\\to\\) 그렇다면 \\({\\bf X}:(n,784) \\to {\\bf y}:(n,1)\\) 으로 가는 맵핑을 학습하자.\n\nXnp = X.reshape(-1,28*28).float()\nX.shape, Xnp.shape\n\n(torch.Size([12396, 1, 28, 28]), torch.Size([12396, 784]))"
+  },
+  {
+    "objectID": "posts/04wk-1.html#e.-학습",
+    "href": "posts/04wk-1.html#e.-학습",
+    "title": "04wk-1: 깊은신경망 (2) – 꺽인그래프의 한계?, 시벤코정리, MNIST",
+    "section": "E. 학습",
+    "text": "E. 학습\n\ntorch.manual_seed(43052)\nnet = torch.nn.Sequential(\n    torch.nn.Linear(784,32),\n    torch.nn.ReLU(),\n    torch.nn.Linear(32,1),\n    torch.nn.Sigmoid()\n)\nloss_fn = torch.nn.BCELoss()\noptimizr = torch.optim.Adam(net.parameters())\n#--#\nfor epoc in range(200):\n    ## step1 \n    yhat = net(Xnp) \n    ## step2\n    loss = loss_fn(yhat,y)\n    ## step3\n    loss.backward()\n    ## step4 \n    optimizr.step()\n    optimizr.zero_grad()\n\n\nplt.plot(y,'o',label=r\"$(i,y_i)$ -- training data set\")\nplt.plot(net(Xnp).data,'.',alpha=0.2, label=r\"$(i,\\hat{y}_i$ -- training data set\")\nplt.legend()\n\n\n\n\n\n\n\n\n\n잘맞추는데?\n믿을수가 없는데..?\n\n\n((yhat.data &gt; 0.5) == y).float().mean() # train_accuracy\n\ntensor(0.9994)"
+  },
+  {
+    "objectID": "posts/04wk-1.html#f.-test",
+    "href": "posts/04wk-1.html#f.-test",
+    "title": "04wk-1: 깊은신경망 (2) – 꺽인그래프의 한계?, 시벤코정리, MNIST",
+    "section": "F. Test",
+    "text": "F. Test\n\npath.ls()\n\n(#2) [Path('/home/cgb3/.fastai/data/mnist_png/training'),Path('/home/cgb3/.fastai/data/mnist_png/testing')]\n\n\n\nXX3 = torch.stack([torchvision.io.read_image(str(i)) for i in (path/'testing/3').ls()],axis=0)\nXX7 = torch.stack([torchvision.io.read_image(str(i)) for i in (path/'testing/7').ls()],axis=0)\n\n\nXX3.shape,XX7.shape\n\n(torch.Size([1010, 1, 28, 28]), torch.Size([1028, 1, 28, 28]))\n\n\n\nXX = torch.concatenate([XX3,XX7],axis=0).reshape(-1,1*28*28).float()\nXX.shape\n\ntorch.Size([2038, 784])\n\n\n\nyy = torch.tensor([0]*1010 + [1]*1028).reshape(-1,1).float()\nyy.shape\n\ntorch.Size([2038, 1])\n\n\n\nplt.plot(yy,'o',label=r\"$(i,y_i)$ -- test data set\")\nplt.plot(net(XX).data,'.',label=r\"$(i,\\hat{y}_i)$ -- test data set\")\nplt.legend()\n\n\n\n\n\n\n\n\n\n(yy == (net(XX)&gt;0.5)).float().mean() # test accuracy\n\ntensor(0.9897)\n\n\n\ntest 에서도 잘 맞춘다.."
+  },
+  {
+    "objectID": "posts/03wk-2.html#a.-방법1",
+    "href": "posts/03wk-2.html#a.-방법1",
+    "title": "03wk-2: 깊은신경망 (1) – 로지스틱의 한계 극복",
+    "section": "A. 방법1",
+    "text": "A. 방법1\n\ny = x*0 \ny[x&lt;0] = (9*x+4.5)[x&lt;0]\ny[x&gt;0] = (-4.5*x+4.5)[x&gt;0]\n\n\nplt.plot(y,'--')\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNote\n\n\n\n강의영상에 보셨듯이 아래의 코드실행결과는 다르게 나옵니다.\n## 아래를 실행하면 꺽인선이 나오는데용...\nx = torch.linspace(-1,1,1001).reshape(-1,1)\ny = x*0 + x \ny[x&lt;0] = (9*x+4.5)[x&lt;0]\ny[x&gt;0] = (-4.5*x+4.5)[x&gt;0]\nplt.plot(x,y)\n## 이걸 실행하면 그냥 직선이 나옵니다...\nx = torch.linspace(-1,1,1001).reshape(-1,1)\ny = x \ny[x&lt;0] = (9*x+4.5)[x&lt;0]\ny[x&gt;0] = (-4.5*x+4.5)[x&gt;0]\nplt.plot(x,y)\n다르게 나오는 이유가 너무 궁금하시다면 아래의 링크로 가셔서 깊은복사/얕은복사에 대한 개념을 이해하시면 됩니다. (그렇지만 가능하다면 궁금해하지 마세요…..)\n\n깊은복사 얕은복사 강의들으러 가기"
+  },
+  {
+    "objectID": "posts/03wk-2.html#b.-방법2-렐루이용",
+    "href": "posts/03wk-2.html#b.-방법2-렐루이용",
+    "title": "03wk-2: 깊은신경망 (1) – 로지스틱의 한계 극복",
+    "section": "B. 방법2 – 렐루이용",
+    "text": "B. 방법2 – 렐루이용\n\nrelu = torch.nn.ReLU()\n\n\nplt.plot(relu(x),'--',label=r'$relu(x)$')\nplt.plot(relu(-x),'--',label=r'$relu(-x)$')\nplt.legend()\n\n\n\n\n\n\n\n\n\nplt.plot(-4.5*relu(x),'--',label=r'$-4.5\\times relu(x) + 4.5$')\nplt.plot(-9*relu(-x),'--',label=r'$-9\\times relu(-x) + 4.5$')\nplt.legend()\n\n\n\n\n\n\n\n\n\nplt.plot(-4.5*relu(x)-9*relu(-x),'--',label=r'$-4.5\\times relu(x) -9 \\times relu(-x)$')\nplt.plot(y,'--',label=r'$y$')\nplt.plot(-4.5*relu(x)-9*relu(-x)+4.5,'--',label=r'$-4.5\\times relu(x) -9 \\times relu(-x)+4.5$')\nplt.legend()\n\n\n\n\n\n\n\n\n- 우리의 목표: 저 초록선에서 시그모이드를 태우면된다. 즉 아래의 느낌임\n\nsig = torch.nn.Sigmoid()\n\n\nfig = plt.figure(figsize=(8, 4))\nspec = fig.add_gridspec(4, 4)\nax1 = fig.add_subplot(spec[:2,0]); ax1.set_title(r'$x$'); ax1.set_ylim(-1,1)\nax2 = fig.add_subplot(spec[2:,0]); ax2.set_title(r'$-x$'); ax2.set_ylim(-1,1)\nax3 = fig.add_subplot(spec[:2,1]); ax3.set_title(r'$relu(x)$'); ax3.set_ylim(-1,1)\nax4 = fig.add_subplot(spec[2:,1]); ax4.set_title(r'$relu(-x)$'); ax4.set_ylim(-1,1)\nax5 = fig.add_subplot(spec[1:3,2]); ax5.set_title(r'$-4.5 relu(x)-9 relu(-x)+4.5$')\nax6 = fig.add_subplot(spec[1:3,3]); ax6.set_title('sig(...)');\n#---#\nax1.plot(x,'--',color='C0')\nax2.plot(-x,'--',color='C1')\nax3.plot(relu(x),'--',color='C0')\nax4.plot(relu(-x),'--',color='C1')\nax5.plot(-4.5*relu(x)-9*relu(-x)+4.5,'--',color='C2')\nax6.plot(sig(-4.5*relu(x)-9*relu(-x)+4.5),'--',color='C2')\nfig.tight_layout()"
+  },
+  {
+    "objectID": "posts/03wk-2.html#c.-방법2의-다른구현",
+    "href": "posts/03wk-2.html#c.-방법2의-다른구현",
+    "title": "03wk-2: 깊은신경망 (1) – 로지스틱의 한계 극복",
+    "section": "C. 방법2의 다른구현",
+    "text": "C. 방법2의 다른구현\n- 렐루이용하여 만드는 방법 정리\n\n벡터 x와 relu함수를 준비한다.\nu = [x,-x] 를 계산한다.\nv = [relu(x), relu(-x)] 를 계산한다.\ny = -4.5 * relu(x) + 9 * relu(-x) +4.5 를 계산한다.\n\n- 1단계\n\nx,relu\n\n(tensor([[-1.0000],\n         [-0.9980],\n         [-0.9960],\n         ...,\n         [ 0.9960],\n         [ 0.9980],\n         [ 1.0000]]),\n ReLU())\n\n\n- 2단계\n\nu = torch.concat([x,-x],axis=1) # u = [x, -x] 같은것\nu\n\ntensor([[-1.0000,  1.0000],\n        [-0.9980,  0.9980],\n        [-0.9960,  0.9960],\n        ...,\n        [ 0.9960, -0.9960],\n        [ 0.9980, -0.9980],\n        [ 1.0000, -1.0000]])\n\n\n- 3단계\n\nv = relu(u) # 각각의 column에 렐루취함\nv\n\ntensor([[0.0000, 1.0000],\n        [0.0000, 0.9980],\n        [0.0000, 0.9960],\n        ...,\n        [0.9960, 0.0000],\n        [0.9980, 0.0000],\n        [1.0000, 0.0000]])\n\n\n- 4단계\n\n-4.5 * v[:,[0]] - 9.0 * v[:,[1]] +4.5\n\ntensor([[-4.5000],\n        [-4.4820],\n        [-4.4640],\n        ...,\n        [ 0.0180],\n        [ 0.0090],\n        [ 0.0000]])\n\n\n\ny\n\ntensor([[-4.5000],\n        [-4.4820],\n        [-4.4640],\n        ...,\n        [ 0.0180],\n        [ 0.0090],\n        [ 0.0000]])\n\n\n- 그런데, 4단계는 아래와 같이 볼 수 있다.\n\n\\({\\boldsymbol v}\\begin{bmatrix} -4.5 \\\\ -9.0 \\end{bmatrix} + 4.5 = \\begin{bmatrix}\nv_{11} & v_{12}  \\\\\nv_{21} & v_{22}  \\\\\n\\dots & \\dots  \\\\\nv_{n1} & v_{n2}  \\\\\n\\end{bmatrix}\\begin{bmatrix} -4.5 \\\\ -9.0 \\end{bmatrix} + 4.5 =\n\\begin{bmatrix}\n-4.5 v_{11} - 9.0 v_{12} + 4.5  \\\\\n-4.5 v_{21} - 9.0 v_{22} + 4.5  \\\\\n\\dots \\\\\n-4.5 v_{n1} - 9.0 v_{n2} + 4.5 \\\\\n\\end{bmatrix}\\)\n\n위의 수식을 참고하여 매트릭스의 곱 형태로 다시 포현하면 아래와 같다.\n\n#-4.5 * v[:,[0]] - 9.0 * v[:,[1]] +4.5\nWhat = torch.tensor([[-4.5],[-9.0]]) \nv @ What + 4.5 \n\ntensor([[-4.5000],\n        [-4.4820],\n        [-4.4640],\n        ...,\n        [ 0.0180],\n        [ 0.0090],\n        [ 0.0000]])\n\n\n이제 매트릭스의 곱 대신에 torch.nn.Linear()를 이용하면 아래의 코드와 같아진다.\n\nl2 = torch.nn.Linear(\n    in_features=2,\n    out_features=1 \n)\n\n\nl2.weight.data = torch.tensor([[-4.5,-9.0]])\nl2.bias.data = torch.tensor([4.5])\n\n\nl2(v)\n\ntensor([[-4.5000],\n        [-4.4820],\n        [-4.4640],\n        ...,\n        [ 0.0180],\n        [ 0.0090],\n        [ 0.0000]], grad_fn=&lt;AddmmBackward0&gt;)\n\n\n- 사실 2단계도 아래와 같이 볼 수 있다.\n\\[\\begin{bmatrix}\nx_1 \\\\\nx_2 \\\\\n\\dots \\\\\nx_n\n\\end{bmatrix}\\begin{bmatrix} 1 & -1 \\end{bmatrix} = \\begin{bmatrix} x_1 & -x_1 \\\\ x_2 & -x_2 \\\\ \\dots & \\dots \\\\ x_n & -x_n \\end{bmatrix}\\]\n\n#u = torch.concat([x,-x],axis=1) # u1 = [x, -x] 같은것\n\n\nl1 = torch.nn.Linear(1,2)\nl1.weight.data = torch.tensor([[1.0],[-1.0]])\nl1.bias.data = torch.tensor([0.0,0.0])\n\n\nl1(x)\n\ntensor([[-1.0000,  1.0000],\n        [-0.9980,  0.9980],\n        [-0.9960,  0.9960],\n        ...,\n        [ 0.9960, -0.9960],\n        [ 0.9980, -0.9980],\n        [ 1.0000, -1.0000]], grad_fn=&lt;AddmmBackward0&gt;)\n\n\n- 따라서 torch.nn 에 포함된 레이어를 이용하면 아래와 같이 표현할 할 수 있다.\n\nl1 = torch.nn.Linear(1,2)\nl1.weight.data = torch.tensor([[1.0],[-1.0]])\nl1.bias.data = torch.tensor([0.0,0.0])\na1 = torch.nn.ReLU()\nl2 = torch.nn.Linear(2,1)\nl2.weight.data = torch.tensor([[-4.5,-9.0]])\nl2.bias.data = torch.tensor([4.5])\n\n\nl2(a1(l1(x))), y\n\n(tensor([[-4.5000],\n         [-4.4820],\n         [-4.4640],\n         ...,\n         [ 0.0180],\n         [ 0.0090],\n         [ 0.0000]], grad_fn=&lt;AddmmBackward0&gt;),\n tensor([[-4.5000],\n         [-4.4820],\n         [-4.4640],\n         ...,\n         [ 0.0180],\n         [ 0.0090],\n         [ 0.0000]]))\n\n\n- 각각의 layer를 torch.nn.Sequential() 로 묶으면 아래와 같이 정리할 수 있다.\n\nnet = torch.nn.Sequential(\n    torch.nn.Linear(1,2),\n    torch.nn.ReLU(),\n    torch.nn.Linear(2,1)\n)\nl1,a1,l2 = net\nl1.weight.data = torch.tensor([[1.0],[-1.0]])\nl1.bias.data = torch.tensor([0.0,0.0])\nl2.weight.data = torch.tensor([[-4.5,-9.0]])\nl2.bias.data = torch.tensor([4.5])\n\n\nnet(x),y\n\n(tensor([[-4.5000],\n         [-4.4820],\n         [-4.4640],\n         ...,\n         [ 0.0180],\n         [ 0.0090],\n         [ 0.0000]], grad_fn=&lt;AddmmBackward0&gt;),\n tensor([[-4.5000],\n         [-4.4820],\n         [-4.4640],\n         ...,\n         [ 0.0180],\n         [ 0.0090],\n         [ 0.0000]]))"
+  },
+  {
+    "objectID": "posts/03wk-2.html#d.-수식표현",
+    "href": "posts/03wk-2.html#d.-수식표현",
+    "title": "03wk-2: 깊은신경망 (1) – 로지스틱의 한계 극복",
+    "section": "D. 수식표현",
+    "text": "D. 수식표현\n(1) \\({\\bf X}=\\begin{bmatrix} x_1 \\\\ \\dots \\\\ x_n \\end{bmatrix}\\)\n(2) \\(l_1({\\bf X})={\\bf X}{\\bf W}^{(1)}\\overset{bc}{+} {\\boldsymbol b}^{(1)}=\\begin{bmatrix} x_1 & -x_1 \\\\ x_2 & -x_2 \\\\ \\dots & \\dots \\\\ x_n & -x_n\\end{bmatrix}\\)\n\n\\({\\bf W}^{(1)}=\\begin{bmatrix} 1 & -1 \\end{bmatrix}\\)\n\\({\\boldsymbol b}^{(1)}=\\begin{bmatrix} 0 & 0 \\end{bmatrix}\\)\n\n(3) \\((a_1\\circ l_1)({\\bf X})=\\text{relu}\\big({\\bf X}{\\bf W}^{(1)}\\overset{bc}{+}{\\boldsymbol b}^{(1)}\\big)=\\begin{bmatrix} \\text{relu}(x_1) & \\text{relu}(-x_1) \\\\ \\text{relu}(x_2) & \\text{relu}(-x_2) \\\\ \\dots & \\dots \\\\ \\text{relu}(x_n) & \\text{relu}(-x_n)\\end{bmatrix}\\)\n(4) \\((l_2 \\circ a_1\\circ l_1)({\\bf X})=\\text{relu}\\big({\\bf X}{\\bf W}^{(1)}\\overset{bc}{+}{\\boldsymbol b}^{(1)}\\big){\\bf W}^{(2)}\\overset{bc}{+}b^{(2)}\\)\n\\(\\quad=\\begin{bmatrix} -4.5\\times\\text{relu}(x_1) -9.0 \\times \\text{relu}(-x_1) +4.5 \\\\ -4.5\\times\\text{relu}(x_2) -9.0 \\times\\text{relu}(-x_2) + 4.5 \\\\ \\dots \\\\ -4.5\\times \\text{relu}(x_n) -9.0 \\times\\text{relu}(-x_n)+4.5 \\end{bmatrix}\\)\n\n\\({\\bf W}^{(2)}=\\begin{bmatrix} -4.5 \\\\ -9 \\end{bmatrix}\\)\n\\(b^{(2)}=4.5\\)\n\n(5) \\(net({\\bf X})=(l_2 \\circ a_1\\circ l_1)({\\bf X})=\\text{relu}\\big({\\bf X}{\\bf W}^{(1)}\\overset{bc}{+}{\\boldsymbol b}^{(1)}\\big){\\bf W}^{(2)}\\overset{bc}{+}b^{(2)}\\)\n\\(\\quad =\\begin{bmatrix} -4.5\\times\\text{relu}(x_1) -9.0 \\times \\text{relu}(-x_1) +4.5 \\\\ -4.5\\times\\text{relu}(x_2) -9.0 \\times\\text{relu}(-x_2) + 4.5 \\\\ \\dots \\\\ -4.5\\times \\text{relu}(x_n) -9.0 \\times\\text{relu}(-x_n)+4.5 \\end{bmatrix}\\)"
+  },
+  {
+    "objectID": "posts/03wk-2.html#a.-데이터",
+    "href": "posts/03wk-2.html#a.-데이터",
+    "title": "03wk-2: 깊은신경망 (1) – 로지스틱의 한계 극복",
+    "section": "A. 데이터",
+    "text": "A. 데이터\n\ndf = pd.read_csv(\"https://raw.githubusercontent.com/guebin/DL2024/main/posts/dnnex.csv\")\ndf\n\n\n\n\n\n\n\n\nx\nprob\ny\n\n\n\n\n0\n-1.000000\n0.000045\n0.0\n\n\n1\n-0.998999\n0.000046\n0.0\n\n\n2\n-0.997999\n0.000047\n0.0\n\n\n3\n-0.996998\n0.000047\n0.0\n\n\n4\n-0.995998\n0.000048\n0.0\n\n\n...\n...\n...\n...\n\n\n1995\n0.995998\n0.505002\n0.0\n\n\n1996\n0.996998\n0.503752\n0.0\n\n\n1997\n0.997999\n0.502501\n0.0\n\n\n1998\n0.998999\n0.501251\n1.0\n\n\n1999\n1.000000\n0.500000\n1.0\n\n\n\n\n2000 rows × 3 columns\n\n\n\n\nx = torch.tensor(df.x).float().reshape(-1,1)\ny = torch.tensor(df.y).float().reshape(-1,1)\nprob = torch.tensor(df.prob).float().reshape(-1,1)\n\n\nplt.plot(x,y,'o',alpha=0.02)\nplt.plot(x[0],y[0],'o',label= r\"observed data = $(x_i,y_i)$\",color=\"C0\")\nplt.plot(x,prob,'--b',label= r\"prob (true, unknown)\")\nplt.legend()"
+  },
+  {
+    "objectID": "posts/03wk-2.html#b.-step-14",
+    "href": "posts/03wk-2.html#b.-step-14",
+    "title": "03wk-2: 깊은신경망 (1) – 로지스틱의 한계 극복",
+    "section": "B. Step 1~4",
+    "text": "B. Step 1~4\n- Step1에 대한 생각: 네트워크를 어떻게 만들까? = 아키텍처를 어떻게 만들까? = 모델링\n\\[\\underset{(n,1)}{\\bf X} \\overset{l_1}{\\to} \\underset{(n,2)}{\\boldsymbol u^{(1)}} \\overset{a_1}{\\to} \\underset{(n,2)}{\\boldsymbol v^{(1)}} \\overset{l_1}{\\to} \\underset{(n,1)}{\\boldsymbol u^{(2)}} \\overset{a_2}{\\to} \\underset{(n,1)}{\\boldsymbol v^{(2)}}=\\underset{(n,1)}{\\hat{\\boldsymbol y}}\\]\n- Step2,3,4 는 너무 뻔해서..\n\ntorch.manual_seed(43052)\nnet = torch.nn.Sequential(\n    torch.nn.Linear(1,2),\n    torch.nn.ReLU(),\n    torch.nn.Linear(2,1),\n    torch.nn.Sigmoid()\n)\nloss_fn = torch.nn.BCELoss()\noptimizr = torch.optim.Adam(net.parameters())\n#---#\nfor epoc in range(3000):\n    ## \n    yhat = net(x)\n    ## \n    loss = loss_fn(yhat,y)\n    ## \n    loss.backward()\n    ## \n    optimizr.step()\n    optimizr.zero_grad()\n\n\nplt.plot(x,y,'o',alpha=0.02)\nplt.plot(x[0],y[0],'o',label= r\"observed data = $(x_i,y_i)$\",color=\"C0\")\nplt.plot(x,prob,'--b',label= r\"prob (true, unknown)\")\nplt.plot(x,net(x).data,'--',label=\"prob (estimated) -- after 3000 epochs\")\nplt.legend()\n\n\n\n\n\n\n\n\n\nfor epoc in range(3000):\n    ## \n    yhat = net(x)\n    ## \n    loss = loss_fn(yhat,y)\n    ## \n    loss.backward()\n    ## \n    optimizr.step()\n    optimizr.zero_grad()\n\n\nplt.plot(x,y,'o',alpha=0.02)\nplt.plot(x[0],y[0],'o',label= r\"observed data = $(x_i,y_i)$\",color=\"C0\")\nplt.plot(x,prob,'--b',label= r\"prob (true, unknown)\")\nplt.plot(x,net(x).data,'--',label=\"prob (estimated) -- after 6000 epochs\")\nplt.legend()"
+  },
+  {
     "objectID": "posts/02wk-1.html#a.-소설",
     "href": "posts/02wk-1.html#a.-소설",
     "title": "02wk-1: 회귀분석 (2) – Step1~4 / 벡터미분",
@@ -117,160 +362,6 @@
     "title": "02wk-1: 회귀분석 (2) – Step1~4 / 벡터미분",
     "section": "B. 해설강의 및 보충자료",
     "text": "B. 해설강의 및 보충자료\n\nhttps://github.com/guebin/DL2024/blob/main/posts/02wksupp.pdf"
-  },
-  {
-    "objectID": "posts/03wk-2.html#a.-방법1",
-    "href": "posts/03wk-2.html#a.-방법1",
-    "title": "03wk-2: 깊은신경망 (1) – 로지스틱의 한계 극복",
-    "section": "A. 방법1",
-    "text": "A. 방법1\n\ny = x*0 \ny[x&lt;0] = (9*x+4.5)[x&lt;0]\ny[x&gt;0] = (-4.5*x+4.5)[x&gt;0]\n\n\nplt.plot(y,'--')\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNote\n\n\n\n강의영상에 보셨듯이 아래의 코드실행결과는 다르게 나옵니다.\n## 아래를 실행하면 꺽인선이 나오는데용...\nx = torch.linspace(-1,1,1001).reshape(-1,1)\ny = x*0 + x \ny[x&lt;0] = (9*x+4.5)[x&lt;0]\ny[x&gt;0] = (-4.5*x+4.5)[x&gt;0]\nplt.plot(x,y)\n## 이걸 실행하면 그냥 직선이 나옵니다...\nx = torch.linspace(-1,1,1001).reshape(-1,1)\ny = x \ny[x&lt;0] = (9*x+4.5)[x&lt;0]\ny[x&gt;0] = (-4.5*x+4.5)[x&gt;0]\nplt.plot(x,y)\n다르게 나오는 이유가 너무 궁금하시다면 아래의 링크로 가셔서 깊은복사/얕은복사에 대한 개념을 이해하시면 됩니다. (그렇지만 가능하다면 궁금해하지 마세요…..)\n\n깊은복사 얕은복사 강의들으러 가기"
-  },
-  {
-    "objectID": "posts/03wk-2.html#b.-방법2-렐루이용",
-    "href": "posts/03wk-2.html#b.-방법2-렐루이용",
-    "title": "03wk-2: 깊은신경망 (1) – 로지스틱의 한계 극복",
-    "section": "B. 방법2 – 렐루이용",
-    "text": "B. 방법2 – 렐루이용\n\nrelu = torch.nn.ReLU()\n\n\nplt.plot(relu(x),'--',label=r'$relu(x)$')\nplt.plot(relu(-x),'--',label=r'$relu(-x)$')\nplt.legend()\n\n\n\n\n\n\n\n\n\nplt.plot(-4.5*relu(x),'--',label=r'$-4.5\\times relu(x) + 4.5$')\nplt.plot(-9*relu(-x),'--',label=r'$-9\\times relu(-x) + 4.5$')\nplt.legend()\n\n\n\n\n\n\n\n\n\nplt.plot(-4.5*relu(x)-9*relu(-x),'--',label=r'$-4.5\\times relu(x) -9 \\times relu(-x)$')\nplt.plot(y,'--',label=r'$y$')\nplt.plot(-4.5*relu(x)-9*relu(-x)+4.5,'--',label=r'$-4.5\\times relu(x) -9 \\times relu(-x)+4.5$')\nplt.legend()\n\n\n\n\n\n\n\n\n- 우리의 목표: 저 초록선에서 시그모이드를 태우면된다. 즉 아래의 느낌임\n\nsig = torch.nn.Sigmoid()\n\n\nfig = plt.figure(figsize=(8, 4))\nspec = fig.add_gridspec(4, 4)\nax1 = fig.add_subplot(spec[:2,0]); ax1.set_title(r'$x$'); ax1.set_ylim(-1,1)\nax2 = fig.add_subplot(spec[2:,0]); ax2.set_title(r'$-x$'); ax2.set_ylim(-1,1)\nax3 = fig.add_subplot(spec[:2,1]); ax3.set_title(r'$relu(x)$'); ax3.set_ylim(-1,1)\nax4 = fig.add_subplot(spec[2:,1]); ax4.set_title(r'$relu(-x)$'); ax4.set_ylim(-1,1)\nax5 = fig.add_subplot(spec[1:3,2]); ax5.set_title(r'$-4.5 relu(x)-9 relu(-x)+4.5$')\nax6 = fig.add_subplot(spec[1:3,3]); ax6.set_title('sig(...)');\n#---#\nax1.plot(x,'--',color='C0')\nax2.plot(-x,'--',color='C1')\nax3.plot(relu(x),'--',color='C0')\nax4.plot(relu(-x),'--',color='C1')\nax5.plot(-4.5*relu(x)-9*relu(-x)+4.5,'--',color='C2')\nax6.plot(sig(-4.5*relu(x)-9*relu(-x)+4.5),'--',color='C2')\nfig.tight_layout()"
-  },
-  {
-    "objectID": "posts/03wk-2.html#c.-방법2의-다른구현",
-    "href": "posts/03wk-2.html#c.-방법2의-다른구현",
-    "title": "03wk-2: 깊은신경망 (1) – 로지스틱의 한계 극복",
-    "section": "C. 방법2의 다른구현",
-    "text": "C. 방법2의 다른구현\n- 렐루이용하여 만드는 방법 정리\n\n벡터 x와 relu함수를 준비한다.\nu = [x,-x] 를 계산한다.\nv = [relu(x), relu(-x)] 를 계산한다.\ny = -4.5 * relu(x) + 9 * relu(-x) +4.5 를 계산한다.\n\n- 1단계\n\nx,relu\n\n(tensor([[-1.0000],\n         [-0.9980],\n         [-0.9960],\n         ...,\n         [ 0.9960],\n         [ 0.9980],\n         [ 1.0000]]),\n ReLU())\n\n\n- 2단계\n\nu = torch.concat([x,-x],axis=1) # u = [x, -x] 같은것\nu\n\ntensor([[-1.0000,  1.0000],\n        [-0.9980,  0.9980],\n        [-0.9960,  0.9960],\n        ...,\n        [ 0.9960, -0.9960],\n        [ 0.9980, -0.9980],\n        [ 1.0000, -1.0000]])\n\n\n- 3단계\n\nv = relu(u) # 각각의 column에 렐루취함\nv\n\ntensor([[0.0000, 1.0000],\n        [0.0000, 0.9980],\n        [0.0000, 0.9960],\n        ...,\n        [0.9960, 0.0000],\n        [0.9980, 0.0000],\n        [1.0000, 0.0000]])\n\n\n- 4단계\n\n-4.5 * v[:,[0]] - 9.0 * v[:,[1]] +4.5\n\ntensor([[-4.5000],\n        [-4.4820],\n        [-4.4640],\n        ...,\n        [ 0.0180],\n        [ 0.0090],\n        [ 0.0000]])\n\n\n\ny\n\ntensor([[-4.5000],\n        [-4.4820],\n        [-4.4640],\n        ...,\n        [ 0.0180],\n        [ 0.0090],\n        [ 0.0000]])\n\n\n- 그런데, 4단계는 아래와 같이 볼 수 있다.\n\n\\({\\boldsymbol v}\\begin{bmatrix} -4.5 \\\\ -9.0 \\end{bmatrix} + 4.5 = \\begin{bmatrix} v_{11} & v_{12} \\\\ v_{21} & v_{22} \\\\ \\dots & \\dots \\\\ v_{n1} & v_{n2} \\\\ \\end{bmatrix}\\begin{bmatrix} -4.5 \\\\ -9.0 \\end{bmatrix} + 4.5 = \\begin{bmatrix} -4.5 v_{11} - 9.0 v_{12} + 4.5 \\\\ -4.5 v_{21} - 9.0 v_{22} + 4.5 \\\\ \\dots \\\\ -4.5 v_{n1} - 9.0 v_{n2} + 4.5 \\\\ \\end{bmatrix}\\)\n\n위의 수식을 참고하여 매트릭스의 곱 형태로 다시 포현하면 아래와 같다.\n\n#-4.5 * v[:,[0]] - 9.0 * v[:,[1]] +4.5\nWhat = torch.tensor([[-4.5],[-9.0]]) \nv @ What + 4.5 \n\ntensor([[-4.5000],\n        [-4.4820],\n        [-4.4640],\n        ...,\n        [ 0.0180],\n        [ 0.0090],\n        [ 0.0000]])\n\n\n이제 매트릭스의 곱 대신에 torch.nn.Linear()를 이용하면 아래의 코드와 같아진다.\n\nl2 = torch.nn.Linear(\n    in_features=2,\n    out_features=1 \n)\n\n\nl2.weight.data = torch.tensor([[-4.5,-9.0]])\nl2.bias.data = torch.tensor([4.5])\n\n\nl2(v)\n\ntensor([[-4.5000],\n        [-4.4820],\n        [-4.4640],\n        ...,\n        [ 0.0180],\n        [ 0.0090],\n        [ 0.0000]], grad_fn=&lt;AddmmBackward0&gt;)\n\n\n- 사실 2단계도 아래와 같이 볼 수 있다.\n\\[\\begin{bmatrix}\nx_1 \\\\\nx_2 \\\\\n\\dots \\\\\nx_n\n\\end{bmatrix}\\begin{bmatrix} 1 & -1 \\end{bmatrix} = \\begin{bmatrix} x_1 & -x_1 \\\\ x_2 & -x_2 \\\\ \\dots & \\dots \\\\ x_n & -x_n \\end{bmatrix}\\]\n\n#u = torch.concat([x,-x],axis=1) # u1 = [x, -x] 같은것\n\n\nl1 = torch.nn.Linear(1,2)\nl1.weight.data = torch.tensor([[1.0],[-1.0]])\nl1.bias.data = torch.tensor([0.0,0.0])\n\n\nl1(x)\n\ntensor([[-1.0000,  1.0000],\n        [-0.9980,  0.9980],\n        [-0.9960,  0.9960],\n        ...,\n        [ 0.9960, -0.9960],\n        [ 0.9980, -0.9980],\n        [ 1.0000, -1.0000]], grad_fn=&lt;AddmmBackward0&gt;)\n\n\n- 따라서 torch.nn 에 포함된 레이어를 이용하면 아래와 같이 표현할 할 수 있다.\n\nl1 = torch.nn.Linear(1,2)\nl1.weight.data = torch.tensor([[1.0],[-1.0]])\nl1.bias.data = torch.tensor([0.0,0.0])\na1 = torch.nn.ReLU()\nl2 = torch.nn.Linear(2,1)\nl2.weight.data = torch.tensor([[-4.5,-9.0]])\nl2.bias.data = torch.tensor([4.5])\n\n\nl2(a1(l1(x))), y\n\n(tensor([[-4.5000],\n         [-4.4820],\n         [-4.4640],\n         ...,\n         [ 0.0180],\n         [ 0.0090],\n         [ 0.0000]], grad_fn=&lt;AddmmBackward0&gt;),\n tensor([[-4.5000],\n         [-4.4820],\n         [-4.4640],\n         ...,\n         [ 0.0180],\n         [ 0.0090],\n         [ 0.0000]]))\n\n\n- 각각의 layer를 torch.nn.Sequential() 로 묶으면 아래와 같이 정리할 수 있다.\n\nnet = torch.nn.Sequential(\n    torch.nn.Linear(1,2),\n    torch.nn.ReLU(),\n    torch.nn.Linear(2,1)\n)\nl1,a1,l2 = net\nl1.weight.data = torch.tensor([[1.0],[-1.0]])\nl1.bias.data = torch.tensor([0.0,0.0])\nl2.weight.data = torch.tensor([[-4.5,-9.0]])\nl2.bias.data = torch.tensor([4.5])\n\n\nnet(x),y\n\n(tensor([[-4.5000],\n         [-4.4820],\n         [-4.4640],\n         ...,\n         [ 0.0180],\n         [ 0.0090],\n         [ 0.0000]], grad_fn=&lt;AddmmBackward0&gt;),\n tensor([[-4.5000],\n         [-4.4820],\n         [-4.4640],\n         ...,\n         [ 0.0180],\n         [ 0.0090],\n         [ 0.0000]]))"
-  },
-  {
-    "objectID": "posts/03wk-2.html#d.-수식표현",
-    "href": "posts/03wk-2.html#d.-수식표현",
-    "title": "03wk-2: 깊은신경망 (1) – 로지스틱의 한계 극복",
-    "section": "D. 수식표현",
-    "text": "D. 수식표현\n(1) \\({\\bf X}=\\begin{bmatrix} x_1 \\\\ \\dots \\\\ x_n \\end{bmatrix}\\)\n(2) \\(l_1({\\bf X})={\\bf X}{\\bf W}^{(1)}\\overset{bc}{+} {\\boldsymbol b}^{(1)}=\\begin{bmatrix} x_1 & -x_1 \\\\ x_2 & -x_2 \\\\ \\dots & \\dots \\\\ x_n & -x_n\\end{bmatrix}\\)\n\n\\({\\bf W}^{(1)}=\\begin{bmatrix} 1 & -1 \\end{bmatrix}\\)\n\\({\\boldsymbol b}^{(1)}=\\begin{bmatrix} 0 & 0 \\end{bmatrix}\\)\n\n(3) \\((a_1\\circ l_1)({\\bf X})=\\text{relu}\\big({\\bf X}{\\bf W}^{(1)}\\overset{bc}{+}{\\boldsymbol b}^{(1)}\\big)=\\begin{bmatrix} \\text{relu}(x_1) & \\text{relu}(-x_1) \\\\ \\text{relu}(x_2) & \\text{relu}(-x_2) \\\\ \\dots & \\dots \\\\ \\text{relu}(x_n) & \\text{relu}(-x_n)\\end{bmatrix}\\)\n(4) \\((l_2 \\circ a_1\\circ l_1)({\\bf X})=\\text{relu}\\big({\\bf X}{\\bf W}^{(1)}\\overset{bc}{+}{\\boldsymbol b}^{(1)}\\big){\\bf W}^{(2)}\\overset{bc}{+}b^{(2)}\\)\n\\(\\quad=\\begin{bmatrix} -4.5\\times\\text{relu}(x_1) -9.0 \\times \\text{relu}(-x_1) +4.5 \\\\ -4.5\\times\\text{relu}(x_2) -9.0 \\times\\text{relu}(-x_2) + 4.5 \\\\ \\dots \\\\ -4.5\\times \\text{relu}(x_n) -9.0 \\times\\text{relu}(-x_n)+4.5 \\end{bmatrix}\\)\n\n\\({\\bf W}^{(2)}=\\begin{bmatrix} -4.5 \\\\ -9 \\end{bmatrix}\\)\n\\(b^{(2)}=4.5\\)\n\n(5) \\(net({\\bf X})=(l_2 \\circ a_1\\circ l_1)({\\bf X})=\\text{relu}\\big({\\bf X}{\\bf W}^{(1)}\\overset{bc}{+}{\\boldsymbol b}^{(1)}\\big){\\bf W}^{(2)}\\overset{bc}{+}b^{(2)}\\)\n\\(\\quad =\\begin{bmatrix} -4.5\\times\\text{relu}(x_1) -9.0 \\times \\text{relu}(-x_1) +4.5 \\\\ -4.5\\times\\text{relu}(x_2) -9.0 \\times\\text{relu}(-x_2) + 4.5 \\\\ \\dots \\\\ -4.5\\times \\text{relu}(x_n) -9.0 \\times\\text{relu}(-x_n)+4.5 \\end{bmatrix}\\)"
-  },
-  {
-    "objectID": "posts/03wk-2.html#a.-데이터",
-    "href": "posts/03wk-2.html#a.-데이터",
-    "title": "03wk-2: 깊은신경망 (1) – 로지스틱의 한계 극복",
-    "section": "A. 데이터",
-    "text": "A. 데이터\n\ndf = pd.read_csv(\"https://raw.githubusercontent.com/guebin/DL2024/main/posts/dnnex.csv\")\ndf\n\n\n\n\n\n\n\n\nx\nprob\ny\n\n\n\n\n0\n-1.000000\n0.000045\n0.0\n\n\n1\n-0.998999\n0.000046\n0.0\n\n\n2\n-0.997999\n0.000047\n0.0\n\n\n3\n-0.996998\n0.000047\n0.0\n\n\n4\n-0.995998\n0.000048\n0.0\n\n\n...\n...\n...\n...\n\n\n1995\n0.995998\n0.505002\n0.0\n\n\n1996\n0.996998\n0.503752\n0.0\n\n\n1997\n0.997999\n0.502501\n0.0\n\n\n1998\n0.998999\n0.501251\n1.0\n\n\n1999\n1.000000\n0.500000\n1.0\n\n\n\n\n2000 rows × 3 columns\n\n\n\n\nx = torch.tensor(df.x).float().reshape(-1,1)\ny = torch.tensor(df.y).float().reshape(-1,1)\nprob = torch.tensor(df.prob).float().reshape(-1,1)\n\n\nplt.plot(x,y,'o',alpha=0.02)\nplt.plot(x[0],y[0],'o',label= r\"observed data = $(x_i,y_i)$\",color=\"C0\")\nplt.plot(x,prob,'--b',label= r\"prob (true, unknown)\")\nplt.legend()"
-  },
-  {
-    "objectID": "posts/03wk-2.html#b.-step-14",
-    "href": "posts/03wk-2.html#b.-step-14",
-    "title": "03wk-2: 깊은신경망 (1) – 로지스틱의 한계 극복",
-    "section": "B. Step 1~4",
-    "text": "B. Step 1~4\n- Step1에 대한 생각: 네트워크를 어떻게 만들까? = 아키텍처를 어떻게 만들까? = 모델링\n\\[\\underset{(n,1)}{\\bf X} \\overset{l_1}{\\to} \\underset{(n,2)}{\\boldsymbol u^{(1)}} \\overset{a_1}{\\to} \\underset{(n,2)}{\\boldsymbol v^{(1)}} \\overset{l_1}{\\to} \\underset{(n,1)}{\\boldsymbol u^{(2)}} \\overset{a_2}{\\to} \\underset{(n,1)}{\\boldsymbol v^{(2)}}=\\underset{(n,1)}{\\hat{\\boldsymbol y}}\\]\n- Step2,3,4 는 너무 뻔해서..\n\ntorch.manual_seed(43052)\nnet = torch.nn.Sequential(\n    torch.nn.Linear(1,2),\n    torch.nn.ReLU(),\n    torch.nn.Linear(2,1),\n    torch.nn.Sigmoid()\n)\nloss_fn = torch.nn.BCELoss()\noptimizr = torch.optim.Adam(net.parameters())\n#---#\nfor epoc in range(3000):\n    ## \n    yhat = net(x)\n    ## \n    loss = loss_fn(yhat,y)\n    ## \n    loss.backward()\n    ## \n    optimizr.step()\n    optimizr.zero_grad()\n\n\nplt.plot(x,y,'o',alpha=0.02)\nplt.plot(x[0],y[0],'o',label= r\"observed data = $(x_i,y_i)$\",color=\"C0\")\nplt.plot(x,prob,'--b',label= r\"prob (true, unknown)\")\nplt.plot(x,net(x).data,'--',label=\"prob (estimated) -- after 3000 epochs\")\nplt.legend()\n\n\n\n\n\n\n\n\n\nfor epoc in range(3000):\n    ## \n    yhat = net(x)\n    ## \n    loss = loss_fn(yhat,y)\n    ## \n    loss.backward()\n    ## \n    optimizr.step()\n    optimizr.zero_grad()\n\n\nplt.plot(x,y,'o',alpha=0.02)\nplt.plot(x[0],y[0],'o',label= r\"observed data = $(x_i,y_i)$\",color=\"C0\")\nplt.plot(x,prob,'--b',label= r\"prob (true, unknown)\")\nplt.plot(x,net(x).data,'--',label=\"prob (estimated) -- after 6000 epochs\")\nplt.legend()"
-  },
-  {
-    "objectID": "posts/04wk-1.html#a.-step은-표현-불가능하지-않나",
-    "href": "posts/04wk-1.html#a.-step은-표현-불가능하지-않나",
-    "title": "04wk-1: 깊은신경망 (2) – 꺽인그래프의 한계?, 시벤코정리, MNIST",
-    "section": "A. Step은 표현 불가능하지 않나?",
-    "text": "A. Step은 표현 불가능하지 않나?\n- 맞춰봐\n\ntorch.manual_seed(43052)\nx = torch.linspace(-1,1,2000).reshape(-1,1)\nu = 0*x-3\nu[x&lt;-0.2] = (15*x+6)[x&lt;-0.2]\nu[(-0.2&lt;x)&(x&lt;0.4)] = (0*x-1)[(-0.2&lt;x)&(x&lt;0.4)]\nsig = torch.nn.Sigmoid()\nv = π = sig(u)\ny = torch.bernoulli(v)\n\n\n#plt.plot(u,alpha=0.2)\nplt.plot(x,y,'.',alpha=0.01,color=\"C0\")\nplt.plot(x[0],y[0],'o',color=\"C0\",label=r\"observed data (with error): $(x_i,y_i)$\")\nplt.plot(x,v,'--',label=r\"prob (true, unknown): $(x_i,\\pi_i)$ or $(x_i,v_i)$\",color=\"C1\")\nplt.legend()\n\n\n\n\n\n\n\n\n- 선이 많이 꺽이면되는거아냐?\n\n\\(\\underset{(n,1)}{\\bf X} \\overset{l_1}{\\to} \\underset{(n,256)}{\\boldsymbol u^{(1)}} \\overset{a_1}{\\to} \\underset{(n,256)}{\\boldsymbol v^{(1)}} \\overset{l_1}{\\to} \\underset{(n,1)}{\\boldsymbol u^{(2)}} \\overset{a_2}{\\to} \\underset{(n,1)}{\\boldsymbol v^{(2)}}=\\underset{(n,1)}{\\hat{\\boldsymbol y}}\\)\n\n\n#torch.manual_seed(43052)\nnet = torch.nn.Sequential(\n    torch.nn.Linear(1,256),\n    torch.nn.ReLU(),\n    torch.nn.Linear(256,1),\n    #torch.nn.Sigmoid()\n)\n#loss_fn = torch.nn.BCELoss()\nloss_fn = torch.nn.BCEWithLogitsLoss()\noptimizr = torch.optim.Adam(net.parameters())\n#--#\nfor epoc in range(5000):\n    ## 1\n    yhat = net(x) \n    ## 2 \n    loss = loss_fn(yhat,y)\n    ## 3 \n    loss.backward()\n    ## 4 \n    optimizr.step()\n    optimizr.zero_grad()\n\n\nfig,ax = plt.subplots(1,2)\nax[0].plot(x,u,'--',label=r\"$(x_i,u_i)$\")\nax[0].plot(x,yhat.data,'--',label=r\"$(x_i,\\hat{u}_i)$\")\nax[0].legend()\nax[0].set_title(\"before sig\")\nax[1].plot(x,y,'.',alpha=0.02,color=\"blue\")\nax[1].plot(x,v,'--', color=\"C0\", label=r\"$(x_i,v_i)$ or $(x_i,\\pi_i)$\")\nax[1].plot(x,sig(yhat.data),'--',color=\"C1\",label=r\"$(x_i,\\hat{v}_i)$ or $(x_i,\\hat{\\pi}_i)$\")\nax[1].legend()\nax[1].set_title(\"after sig\")\n\nText(0.5, 1.0, 'after sig')"
-  },
-  {
-    "objectID": "posts/04wk-1.html#b.-곡선은-표현-불가능하지-않나",
-    "href": "posts/04wk-1.html#b.-곡선은-표현-불가능하지-않나",
-    "title": "04wk-1: 깊은신경망 (2) – 꺽인그래프의 한계?, 시벤코정리, MNIST",
-    "section": "B. 곡선은 표현 불가능하지 않나?",
-    "text": "B. 곡선은 표현 불가능하지 않나?\n- 맞춰봐1\n1 2024년 수능 미적30번 문제에 나온 함수응용\\[y_i = e^{-x_i} \\times  |\\cos(5x_i)| \\times \\sin(5x) + \\epsilon_i, \\quad \\epsilon_i \\sim N(0,\\sigma^2)\\]\n\ntorch.manual_seed(43052)\nx = torch.linspace(0,2,2000).reshape(-1,1)\neps = torch.randn(2000).reshape(-1,1)*0.05\nfx = torch.exp(-1*x)* torch.abs(torch.cos(3*x))*(torch.sin(3*x))\ny = fx + eps\n\n\nplt.plot(x,y,label=r\"observed data (with error): $(x_i,y_i)$\", alpha=0.2)\nplt.plot(x,fx,'--',color=\"C0\",label=r\"underlying (true, unknown): $e^{-x}|\\cos(3x)|\\sin(3x)$\")\nplt.legend()\n\n\n\n\n\n\n\n\n- 맞춰본다..\n\n\\(\\underset{(n,1)}{\\bf X} \\overset{l_1}{\\to} \\underset{(n,1024)}{\\boldsymbol u^{(1)}} \\overset{a_1}{\\to} \\underset{(n,1024)}{\\boldsymbol v^{(1)}} \\overset{l_1}{\\to} \\underset{(n,1)}{\\boldsymbol u^{(2)}} \\overset{a_2}{\\to} \\underset{(n,1)}{\\boldsymbol v^{(2)}}=\\underset{(n,1)}{\\hat{\\boldsymbol y}}\\)\n\n\n#torch.manual_seed(43052)\nnet = torch.nn.Sequential(\n    torch.nn.Linear(1,1024),\n    torch.nn.ReLU(),\n    torch.nn.Linear(1024,1)\n)\nloss_fn = torch.nn.MSELoss()\noptimizr = torch.optim.Adam(net.parameters())\n#--#\nfor epoc in range(5000):\n    ## 1\n    yhat = net(x) \n    ## 2 \n    loss = loss_fn(yhat,y)\n    ## 3 \n    loss.backward()\n    ## 4 \n    optimizr.step()\n    optimizr.zero_grad()\n\n\nplt.plot(x,y,label=r\"observed data: $(x_i,y_i)$\", alpha=0.2)\nplt.plot(x,fx,'--',color=\"C0\",label=r\"underlying (true, unkown): $e^{-x}|\\cos(3x)|\\sin(3x)$\")\nplt.plot(x,yhat.data,'--',color=\"C1\",label=r\"underlying (esimated): $(x_i,\\hat{y}_i)$\")\nplt.legend()"
-  },
-  {
-    "objectID": "posts/04wk-1.html#a.-시벤코의-정리-소개",
-    "href": "posts/04wk-1.html#a.-시벤코의-정리-소개",
-    "title": "04wk-1: 깊은신경망 (2) – 꺽인그래프의 한계?, 시벤코정리, MNIST",
-    "section": "A. 시벤코의 정리 소개",
-    "text": "A. 시벤코의 정리 소개\n\n\n\n\n\n\nUniversal Approximation Thm: (범용근사정리,보편근사정리,시벤코정리)\n\n\n\n하나의 은닉층을 가지는 아래와 같은 꼴의 네트워크는\ntorch.nn.Sequential(\n    torch.nn.Linear(p,???),\n    torch.nn.Sigmoid(),\n    torch.nn.Linear(???,q)\n)\n\\(f: {\\bf X}_{n \\times p} \\to {\\bf y}_{n\\times q}\\) 인 모든 continuous mapping \\(f\\) 을 원하는 정확도로 “근사”시킬 수 있다. 쉽게 말하면 \\({\\bf X} \\to {\\bf y}\\) 인 어떠한 복잡한 규칙라도 하나의 은닉층을 가진 심층신경망(DNN)이 원하는 정확도로 근사시킨다는 의미이다. 예를들면 심층신경망은 아래와 같은 문제를 해결할 수 있다.\n\n\\({\\bf X}\\)는 토익점수, GPA, 공모전참가여부, \\({\\bf y}\\)는 취업여부일 경우 \\({\\bf X} \\to {\\bf y}\\)인 규칙을 심층신경망은 항상 찾을 수 있다.\n\\({\\bf X}\\)는 주택이미지, 지역정보, 주택면적, 주택에 대한 설명 \\({\\bf y}\\)는 주택가격일 경우 \\({\\bf X} \\to {\\bf y}\\)인 규칙을 심층신경망은 항상 찾을 수 있다.\n\n즉 하나의 은닉층을 가진 심층신경망 모델의 표현력은 무한대라 볼 수 있다."
-  },
-  {
-    "objectID": "posts/04wk-1.html#b.-왜-가능한가",
-    "href": "posts/04wk-1.html#b.-왜-가능한가",
-    "title": "04wk-1: 깊은신경망 (2) – 꺽인그래프의 한계?, 시벤코정리, MNIST",
-    "section": "B. 왜 가능한가?",
-    "text": "B. 왜 가능한가?\n- 데이터\n\nx = torch.linspace(-10,10,200).reshape(-1,1)\n\n- 아래와 같은 네트워크를 고려하자.\n\nl1 = torch.nn.Linear(in_features=1,out_features=2)\na1 = torch.nn.Sigmoid()\nl2 = torch.nn.Linear(in_features=2,out_features=1)\n\n- 직관1: \\(l_1\\),\\(l_2\\)의 가중치를 잘 결합하다보면 우연히 아래와 같이 만들 수 있다.\n\nl1.weight.data = torch.tensor([[-5.00],[5.00]])\nl1.bias.data = torch.tensor([+10.00,+10.00])\n\n\nl2.weight.data = torch.tensor([[1.00,1.00]])\nl2.bias.data = torch.tensor([-1.00])\n\n\nfig,ax = plt.subplots(1,3,figsize=(9,3))\nax[0].plot(x,np.array(l1(x).data)); ax[0].set_title('$l_1(x)$')\nax[1].plot(x,np.array(a1(l1(x)).data)); ax[1].set_title('$(a_1 \\circ l_1)(x)$')\nax[2].plot(x,l2(a1(l1(x))).data,color='C2'); ax[2].set_title('$(l_2 \\circ a_1 \\circ \\l_1)(x)$')\n\nText(0.5, 1.0, '$(l_2 \\\\circ a_1 \\\\circ \\\\l_1)(x)$')\n\n\n\n\n\n\n\n\n\n- 직관2: 아래들도 가능할듯?\n\nl1.weight.data = torch.tensor([[-5.00],[5.00]])\nl1.bias.data = torch.tensor([+0.00,+20.00])\nl2.weight.data = torch.tensor([[1.00,1.00]])\nl2.bias.data = torch.tensor([-1.00])\nfig,ax = plt.subplots(1,3,figsize=(9,3))\nax[0].plot(x,l1(x).data,'--',color='C0'); ax[0].set_title('$l_1(x)$')\nax[1].plot(x,a1(l1(x)).data,'--',color='C0'); ax[1].set_title('$(a_1 \\circ l_1)(x)$')\nax[2].plot(x,l2(a1(l1(x))).data,'--',color='C0'); ax[2].set_title('$(l_2 \\circ a_1 \\circ \\l_1)(x)$');\n\n\n\n\n\n\n\n\n\nl1.weight.data = torch.tensor([[-5.00],[5.00]])\nl1.bias.data = torch.tensor([+20.00,+0.00])\nl2.weight.data = torch.tensor([[2.50,2.50]])\nl2.bias.data = torch.tensor([-2.50])\nax[0].plot(x,l1(x).data,'--',color='C1'); ax[0].set_title('$l_1(x)$')\nax[1].plot(x,a1(l1(x)).data,'--',color='C1'); ax[1].set_title('$(a_1 \\circ l_1)(x)$')\nax[2].plot(x,l2(a1(l1(x))).data,'--',color='C1'); ax[2].set_title('$(l_2 \\circ a_1 \\circ \\l_1)(x)$');\nfig\n\n\n\n\n\n\n\n\n- 은닉층의노드수=4로 하고 적당한 가중치를 조정하면 \\((l_2\\circ a_1 \\circ l_1)(x)\\)의 결과로 주황색선 + 파란색선도 가능할 것 같다. \\(\\to\\) 실제로 가능함\n\nl1 = torch.nn.Linear(in_features=1,out_features=4)\na1 = torch.nn.Sigmoid()\nl2 = torch.nn.Linear(in_features=4,out_features=1)\n\n\nl1.weight.data = torch.tensor([[-5.00],[5.00],[-5.00],[5.00]])\nl1.bias.data = torch.tensor([0.00, 20.00, 20.00, 0])\nl2.weight.data = torch.tensor([[1.00,  1.00, 2.50,  2.50]])\nl2.bias.data = torch.tensor([-1.0-2.5])\n\n\nplt.plot(l2(a1(l1(x))).data)\n\n\n\n\n\n\n\n\n- 직관: 2개의 시그모이드를 우연히 잘 결합하면 아래와 같은 함수 \\(h\\)를 만들 수 있다.\n\nh = lambda x: torch.sigmoid(200*(x+0.5))+torch.sigmoid(-200*(x-0.5))-1.0\n\n\nplt.plot(x,h(x))\nplt.title(\"$h(x)$\")\n\nText(0.5, 1.0, '$h(x)$')\n\n\n\n\n\n\n\n\n\n- 위와 같은 함수 \\(h\\)를 활성화함수로 하고 \\(m\\)개의 노드를 가지는 은닉층을 생각해보자. 이러한 은닉층을 사용한다면 전체 네트워크를 아래와 같이 표현할 수 있다.\n\\(\\underset{(n,1)}{\\bf X} \\overset{l_1}{\\to} \\underset{(n,m)}{\\boldsymbol u^{(1)}} \\overset{h}{\\to} \\underset{(n,m)}{\\boldsymbol v^{(1)}} \\overset{l_2}{\\to} \\underset{(n,1)}{\\hat{\\boldsymbol y}}\\)\n그리고 위의 네트워크와 동일한 효과를 주는 아래의 네트워크가 항상 존재함.\n\\(\\underset{(n,1)}{\\bf X} \\overset{l_1}{\\to} \\underset{(n,2m)}{\\boldsymbol u^{(1)}} \\overset{sig}{\\to} \\underset{(n,2m)}{\\boldsymbol v^{(1)}} \\overset{l_2}{\\to} \\underset{(n,1)}{\\hat{\\boldsymbol y}}\\)\n- 이 네트워크는 어떠한 함수형태라도 구불구불한 step의 형태로 다 맞출수 있다."
-  },
-  {
-    "objectID": "posts/04wk-1.html#c.-h의-위력",
-    "href": "posts/04wk-1.html#c.-h의-위력",
-    "title": "04wk-1: 깊은신경망 (2) – 꺽인그래프의 한계?, 시벤코정리, MNIST",
-    "section": "C. \\(h\\)의 위력",
-    "text": "C. \\(h\\)의 위력\n- \\(h(x)\\)를 활성화함수로 가지는 네트워크를 설계하여 보자.\n\nclass MyActivation(torch.nn.Module): ## 사용자정의 활성화함수를 선언하는 방법\n    def __init__(self):\n        super().__init__() \n    def forward(self, input):\n        return h(input) # activation 의 출력 \n\n\na1 = MyActivation()\n# a1 = torch.nn.Sigmoid(), a1 = torch.nn.ReLU() 대신에 a1 = MyActivation()\n\n- 아래와 같이 하나의 은닉층을 가지고 있더라도 많은 노드수만 보장되면 매우 충분한 표현력을 가짐\n\\(\\underset{(n,1)}{\\bf X} \\overset{l_1}{\\to} \\underset{(n,m)}{\\boldsymbol u^{(1)}} \\overset{h}{\\to} \\underset{(n,m)}{\\boldsymbol v^{(1)}} \\overset{l_2}{\\to} \\underset{(n,1)}{\\hat{\\boldsymbol y}}\\)\n- \\(h\\)의 위력\n예제1 – 스펙높아도 취업이 안된다고??\n\ndf = pd.read_csv(\"https://raw.githubusercontent.com/guebin/DL2024/main/posts/dnnex.csv\")\nx = torch.tensor(df.x).float().reshape(-1,1)\ny = torch.tensor(df.y).float().reshape(-1,1)\nprob = torch.tensor(df.prob).float().reshape(-1,1)\n\n\ntorch.manual_seed(43052)\nh = lambda x: torch.sigmoid(200*(x+0.5))+torch.sigmoid(-200*(x-0.5))-1.0\nclass MyActivation(torch.nn.Module): ## 사용자정의 활성화함수를 선언하는 방법\n    def __init__(self):\n        super().__init__() \n    def forward(self, input):\n        return h(input) \n#---# \nnet = torch.nn.Sequential(\n    torch.nn.Linear(1,2048),\n    MyActivation(),\n    torch.nn.Linear(2048,1),\n    torch.nn.Sigmoid()\n)\nloss_fn = torch.nn.BCELoss()\noptimizr = torch.optim.Adam(net.parameters()) \n#---#\nfor epoc in range(100):\n    ## 1 \n    yhat = net(x) \n    ## 2 \n    loss = loss_fn(yhat,y)\n    ## 3 \n    loss.backward()\n    ## 4 \n    optimizr.step()\n    optimizr.zero_grad()\n\n\nplt.plot(x,y,'o',alpha=0.2)\nplt.plot(x,prob,'--')\nplt.plot(x,net(x).data,'--')\n\n\n\n\n\n\n\n\n예제2 – 수능에 나왔다던 이상한 곡선..?\n\ntorch.manual_seed(43052)\nx = torch.linspace(0,2,2000).reshape(-1,1)\neps = torch.randn(2000).reshape(-1,1)*0.05\nfx = torch.exp(-1*x)* torch.abs(torch.cos(3*x))*(torch.sin(3*x))\ny = fx + eps\n\n\ntorch.manual_seed(43052)\nh = lambda x: torch.sigmoid(200*(x+0.5))+torch.sigmoid(-200*(x-0.5))-1.0\nclass MyActivation(torch.nn.Module): ## 사용자정의 활성화함수를 선언하는 방법\n    def __init__(self):\n        super().__init__() \n    def forward(self, input):\n        return h(input) \n#---# \nnet = torch.nn.Sequential(\n    torch.nn.Linear(1,2048),\n    MyActivation(),\n    torch.nn.Linear(2048,1),\n)\nloss_fn = torch.nn.MSELoss()\noptimizr = torch.optim.Adam(net.parameters()) \n#---#\nfor epoc in range(100):\n    ## 1 \n    yhat = net(x) \n    ## 2 \n    loss = loss_fn(yhat,y)\n    ## 3 \n    loss.backward()\n    ## 4 \n    optimizr.step()\n    optimizr.zero_grad()\n\n\nplt.plot(x,y,alpha=0.2)\nplt.plot(x,fx,'--')\nplt.plot(x,net(x).data,'--')"
-  },
-  {
-    "objectID": "posts/04wk-1.html#d.-의문점",
-    "href": "posts/04wk-1.html#d.-의문점",
-    "title": "04wk-1: 깊은신경망 (2) – 꺽인그래프의 한계?, 시벤코정리, MNIST",
-    "section": "D. 의문점",
-    "text": "D. 의문점\n- 이 수업을 잘 이해한 사람: 그냥 활성화함수를 \\(h\\)로 쓰면 끝 아니야? 뭐하러 relu 를 쓰는거지?\n- 딥러닝을 좀 공부해본사람1: 왜 딥러닝이 2010년이 지나서야 떳지? 1989년에 세상의 모든 문제가 풀려야 하는것 아닌가?\n- 딥러닝을 좀 공부해본사람2: 하나의 은닉층을 표현하는 네크워크는 잘 안쓰지 않나? 은닉층이 많을수록 좋다고 들었는데?\n- 약간의 의구심이 있지만 아무튼 우리는 아래의 무기를 가진 꼴이 되었다.\n\n\n\n\n\n\n우리의 무기\n\n\n\n하나의 은닉층을 가지는 아래와 같은 꼴의 네트워크로,\ntorch.nn.Sequential(\n    torch.nn.Linear(p,???),\n    torch.nn.Sigmoid(),\n    torch.nn.Linear(???,q)\n)\n\\(f: {\\bf X}_{n \\times p} \\to {\\bf y}_{n\\times q}\\) 인 모든 continuous mapping \\(f\\) 을 원하는 정확도로 “근사”시킬 수 있다."
-  },
-  {
-    "objectID": "posts/04wk-1.html#a.-데이터-다운로드",
-    "href": "posts/04wk-1.html#a.-데이터-다운로드",
-    "title": "04wk-1: 깊은신경망 (2) – 꺽인그래프의 한계?, 시벤코정리, MNIST",
-    "section": "A. 데이터 다운로드",
-    "text": "A. 데이터 다운로드\n\nuntar_data('https://s3.amazonaws.com/fast-ai-imageclas/mnist_png.tgz')\n\n\n\n\n\n\n    \n      \n      100.03% [15687680/15683414 00:03&lt;00:00]\n    \n    \n\n\nPath('/home/cgb3/.fastai/data/mnist_png')\n\n\n\n!ls '/home/cgb3/.fastai/data/mnist_png'\n\ntesting  training\n\n\n\n!ls '/home/cgb3/.fastai/data/mnist_png/training/'\n\n0  1  2  3  4  5  6  7  8  9\n\n\n\n!ls '/home/cgb3/.fastai/data/mnist_png/training/3' | head\n\n10.png\n10000.png\n10011.png\n10031.png\n10034.png\n10042.png\n10052.png\n1007.png\n10074.png\n10091.png\nls: write error: Broken pipe\n\n\n\nimg3 = torchvision.io.read_image('/home/cgb3/.fastai/data/mnist_png/training/3/10.png')\nplt.imshow(img3.reshape(28,28),cmap=\"gray\")"
-  },
-  {
-    "objectID": "posts/04wk-1.html#b.-예비학습-plt.imshow",
-    "href": "posts/04wk-1.html#b.-예비학습-plt.imshow",
-    "title": "04wk-1: 깊은신경망 (2) – 꺽인그래프의 한계?, 시벤코정리, MNIST",
-    "section": "B. 예비학습 – `plt.imshow()",
-    "text": "B. 예비학습 – `plt.imshow()\n- plt.imshow(...) 에서 ...이 shape이 (??,??)이면 흑백이미지를 출력\n\nplt.imshow([[0,255],[0,255]],cmap='gray')\n\n\n\n\n\n\n\n\n- plt.imshow(...) 에서 ...의 shape이 (??,??,3)이면 칼라이미지를 출력\n\nr = [[0,255],[0,255]]\ng = [[255,0],[0,0]]\nb = [[0,0],[255,0]]\nplt.imshow(np.stack([r,g,b],axis=2))\n\n\n\n\n\n\n\n\n- plt.imshow(...) 에서 ...의 자료형이 int인지 float인지에 따라서 인식이 다름\n\nr = [[0,1],[0,1]]\ng = [[1,0],[0,0]]\nb = [[0,0],[1,0]]\nplt.imshow(np.stack([r,g,b],axis=2))\n\n\n\n\n\n\n\n\n\nr = [[0,1.0],[0,1.0]]\ng = [[1.0,0],[0,0]]\nb = [[0,0],[1.0,0]]\nplt.imshow(np.stack([r,g,b],axis=2))"
-  },
-  {
-    "objectID": "posts/04wk-1.html#c.-예비학습-pathlib",
-    "href": "posts/04wk-1.html#c.-예비학습-pathlib",
-    "title": "04wk-1: 깊은신경망 (2) – 꺽인그래프의 한계?, 시벤코정리, MNIST",
-    "section": "C. 예비학습 – pathlib",
-    "text": "C. 예비학습 – pathlib\n\nimport pathlib\n\n- 오브젝트 생성\n\npath = pathlib.Path('.')\npath\n\nPath('.')\n\n\n- 기능1 – .ls()\n\npath.ls()\n\n(#12) [Path('04wk-1.ipynb'),Path('01wk-1.ipynb'),Path('dnnex.csv'),Path('03wk-2.ipynb'),Path('02wksupp.pdf'),Path('02wk-2.ipynb'),Path('ref.bib'),Path('.ipynb_checkpoints'),Path('02wk-1.ipynb'),Path('_metadata.yml')...]\n\n\n- 이미지 파일이 저장된 경로로 새로운 path오브젝트를 만들고 기능1 수행\n\npath = pathlib.Path('/home/cgb3/.fastai/data/mnist_png')\npath\n\nPath('/home/cgb3/.fastai/data/mnist_png')\n\n\n\npath.ls()\n\n(#2) [Path('/home/cgb3/.fastai/data/mnist_png/training'),Path('/home/cgb3/.fastai/data/mnist_png/testing')]\n\n\n- 기능2: / 로 새로운 path 생성하기\n\n(path / 'training')\n\nPath('/home/cgb3/.fastai/data/mnist_png/training')\n\n\n- 기능1,2의 결합\n\n(path / 'training').ls()\n\n(#10) [Path('/home/cgb3/.fastai/data/mnist_png/training/1'),Path('/home/cgb3/.fastai/data/mnist_png/training/3'),Path('/home/cgb3/.fastai/data/mnist_png/training/2'),Path('/home/cgb3/.fastai/data/mnist_png/training/8'),Path('/home/cgb3/.fastai/data/mnist_png/training/7'),Path('/home/cgb3/.fastai/data/mnist_png/training/0'),Path('/home/cgb3/.fastai/data/mnist_png/training/4'),Path('/home/cgb3/.fastai/data/mnist_png/training/9'),Path('/home/cgb3/.fastai/data/mnist_png/training/6'),Path('/home/cgb3/.fastai/data/mnist_png/training/5')]"
-  },
-  {
-    "objectID": "posts/04wk-1.html#d.-데이터정리",
-    "href": "posts/04wk-1.html#d.-데이터정리",
-    "title": "04wk-1: 깊은신경망 (2) – 꺽인그래프의 한계?, 시벤코정리, MNIST",
-    "section": "D. 데이터정리",
-    "text": "D. 데이터정리\n- 데이터가 저장된 path 설정\n\npath = pathlib.Path('/home/cgb3/.fastai/data/mnist_png')\n\n- X ,y를 만듦\n\nX3 = torch.stack([torchvision.io.read_image(str(i)) for i in (path/'training/3').ls()],axis=0)\nX7 = torch.stack([torchvision.io.read_image(str(i)) for i in (path/'training/7').ls()],axis=0)\n\n\nX3.shape, X7.shape\n\n(torch.Size([6131, 1, 28, 28]), torch.Size([6265, 1, 28, 28]))\n\n\n\ny = torch.tensor([0.0]*6131+[1.0]*6265).reshape(-1,1)\n\n\nX = torch.concat([X3,X7],axis=0)\nX.shape\n\ntorch.Size([12396, 1, 28, 28])\n\n\n\nplt.plot(y,'o')\n\n\n\n\n\n\n\n\n\n“y=0.0” 은 숫자3을 의미함, “y=1.0” 은 숫자7을 의미함\n숫자3은 6131개, 숫자7은 6265개 있음\n\n- 우리는 \\({\\bf X}: (n,1,28,28)\\) 에서 \\({\\bf y}: (n,1)\\)으로 가는 맵핑을 배우고 싶음. \\(\\to\\) 이런건 배운적이 없는데?.. \\(\\to\\) 그렇다면 \\({\\bf X}:(n,784) \\to {\\bf y}:(n,1)\\) 으로 가는 맵핑을 학습하자.\n\nXnp = X.reshape(-1,28*28).float()\nX.shape, Xnp.shape\n\n(torch.Size([12396, 1, 28, 28]), torch.Size([12396, 784]))"
-  },
-  {
-    "objectID": "posts/04wk-1.html#e.-학습",
-    "href": "posts/04wk-1.html#e.-학습",
-    "title": "04wk-1: 깊은신경망 (2) – 꺽인그래프의 한계?, 시벤코정리, MNIST",
-    "section": "E. 학습",
-    "text": "E. 학습\n\ntorch.manual_seed(43052)\nnet = torch.nn.Sequential(\n    torch.nn.Linear(784,32),\n    torch.nn.ReLU(),\n    torch.nn.Linear(32,1),\n    torch.nn.Sigmoid()\n)\nloss_fn = torch.nn.BCELoss()\noptimizr = torch.optim.Adam(net.parameters())\n#--#\nfor epoc in range(200):\n    ## step1 \n    yhat = net(Xnp) \n    ## step2\n    loss = loss_fn(yhat,y)\n    ## step3\n    loss.backward()\n    ## step4 \n    optimizr.step()\n    optimizr.zero_grad()\n\n\nplt.plot(y,'o',label=r\"$(i,y_i)$ -- training data set\")\nplt.plot(net(Xnp).data,'.',alpha=0.2, label=r\"$(i,\\hat{y}_i$ -- training data set\")\nplt.legend()\n\n\n\n\n\n\n\n\n\n잘맞추는데?\n믿을수가 없는데..?\n\n\n((yhat.data &gt; 0.5) == y).float().mean() # train_accuracy\n\ntensor(0.9994)"
-  },
-  {
-    "objectID": "posts/04wk-1.html#f.-test",
-    "href": "posts/04wk-1.html#f.-test",
-    "title": "04wk-1: 깊은신경망 (2) – 꺽인그래프의 한계?, 시벤코정리, MNIST",
-    "section": "F. Test",
-    "text": "F. Test\n\npath.ls()\n\n(#2) [Path('/home/cgb3/.fastai/data/mnist_png/training'),Path('/home/cgb3/.fastai/data/mnist_png/testing')]\n\n\n\nXX3 = torch.stack([torchvision.io.read_image(str(i)) for i in (path/'testing/3').ls()],axis=0)\nXX7 = torch.stack([torchvision.io.read_image(str(i)) for i in (path/'testing/7').ls()],axis=0)\n\n\nXX3.shape,XX7.shape\n\n(torch.Size([1010, 1, 28, 28]), torch.Size([1028, 1, 28, 28]))\n\n\n\nXX = torch.concatenate([XX3,XX7],axis=0).reshape(-1,1*28*28).float()\nXX.shape\n\ntorch.Size([2038, 784])\n\n\n\nyy = torch.tensor([0]*1010 + [1]*1028).reshape(-1,1).float()\nyy.shape\n\ntorch.Size([2038, 1])\n\n\n\nplt.plot(yy,'o',label=r\"$(i,y_i)$ -- test data set\")\nplt.plot(net(XX).data,'.',label=r\"$(i,\\hat{y}_i)$ -- test data set\")\nplt.legend()\n\n\n\n\n\n\n\n\n\n(yy == (net(XX)&gt;0.5)).float().mean() # test accuracy\n\ntensor(0.9897)\n\n\n\ntest 에서도 잘 맞춘다.."
-  },
-  {
-    "objectID": "posts/01wk-2.html#a.-모형소개",
-    "href": "posts/01wk-2.html#a.-모형소개",
-    "title": "01wk-2: 회귀분석 (1) – 단순회귀의 학습전략, 경사하강법",
-    "section": "A. 모형소개",
-    "text": "A. 모형소개\n- model: \\(y_i= w_0+w_1 x_i +\\epsilon_i = 2.5 + 4x_i +\\epsilon_i, \\quad i=1,2,\\dots,n\\)\n- model: \\({\\bf y}={\\bf X}{\\bf W} +\\boldsymbol{\\epsilon}\\)\n\n\\({\\bf y}=\\begin{bmatrix} y_1 \\\\ y_2 \\\\ \\dots \\\\ y_n\\end{bmatrix}, \\quad {\\bf X}=\\begin{bmatrix} 1 & x_1 \\\\ 1 & x_2 \\\\ \\dots \\\\ 1 & x_n\\end{bmatrix}, \\quad {\\bf W}=\\begin{bmatrix} 2.5 \\\\ 4 \\end{bmatrix}, \\quad \\boldsymbol{\\epsilon}= \\begin{bmatrix} \\epsilon_1 \\\\ \\dots \\\\ \\epsilon_n\\end{bmatrix}\\)"
-  },
-  {
-    "objectID": "posts/01wk-2.html#b.-회귀모형에서-데이터-생성",
-    "href": "posts/01wk-2.html#b.-회귀모형에서-데이터-생성",
-    "title": "01wk-2: 회귀분석 (1) – 단순회귀의 학습전략, 경사하강법",
-    "section": "B. 회귀모형에서 데이터 생성",
-    "text": "B. 회귀모형에서 데이터 생성\n\ntorch.manual_seed(43052)\nones= torch.ones(100).reshape(-1,1)\nx,_ = torch.randn(100).sort()\nx = x.reshape(-1,1)\nX = torch.concat([ones,x],axis=-1)\nW = torch.tensor([[2.5],[4]])\nϵ = torch.randn(100).reshape(-1,1)*0.5\ny = X@W + ϵ\n\n\nplt.plot(x,y,'o')\nplt.plot(x,2.5+4*x,'--')"
-  },
-  {
-    "objectID": "posts/01wk-2.html#a.-손실함수",
-    "href": "posts/01wk-2.html#a.-손실함수",
-    "title": "01wk-2: 회귀분석 (1) – 단순회귀의 학습전략, 경사하강법",
-    "section": "A. 손실함수",
-    "text": "A. 손실함수\n- ’적당한 정도’를 판단하기 위한 장치: loss function 도입!\n\\(loss=\\sum_{i=1}^{n}(y_i-\\hat{y}_i)^2=\\sum_{i=1}^{n}(y_i-(\\hat{w}_0+\\hat{w}_1x_i))^2\\)\n\\(=({\\bf y}-{\\bf\\hat{y}})^\\top({\\bf y}-{\\bf\\hat{y}})=({\\bf y}-{\\bf X}{\\bf \\hat{W}})^\\top({\\bf y}-{\\bf X}{\\bf \\hat{W}})\\)\n- loss 함수의 특징\n\n\\(y_i \\approx \\hat{y}_i\\) 일수록 loss값이 작다.\n\\(y_i \\approx \\hat{y}_i\\) 이 되도록 \\((\\hat{w}_0,\\hat{w}_1)\\)을 잘 찍으면 loss값이 작다.\n(중요) 주황색 점선이 ‘적당할 수록’ loss값이 작다.\n\n\nloss = torch.sum((y-yhat)**2)\nloss\n\ntensor(8587.6875, grad_fn=&lt;SumBackward0&gt;)\n\n\n- 우리의 목표: 이 loss(=8587.6875)을 더 줄이자.\n\n궁극적으로는 아예 모든 조합 \\((\\hat{w}_0,\\hat{w}_1)\\)에 대하여 가장 작은 loss를 찾으면 좋겠다. (단계2에서 할일은 아님)\n\n- 문제의 치환: 생각해보니까 우리의 문제는 아래와 같이 수학적으로 단순화 되었다.\n\n적당해보이는 주황색 선을 찾자 \\(\\to\\) \\(loss(w_0,w_1)\\)를 최소로하는 \\((w_0,w_1)\\)의 값을 찾자.\n\n- 수정된 목표: \\(loss(w_0,w_1)\\)를 최소로 하는 \\((w_0,w_1)\\)을 구하라.\n\n단순한 수학문제가 되었다. 이것은 마치 \\(f(x,y)\\)를 최소화하는 \\((x,y)\\)를 찾으라는 것임.\n함수의 최대값 혹은 최소값을 컴퓨터를 이용하여 찾는것을 “최적화”라고 하며 이는 산공교수님들이 가장 잘하는 분야임. (산공교수님들에게 부탁하면 잘해줌, 산공교수님들은 보통 최적화해서 어디에 쓸지보다 최적화 자체에 더 관심을 가지고 연구하심)\n최적화를 하는 방법? 경사하강법"
-  },
-  {
-    "objectID": "posts/01wk-2.html#b.-경사하강법",
-    "href": "posts/01wk-2.html#b.-경사하강법",
-    "title": "01wk-2: 회귀분석 (1) – 단순회귀의 학습전략, 경사하강법",
-    "section": "B. 경사하강법",
-    "text": "B. 경사하강법\n- 경사하강법 아이디어 (1차원)\n\n임의의 점을 찍는다.\n그 점에서 순간기울기를 구한다. (접선) &lt;– 미분\n순간기울기(=미분계수)의 부호를 살펴보고 부호와 반대방향으로 움직인다.\n\n\n팁: 기울기의 절대값 크기와 비례하여 보폭(=움직이는 정도)을 조절한다. \\(\\to\\) \\(\\alpha\\)를 도입\n\n\n최종수식: \\(w \\leftarrow w - \\alpha \\times \\frac{\\partial}{\\partial w}loss(w)\\)\n\n- 경사하강법 아이디어 (2차원)\n\n임의의 점을 찍는다.\n그 점에서 순간기울기를 구한다. (접평면) &lt;– 편미분\n순간기울기(=미분계수)의 부호를 살펴보고 부호와 반대방향으로 각각 움직인다.\n\n\n팁: 여기서도 기울기의 절대값 크기와 비례하여 보폭(=움직이는 정도)을 각각 조절한다. \\(\\to\\) \\(\\alpha\\)를 도입.\n\n- 경사하강법 = loss를 줄이도록 \\({\\bf W}\\)를 개선하는 방법\n\n업데이트 공식: 수정값 = 원래값 - \\(\\alpha\\) \\(\\times\\) 기울어진크기(=미분계수)\n여기에서 \\(\\alpha\\)는 전체적인 보폭의 크기를 결정한다. 즉 \\(\\alpha\\)값이 클수록 한번의 update에 움직이는 양이 크다."
   },
   {
     "objectID": "posts/03wk-1.html#a.-로지스틱-모형",
@@ -404,96 +495,5 @@
     "title": "03wk-1: 로지스틱 – 로지스틱 소개, BCELoss, Adam, 로지스틱의 한계",
     "section": "D. 해결책 (아이디어 수준만)",
     "text": "D. 해결책 (아이디어 수준만)\n- sigmoid를 넣기 전의 상태가 직선이 아니라 꺽이는 직선이야 한다.\n\na = torch.nn.Sigmoid()\n\n\nfig,ax = plt.subplots(4,2,figsize=(8,8))\nu1 = torch.tensor([-6,-4,-2,0,2,4,6])\nu2 = torch.tensor([6,4,2,0,-2,-4,-6])\nu3 = torch.tensor([-6,-2,2,6,2,-2,-6])\nu4 = torch.tensor([-6,-2,2,6,4,2,0])\nax[0,0].plot(u1,'--o',color='C0',label = r\"$u_1$\")\nax[0,0].legend()\nax[0,1].plot(a(u1),'--o',color='C0',label = r\"$a(u_1)=\\frac{exp(u_1)}{exp(u_1)+1}$\")\nax[0,1].legend()\nax[1,0].plot(u2,'--o',color='C1',label = r\"$u_2$\")\nax[1,0].legend()\nax[1,1].plot(a(u2),'--o',color='C1',label = r\"$a(u_2)=\\frac{exp(u_2)}{exp(u_2)+1}$\")\nax[1,1].legend()\nax[2,0].plot(u3,'--o',color='C2', label = r\"$u_3$\")\nax[2,0].legend()\nax[2,1].plot(a(u3),'--o',color='C2', label = r\"$a(u_3)=\\frac{exp(u_3)}{exp(u_3)+1}$\")\nax[2,1].legend()\nax[3,0].plot(u4,'--o',color='C3', label = r\"$u_4$\")\nax[3,0].legend()\nax[3,1].plot(a(u4),'--o',color='C3', label = r\"$a(u_4)=\\frac{exp(u_4)}{exp(u_4)+1}$\")\nax[3,1].legend()"
-  },
-  {
-    "objectID": "posts/02wk-2.html#a.-data",
-    "href": "posts/02wk-2.html#a.-data",
-    "title": "02wk-2: 회귀분석 (3) – Step1,2,4 의 변형",
-    "section": "A. Data",
-    "text": "A. Data\n\ntemp = [-2.4821, -2.3621, -1.9973, -1.6239, -1.4792, -1.4635, -1.4509, -1.4435,\n        -1.3722, -1.3079, -1.1904, -1.1092, -1.1054, -1.0875, -0.9469, -0.9319,\n        -0.8643, -0.7858, -0.7549, -0.7421, -0.6948, -0.6103, -0.5830, -0.5621,\n        -0.5506, -0.5058, -0.4806, -0.4738, -0.4710, -0.4676, -0.3874, -0.3719,\n        -0.3688, -0.3159, -0.2775, -0.2772, -0.2734, -0.2721, -0.2668, -0.2155,\n        -0.2000, -0.1816, -0.1708, -0.1565, -0.1448, -0.1361, -0.1057, -0.0603,\n        -0.0559, -0.0214,  0.0655,  0.0684,  0.1195,  0.1420,  0.1521,  0.1568,\n         0.2646,  0.2656,  0.3157,  0.3220,  0.3461,  0.3984,  0.4190,  0.5443,\n         0.5579,  0.5913,  0.6148,  0.6469,  0.6469,  0.6523,  0.6674,  0.7059,\n         0.7141,  0.7822,  0.8154,  0.8668,  0.9291,  0.9804,  0.9853,  0.9941,\n         1.0376,  1.0393,  1.0697,  1.1024,  1.1126,  1.1532,  1.2289,  1.3403,\n         1.3494,  1.4279,  1.4994,  1.5031,  1.5437,  1.6789,  2.0832,  2.2444,\n         2.3935,  2.6056,  2.6057,  2.6632]\nsales= [-8.5420, -6.5767, -5.9496, -4.4794, -4.2516, -3.1326, -4.0239, -4.1862,\n        -3.3403, -2.2027, -2.0262, -2.5619, -1.3353, -2.0466, -0.4664, -1.3513,\n        -1.6472, -0.1089, -0.3071, -0.6299, -0.0438,  0.4163,  0.4166, -0.0943,\n         0.2662,  0.4591,  0.8905,  0.8998,  0.6314,  1.3845,  0.8085,  1.2594,\n         1.1211,  1.9232,  1.0619,  1.3552,  2.1161,  1.1437,  1.6245,  1.7639,\n         1.6022,  1.7465,  0.9830,  1.7824,  2.1116,  2.8621,  2.1165,  1.5226,\n         2.5572,  2.8361,  3.3956,  2.0679,  2.8140,  3.4852,  3.6059,  2.5966,\n         2.8854,  3.9173,  3.6527,  4.1029,  4.3125,  3.4026,  3.2180,  4.5686,\n         4.3772,  4.3075,  4.4895,  4.4827,  5.3170,  5.4987,  5.4632,  6.0328,\n         5.2842,  5.0539,  5.4538,  6.0337,  5.7250,  5.7587,  6.2020,  6.5992,\n         6.4621,  6.5140,  6.6846,  7.3497,  8.0909,  7.0794,  6.8667,  7.4229,\n         7.2544,  7.1967,  9.5006,  9.0339,  7.4887,  9.0759, 11.0946, 10.3260,\n        12.2665, 13.0983, 12.5468, 13.8340]\nx = torch.tensor(temp).reshape(-1,1)\nones = torch.ones(100).reshape(-1,1)\nX = torch.concat([ones,x],axis=1)\ny = torch.tensor(sales).reshape(-1,1)"
-  },
-  {
-    "objectID": "posts/02wk-2.html#b.-파이토치를-이용한-학습",
-    "href": "posts/02wk-2.html#b.-파이토치를-이용한-학습",
-    "title": "02wk-2: 회귀분석 (3) – Step1,2,4 의 변형",
-    "section": "B. 파이토치를 이용한 학습",
-    "text": "B. 파이토치를 이용한 학습\n- 외우세여\n\nWhat = torch.tensor([[-5.0],[10.0]],requires_grad = True)\nfor epoc in range(30):\n    # step1: yhat \n    yhat = X@What \n    # step2: loss\n    loss = torch.sum((y-yhat)**2)\n    # step3: 미분\n    loss.backward()\n    # step4: update\n    What.data = What.data - 0.001 * What.grad\n    What.grad = None\n\n- 결과 시각화\n\nplt.plot(x,y,'o')\nplt.plot(x,X@What.data,'--')\nplt.title(f'What={What.data.reshape(-1)}');"
-  },
-  {
-    "objectID": "posts/02wk-2.html#c.-step2의-수정",
-    "href": "posts/02wk-2.html#c.-step2의-수정",
-    "title": "02wk-2: 회귀분석 (3) – Step1,2,4 의 변형",
-    "section": "C. Step2의 수정",
-    "text": "C. Step2의 수정\n- 수정된 코드\n\nWhat = torch.tensor([[-5.0],[10.0]],requires_grad = True)\nloss_fn = torch.nn.MSELoss()\nfor epoc in range(30):\n    # step1: yhat \n    yhat = X@What \n    # step2: loss\n    #loss = torch.sum((y-yhat)**2)/100\n    #loss = torch.mean((y-yhat)**2) \n    loss = loss_fn(yhat,y) # 여기서는 큰 상관없지만 습관적으로 yhat을 먼저넣는 연습을 하자!!\n    # step3: 미분\n    loss.backward()\n    # step4: update\n    What.data = What.data - 0.1 * What.grad\n    What.grad = None\n\n- 결과확인\n\nplt.plot(x,y,'o')\nplt.plot(x,X@What.data,'--')\nplt.title(f'What={What.data.reshape(-1)}');"
-  },
-  {
-    "objectID": "posts/02wk-2.html#d.-step1의-수정-net의-이용",
-    "href": "posts/02wk-2.html#d.-step1의-수정-net의-이용",
-    "title": "02wk-2: 회귀분석 (3) – Step1,2,4 의 변형",
-    "section": "D. Step1의 수정 – net의 이용",
-    "text": "D. Step1의 수정 – net의 이용\n- net 오브젝트란?\n원래 yhat을 이런식으로 구했는데 ~\n\nWhat = torch.tensor([[-5.0],[10.0]],requires_grad = True)\n(X@What.data)[:5]\n\ntensor([[-29.8210],\n        [-28.6210],\n        [-24.9730],\n        [-21.2390],\n        [-19.7920]])\n\n\n이런식으로도 구할수 있음!\n\nnet = torch.nn.Linear(\n    in_features=2,\n    out_features=1,\n    bias=False\n)\n\n\nnet.weight.data = torch.tensor([[-5.0,  10.0]])\nnet.weight\n\nParameter containing:\ntensor([[-5., 10.]], requires_grad=True)\n\n\n\nnet(X)[:5]\n\ntensor([[-29.8210],\n        [-28.6210],\n        [-24.9730],\n        [-21.2390],\n        [-19.7920]], grad_fn=&lt;SliceBackward0&gt;)\n\n\n- 학습\n\n# step1을 위한 사전준비\nnet = torch.nn.Linear(\n    in_features=2,\n    out_features=1,\n    bias=False\n)\nnet.weight.data = torch.tensor([[-5.0,  10.0]])\n# step2를 위한 사전준비\nloss_fn = torch.nn.MSELoss()\nfor epoc in range(30):\n    # step1: yhat \n    yhat = net(X)\n    # step2: loss\n    loss = loss_fn(yhat,y)\n    # step3: 미분\n    loss.backward()\n    # step4: update\n    net.weight.data = net.weight.data - 0.1 * net.weight.grad\n    net.weight.grad = None\n\n- 결과확인\n\nplt.plot(x,y,'o')\nplt.plot(x,net(X).data,'--')\nplt.title(f'net.weight={net.weight.data.reshape(-1)}');"
-  },
-  {
-    "objectID": "posts/02wk-2.html#e.-step4의-수정-optimizer의-이용",
-    "href": "posts/02wk-2.html#e.-step4의-수정-optimizer의-이용",
-    "title": "02wk-2: 회귀분석 (3) – Step1,2,4 의 변형",
-    "section": "E. Step4의 수정 – optimizer의 이용",
-    "text": "E. Step4의 수정 – optimizer의 이용\n기존코드의 에폭별분해\n- 준비과정\n\n# step1을 위한 사전준비\nnet = torch.nn.Linear(\n    in_features=2,\n    out_features=1,\n    bias=False\n)\nnet.weight.data = torch.tensor([[-5.0,  10.0]])\n# step2를 위한 사전준비\nloss_fn = torch.nn.MSELoss()\n\n- 에폭별분해\n(미분전) – step1~2 완료\n\nyhat = net(X)\nloss = loss_fn(yhat,y)\n\n\nprint(f'파라메터 = {net.weight.data}')\nprint(f'미분값 = {net.weight.grad}')\n\n파라메터 = tensor([[-5., 10.]])\n미분값 = None\n\n\n(미분후, 업데이트 진행전) – step3 완료\n\nloss.backward()\n\n\nprint(f'파라메터 = {net.weight.data}')\nprint(f'미분값 = {net.weight.grad}')\n\n파라메터 = tensor([[-5., 10.]])\n미분값 = tensor([[-13.4225,  11.8892]])\n\n\n(업데이트 진행후) – step4 의 첫째줄 완료\n\nnet.weight.data = net.weight.data - 0.1 * net.weight.grad\n\n\nprint(f'파라메터 = {net.weight.data}')\nprint(f'미분값 = {net.weight.grad}')\n\n파라메터 = tensor([[-3.6578,  8.8111]])\n미분값 = tensor([[-13.4225,  11.8892]])\n\n\n(업데이트 완료 후 초기화까지 끝냄) – step4 의 두번째줄 완료\n\nnet.weight.grad = None\n\n\nprint(f'파라메터 = {net.weight.data}')\nprint(f'미분값 = {net.weight.grad}')\n\n파라메터 = tensor([[-3.6578,  8.8111]])\n미분값 = None\n\n\n새로운코드의 에폭별분해\n- 준비과정 – 옵티마이저라는 오브젝트를 셋팅한다!\n\n# step1을 위한 사전준비\nnet = torch.nn.Linear(\n    in_features=2,\n    out_features=1,\n    bias=False\n)\nnet.weight.data = torch.tensor([[-5.0,  10.0]])\n# step2를 위한 사전준비\nloss_fn = torch.nn.MSELoss()\n# step3을 위한 사전준비 \noptimizr = torch.optim.SGD(params=net.parameters(),lr=0.1)\n\n- 에폭별분해\n(미분전) – step1~2 완료\n\nyhat = net(X)\nloss = loss_fn(yhat,y)\n\n\nprint(f'파라메터 = {net.weight.data}')\nprint(f'미분값 = {net.weight.grad}')\n\n파라메터 = tensor([[-5., 10.]])\n미분값 = None\n\n\n(미분후, 업데이트 진행전) – step3 완료\n\nloss.backward()\n\n\nprint(f'파라메터 = {net.weight.data}')\nprint(f'미분값 = {net.weight.grad}')\n\n파라메터 = tensor([[-5., 10.]])\n미분값 = tensor([[-13.4225,  11.8892]])\n\n\n(업데이트 진행후) – step4 의 첫째줄 완료\n\n#net.weight.data = net.weight.data - 0.1 * net.weight.grad\noptimizr.step()\n\n\nprint(f'파라메터 = {net.weight.data}')\nprint(f'미분값 = {net.weight.grad}')\n\n파라메터 = tensor([[-3.6578,  8.8111]])\n미분값 = tensor([[-13.4225,  11.8892]])\n\n\n(업데이트 완료 후 초기화까지 끝냄) – step4 의 두번째줄 완료\n\n#net.weight.grad = None\noptimizr.zero_grad()\n\n\nprint(f'파라메터 = {net.weight.data}')\nprint(f'미분값 = {net.weight.grad}')\n\n파라메터 = tensor([[-3.6578,  8.8111]])\n미분값 = None\n\n\n최종코드\n- 학습\n\n# step1을 위한 사전준비\nnet = torch.nn.Linear(\n    in_features=2,\n    out_features=1,\n    bias=False\n)\nnet.weight.data = torch.tensor([[-5.0,  10.0]])\n# step2를 위한 사전준비\nloss_fn = torch.nn.MSELoss()\n# step4를 위한 사전준비 \noptimizr = torch.optim.SGD(net.parameters(),lr=0.1)\nfor epoc in range(30):\n    # step1: yhat \n    yhat = net(X)\n    # step2: loss\n    loss = loss_fn(yhat,y)\n    # step3: 미분\n    loss.backward()\n    # step4: update\n    optimizr.step()\n    optimizr.zero_grad()\n\n- 결과확인\n\nplt.plot(x,y,'o')\nplt.plot(x,yhat.data,'--')\nplt.title(f'net.weight={net.weight.data.reshape(-1)}');"
-  },
-  {
-    "objectID": "posts/01wk-1.html#a.-최하니",
-    "href": "posts/01wk-1.html#a.-최하니",
-    "title": "01wk-1: 이미지 자료 분석 (겉핥기)",
-    "section": "A. 최하니",
-    "text": "A. 최하니\n\nhani1 = PILImage.create(requests.get('https://github.com/guebin/DL2024/blob/main/imgs/01wk-hani1.jpeg?raw=true').content)\nhani1\n\n\n\n\n\n\n\n\n\nlrnr.predict(hani1)\n\n\n\n\n\n\n\n\n('dog', tensor(1), tensor([2.9308e-09, 1.0000e+00]))\n\n\n\nhani2 = PILImage.create(requests.get('https://github.com/guebin/DL2024/blob/main/imgs/01wk-hani2.jpeg?raw=true').content)\nhani2\n\n\n\n\n\n\n\n\n\nlrnr.predict(hani2)\n\n\n\n\n\n\n\n\n('dog', tensor(1), tensor([8.9153e-06, 9.9999e-01]))\n\n\n\nhani3 = PILImage.create(requests.get('https://github.com/guebin/DL2024/blob/main/imgs/01wk-hani3.jpg?raw=true').content)\nhani3\n\n\n\n\n\n\n\n\n\nlrnr.predict(hani3)\n\n\n\n\n\n\n\n\n('dog', tensor(1), tensor([3.9399e-04, 9.9961e-01]))"
-  },
-  {
-    "objectID": "posts/01wk-1.html#b.-인터넷-고양이",
-    "href": "posts/01wk-1.html#b.-인터넷-고양이",
-    "title": "01wk-1: 이미지 자료 분석 (겉핥기)",
-    "section": "B. 인터넷 고양이",
-    "text": "B. 인터넷 고양이\n\ncat1 = PILImage.create(requests.get('https://github.com/guebin/DL2024/blob/main/imgs/01wk-cat1.png?raw=true').content)\ncat1\n\n\n\n\n\n\n\n\n\nlrnr.predict(cat1)\n\n\n\n\n\n\n\n\n('cat', tensor(0), tensor([1.0000e+00, 2.2026e-11]))\n\n\n\ncat2 = PILImage.create(requests.get('https://github.com/guebin/DL2024/blob/main/imgs/01wk-cat2.jpeg?raw=true').content)\ncat2\n\n\n\n\n\n\n\n\n\nlrnr.predict(cat2)\n\n\n\n\n\n\n\n\n('cat', tensor(0), tensor([1.0000e+00, 9.4345e-07]))"
-  },
-  {
-    "objectID": "posts/01wk-1.html#a.-step1-dls데이터-준비",
-    "href": "posts/01wk-1.html#a.-step1-dls데이터-준비",
-    "title": "01wk-1: 이미지 자료 분석 (겉핥기)",
-    "section": "A. Step1: DLS(=데이터) 준비",
-    "text": "A. Step1: DLS(=데이터) 준비\n\ndls = ImageDataLoaders.from_folder(\n    path = './images',\n    train='train',\n    valid_pct = 0.2,\n    item_tfms=Resize(224),\n)\n\n\ndls.show_batch()"
-  },
-  {
-    "objectID": "posts/01wk-1.html#b.-step2-러너생성",
-    "href": "posts/01wk-1.html#b.-step2-러너생성",
-    "title": "01wk-1: 이미지 자료 분석 (겉핥기)",
-    "section": "B. Step2: 러너생성",
-    "text": "B. Step2: 러너생성\n\nlrnr = vision_learner(\n    dls = dls,\n    arch = resnet34,\n    metrics = accuracy\n)"
-  },
-  {
-    "objectID": "posts/01wk-1.html#c.-step3-학습",
-    "href": "posts/01wk-1.html#c.-step3-학습",
-    "title": "01wk-1: 이미지 자료 분석 (겉핥기)",
-    "section": "C. Step3: 학습",
-    "text": "C. Step3: 학습\n\nlrnr.fine_tune(7)\n\n\n\n\n\n\n\n\nepoch\ntrain_loss\nvalid_loss\naccuracy\ntime\n\n\n\n\n0\n1.346890\n0.969989\n0.657534\n00:11\n\n\n\n\n\n\n\n\n\n\n\n\nepoch\ntrain_loss\nvalid_loss\naccuracy\ntime\n\n\n\n\n0\n0.734809\n0.817061\n0.698630\n00:10\n\n\n1\n0.581782\n0.937060\n0.739726\n00:11\n\n\n2\n0.426661\n0.901986\n0.835616\n00:12\n\n\n3\n0.332050\n0.899157\n0.835616\n00:10\n\n\n4\n0.263004\n0.844802\n0.849315\n00:10\n\n\n5\n0.220254\n0.762331\n0.849315\n00:11\n\n\n6\n0.185242\n0.716601\n0.849315\n00:11"
-  },
-  {
-    "objectID": "posts/01wk-1.html#d.-step4-예측",
-    "href": "posts/01wk-1.html#d.-step4-예측",
-    "title": "01wk-1: 이미지 자료 분석 (겉핥기)",
-    "section": "D. Step4: 예측",
-    "text": "D. Step4: 예측\n\nlrnr.show_results()\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\ninter = Interpretation.from_learner(lrnr)\ninter.plot_top_losses(16)"
-  },
-  {
-    "objectID": "posts/01wk-1.html#크롤링을-활용한-이미지-자료-분석",
-    "href": "posts/01wk-1.html#크롤링을-활용한-이미지-자료-분석",
-    "title": "01wk-1: 이미지 자료 분석 (겉핥기)",
-    "section": "#. 크롤링을 활용한 이미지 자료 분석",
-    "text": "#. 크롤링을 활용한 이미지 자료 분석\n(1) 두 가지 키워드로 크롤링을 수행하여 이미지자료를 모아라. (키워드는 각자 마음에 드는 것으로 설정할 것, 단 (iu,hynn)는 제외)\n(2) ImageDataLoaders.from_folder() 를 이용하여 dls를 만들고 dls.show_batch()를 이용하여 만들어진 이미지를 확인하라.\n(3) vision_learner()를 이용하여 lrnr를 만들고 lrnr.fine_tune()을 이용하여 학습하라. 이때 모형의 arch는 resnet34를 사용하라.\n(4) requests.get()을 이용하여 (1)의 키워드에 해당하는 새로운 이미지를 한장씩 다운받고 (3)에서 학습한 lrnr를 이용하여 예측하라.\n\n제출은 ipynb파일로 할 것. 혹은 스크린샷을 제출해도 괜찮음."
-  },
-  {
-    "objectID": "about.html",
-    "href": "about.html",
-    "title": "About",
-    "section": "",
-    "text": "About this blog"
   }
 ]
