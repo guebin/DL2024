@@ -559,16 +559,17 @@ Cybenko, George. 1989. <span>“Approximation by Superpositions of a Sigmoidal F
 </section>
 <section id="c.-h의-위력" class="level2">
 <h2 class="anchored" data-anchor-id="c.-h의-위력">C. <span class="math inline">\(h\)</span>의 위력</h2>
-<p><code>-</code> <span class="math inline">\(h(x)\)</span>를 활성화함수로 가지는 네트워크를 설계하여 보자.</p>
-<div id="0621cd71-a43d-4dfa-b9da-e9222cb51323" class="cell" data-tags="[]" data-execution_count="23">
+<p><code>-</code> <span class="math inline">\(h(x)\)</span>를 생성하는 클래스를 만들어보자.</p>
+<div id="0621cd71-a43d-4dfa-b9da-e9222cb51323" class="cell" data-tags="[]" data-execution_count="78">
 <div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> MyActivation(torch.nn.Module): <span class="co">## 사용자정의 활성화함수를 선언하는 방법</span></span>
 <span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>):</span>
 <span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>        <span class="bu">super</span>().<span class="fu">__init__</span>() </span>
 <span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> forward(<span class="va">self</span>, u):</span>
-<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>        v <span class="op">=</span> h(u)</span>
-<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> v <span class="co"># activation 의 출력 </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>        h <span class="op">=</span> <span class="kw">lambda</span> x: torch.sigmoid(<span class="dv">200</span><span class="op">*</span>(x<span class="op">+</span><span class="fl">0.5</span>))<span class="op">+</span>torch.sigmoid(<span class="op">-</span><span class="dv">200</span><span class="op">*</span>(x<span class="op">-</span><span class="fl">0.5</span>))<span class="op">-</span><span class="fl">1.0</span></span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>        v <span class="op">=</span> h(u)</span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> v <span class="co"># activation 의 출력 </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="9c333329-32cc-4f9f-9216-a334c30f9559" class="cell" data-tags="[]" data-execution_count="24">
+<div id="9c333329-32cc-4f9f-9216-a334c30f9559" class="cell" data-tags="[]" data-execution_count="79">
 <div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>a1 <span class="op">=</span> MyActivation()</span>
 <span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="co"># a1 = torch.nn.Sigmoid(), a1 = torch.nn.ReLU() 대신에 a1 = MyActivation()</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
