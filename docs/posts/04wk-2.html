@@ -439,7 +439,7 @@ window.Quarto = {
 <span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>모든 continuous mapping</p>
 <p><span class="math display">\[f: {\bf X}_{n \times p} \to {\bf y}_{n\times q}\]</span></p>
-<p>를 원하는 정확도로 “근사”시킬 수 있다 (즉 마음만 먹으면 loss를 0에 가깝도록 만들 수 있다는 의다) 쉽게 말하면 <span class="math inline">\({\bf X} \to {\bf y}\)</span> 인 어떠한 복잡한 규칙라도 하나의 은닉층을 가진 심층신경망(DNN)이 원하는 정확도로 근사시킨다는 의미이다. <strong>그렇지만 이러한 규칙이 네크워크가 학습하지 못했던 자료 (처음 보는 자료, unseen data) <span class="math inline">\({\bf XX}_{m \times p}\)</span>, <span class="math inline">\({\bf yy}_{m \times p}\)</span> 에 대하여서도 올바르게 적용된다라는 보장은 없다</strong>. 즉</p>
+<p>를 원하는 정확도로 “근사”시킬 수 있다 (즉 마음만 먹으면 loss를 0에 가깝도록 만들 수 있다는 의다) 쉽게 말하면 <span class="math inline">\({\bf X} \to {\bf y}\)</span> 인 어떠한 복잡한 규칙라도 하나의 은닉층을 가진 심층신경망(DNN)이 원하는 정확도로 근사시킨다는 의미이다. <strong>그렇지만 이러한 규칙이 네크워크가 학습하지 못했던 자료 (처음 보는 자료, unseen data)</strong> <span class="math inline">\({\bf XX}_{m \times p}\)</span>, <span class="math inline">\({\bf yy}_{m \times p}\)</span> <strong>에 대하여서도 올바르게 적용된다라는 보장은 없다</strong>. 즉</p>
 <p><span class="math display">\[{\bf X}_{n \times p} \to {\bf y}_{n\times q}\]</span></p>
 <p>를 원하는 정확도로 근사시킨 네트워크라고 할지라도</p>
 <p><span class="math display">\[{\bf XX}_{m \times p} \to {\bf yy}_{m\times q}\]</span></p>
@@ -780,6 +780,7 @@ Important
 <span id="cb35-11"><a href="#cb35-11" aria-hidden="true" tabindex="-1"></a>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
+<p><strong>가끔씩 Layer 세는 방식이 다르게 써져있는 문헌도 있는데 무시할것</strong></p>
 <div class="callout callout-style-default callout-important callout-titled page-columns page-full">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -790,7 +791,7 @@ Important
 </div>
 </div>
 <div class="callout-body-container callout-body page-columns page-full">
-<p>위키의 경우 레이어를 세는 개념이 좀 다릅니다. 제가 설명한 방식보다 1씩 더해서 셉니다. 즉 아래의 경우 레이어를 3개로 카운트합니다.</p>
+<p>문헌에 따라서 레이어를 세는 개념이 좀 다릅니다. 제가 설명한 방식보다 1씩 더해서 셉니다. 즉 아래의 경우 레이어를 3개로 카운트합니다.</p>
 <div class="sourceCode" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co">## 예시1 -- 위키식으로 세면 3층 (히든레이어는 1층)</span></span>
 <span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>torch.nn.Sequential(</span>
 <span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>    torch.nn.Linear(??,??), <span class="co">## &lt;-- 학습해야할 가중치가 있는 층</span></span>
@@ -798,11 +799,11 @@ Important
 <span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>    torch.nn.Linear(??,??), <span class="co">## &lt;-- 학습해야할 가중치가 있는 층</span></span>
 <span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a>    torch.nn.Sigmoid()</span>
 <span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>증거는 아래에 있습니다.</p>
+<p>예를 들어 아래의 링크에서는 이러한 경우 레이어는 3개라고 설명하고 있습니다.</p>
 <ul>
 <li><a href="https://en.wikipedia.org/wiki/Multilayer_perceptron#Layers" class="uri">https://en.wikipedia.org/wiki/Multilayer_perceptron#Layers</a></li>
 </ul>
-<p>이러한 카운팅은 <strong>“무시”하세요. 제가 맞아요.</strong> 위키에 잘못(?) 나와있는 이유는 아래와 같습니다.</p>
+<p>이러한 카운팅은 <strong>“무시”하세요. 제가 맞아요.</strong> 위의 링크에 잘못(?) 나와있는 이유는 아래와 같습니다.</p>
 <ul>
 <li>진짜 예전에 MLP를 소개할 초창기에서는 위의 경우 Layer를 3개로 셌음. <span class="citation" data-cites="rosenblatt1962principles">(<a href="#ref-rosenblatt1962principles" role="doc-biblioref">Rosenblatt et al. 1962</a>)</span></li>
 <li>그런데 요즘은 그렇게 안셈.. (그리고 애초에 MLP라는 용어도 잘 안쓰죠..)</li>
