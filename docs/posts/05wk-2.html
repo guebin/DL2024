@@ -152,7 +152,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#a1.-dnn-ann-mlp" id="toc-a1.-dnn-ann-mlp" class="nav-link active" data-scroll-target="#a1.-dnn-ann-mlp">A1. DNN, ANN, MLP</a></li>
+  <li><a href="#a1.-자잘한-용어-정리-star" id="toc-a1.-자잘한-용어-정리-star" class="nav-link active" data-scroll-target="#a1.-자잘한-용어-정리-star">A1. 자잘한 용어 정리 (<span class="math inline">\(\star\)</span>)</a>
+  <ul class="collapse">
+  <li><a href="#a.-지도학습" id="toc-a.-지도학습" class="nav-link" data-scroll-target="#a.-지도학습">A. 지도학습</a></li>
+  <li><a href="#b.-모델이란" id="toc-b.-모델이란" class="nav-link" data-scroll-target="#b.-모델이란">B. 모델이란?</a></li>
+  <li><a href="#c.-학습이란" id="toc-c.-학습이란" class="nav-link" data-scroll-target="#c.-학습이란">C. 학습이란?</a></li>
+  <li><a href="#d.-haty를-부르는-다양한-이름" id="toc-d.-haty를-부르는-다양한-이름" class="nav-link" data-scroll-target="#d.-haty를-부르는-다양한-이름">D. <span class="math inline">\(\hat{y}\)</span>를 부르는 다양한 이름</a></li>
+  <li><a href="#e.-다양한-코드들" id="toc-e.-다양한-코드들" class="nav-link" data-scroll-target="#e.-다양한-코드들">E. 다양한 코드들</a></li>
+  </ul></li>
+  <li><a href="#a2.-참고자료들" id="toc-a2.-참고자료들" class="nav-link" data-scroll-target="#a2.-참고자료들">A2. 참고자료들</a></li>
+  <li><a href="#a3.-dnn-ann-mlp" id="toc-a3.-dnn-ann-mlp" class="nav-link" data-scroll-target="#a3.-dnn-ann-mlp">A3. DNN, ANN, MLP</a></li>
   </ul>
 <div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="05wk-2.out.ipynb" download="05wk-2.out.ipynb"><i class="bi bi-journal-code"></i>Jupyter</a></li></ul></div></nav>
     </div>
@@ -190,47 +199,182 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<section id="a1.-dnn-ann-mlp" class="level1 page-columns page-full">
-<h1>A1. DNN, ANN, MLP</h1>
+<section id="a1.-자잘한-용어-정리-star" class="level1">
+<h1>A1. 자잘한 용어 정리 (<span class="math inline">\(\star\)</span>)</h1>
+<section id="a.-지도학습" class="level2">
+<h2 class="anchored" data-anchor-id="a.-지도학습">A. 지도학습</h2>
+<p><code>-</code> 우리가 수업에서 다루는 데이터는 주로 아래와 같은 느낌이다.</p>
+<ol type="1">
+<li><p>데이터는 <span class="math inline">\((X,y)\)</span>의 형태로 정리되어 있다.</p></li>
+<li><p><span class="math inline">\(y\)</span>는 우리가 관심이 있는 변수이다. 즉 우리는 <span class="math inline">\(y\)</span>를 적절하게 추정하는 것에 관심이 있다.</p></li>
+<li><p><span class="math inline">\(X\)</span>는 <span class="math inline">\(y\)</span>를 추정하기 위해 필요한 정보이다.</p></li>
+</ol>
+<table class="table">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;"><span class="math inline">\(X\)</span> = 설명변수 = 독립변수</th>
+<th style="text-align: center;"><span class="math inline">\(y\)</span> = 반응변수 = 종속변수</th>
+<th style="text-align: center;">비고</th>
+<th style="text-align: center;">순서</th>
+<th style="text-align: center;">예시</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">이미지</td>
+<td style="text-align: center;">카테고리</td>
+<td style="text-align: center;">합성곱신경망</td>
+<td style="text-align: center;">상관없음</td>
+<td style="text-align: center;">개/고양이 이미지 구분</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">유저,아이템</td>
+<td style="text-align: center;">평점</td>
+<td style="text-align: center;">추천시스템</td>
+<td style="text-align: center;">상관없음</td>
+<td style="text-align: center;">넷플릭스 영화추천</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">과거~오늘까지의주가</td>
+<td style="text-align: center;">내일주가</td>
+<td style="text-align: center;">순환신경망</td>
+<td style="text-align: center;">순서상관있음</td>
+<td style="text-align: center;">주가예측</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">처음 <span class="math inline">\(m\)</span>개의 단어(혹은 문장)</td>
+<td style="text-align: center;">이후 1개의 단어(혹은 문장)</td>
+<td style="text-align: center;">순환신경망</td>
+<td style="text-align: center;">순서상관있음</td>
+<td style="text-align: center;">챗봇, 텍스트생성</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">처음 <span class="math inline">\(m\)</span>개의 단어(혹은 문장)</td>
+<td style="text-align: center;">카테고리</td>
+<td style="text-align: center;">순환신경망</td>
+<td style="text-align: center;">순서상관있음</td>
+<td style="text-align: center;">영화리뷰 텍스트 감정분류</td>
+</tr>
+</tbody>
+</table>
+<p><code>-</code> 이러한 문제상황, 즉 <span class="math inline">\((X,y)\)</span>가 주어졌을때 <span class="math inline">\(X \to y\)</span>를 추정하는 문제를 supervised learning 이라한다.</p>
+</section>
+<section id="b.-모델이란" class="level2">
+<h2 class="anchored" data-anchor-id="b.-모델이란">B. 모델이란?</h2>
+<blockquote class="blockquote">
+<p>모델이란 단어는 제 발작버튼이었어요..</p>
+</blockquote>
+<p><code>-</code> 통계학에서 모델은 y와 x의 관계를 의미하며 오차항의 설계를 포함하는 개념이다. 이는 통계학이 “데이터 = 정보 + 오차”의 관점을 유지하기 때문이다. 따라서 통계학에서 모델링이란</p>
+<p><span class="math display">\[y_i = net(x_i) + \epsilon_i\]</span></p>
+<p>에서 (1) 적절한 함수 <span class="math inline">\(net\)</span>를 선택하는 일 (2) 적절한 오차항 <span class="math inline">\(\epsilon_i\)</span> 을 설계하는일 모두를 포함한다.</p>
+<p><code>-</code> 딥러닝 혹은 머신러닝에서 모델은 단순히</p>
+<p><span class="math display">\[y_i \approx net(x_i)\]</span></p>
+<p>를 의미하는 경우가 많다. 즉 “model=net”라고 생각해도 무방하다. 이 경우 “모델링”이란 단순히 적절한 <span class="math inline">\(net\)</span>을 설계하는 것만을 의미할 경우가 많다.</p>
+<p><code>-</code> 그래서 생긴일</p>
+<ul>
+<li>통계학교재 특: 분류문제와 회귀문제를 엄밀하게 구분하지 않는다. 사실 오차항만 다를뿐이지 크게보면 같은 회귀모형이라는 관점이다. 그래서 일반화선형모형(GLM)이라는 용어를 쓴다.</li>
+<li>머신러닝/딥러닝교재 특: 회귀문제와 분류문제를 구분해서 설명한다. (표도 만듦) 이는 오차항에 대한 기술을 모호하게 하여 생기는 현상이다.</li>
+</ul>
+</section>
+<section id="c.-학습이란" class="level2">
+<h2 class="anchored" data-anchor-id="c.-학습이란">C. 학습이란?</h2>
+<p><code>-</code> 학습이란 주어진 자료 <span class="math inline">\((X,y)\)</span>를 잘 분석하여 <span class="math inline">\(X\)</span>에서 <span class="math inline">\(y\)</span>로 가는 어떠한 “규칙” 혹은 “원리”를 찾는 것이다.</p>
+<ul>
+<li>학습이란 주어진 자료 <span class="math inline">\((X,y)\)</span>를 잘 분석하여 <span class="math inline">\(X\)</span>에서 <span class="math inline">\(y\)</span>로 가는 어떠한 “맵핑”을 찾는 것이다.</li>
+<li>학습이란 주어진 자료 <span class="math inline">\((X,y)\)</span>를 잘 분석하여 <span class="math inline">\(X\)</span>에서 <span class="math inline">\(y\)</span>로 가는 어떠한 “함수”을 찾는 것이다. 즉 <span class="math inline">\(y\approx f(X)\)</span>가 되도록 만드는 <span class="math inline">\(f\)</span>를 잘 찾는 것이다. (이 경우 “함수를 추정한다”라고 표현)</li>
+<li>학습이란 주어진 자료 <span class="math inline">\((X,y)\)</span>를 잘 분석하여 <span class="math inline">\(X\)</span>에서 <span class="math inline">\(y\)</span>로 가는 어떠한 “모델” 혹은 “모형”을 찾는 것이다. 즉 <span class="math inline">\(y\approx model(X)\)</span>가 되도록 만드는 <span class="math inline">\(model\)</span>을 잘 찾는 것이다. (이 경우 “모형을 학습시킨다”라고 표현)</li>
+<li><strong>학습이란 주어진 자료 <span class="math inline">\((X,y)\)</span>를 잘 분석하여 <span class="math inline">\(X\)</span>에서 <span class="math inline">\(y\)</span>로 가는 어떠한 “네트워크”을 찾는 것이다. 즉 <span class="math inline">\(y\approx net(X)\)</span>가 되도록 만드는 <span class="math inline">\(net\)</span>을 잘 찾는 것이다. (이 경우 “네트워크를 학습시킨다”라고 표현)</strong></li>
+</ul>
+<p><code>-</code> prediction이란 학습과정에서 찾은 “규칙” 혹은 “원리”를 <span class="math inline">\(X\)</span>에 적용하여 <span class="math inline">\(\hat{y}\)</span>을 구하는 과정이다. 학습과정에서 찾은 규칙 혹은 원리는 <span class="math inline">\(f\)</span>,<span class="math inline">\(model\)</span>,<span class="math inline">\(net\)</span> 으로 생각가능한데 이에 따르면 아래가 성립한다.</p>
+<ul>
+<li><span class="math inline">\(\hat{y} = f(X)\)</span></li>
+<li><span class="math inline">\(\hat{y} = model(X)\)</span></li>
+<li><span class="math inline">\(\hat{y} = net(X)\)</span></li>
+</ul>
+</section>
+<section id="d.-haty를-부르는-다양한-이름" class="level2">
+<h2 class="anchored" data-anchor-id="d.-haty를-부르는-다양한-이름">D. <span class="math inline">\(\hat{y}\)</span>를 부르는 다양한 이름</h2>
+<p><code>-</code> <span class="math inline">\(\hat{y}\)</span>는 <span class="math inline">\(X\)</span>가 주어진 자료에 있는 값인지 아니면 새로운 값 인지에 따라 지칭하는 이름이 미묘하게 다르다.</p>
+<ol type="1">
+<li><p><span class="math inline">\(X \in data\)</span>: <span class="math inline">\(\hat{y}=net(X)\)</span> 는 predicted value, fitted value 라고 부른다.</p></li>
+<li><p><span class="math inline">\(X \notin data\)</span>: <span class="math inline">\(\hat{y}=net(X)\)</span> 는 predicted value, predicted value with new data 라고 부른다.</p></li>
+</ol>
+<p><code>-</code> 경우1은 “<span class="math inline">\(loss\)</span> = <span class="math inline">\(y\)</span> 와 <span class="math inline">\(\hat{y}\)</span> 의 차이” 를 정의할 수 있으나 경우2는 그렇지 않다.</p>
+</section>
+<section id="e.-다양한-코드들" class="level2">
+<h2 class="anchored" data-anchor-id="e.-다양한-코드들">E. 다양한 코드들</h2>
+<p><code>-</code> 파이썬 코드..</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Python</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>predictor.fit(X,y) <span class="co"># autogluon 에서 "학습"을 의미하는 과정</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>model.fit(X,y) <span class="co"># sklearn 에서 "학습"을 의미하는 과정</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>learner.learn() <span class="co"># fastai 에서 "학습"을 의미하는 과정</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>learner.fine_tune(<span class="dv">1</span>) <span class="co"># fastai 에서 "부분학습"을 의미하는 과정</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>learner.predict(cat1) <span class="co"># fastai 에서 "예측"을 의미하는 과정 </span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>model.fit(x, y, batch_size<span class="op">=</span><span class="dv">32</span>, epochs<span class="op">=</span><span class="dv">10</span>) <span class="co"># keras에서 "학습"을 의미하는 과정</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>model.predict(test_img) <span class="co"># keras에서 "예측"을 의미하는 과정 </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><code>-</code> R 코드..</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># R</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>ols <span class="ot">&lt;-</span> <span class="fu">lm</span>(y<span class="sc">~</span>x) <span class="co"># 선형회귀분석에서 학습을 의미하는 함수</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>ols<span class="sc">$</span>fitted.values <span class="co"># 선형회귀분석에서 yhat을 출력 </span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(ols, <span class="at">newdata=</span>test) <span class="co"># 선형회귀분석에서 test에 대한 예측값을 출력하는 함수</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>ols<span class="sc">$</span>coef <span class="co"># 선형회귀분석에서 weight를 확인하는 방법</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+<section id="a2.-참고자료들" class="level1">
+<h1>A2. 참고자료들</h1>
+<p><code>-</code> 케라스/텐서플로우: <a href="https://guebin.github.io/STBDA2022/" class="uri">https://guebin.github.io/STBDA2022/</a></p>
+<p><code>-</code> 상속: <a href="https://guebin.github.io/PP2023/posts/03_Class/2023-06-12-15wk-1.html" class="uri">https://guebin.github.io/PP2023/posts/03_Class/2023-06-12-15wk-1.html</a></p>
+<p><code>-</code> sklearn/autogluon: <a href="https://guebin.github.io/MP2023/" class="uri">https://guebin.github.io/MP2023/</a></p>
+<p><code>-</code> 리눅스관련: <a href="https://guebin.github.io/DSTBX2024/" class="uri">https://guebin.github.io/DSTBX2024/</a> – 자료 부실함.. 강의영상 없는것 많음..</p>
+</section>
+<section id="a3.-dnn-ann-mlp" class="level1 page-columns page-full">
+<h1>A3. DNN, ANN, MLP</h1>
 <p><code>-</code> DNN 은 깊은신경망, ANN 은 인공신경망, MLP 는 다층퍼셉트론이라 번역된다.</p>
 <p><code>-</code> 아래의 네트워크는 ANN이라 볼 수 있다. 하지만 MLP, DNN 이라 볼 수는 없다.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>net <span class="op">=</span> torch.nn.Sequential(</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    torch.nn.Linear(in_features<span class="op">=</span><span class="dv">1</span>,out_features<span class="op">=</span><span class="dv">1</span>),</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    torch.nn.Sigmoid()</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p><code>-</code> 아래의 네트워크는 ANN이라 볼 수 있다. 또한 레이어가 2개 있으므로 MLP라고 볼 수 있다. DNN 이라 보기는 애매하다. (그래서 이걸 얕은신경망(shallow network)이라고 표현하기도 합니다)</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>net <span class="op">=</span> torch.nn.Sequential(</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    torch.nn.Linear(in_features<span class="op">=</span><span class="dv">1</span>,out_features<span class="op">=</span><span class="dv">2</span>),</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    torch.nn.ReLU(),</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    torch.nn.Linear(in_features<span class="op">=</span><span class="dv">2</span>,out_features<span class="op">=</span><span class="dv">1</span>),</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    torch.nn.Sigmoid()</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p><code>-</code> 아래의 네트워크는 ANN이라 볼 수 있다. 또한 레이어가 7개 있으므로 MLP라고 볼 수 있다. 이 정도면 깊어보이니까 DNN 이라 주장할 수 있어보인다.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>net <span class="op">=</span> torch.nn.Sequential(</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    torch.nn.Linear(in_features<span class="op">=</span><span class="dv">1</span>,out_features<span class="op">=</span><span class="dv">2</span>),</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    torch.nn.ReLU(),</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    torch.nn.Linear(in_features<span class="op">=</span><span class="dv">2</span>,out_features<span class="op">=</span><span class="dv">2</span>),</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    torch.nn.ReLU(),</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    torch.nn.Linear(in_features<span class="op">=</span><span class="dv">2</span>,out_features<span class="op">=</span><span class="dv">2</span>),</span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    torch.nn.ReLU(),</span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    torch.nn.Linear(in_features<span class="op">=</span><span class="dv">2</span>,out_features<span class="op">=</span><span class="dv">2</span>),</span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    torch.nn.ReLU(),</span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    torch.nn.Linear(in_features<span class="op">=</span><span class="dv">2</span>,out_features<span class="op">=</span><span class="dv">2</span>),</span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>    torch.nn.ReLU(),</span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>    torch.nn.Linear(in_features<span class="op">=</span><span class="dv">2</span>,out_features<span class="op">=</span><span class="dv">2</span>),</span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>    torch.nn.ReLU(),</span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>    torch.nn.Linear(in_features<span class="op">=</span><span class="dv">2</span>,out_features<span class="op">=</span><span class="dv">1</span>),</span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>    torch.nn.Sigmoid(),    </span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p><code>-</code> 아래의 네트워크는 ANN이라 볼 수 있다. 또한 레이어가 3개 있으므로 MLP라고 볼 수 있다. 이건 DNN이라고 봐야하나? 깊다기 보다는 넓은 신경망인데…</p>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    torch.nn.Linear(in_features<span class="op">=</span><span class="dv">1</span>,out_features<span class="op">=</span><span class="dv">1</span>),</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    torch.nn.Sigmoid()</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><code>-</code> 아래의 네트워크는 ANN이라 볼 수 있다. 또한 레이어가 2개 있으므로 MLP라고 볼 수 있다. DNN 이라 보기는 애매하다. (그래서 이걸 얕은신경망(shallow network)이라고 표현하기도 합니다)</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>net <span class="op">=</span> torch.nn.Sequential(</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    torch.nn.Linear(in_features<span class="op">=</span><span class="dv">1</span>,out_features<span class="op">=</span><span class="dv">1048576</span>),</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    torch.nn.Linear(in_features<span class="op">=</span><span class="dv">1</span>,out_features<span class="op">=</span><span class="dv">2</span>),</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    torch.nn.ReLU(),</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    torch.nn.Linear(in_features<span class="op">=</span><span class="dv">1048576</span>,out_features<span class="op">=</span><span class="dv">1048576</span>),</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    torch.nn.ReLU(),</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    torch.nn.Linear(in_features<span class="op">=</span><span class="dv">1048576</span>,out_features<span class="op">=</span><span class="dv">1</span>),</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    torch.nn.Sigmoid(),    </span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    torch.nn.Linear(in_features<span class="op">=</span><span class="dv">2</span>,out_features<span class="op">=</span><span class="dv">1</span>),</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    torch.nn.Sigmoid()</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><code>-</code> 아래의 네트워크는 ANN이라 볼 수 있다. 또한 레이어가 7개 있으므로 MLP라고 볼 수 있다. 이 정도면 깊어보이니까 DNN 이라 주장할 수 있어보인다.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>net <span class="op">=</span> torch.nn.Sequential(</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    torch.nn.Linear(in_features<span class="op">=</span><span class="dv">1</span>,out_features<span class="op">=</span><span class="dv">2</span>),</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    torch.nn.ReLU(),</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    torch.nn.Linear(in_features<span class="op">=</span><span class="dv">2</span>,out_features<span class="op">=</span><span class="dv">2</span>),</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    torch.nn.ReLU(),</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    torch.nn.Linear(in_features<span class="op">=</span><span class="dv">2</span>,out_features<span class="op">=</span><span class="dv">2</span>),</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    torch.nn.ReLU(),</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    torch.nn.Linear(in_features<span class="op">=</span><span class="dv">2</span>,out_features<span class="op">=</span><span class="dv">2</span>),</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    torch.nn.ReLU(),</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    torch.nn.Linear(in_features<span class="op">=</span><span class="dv">2</span>,out_features<span class="op">=</span><span class="dv">2</span>),</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    torch.nn.ReLU(),</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    torch.nn.Linear(in_features<span class="op">=</span><span class="dv">2</span>,out_features<span class="op">=</span><span class="dv">2</span>),</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>    torch.nn.ReLU(),</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>    torch.nn.Linear(in_features<span class="op">=</span><span class="dv">2</span>,out_features<span class="op">=</span><span class="dv">1</span>),</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>    torch.nn.Sigmoid(),    </span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><code>-</code> 아래의 네트워크는 ANN이라 볼 수 있다. 또한 레이어가 3개 있으므로 MLP라고 볼 수 있다. 이건 DNN이라고 봐야하나? 깊다기 보다는 넓은 신경망인데…</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>net <span class="op">=</span> torch.nn.Sequential(</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    torch.nn.Linear(in_features<span class="op">=</span><span class="dv">1</span>,out_features<span class="op">=</span><span class="dv">1048576</span>),</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    torch.nn.ReLU(),</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    torch.nn.Linear(in_features<span class="op">=</span><span class="dv">1048576</span>,out_features<span class="op">=</span><span class="dv">1048576</span>),</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    torch.nn.ReLU(),</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    torch.nn.Linear(in_features<span class="op">=</span><span class="dv">1048576</span>,out_features<span class="op">=</span><span class="dv">1</span>),</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    torch.nn.Sigmoid(),    </span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p><code>-</code> 야매개념: 요즘은 거의 ANN <span class="math inline">\(\approx\)</span> MLP <span class="math inline">\(\approx\)</span> DNN 의 느낌으로 이해해도 무방함</p>
 <ul>
 <li>어지간한 모형은 다 ANN이라 우길 수 있다. 회귀분석도, 로지스틱분석도 마음먹으면 ANN으로 우길 수 있다. 그래서 “ANN을 썼다”라는건 엄청 모호한 말이다. 이런 이유로 사람들은 거의 MLP를 쓴 경우에 ANN을 썼다고 하고, 회귀모형을 쓴 경우에는 굳이 ANN을 썼다고 표현하지 않는다.</li>
