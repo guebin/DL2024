@@ -1523,7 +1523,7 @@ x_batch=[[4.0]]      y_batch=[[1.0]]</code></pre>
 <p><code>(4)</code> 세부사항에 맞추어 위의 자료를 학습하고, accuracy를 구하라.</p>
 <ul>
 <li>네트워크는 1개의 은닉층을 가지도록 하고, 은닉노드수는 32개로 설정하라. 은닉층의 활성화함수는 ReLU로 설정하라.</li>
-<li>y를 lenght-<span class="math inline">\(n\)</span>인 벡터로 유지하라.</li>
+<li>y를 (one-hot 인코딩 하지 않고) lenght-<span class="math inline">\(n\)</span>인 벡터로 유지하라.</li>
 <li>손실함수를 <code>torch.nn.CrossEntropyLoss()</code>로 설정하라.</li>
 <li>epoch = 325로 설정하라.</li>
 </ul>
@@ -1531,7 +1531,8 @@ x_batch=[[4.0]]      y_batch=[[1.0]]</code></pre>
 <ul>
 <li>네트워크는 1개의 은닉층을 가지도록 하고, 은닉노드수는 32개로 설정하라. 은닉층의 활성화함수는 ReLU로 설정하라.</li>
 <li>batch_size = 1024 로 설정한뒤 mini_batch를 이용한 학습을 하라.</li>
-<li>y를 lenght-<span class="math inline">\(n\)</span>인 벡터로 유지하라.</li>
+<li>y를 (one-hot 인코딩 하지 않고) lenght-<span class="math inline">\(n\)</span>인 벡터로 유지하라.<br>
+</li>
 <li>손실함수를 <code>torch.nn.CrossEntropyLoss()</code>로 설정하라.</li>
 <li>총 iteration 수가 325가 되도록 적절하게 epoch 을 설정하라.</li>
 </ul>
@@ -1539,7 +1540,7 @@ x_batch=[[4.0]]      y_batch=[[1.0]]</code></pre>
 <ul>
 <li>네트워크는 1개의 은닉층을 가지도록 하고, 은닉노드수는 32개로 설정하라. 은닉층의 활성화함수는 ReLU로 설정하라.</li>
 <li>batch_size = 512 로 설정한뒤 mini_batch를 이용한 학습을 하라.</li>
-<li>y를 lenght-<span class="math inline">\(n\)</span>인 벡터로 유지하라.</li>
+<li>y를 (one-hot 인코딩 하지 않고) lenght-<span class="math inline">\(n\)</span>인 벡터로 유지하라.</li>
 <li>손실함수를 <code>torch.nn.CrossEntropyLoss()</code>로 설정하라.</li>
 <li>총 iteration 수가 325가 되도록 적절하게 epoch 을 설정하라.</li>
 <li>GPU를 활용하여 학습하라.</li>
