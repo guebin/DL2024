@@ -275,8 +275,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="b.-새로운-아키텍처의-제시" class="level2">
 <h2 class="anchored" data-anchor-id="b.-새로운-아키텍처의-제시">B. 새로운 아키텍처의 제시</h2>
-<p><code>-</code> 예전</p>
-<p><span class="math display">\[\underset{(n,784)}{\bf X} \overset{l_1}{\to} \underset{(n,30)}{\boldsymbol u^{(1)}} \overset{relu}{\to} \underset{(n,30)}{\boldsymbol v^{(1)}} \overset{l_2}{\to} \underset{(n,1)}{\boldsymbol u^{(2)}} \overset{sig}{\to} \underset{(n,1)}{\boldsymbol v^{(2)}}=\underset{(n,1)}{\hat{\boldsymbol y}}\]</span></p>
+<p><code>-</code> 예전 아키텍처들</p>
+<ul>
+<li><span class="math inline">\(\underset{(n,1)}{\bf X} \overset{l_1}{\to} \underset{(n,2)}{\boldsymbol u^{(1)}} \overset{relu}{\to} \underset{(n,2)}{\boldsymbol v^{(1)}} \overset{l_1}{\to} \underset{(n,1)}{\boldsymbol u^{(2)}} \overset{sig}{\to} \underset{(n,1)}{\boldsymbol v^{(2)}}=\underset{(n,1)}{\hat{\boldsymbol y}}\)</span></li>
+<li><span class="math inline">\(\underset{(n,1)}{\bf X} \overset{l_1}{\to} \underset{(n,256)}{\boldsymbol u^{(1)}} \overset{relu}{\to} \underset{(n,256)}{\boldsymbol v^{(1)}} \overset{l_1}{\to} \underset{(n,1)}{\boldsymbol u^{(2)}} \overset{sig}{\to} \underset{(n,1)}{\boldsymbol v^{(2)}}=\underset{(n,1)}{\hat{\boldsymbol y}}\)</span></li>
+<li><span class="math inline">\(\underset{(n,784)}{\bf X} \overset{l_1}{\to} \underset{(n,30)}{\boldsymbol u^{(1)}} \overset{relu}{\to} \underset{(n,30)}{\boldsymbol v^{(1)}} \overset{l_2}{\to} \underset{(n,1)}{\boldsymbol u^{(2)}} \overset{sig}{\to} \underset{(n,1)}{\boldsymbol v^{(2)}}=\underset{(n,1)}{\hat{\boldsymbol y}}\)</span></li>
+</ul>
+<p><code>-</code> 아키텍처들의 공통점?</p>
 <ul>
 <li><span class="math inline">\(l_1\)</span>: 선형변환, feature를 뽑아내는 역할 (뻥튀기 혹은 요약)</li>
 <li><span class="math inline">\(relu\)</span>: 뻥튀기된 feature에 비선형을 추가하여 표현력 극대화</li>
