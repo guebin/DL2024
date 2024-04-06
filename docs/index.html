@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.520">
+<meta name="generator" content="quarto-1.4.533">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -101,10 +101,37 @@ ul.task-list li input[type="checkbox"] {
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
 <link rel="stylesheet" href="styles.css">
 </head>
 
-<body class="nav-sidebar docked nav-fixed">
+<body class="nav-fixed">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -137,124 +164,16 @@ ul.task-list li input[type="checkbox"] {
 </div>
       </div> <!-- /container-fluid -->
     </nav>
-  <nav class="quarto-secondary-nav">
-    <div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
-        <i class="bi bi-layout-text-sidebar-reverse"></i>
-      </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">딥러닝 (2024)</li></ol></nav>
-        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
-        </a>
-      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
-        <i class="bi bi-search"></i>
-      </button>
-    </div>
-  </nav>
 </header>
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
-        <div class="mt-2 flex-shrink-0 align-items-center">
-        <div class="sidebar-search">
-        <div id="quarto-search" class="" title="Search"></div>
-        </div>
-        </div>
-    <div class="sidebar-menu-container"> 
-    <ul class="list-unstyled mt-1">
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./about.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">About</span></a>
-  </div>
-</li>
-        <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
- <span class="menu-text">Posts</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./posts/01wk-1.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">01wk-1: 이미지 자료 분석 (겉핥기)</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./posts/01wk-2.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">01wk-2: 회귀분석 (1) – 단순회귀의 학습전략, 경사하강법</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./posts/02wk-1.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">02wk-1: 회귀분석 (2) – Step1~4 / 벡터미분</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./posts/02wk-2.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">02wk-2: 회귀분석 (3) – Step1,2,4 의 변형</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./posts/03wk-1.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">03wk-1: 로지스틱 – 로지스틱 소개, BCELoss, Adam, 로지스틱의 한계</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./posts/03wk-2.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">03wk-2: 깊은신경망 (1) – 로지스틱의 한계 극복</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./posts/04wk-1.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">04wk-1: 깊은신경망 (2) – 꺽인그래프의 한계(?), 시벤코정리, MNIST</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./posts/04wk-2.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">04wk-2: 깊은신경망 (3) – 오버피팅, 드랍아웃, 신경망의 표현</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./posts/05wk-1.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">05wk-1: 깊은신경망 (4) – GPU 사용법, SGD, Softmax와 CrossEntropy</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./posts/05wk-2.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">05wk-2: 합성곱신경망 (1) – CNN 예비학습, MNIST 자료 분석</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./posts/06wk-1.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">06wk-1: 합성곱신경망 (2)</span></a>
-  </div>
-</li>
-      </ul>
-  </li>
-    </ul>
-    </div>
-</nav>
-<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         
     <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(11)</span></div></div></div>
 <!-- main -->
-<main class="content column-body" id="quarto-document-content">
+<main class="content column-page-left" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
@@ -263,7 +182,7 @@ ul.task-list li input[type="checkbox"] {
 
 
 
-<div class="quarto-title-meta column-body">
+<div class="quarto-title-meta column-page-left">
 
     
   
@@ -303,7 +222,7 @@ Author
 </tr>
 </thead>
 <tbody class="list">
-<tr data-index="0" data-listing-date-sort="1712070000000" data-listing-file-modified-sort="1712220918000" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="7" data-listing-word-count-sort="1349" data-listing-title-sort="06wk-1: 합성곱신경망 (2)" data-listing-filename-sort="06wk-1.ipynb">
+<tr data-index="0" data-listing-date-sort="1712070000000" data-listing-file-modified-sort="1712220918482" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="7" data-listing-word-count-sort="1349" data-listing-title-sort="06wk-1: 합성곱신경망 (2)" data-listing-filename-sort="06wk-1.ipynb">
 <td>
 <span class="listing-date">Apr 3, 2024</span>
 </td>
@@ -314,7 +233,7 @@ Author
 <span class="listing-author">최규빈 </span>
 </td>
 </tr>
-<tr data-index="1" data-listing-date-sort="1712070000000" data-listing-file-modified-sort="1712278924000" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="222" data-listing-title-sort="05wk-2: 합성곱신경망 (1) -- CNN 예비학습, MNIST 자료 분석" data-listing-filename-sort="05wk-2.ipynb">
+<tr data-index="1" data-listing-date-sort="1712070000000" data-listing-file-modified-sort="1712278924446" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="222" data-listing-title-sort="05wk-2: 합성곱신경망 (1) -- CNN 예비학습, MNIST 자료 분석" data-listing-filename-sort="05wk-2.ipynb">
 <td>
 <span class="listing-date">Apr 3, 2024</span>
 </td>
@@ -325,7 +244,7 @@ Author
 <span class="listing-author">최규빈 </span>
 </td>
 </tr>
-<tr data-index="2" data-listing-date-sort="1711897200000" data-listing-file-modified-sort="1712125959251" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="7" data-listing-word-count-sort="1296" data-listing-title-sort="05wk-1: 깊은신경망 (4) -- GPU 사용법, SGD, Softmax와 CrossEntropy" data-listing-filename-sort="05wk-1.ipynb">
+<tr data-index="2" data-listing-date-sort="1711897200000" data-listing-file-modified-sort="1712125959000" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="7" data-listing-word-count-sort="1296" data-listing-title-sort="05wk-1: 깊은신경망 (4) -- GPU 사용법, SGD, Softmax와 CrossEntropy" data-listing-filename-sort="05wk-1.ipynb">
 <td>
 <span class="listing-date">Apr 1, 2024</span>
 </td>
@@ -336,7 +255,7 @@ Author
 <span class="listing-author">최규빈 </span>
 </td>
 </tr>
-<tr data-index="3" data-listing-date-sort="1711465200000" data-listing-file-modified-sort="1712125603410" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="7" data-listing-word-count-sort="1334" data-listing-title-sort="04wk-2: 깊은신경망 (3) -- 오버피팅, 드랍아웃, 신경망의 표현" data-listing-filename-sort="04wk-2.ipynb">
+<tr data-index="3" data-listing-date-sort="1711465200000" data-listing-file-modified-sort="1712125603000" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="7" data-listing-word-count-sort="1334" data-listing-title-sort="04wk-2: 깊은신경망 (3) -- 오버피팅, 드랍아웃, 신경망의 표현" data-listing-filename-sort="04wk-2.ipynb">
 <td>
 <span class="listing-date">Mar 27, 2024</span>
 </td>
@@ -347,7 +266,7 @@ Author
 <span class="listing-author">최규빈 </span>
 </td>
 </tr>
-<tr data-index="4" data-listing-date-sort="1711292400000" data-listing-file-modified-sort="1712114493836" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="795" data-listing-title-sort="04wk-1: 깊은신경망 (2) -- 꺽인그래프의 한계(?), 시벤코정리, MNIST" data-listing-filename-sort="04wk-1.ipynb">
+<tr data-index="4" data-listing-date-sort="1711292400000" data-listing-file-modified-sort="1712114493000" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="795" data-listing-title-sort="04wk-1: 깊은신경망 (2) -- 꺽인그래프의 한계(?), 시벤코정리, MNIST" data-listing-filename-sort="04wk-1.ipynb">
 <td>
 <span class="listing-date">Mar 25, 2024</span>
 </td>
@@ -358,7 +277,7 @@ Author
 <span class="listing-author">최규빈 </span>
 </td>
 </tr>
-<tr data-index="5" data-listing-date-sort="1710860400000" data-listing-file-modified-sort="1712114569680" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="507" data-listing-title-sort="03wk-2: 깊은신경망 (1) -- 로지스틱의 한계 극복" data-listing-filename-sort="03wk-2.ipynb">
+<tr data-index="5" data-listing-date-sort="1710860400000" data-listing-file-modified-sort="1712114569000" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="507" data-listing-title-sort="03wk-2: 깊은신경망 (1) -- 로지스틱의 한계 극복" data-listing-filename-sort="03wk-2.ipynb">
 <td>
 <span class="listing-date">Mar 20, 2024</span>
 </td>
@@ -369,7 +288,7 @@ Author
 <span class="listing-author">최규빈 </span>
 </td>
 </tr>
-<tr data-index="6" data-listing-date-sort="1710687600000" data-listing-file-modified-sort="1710811547000" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="569" data-listing-title-sort="03wk-1: 로지스틱 -- 로지스틱 소개, BCELoss, Adam, 로지스틱의 한계" data-listing-filename-sort="03wk-1.ipynb">
+<tr data-index="6" data-listing-date-sort="1710687600000" data-listing-file-modified-sort="1710903780885" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="569" data-listing-title-sort="03wk-1: 로지스틱 -- 로지스틱 소개, BCELoss, Adam, 로지스틱의 한계" data-listing-filename-sort="03wk-1.ipynb">
 <td>
 <span class="listing-date">Mar 18, 2024</span>
 </td>
@@ -380,7 +299,7 @@ Author
 <span class="listing-author">최규빈 </span>
 </td>
 </tr>
-<tr data-index="7" data-listing-date-sort="1710255600000" data-listing-file-modified-sort="1710421643000" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="124" data-listing-title-sort="02wk-2: 회귀분석 (3) -- Step1,2,4 의 변형" data-listing-filename-sort="02wk-2.ipynb">
+<tr data-index="7" data-listing-date-sort="1710255600000" data-listing-file-modified-sort="1710421643637" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="124" data-listing-title-sort="02wk-2: 회귀분석 (3) -- Step1,2,4 의 변형" data-listing-filename-sort="02wk-2.ipynb">
 <td>
 <span class="listing-date">Mar 13, 2024</span>
 </td>
@@ -391,7 +310,7 @@ Author
 <span class="listing-author">최규빈 </span>
 </td>
 </tr>
-<tr data-index="8" data-listing-date-sort="1710082800000" data-listing-file-modified-sort="1711495823000" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5" data-listing-word-count-sort="853" data-listing-title-sort="02wk-1: 회귀분석 (2) -- Step1~4 / 벡터미분" data-listing-filename-sort="02wk-1.ipynb">
+<tr data-index="8" data-listing-date-sort="1710082800000" data-listing-file-modified-sort="1711495823944" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5" data-listing-word-count-sort="853" data-listing-title-sort="02wk-1: 회귀분석 (2) -- Step1~4 / 벡터미분" data-listing-filename-sort="02wk-1.ipynb">
 <td>
 <span class="listing-date">Mar 11, 2024</span>
 </td>
@@ -402,7 +321,7 @@ Author
 <span class="listing-author">최규빈 </span>
 </td>
 </tr>
-<tr data-index="9" data-listing-date-sort="1709650800000" data-listing-file-modified-sort="1710421621000" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="588" data-listing-title-sort="01wk-2: 회귀분석 (1) -- 단순회귀의 학습전략, 경사하강법" data-listing-filename-sort="01wk-2.ipynb">
+<tr data-index="9" data-listing-date-sort="1709650800000" data-listing-file-modified-sort="1710421648389" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="588" data-listing-title-sort="01wk-2: 회귀분석 (1) -- 단순회귀의 학습전략, 경사하강법" data-listing-filename-sort="01wk-2.ipynb">
 <td>
 <span class="listing-date">Mar 6, 2024</span>
 </td>
@@ -413,7 +332,7 @@ Author
 <span class="listing-author">최규빈 </span>
 </td>
 </tr>
-<tr data-index="10" data-listing-date-sort="1709478000000" data-listing-file-modified-sort="1710283518000" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="328" data-listing-title-sort="01wk-1: 이미지 자료 분석 (겉핥기)" data-listing-filename-sort="01wk-1.ipynb">
+<tr data-index="10" data-listing-date-sort="1709478000000" data-listing-file-modified-sort="1710283518397" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="328" data-listing-title-sort="01wk-1: 이미지 자료 분석 (겉핥기)" data-listing-filename-sort="01wk-1.ipynb">
 <td>
 <span class="listing-date">Mar 4, 2024</span>
 </td>
@@ -558,27 +477,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       }
     }
     stripColumnClz(note)
-    const typesetMath = (el) => {
-      if (window.MathJax) {
-        // MathJax Typeset
-        window.MathJax.typeset([el]);
-      } else if (window.katex) {
-        // KaTeX Render
-        var mathElements = el.getElementsByClassName("math");
-        var macros = [];
-        for (var i = 0; i < mathElements.length; i++) {
-          var texText = mathElements[i].firstChild;
-          if (mathElements[i].tagName == "SPAN") {
-            window.katex.render(texText.data, mathElements[i], {
-              displayMode: mathElements[i].classList.contains('display'),
-              throwOnError: false,
-              macros: macros,
-              fleqn: false
-            });
-          }
-        }
-      }
-    }
     if (id === null || id.startsWith('sec-')) {
       // Special case sections, only their first couple elements
       const container = document.createElement("div");
@@ -593,10 +491,14 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             break;
           }
         }
-        typesetMath(container);
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
         return container.innerHTML
       } else {
-        typesetMath(note);
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
         return note.innerHTML;
       }
     } else {
@@ -605,7 +507,9 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       if (anchorLink) {
         anchorLink.remove();
       }
-      typesetMath(note);
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
       return note.innerHTML;
     }
   }

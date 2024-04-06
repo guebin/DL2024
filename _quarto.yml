@@ -10,10 +10,6 @@ website:
         href: https://github.com/guebin/DL2024
       - icon: youtube
         href: https://www.youtube.com/channel/UCQk9RyBNgXc7ORIsYlOfQrg/playlists?view=50&sort=dd&shelf_id=2
-  sidebar:
-    style: "docked"
-    search: true
-    contents: auto        
 format:
   html:
     theme: cosmo
