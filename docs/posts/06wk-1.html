@@ -9,7 +9,7 @@
 <meta name="author" content="최규빈">
 <meta name="dcterms.date" content="2024-04-03">
 
-<title>DL2024 - 06wk-1: 합성곱신경망 (2)</title>
+<title>DL2024 - 06wk-1: 합성곱신경망 (2) – MNIST, Fashion-MNIST, ImageNet, CIFAR10</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -222,7 +222,7 @@ div.csl-indent {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">06wk-1: 합성곱신경망 (2)</h1>
+<h1 class="title">06wk-1: 합성곱신경망 (2) – MNIST, Fashion-MNIST, ImageNet, CIFAR10</h1>
 </div>
 
 
@@ -260,12 +260,13 @@ div.csl-indent {
 </section>
 <section id="imports" class="level1">
 <h1>2. Imports</h1>
-<div id="66839c05-69cf-4da5-b8a8-861e89481e52" class="cell" data-tags="[]" data-execution_count="675">
+<div id="66839c05-69cf-4da5-b8a8-861e89481e52" class="cell" data-tags="[]" data-execution_count="749">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torchvision</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> fastai.data.<span class="bu">all</span> <span class="im">import</span> <span class="op">*</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> fastai.vision.<span class="bu">all</span> <span class="im">import</span> <span class="op">*</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> fastai.data.<span class="bu">all</span> <span class="im">import</span> <span class="op">*</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> fastai.vision.<span class="bu">all</span> <span class="im">import</span> <span class="op">*</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="torch.eigensum" class="level1">
