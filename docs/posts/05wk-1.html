@@ -1456,7 +1456,7 @@ x_batch=[[4.0]]      y_batch=[[1.0]]</code></pre>
 <p><code>-</code> 그런데 “실패확률=1-성공확률” 이므로 사실상 둘은 같은걸 추정하는 셈이다. (성공확률만 추정하면 실패확률은 저절로 추정되니까)</p>
 <p><code>-</code> 즉 아래는 같은 표현력을 가진 모형이다.</p>
 <p><img src="05wk-1-fig2.svg" class="img-fluid"></p>
-<p><img src="05wk-1-fig2.svg" class="img-fluid"></p>
+<p><img src="05wk-1-fig1.svg" class="img-fluid"></p>
 <p><code>-</code> 둘은 같은 표현력을 가진 모형인데 학습할 파라메터는 sigmoid의 경우가 더 적다. <span class="math inline">\(\to\)</span> sigmoid를 사용하는 모형이 비용은 싸고 효과는 동일하다는 말 <span class="math inline">\(\to\)</span> 이진분류 한정해서는 softmax를 쓰지말고 sigmoid를 써야함.</p>
 <ul>
 <li>softmax가 갑자기 너무 안좋아보이는데 sigmoid는 k개의 클래스로 확장이 불가능한 반면 softmax는 확장이 용이하다는 장점이 있음.</li>
