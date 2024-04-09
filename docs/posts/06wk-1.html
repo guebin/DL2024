@@ -1265,7 +1265,7 @@ val: 0.6172</code></pre>
 <span id="cb65-32"><a href="#cb65-32" aria-hidden="true" tabindex="-1"></a><span class="co"># Step3:</span></span>
 <span id="cb65-33"><a href="#cb65-33" aria-hidden="true" tabindex="-1"></a>lrnr.fit(<span class="dv">10</span>)</span>
 <span id="cb65-34"><a href="#cb65-34" aria-hidden="true" tabindex="-1"></a><span class="co"># Step4: </span></span>
-<span id="cb65-35"><a href="#cb65-35" aria-hidden="true" tabindex="-1"></a><span class="co"># 코랩사용시 아래는 주석처리할것 (코랩의 RAM이 충분하지 않음, 결재요구함) </span></span>
+<span id="cb65-35"><a href="#cb65-35" aria-hidden="true" tabindex="-1"></a><span class="co"># 코랩사용시 아래는 주석처리할것 (이유: 코랩의 RAM이 충분하지 않음) valiation set의 accuracy는 fastai결과로 확인할것. </span></span>
 <span id="cb65-36"><a href="#cb65-36" aria-hidden="true" tabindex="-1"></a><span class="co"># lrnr.model.to("cpu")</span></span>
 <span id="cb65-37"><a href="#cb65-37" aria-hidden="true" tabindex="-1"></a><span class="co"># print(f'train: {(lrnr.model(X).data.argmax(axis=1) == y).float().mean():.4f}')</span></span>
 <span id="cb65-38"><a href="#cb65-38" aria-hidden="true" tabindex="-1"></a><span class="co"># print(f'val: {(lrnr.model(XX).data.argmax(axis=1) == yy).float().mean():.4f}')</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -1497,7 +1497,7 @@ val: 0.6581</code></pre>
 <span id="cb70-18"><a href="#cb70-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Step3:</span></span>
 <span id="cb70-19"><a href="#cb70-19" aria-hidden="true" tabindex="-1"></a>lrnr.fit(<span class="dv">10</span>)</span>
 <span id="cb70-20"><a href="#cb70-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Step4: </span></span>
-<span id="cb70-21"><a href="#cb70-21" aria-hidden="true" tabindex="-1"></a><span class="co"># 코랩사용시 아래는 주석처리할것 (코랩의 RAM이 충분하지 않음, 결재요구함) </span></span>
+<span id="cb70-21"><a href="#cb70-21" aria-hidden="true" tabindex="-1"></a><span class="co"># 코랩사용시 아래는 주석처리할것 (이유: 코랩의 RAM이 충분하지 않음) valiation set의 accuracy는 fastai결과로 확인할것. </span></span>
 <span id="cb70-22"><a href="#cb70-22" aria-hidden="true" tabindex="-1"></a><span class="co"># lrnr.model.to("cpu")</span></span>
 <span id="cb70-23"><a href="#cb70-23" aria-hidden="true" tabindex="-1"></a><span class="co"># print(f'train: {(lrnr.model(X).data.argmax(axis=1) == y).float().mean():.4f}') # </span></span>
 <span id="cb70-24"><a href="#cb70-24" aria-hidden="true" tabindex="-1"></a><span class="co"># print(f'val: {(lrnr.model(XX).data.argmax(axis=1) == yy).float().mean():.4f}')</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
