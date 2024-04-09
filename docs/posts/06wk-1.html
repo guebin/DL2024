@@ -1236,37 +1236,38 @@ val: 0.6172</code></pre>
 <span id="cb65-3"><a href="#cb65-3" aria-hidden="true" tabindex="-1"></a>ds2 <span class="op">=</span> torch.utils.data.TensorDataset(XX,yy)</span>
 <span id="cb65-4"><a href="#cb65-4" aria-hidden="true" tabindex="-1"></a>dl1 <span class="op">=</span> torch.utils.data.DataLoader(ds1,batch_size<span class="op">=</span><span class="dv">256</span>,shuffle<span class="op">=</span><span class="va">True</span>)</span>
 <span id="cb65-5"><a href="#cb65-5" aria-hidden="true" tabindex="-1"></a>dl2 <span class="op">=</span> torch.utils.data.DataLoader(ds2,batch_size<span class="op">=</span><span class="dv">100</span>)</span>
-<span id="cb65-6"><a href="#cb65-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Step2:</span></span>
-<span id="cb65-7"><a href="#cb65-7" aria-hidden="true" tabindex="-1"></a>net1 <span class="op">=</span> torch.nn.Sequential(</span>
-<span id="cb65-8"><a href="#cb65-8" aria-hidden="true" tabindex="-1"></a>    torch.nn.Conv2d(<span class="dv">3</span>,<span class="dv">256</span>,(<span class="dv">5</span>,<span class="dv">5</span>)),</span>
-<span id="cb65-9"><a href="#cb65-9" aria-hidden="true" tabindex="-1"></a>    torch.nn.ReLU(),</span>
-<span id="cb65-10"><a href="#cb65-10" aria-hidden="true" tabindex="-1"></a>    torch.nn.Conv2d(<span class="dv">256</span>,<span class="dv">64</span>,(<span class="dv">5</span>,<span class="dv">5</span>)),</span>
-<span id="cb65-11"><a href="#cb65-11" aria-hidden="true" tabindex="-1"></a>    torch.nn.ReLU(),</span>
-<span id="cb65-12"><a href="#cb65-12" aria-hidden="true" tabindex="-1"></a>    torch.nn.Conv2d(<span class="dv">64</span>,<span class="dv">16</span>,(<span class="dv">5</span>,<span class="dv">5</span>)),</span>
-<span id="cb65-13"><a href="#cb65-13" aria-hidden="true" tabindex="-1"></a>    torch.nn.MaxPool2d((<span class="dv">2</span>,<span class="dv">2</span>)),</span>
-<span id="cb65-14"><a href="#cb65-14" aria-hidden="true" tabindex="-1"></a>    torch.nn.Flatten()</span>
-<span id="cb65-15"><a href="#cb65-15" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb65-16"><a href="#cb65-16" aria-hidden="true" tabindex="-1"></a>net2 <span class="op">=</span> torch.nn.Sequential(</span>
-<span id="cb65-17"><a href="#cb65-17" aria-hidden="true" tabindex="-1"></a>    torch.nn.Linear(<span class="dv">1600</span>,<span class="dv">10</span>),</span>
-<span id="cb65-18"><a href="#cb65-18" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb65-19"><a href="#cb65-19" aria-hidden="true" tabindex="-1"></a>net <span class="op">=</span> torch.nn.Sequential(</span>
-<span id="cb65-20"><a href="#cb65-20" aria-hidden="true" tabindex="-1"></a>    net1, <span class="co"># 2d-part</span></span>
-<span id="cb65-21"><a href="#cb65-21" aria-hidden="true" tabindex="-1"></a>    net2, <span class="co"># 1d-part </span></span>
-<span id="cb65-22"><a href="#cb65-22" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb65-23"><a href="#cb65-23" aria-hidden="true" tabindex="-1"></a>loss_fn <span class="op">=</span> torch.nn.CrossEntropyLoss()</span>
-<span id="cb65-24"><a href="#cb65-24" aria-hidden="true" tabindex="-1"></a>lrnr <span class="op">=</span> Learner(</span>
-<span id="cb65-25"><a href="#cb65-25" aria-hidden="true" tabindex="-1"></a>    dls<span class="op">=</span>dls,</span>
-<span id="cb65-26"><a href="#cb65-26" aria-hidden="true" tabindex="-1"></a>    model<span class="op">=</span>net,</span>
-<span id="cb65-27"><a href="#cb65-27" aria-hidden="true" tabindex="-1"></a>    loss_func<span class="op">=</span>loss_fn,</span>
-<span id="cb65-28"><a href="#cb65-28" aria-hidden="true" tabindex="-1"></a>    <span class="co">#--#</span></span>
-<span id="cb65-29"><a href="#cb65-29" aria-hidden="true" tabindex="-1"></a>    metrics<span class="op">=</span>[accuracy]</span>
-<span id="cb65-30"><a href="#cb65-30" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb65-31"><a href="#cb65-31" aria-hidden="true" tabindex="-1"></a><span class="co"># Step3:</span></span>
-<span id="cb65-32"><a href="#cb65-32" aria-hidden="true" tabindex="-1"></a>lrnr.fit(<span class="dv">10</span>)</span>
-<span id="cb65-33"><a href="#cb65-33" aria-hidden="true" tabindex="-1"></a><span class="co"># Step4: </span></span>
-<span id="cb65-34"><a href="#cb65-34" aria-hidden="true" tabindex="-1"></a>lrnr.model.to(<span class="st">"cpu"</span>)</span>
-<span id="cb65-35"><a href="#cb65-35" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'train: </span><span class="sc">{</span>(lrnr.model(X).data.argmax(axis<span class="op">=</span><span class="dv">1</span>) <span class="op">==</span> y)<span class="sc">.</span><span class="bu">float</span>()<span class="sc">.</span>mean()<span class="sc">:.4f}</span><span class="ss">'</span>)</span>
-<span id="cb65-36"><a href="#cb65-36" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'val: </span><span class="sc">{</span>(lrnr.model(XX).data.argmax(axis<span class="op">=</span><span class="dv">1</span>) <span class="op">==</span> yy)<span class="sc">.</span><span class="bu">float</span>()<span class="sc">.</span>mean()<span class="sc">:.4f}</span><span class="ss">'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb65-6"><a href="#cb65-6" aria-hidden="true" tabindex="-1"></a>dls <span class="op">=</span> DataLoaders(dl1,dl2)</span>
+<span id="cb65-7"><a href="#cb65-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Step2:</span></span>
+<span id="cb65-8"><a href="#cb65-8" aria-hidden="true" tabindex="-1"></a>net1 <span class="op">=</span> torch.nn.Sequential(</span>
+<span id="cb65-9"><a href="#cb65-9" aria-hidden="true" tabindex="-1"></a>    torch.nn.Conv2d(<span class="dv">3</span>,<span class="dv">256</span>,(<span class="dv">5</span>,<span class="dv">5</span>)),</span>
+<span id="cb65-10"><a href="#cb65-10" aria-hidden="true" tabindex="-1"></a>    torch.nn.ReLU(),</span>
+<span id="cb65-11"><a href="#cb65-11" aria-hidden="true" tabindex="-1"></a>    torch.nn.Conv2d(<span class="dv">256</span>,<span class="dv">64</span>,(<span class="dv">5</span>,<span class="dv">5</span>)),</span>
+<span id="cb65-12"><a href="#cb65-12" aria-hidden="true" tabindex="-1"></a>    torch.nn.ReLU(),</span>
+<span id="cb65-13"><a href="#cb65-13" aria-hidden="true" tabindex="-1"></a>    torch.nn.Conv2d(<span class="dv">64</span>,<span class="dv">16</span>,(<span class="dv">5</span>,<span class="dv">5</span>)),</span>
+<span id="cb65-14"><a href="#cb65-14" aria-hidden="true" tabindex="-1"></a>    torch.nn.MaxPool2d((<span class="dv">2</span>,<span class="dv">2</span>)),</span>
+<span id="cb65-15"><a href="#cb65-15" aria-hidden="true" tabindex="-1"></a>    torch.nn.Flatten()</span>
+<span id="cb65-16"><a href="#cb65-16" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb65-17"><a href="#cb65-17" aria-hidden="true" tabindex="-1"></a>net2 <span class="op">=</span> torch.nn.Sequential(</span>
+<span id="cb65-18"><a href="#cb65-18" aria-hidden="true" tabindex="-1"></a>    torch.nn.Linear(<span class="dv">1600</span>,<span class="dv">10</span>),</span>
+<span id="cb65-19"><a href="#cb65-19" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb65-20"><a href="#cb65-20" aria-hidden="true" tabindex="-1"></a>net <span class="op">=</span> torch.nn.Sequential(</span>
+<span id="cb65-21"><a href="#cb65-21" aria-hidden="true" tabindex="-1"></a>    net1, <span class="co"># 2d-part</span></span>
+<span id="cb65-22"><a href="#cb65-22" aria-hidden="true" tabindex="-1"></a>    net2, <span class="co"># 1d-part </span></span>
+<span id="cb65-23"><a href="#cb65-23" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb65-24"><a href="#cb65-24" aria-hidden="true" tabindex="-1"></a>loss_fn <span class="op">=</span> torch.nn.CrossEntropyLoss()</span>
+<span id="cb65-25"><a href="#cb65-25" aria-hidden="true" tabindex="-1"></a>lrnr <span class="op">=</span> Learner(</span>
+<span id="cb65-26"><a href="#cb65-26" aria-hidden="true" tabindex="-1"></a>    dls<span class="op">=</span>dls,</span>
+<span id="cb65-27"><a href="#cb65-27" aria-hidden="true" tabindex="-1"></a>    model<span class="op">=</span>net,</span>
+<span id="cb65-28"><a href="#cb65-28" aria-hidden="true" tabindex="-1"></a>    loss_func<span class="op">=</span>loss_fn,</span>
+<span id="cb65-29"><a href="#cb65-29" aria-hidden="true" tabindex="-1"></a>    <span class="co">#--#</span></span>
+<span id="cb65-30"><a href="#cb65-30" aria-hidden="true" tabindex="-1"></a>    metrics<span class="op">=</span>[accuracy]</span>
+<span id="cb65-31"><a href="#cb65-31" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb65-32"><a href="#cb65-32" aria-hidden="true" tabindex="-1"></a><span class="co"># Step3:</span></span>
+<span id="cb65-33"><a href="#cb65-33" aria-hidden="true" tabindex="-1"></a>lrnr.fit(<span class="dv">10</span>)</span>
+<span id="cb65-34"><a href="#cb65-34" aria-hidden="true" tabindex="-1"></a><span class="co"># Step4: </span></span>
+<span id="cb65-35"><a href="#cb65-35" aria-hidden="true" tabindex="-1"></a>lrnr.model.to(<span class="st">"cpu"</span>)</span>
+<span id="cb65-36"><a href="#cb65-36" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'train: </span><span class="sc">{</span>(lrnr.model(X).data.argmax(axis<span class="op">=</span><span class="dv">1</span>) <span class="op">==</span> y)<span class="sc">.</span><span class="bu">float</span>()<span class="sc">.</span>mean()<span class="sc">:.4f}</span><span class="ss">'</span>)</span>
+<span id="cb65-37"><a href="#cb65-37" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'val: </span><span class="sc">{</span>(lrnr.model(XX).data.argmax(axis<span class="op">=</span><span class="dv">1</span>) <span class="op">==</span> yy)<span class="sc">.</span><span class="bu">float</span>()<span class="sc">.</span>mean()<span class="sc">:.4f}</span><span class="ss">'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 
 <style>
@@ -1479,24 +1480,25 @@ val: 0.6581</code></pre>
 <span id="cb70-2"><a href="#cb70-2" aria-hidden="true" tabindex="-1"></a>ds1 <span class="op">=</span> torch.utils.data.TensorDataset(X,y)</span>
 <span id="cb70-3"><a href="#cb70-3" aria-hidden="true" tabindex="-1"></a>ds2 <span class="op">=</span> torch.utils.data.TensorDataset(XX,yy)</span>
 <span id="cb70-4"><a href="#cb70-4" aria-hidden="true" tabindex="-1"></a>dl1 <span class="op">=</span> torch.utils.data.DataLoader(ds1,batch_size<span class="op">=</span><span class="dv">64</span>,shuffle<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb70-5"><a href="#cb70-5" aria-hidden="true" tabindex="-1"></a>dl2 <span class="op">=</span> torch.utils.data.DataLoader(ds2,batch_size<span class="op">=</span><span class="dv">10000</span>)</span>
-<span id="cb70-6"><a href="#cb70-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Step2:</span></span>
-<span id="cb70-7"><a href="#cb70-7" aria-hidden="true" tabindex="-1"></a>net <span class="op">=</span> torchvision.models.resnet18()</span>
-<span id="cb70-8"><a href="#cb70-8" aria-hidden="true" tabindex="-1"></a>net.fc <span class="op">=</span> torch.nn.Linear(<span class="dv">512</span>,<span class="dv">10</span>)</span>
-<span id="cb70-9"><a href="#cb70-9" aria-hidden="true" tabindex="-1"></a>loss_fn <span class="op">=</span> torch.nn.CrossEntropyLoss()</span>
-<span id="cb70-10"><a href="#cb70-10" aria-hidden="true" tabindex="-1"></a>lrnr <span class="op">=</span> Learner(</span>
-<span id="cb70-11"><a href="#cb70-11" aria-hidden="true" tabindex="-1"></a>    dls<span class="op">=</span>dls,</span>
-<span id="cb70-12"><a href="#cb70-12" aria-hidden="true" tabindex="-1"></a>    model<span class="op">=</span>net,</span>
-<span id="cb70-13"><a href="#cb70-13" aria-hidden="true" tabindex="-1"></a>    loss_func<span class="op">=</span>loss_fn,</span>
-<span id="cb70-14"><a href="#cb70-14" aria-hidden="true" tabindex="-1"></a>    <span class="co">#--#</span></span>
-<span id="cb70-15"><a href="#cb70-15" aria-hidden="true" tabindex="-1"></a>    metrics<span class="op">=</span>[accuracy]</span>
-<span id="cb70-16"><a href="#cb70-16" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb70-17"><a href="#cb70-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Step3:</span></span>
-<span id="cb70-18"><a href="#cb70-18" aria-hidden="true" tabindex="-1"></a>lrnr.fit(<span class="dv">10</span>)</span>
-<span id="cb70-19"><a href="#cb70-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Step4: </span></span>
-<span id="cb70-20"><a href="#cb70-20" aria-hidden="true" tabindex="-1"></a>lrnr.model.to(<span class="st">"cpu"</span>)</span>
-<span id="cb70-21"><a href="#cb70-21" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'train: </span><span class="sc">{</span>(lrnr.model(X).data.argmax(axis<span class="op">=</span><span class="dv">1</span>) <span class="op">==</span> y)<span class="sc">.</span><span class="bu">float</span>()<span class="sc">.</span>mean()<span class="sc">:.4f}</span><span class="ss">'</span>)</span>
-<span id="cb70-22"><a href="#cb70-22" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'val: </span><span class="sc">{</span>(lrnr.model(XX).data.argmax(axis<span class="op">=</span><span class="dv">1</span>) <span class="op">==</span> yy)<span class="sc">.</span><span class="bu">float</span>()<span class="sc">.</span>mean()<span class="sc">:.4f}</span><span class="ss">'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb70-5"><a href="#cb70-5" aria-hidden="true" tabindex="-1"></a>dl2 <span class="op">=</span> torch.utils.data.DataLoader(ds2,batch_size<span class="op">=</span><span class="dv">100</span>)</span>
+<span id="cb70-6"><a href="#cb70-6" aria-hidden="true" tabindex="-1"></a>dls <span class="op">=</span> DataLoaders(dl1,dl2)</span>
+<span id="cb70-7"><a href="#cb70-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Step2:</span></span>
+<span id="cb70-8"><a href="#cb70-8" aria-hidden="true" tabindex="-1"></a>net <span class="op">=</span> torchvision.models.resnet18()</span>
+<span id="cb70-9"><a href="#cb70-9" aria-hidden="true" tabindex="-1"></a>net.fc <span class="op">=</span> torch.nn.Linear(<span class="dv">512</span>,<span class="dv">10</span>)</span>
+<span id="cb70-10"><a href="#cb70-10" aria-hidden="true" tabindex="-1"></a>loss_fn <span class="op">=</span> torch.nn.CrossEntropyLoss()</span>
+<span id="cb70-11"><a href="#cb70-11" aria-hidden="true" tabindex="-1"></a>lrnr <span class="op">=</span> Learner(</span>
+<span id="cb70-12"><a href="#cb70-12" aria-hidden="true" tabindex="-1"></a>    dls<span class="op">=</span>dls,</span>
+<span id="cb70-13"><a href="#cb70-13" aria-hidden="true" tabindex="-1"></a>    model<span class="op">=</span>net,</span>
+<span id="cb70-14"><a href="#cb70-14" aria-hidden="true" tabindex="-1"></a>    loss_func<span class="op">=</span>loss_fn,</span>
+<span id="cb70-15"><a href="#cb70-15" aria-hidden="true" tabindex="-1"></a>    <span class="co">#--#</span></span>
+<span id="cb70-16"><a href="#cb70-16" aria-hidden="true" tabindex="-1"></a>    metrics<span class="op">=</span>[accuracy]</span>
+<span id="cb70-17"><a href="#cb70-17" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb70-18"><a href="#cb70-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Step3:</span></span>
+<span id="cb70-19"><a href="#cb70-19" aria-hidden="true" tabindex="-1"></a>lrnr.fit(<span class="dv">10</span>)</span>
+<span id="cb70-20"><a href="#cb70-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Step4: </span></span>
+<span id="cb70-21"><a href="#cb70-21" aria-hidden="true" tabindex="-1"></a>lrnr.model.to(<span class="st">"cpu"</span>)</span>
+<span id="cb70-22"><a href="#cb70-22" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'train: </span><span class="sc">{</span>(lrnr.model(X).data.argmax(axis<span class="op">=</span><span class="dv">1</span>) <span class="op">==</span> y)<span class="sc">.</span><span class="bu">float</span>()<span class="sc">.</span>mean()<span class="sc">:.4f}</span><span class="ss">'</span>)</span>
+<span id="cb70-23"><a href="#cb70-23" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'val: </span><span class="sc">{</span>(lrnr.model(XX).data.argmax(axis<span class="op">=</span><span class="dv">1</span>) <span class="op">==</span> yy)<span class="sc">.</span><span class="bu">float</span>()<span class="sc">.</span>mean()<span class="sc">:.4f}</span><span class="ss">'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 
 <style>
