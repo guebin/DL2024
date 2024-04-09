@@ -607,7 +607,7 @@ val: 0.8715</code></pre>
 <span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>ds1 <span class="op">=</span> torch.utils.data.TensorDataset(X,y)</span>
 <span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>ds2 <span class="op">=</span> torch.utils.data.TensorDataset(XX,yy)</span>
 <span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>dl1 <span class="op">=</span> torch.utils.data.DataLoader(ds1,batch_size<span class="op">=</span><span class="dv">128</span>) </span>
-<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>dl2 <span class="op">=</span> torch.utils.data.DataLoader(ds2,batch_size<span class="op">=</span><span class="dv">5000</span>) </span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>dl2 <span class="op">=</span> torch.utils.data.DataLoader(ds2,batch_size<span class="op">=</span><span class="dv">100</span>) </span>
 <span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a>dls <span class="op">=</span> DataLoaders(dl1,dl2)</span>
 <span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Step2: 적합에 필요한 오브젝트 생성</span></span>
 <span id="cb41-8"><a href="#cb41-8" aria-hidden="true" tabindex="-1"></a>net1 <span class="op">=</span> torch.nn.Sequential(</span>
@@ -924,7 +924,7 @@ torch.Size([10000])              torch.int64</code></pre>
 <div class="sourceCode cell-code" id="cb59"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a>ds1 <span class="op">=</span> torch.utils.data.TensorDataset(X,y)</span>
 <span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a>ds2 <span class="op">=</span> torch.utils.data.TensorDataset(XX,yy)</span>
 <span id="cb59-3"><a href="#cb59-3" aria-hidden="true" tabindex="-1"></a>dl1 <span class="op">=</span> torch.utils.data.DataLoader(ds1,batch_size<span class="op">=</span><span class="dv">256</span>,shuffle<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb59-4"><a href="#cb59-4" aria-hidden="true" tabindex="-1"></a>dl2 <span class="op">=</span> torch.utils.data.DataLoader(ds2,batch_size<span class="op">=</span><span class="dv">10000</span>)</span>
+<span id="cb59-4"><a href="#cb59-4" aria-hidden="true" tabindex="-1"></a>dl2 <span class="op">=</span> torch.utils.data.DataLoader(ds2,batch_size<span class="op">=</span><span class="dv">100</span>)</span>
 <span id="cb59-5"><a href="#cb59-5" aria-hidden="true" tabindex="-1"></a>dls <span class="op">=</span> DataLoaders(dl1,dl2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p><code>-</code> 아래와 같이 쉽게 만들수도있음…</p>
@@ -940,8 +940,8 @@ torch.Size([10000])              torch.int64</code></pre>
 <div class="sourceCode cell-code" id="cb61"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Step1:</span></span>
 <span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a>ds1 <span class="op">=</span> torch.utils.data.TensorDataset(X,y)</span>
 <span id="cb61-3"><a href="#cb61-3" aria-hidden="true" tabindex="-1"></a>ds2 <span class="op">=</span> torch.utils.data.TensorDataset(XX,yy)</span>
-<span id="cb61-4"><a href="#cb61-4" aria-hidden="true" tabindex="-1"></a>dl1 <span class="op">=</span> torch.utils.data.DataLoader(ds1,batch_size<span class="op">=</span><span class="dv">64</span>)</span>
-<span id="cb61-5"><a href="#cb61-5" aria-hidden="true" tabindex="-1"></a>dl2 <span class="op">=</span> torch.utils.data.DataLoader(ds2,batch_size<span class="op">=</span><span class="dv">10000</span>)</span>
+<span id="cb61-4"><a href="#cb61-4" aria-hidden="true" tabindex="-1"></a>dl1 <span class="op">=</span> torch.utils.data.DataLoader(ds1,batch_size<span class="op">=</span><span class="dv">256</span>)</span>
+<span id="cb61-5"><a href="#cb61-5" aria-hidden="true" tabindex="-1"></a>dl2 <span class="op">=</span> torch.utils.data.DataLoader(ds2,batch_size<span class="op">=</span><span class="dv">100</span>)</span>
 <span id="cb61-6"><a href="#cb61-6" aria-hidden="true" tabindex="-1"></a>dls <span class="op">=</span> DataLoaders(dl1,dl2)</span>
 <span id="cb61-7"><a href="#cb61-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Step2:</span></span>
 <span id="cb61-8"><a href="#cb61-8" aria-hidden="true" tabindex="-1"></a>net1 <span class="op">=</span> torch.nn.Sequential(</span>
@@ -1087,8 +1087,8 @@ val: 0.1000</code></pre>
 <div class="sourceCode cell-code" id="cb63"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Step1:</span></span>
 <span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a>ds1 <span class="op">=</span> torch.utils.data.TensorDataset(X,y)</span>
 <span id="cb63-3"><a href="#cb63-3" aria-hidden="true" tabindex="-1"></a>ds2 <span class="op">=</span> torch.utils.data.TensorDataset(XX,yy)</span>
-<span id="cb63-4"><a href="#cb63-4" aria-hidden="true" tabindex="-1"></a>dl1 <span class="op">=</span> torch.utils.data.DataLoader(ds1,batch_size<span class="op">=</span><span class="dv">64</span>,shuffle<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb63-5"><a href="#cb63-5" aria-hidden="true" tabindex="-1"></a>dl2 <span class="op">=</span> torch.utils.data.DataLoader(ds2,batch_size<span class="op">=</span><span class="dv">10000</span>)</span>
+<span id="cb63-4"><a href="#cb63-4" aria-hidden="true" tabindex="-1"></a>dl1 <span class="op">=</span> torch.utils.data.DataLoader(ds1,batch_size<span class="op">=</span><span class="dv">256</span>,shuffle<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb63-5"><a href="#cb63-5" aria-hidden="true" tabindex="-1"></a>dl2 <span class="op">=</span> torch.utils.data.DataLoader(ds2,batch_size<span class="op">=</span><span class="dv">100</span>)</span>
 <span id="cb63-6"><a href="#cb63-6" aria-hidden="true" tabindex="-1"></a>dls <span class="op">=</span> DataLoaders(dl1,dl2)</span>
 <span id="cb63-7"><a href="#cb63-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Step2:</span></span>
 <span id="cb63-8"><a href="#cb63-8" aria-hidden="true" tabindex="-1"></a>net1 <span class="op">=</span> torch.nn.Sequential(</span>
@@ -1234,8 +1234,8 @@ val: 0.6172</code></pre>
 <div class="sourceCode cell-code" id="cb65"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Step1:</span></span>
 <span id="cb65-2"><a href="#cb65-2" aria-hidden="true" tabindex="-1"></a>ds1 <span class="op">=</span> torch.utils.data.TensorDataset(X,y)</span>
 <span id="cb65-3"><a href="#cb65-3" aria-hidden="true" tabindex="-1"></a>ds2 <span class="op">=</span> torch.utils.data.TensorDataset(XX,yy)</span>
-<span id="cb65-4"><a href="#cb65-4" aria-hidden="true" tabindex="-1"></a>dl1 <span class="op">=</span> torch.utils.data.DataLoader(ds1,batch_size<span class="op">=</span><span class="dv">64</span>,shuffle<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb65-5"><a href="#cb65-5" aria-hidden="true" tabindex="-1"></a>dl2 <span class="op">=</span> torch.utils.data.DataLoader(ds2,batch_size<span class="op">=</span><span class="dv">10000</span>)</span>
+<span id="cb65-4"><a href="#cb65-4" aria-hidden="true" tabindex="-1"></a>dl1 <span class="op">=</span> torch.utils.data.DataLoader(ds1,batch_size<span class="op">=</span><span class="dv">256</span>,shuffle<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb65-5"><a href="#cb65-5" aria-hidden="true" tabindex="-1"></a>dl2 <span class="op">=</span> torch.utils.data.DataLoader(ds2,batch_size<span class="op">=</span><span class="dv">100</span>)</span>
 <span id="cb65-6"><a href="#cb65-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Step2:</span></span>
 <span id="cb65-7"><a href="#cb65-7" aria-hidden="true" tabindex="-1"></a>net1 <span class="op">=</span> torch.nn.Sequential(</span>
 <span id="cb65-8"><a href="#cb65-8" aria-hidden="true" tabindex="-1"></a>    torch.nn.Conv2d(<span class="dv">3</span>,<span class="dv">256</span>,(<span class="dv">5</span>,<span class="dv">5</span>)),</span>
