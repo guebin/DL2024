@@ -79,7 +79,7 @@ div.csl-indent {
 }</style>
 
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="../site_libs/quarto-nav/headroom.min.js"></script>
 <script src="../site_libs/clipboard/clipboard.min.js"></script>
 <script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
@@ -122,9 +122,6 @@ div.csl-indent {
     "search-label": "Search"
   }
 }</script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
-
-<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
 
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
@@ -738,80 +735,51 @@ Cybenko, George. 1989. <span>“Approximation by Superpositions of a Sigmoidal F
 <h1>5. MNIST 해결</h1>
 <section id="a.-데이터-다운로드" class="level2">
 <h2 class="anchored" data-anchor-id="a.-데이터-다운로드">A. 데이터 다운로드</h2>
-<div id="27066dc9-f7bb-46be-b364-24ff3204e6f6" class="cell" data-tags="[]" data-execution_count="30">
-<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> fastai.data.<span class="bu">all</span> <span class="im">import</span> <span class="op">*</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="13e399e1-be80-4571-b07f-832d208881b2" class="cell" data-tags="[]" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> fastai.data.<span class="bu">all</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="f2f90f6c-4035-4bd6-9c40-e9ed6053eb63" class="cell" data-outputid="aca0aa31-740b-4582-944b-f46ac387caa3" data-tags="[]" data-execution_count="31">
-<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>untar_data(<span class="st">'https://s3.amazonaws.com/fast-ai-imageclas/mnist_png.tgz'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display">
-
-<style>
-    /* Turns off some styling */
-    progress {
-        /* gets rid of default border in Firefox and Opera. */
-        border: none;
-        /* Needs to be in here for Safari polyfill so background images work as expected. */
-        background-size: auto;
-    }
-    progress:not([value]), progress:not([value])::-webkit-progress-bar {
-        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
-    }
-    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
-        background: #F44336;
-    }
-</style>
-</div>
-<div class="cell-output cell-output-display">
-
-    <div>
-      <progress value="15687680" class="" max="15683414" style="width:300px; height:20px; vertical-align: middle;"></progress>
-      100.03% [15687680/15683414 00:00&lt;00:00]
-    </div>
-    
-</div>
-<div class="cell-output cell-output-display" data-execution_count="31">
-<pre><code>Path('/root/.fastai/data/mnist_png')</code></pre>
+<div id="f2f90f6c-4035-4bd6-9c40-e9ed6053eb63" class="cell" data-outputid="aca0aa31-740b-4582-944b-f46ac387caa3" data-tags="[]" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>fastai.data.external.untar_data(<span class="st">'https://s3.amazonaws.com/fast-ai-imageclas/mnist_png.tgz'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="2">
+<pre><code>Path('/home/cgb3/.fastai/data/mnist_png')</code></pre>
 </div>
 </div>
-<div id="3f33cb6e-8732-4a29-be67-a2bc026c09f4" class="cell" data-outputid="e4124ba5-c556-4f4a-a548-83d4bcbfd6aa" data-tags="[]" data-execution_count="32">
+<div id="3f33cb6e-8732-4a29-be67-a2bc026c09f4" class="cell" data-outputid="e4124ba5-c556-4f4a-a548-83d4bcbfd6aa" data-tags="[]" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>ls <span class="st">'/root/.fastai/data/mnist_png'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>testing  training</code></pre>
 </div>
 </div>
-<div id="9090ed65-0e02-4c42-a99c-adeaf8d4ef47" class="cell" data-outputid="f9625f47-a36d-4937-d1e6-8e0d8b54e71a" data-tags="[]" data-execution_count="33">
+<div id="9090ed65-0e02-4c42-a99c-adeaf8d4ef47" class="cell" data-outputid="f9625f47-a36d-4937-d1e6-8e0d8b54e71a" data-tags="[]" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb40"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>ls <span class="st">'/root/.fastai/data/mnist_png/training/'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>0  1  2  3  4  5  6  7  8  9</code></pre>
 </div>
 </div>
-<div id="b6b17101-d5b9-49d8-b832-928ad9e4d166" class="cell" data-outputid="fc9ca7bc-7e64-4c74-d11b-404f25ee6410" data-tags="[]" data-execution_count="34">
+<div id="b6b17101-d5b9-49d8-b832-928ad9e4d166" class="cell" data-outputid="fc9ca7bc-7e64-4c74-d11b-404f25ee6410" data-tags="[]" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb42"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>ls <span class="st">'/root/.fastai/data/mnist_png/training/3'</span> <span class="op">|</span> head</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>10000.png
+<pre><code>10.png
+10000.png
 10011.png
 10031.png
 10034.png
 10042.png
 10052.png
-10074.png
 1007.png
+10074.png
 10091.png
-10093.png</code></pre>
+ls: write error: Broken pipe</code></pre>
 </div>
 </div>
-<div id="ad7808df-3777-4ddd-89bd-6f328eef0492" class="cell" data-tags="[]" data-execution_count="35">
+<div id="ad7808df-3777-4ddd-89bd-6f328eef0492" class="cell" data-tags="[]" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb44"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torchvision</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="071515f4-53d0-49d1-b08e-dd7f325e5624" class="cell" data-outputid="080667f9-de9e-403e-8a01-d9d2d52733e3" data-tags="[]" data-execution_count="36">
+<div id="071515f4-53d0-49d1-b08e-dd7f325e5624" class="cell" data-outputid="080667f9-de9e-403e-8a01-d9d2d52733e3" data-tags="[]" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb45"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>img3 <span class="op">=</span> torchvision.io.read_image(<span class="st">'/root/.fastai/data/mnist_png/training/3/10.png'</span>)</span>
 <span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>plt.imshow(img3.reshape(<span class="dv">28</span>,<span class="dv">28</span>),cmap<span class="op">=</span><span class="st">"gray"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="04wk-1_files/figure-html/cell-37-output-1.png" class="img-fluid figure-img"></p>
-</figure>
-</div>
+<div class="cell-output cell-output-error">
+<pre><code>RuntimeError: [Errno 13] Permission denied: '/root/.fastai/data/mnist_png/training/3/10.png'</code></pre>
 </div>
 </div>
 </section>
@@ -819,7 +787,7 @@ Cybenko, George. 1989. <span>“Approximation by Superpositions of a Sigmoidal F
 <h2 class="anchored" data-anchor-id="b.-예비학습-plt.imshow">B. 예비학습 – `<code>plt.imshow()</code></h2>
 <p><code>-</code> <code>plt.imshow(...)</code> 에서 <code>...</code>이 shape이 (??,??)이면 흑백이미지를 출력</p>
 <div id="9cbf5f79-426e-43b2-aa03-1d09e539d680" class="cell" data-outputid="bbd382b0-2e79-4d17-d8f4-dfc557660cba" data-tags="[]" data-execution_count="37">
-<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>plt.imshow([[<span class="dv">0</span>,<span class="dv">255</span>],[<span class="dv">0</span>,<span class="dv">255</span>]],cmap<span class="op">=</span><span class="st">'gray'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>plt.imshow([[<span class="dv">0</span>,<span class="dv">255</span>],[<span class="dv">0</span>,<span class="dv">255</span>]],cmap<span class="op">=</span><span class="st">'gray'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -830,10 +798,10 @@ Cybenko, George. 1989. <span>“Approximation by Superpositions of a Sigmoidal F
 </div>
 <p><code>-</code> <code>plt.imshow(...)</code> 에서 <code>...</code>의 shape이 (??,??,3)이면 칼라이미지를 출력</p>
 <div id="577efa5e-a6f9-4005-9cad-f4e3343fdb70" class="cell" data-outputid="e0d82acc-b717-4dff-87cb-2f4af6e32e49" data-tags="[]" data-execution_count="38">
-<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>r <span class="op">=</span> [[<span class="dv">0</span>,<span class="dv">255</span>],[<span class="dv">0</span>,<span class="dv">255</span>]]</span>
-<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>g <span class="op">=</span> [[<span class="dv">255</span>,<span class="dv">0</span>],[<span class="dv">0</span>,<span class="dv">0</span>]]</span>
-<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a>b <span class="op">=</span> [[<span class="dv">0</span>,<span class="dv">0</span>],[<span class="dv">255</span>,<span class="dv">0</span>]]</span>
-<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a>plt.imshow(np.stack([r,g,b],axis<span class="op">=</span><span class="dv">2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>r <span class="op">=</span> [[<span class="dv">0</span>,<span class="dv">255</span>],[<span class="dv">0</span>,<span class="dv">255</span>]]</span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>g <span class="op">=</span> [[<span class="dv">255</span>,<span class="dv">0</span>],[<span class="dv">0</span>,<span class="dv">0</span>]]</span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>b <span class="op">=</span> [[<span class="dv">0</span>,<span class="dv">0</span>],[<span class="dv">255</span>,<span class="dv">0</span>]]</span>
+<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a>plt.imshow(np.stack([r,g,b],axis<span class="op">=</span><span class="dv">2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -844,10 +812,10 @@ Cybenko, George. 1989. <span>“Approximation by Superpositions of a Sigmoidal F
 </div>
 <p><code>-</code> <code>plt.imshow(...)</code> 에서 <code>...</code>의 자료형이 int인지 float인지에 따라서 인식이 다름</p>
 <div id="9c1a9e58-0322-4fe9-b88f-84cdbf227c98" class="cell" data-outputid="bb4c79a8-552a-4eb1-c80e-50bc067e39d7" data-tags="[]" data-execution_count="39">
-<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>r <span class="op">=</span> [[<span class="dv">0</span>,<span class="dv">1</span>],[<span class="dv">0</span>,<span class="dv">1</span>]]</span>
-<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>g <span class="op">=</span> [[<span class="dv">1</span>,<span class="dv">0</span>],[<span class="dv">0</span>,<span class="dv">0</span>]]</span>
-<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>b <span class="op">=</span> [[<span class="dv">0</span>,<span class="dv">0</span>],[<span class="dv">1</span>,<span class="dv">0</span>]]</span>
-<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a>plt.imshow(np.stack([r,g,b],axis<span class="op">=</span><span class="dv">2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>r <span class="op">=</span> [[<span class="dv">0</span>,<span class="dv">1</span>],[<span class="dv">0</span>,<span class="dv">1</span>]]</span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>g <span class="op">=</span> [[<span class="dv">1</span>,<span class="dv">0</span>],[<span class="dv">0</span>,<span class="dv">0</span>]]</span>
+<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a>b <span class="op">=</span> [[<span class="dv">0</span>,<span class="dv">0</span>],[<span class="dv">1</span>,<span class="dv">0</span>]]</span>
+<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a>plt.imshow(np.stack([r,g,b],axis<span class="op">=</span><span class="dv">2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -857,10 +825,10 @@ Cybenko, George. 1989. <span>“Approximation by Superpositions of a Sigmoidal F
 </div>
 </div>
 <div id="cb9ca1c5-b4bc-48df-a75b-3ef32377649e" class="cell" data-outputid="c57c632f-2176-415d-9fb2-ddb46e157848" data-tags="[]" data-execution_count="40">
-<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>r <span class="op">=</span> [[<span class="dv">0</span>,<span class="fl">1.0</span>],[<span class="dv">0</span>,<span class="fl">1.0</span>]]</span>
-<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>g <span class="op">=</span> [[<span class="fl">1.0</span>,<span class="dv">0</span>],[<span class="dv">0</span>,<span class="dv">0</span>]]</span>
-<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a>b <span class="op">=</span> [[<span class="dv">0</span>,<span class="dv">0</span>],[<span class="fl">1.0</span>,<span class="dv">0</span>]]</span>
-<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a>plt.imshow(np.stack([r,g,b],axis<span class="op">=</span><span class="dv">2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>r <span class="op">=</span> [[<span class="dv">0</span>,<span class="fl">1.0</span>],[<span class="dv">0</span>,<span class="fl">1.0</span>]]</span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>g <span class="op">=</span> [[<span class="fl">1.0</span>,<span class="dv">0</span>],[<span class="dv">0</span>,<span class="dv">0</span>]]</span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a>b <span class="op">=</span> [[<span class="dv">0</span>,<span class="dv">0</span>],[<span class="fl">1.0</span>,<span class="dv">0</span>]]</span>
+<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a>plt.imshow(np.stack([r,g,b],axis<span class="op">=</span><span class="dv">2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -872,27 +840,24 @@ Cybenko, George. 1989. <span>“Approximation by Superpositions of a Sigmoidal F
 </section>
 <section id="c.-예비학습-pathlib" class="level2">
 <h2 class="anchored" data-anchor-id="c.-예비학습-pathlib">C. 예비학습 – pathlib</h2>
-<div id="f7cdef2f-d35c-4b3d-a96f-1ffef43ff759" class="cell" data-tags="[]" data-execution_count="41">
-<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pathlib</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
 <p><code>-</code> 오브젝트 생성</p>
-<div id="4ba6ddb3-23a5-499a-9253-405aef0c20fe" class="cell" data-outputid="771455ac-92e7-4ee9-aa26-10c6be437076" data-tags="[]" data-execution_count="42">
-<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>path <span class="op">=</span> pathlib.Path(<span class="st">'.'</span>)</span>
+<div id="4ba6ddb3-23a5-499a-9253-405aef0c20fe" class="cell" data-outputid="771455ac-92e7-4ee9-aa26-10c6be437076" data-tags="[]" data-execution_count="14">
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>path <span class="op">=</span> fastai.imports.Path(<span class="st">'.'</span>)</span>
 <span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>path</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="42">
+<div class="cell-output cell-output-display" data-execution_count="14">
 <pre><code>Path('.')</code></pre>
 </div>
 </div>
 <p><code>-</code> 기능1 – <code>.ls()</code></p>
-<div id="c2ad1637-2afa-438e-b8ad-3bbdcfb68f32" class="cell" data-outputid="fa5b3f95-289f-4005-e6c5-94e96db5e0ba" data-tags="[]" data-execution_count="43">
+<div id="c2ad1637-2afa-438e-b8ad-3bbdcfb68f32" class="cell" data-outputid="fa5b3f95-289f-4005-e6c5-94e96db5e0ba" data-tags="[]" data-execution_count="15">
 <div class="sourceCode cell-code" id="cb53"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>path.ls()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="43">
-<pre><code>(#2) [Path('.config'),Path('sample_data')]</code></pre>
+<div class="cell-output cell-output-display" data-execution_count="15">
+<pre><code>(#20) [Path('04wk-1.ipynb'),Path('01wk-1.ipynb'),Path('07wk-1.ipynb'),Path('dnnex.csv'),Path('03wk-2.ipynb'),Path('02wksupp.pdf'),Path('06wk-1.ipynb'),Path('02wk-2.ipynb'),Path('ref.bib'),Path('.ipynb_checkpoints')...]</code></pre>
 </div>
 </div>
 <p><code>-</code> 이미지 파일이 저장된 경로로 새로운 <code>path</code>오브젝트를 만들고 기능1 수행</p>
 <div id="9f6e5c71-0c1b-4dbb-b383-3d620f32f93f" class="cell" data-outputid="c0113f41-7881-452f-8bbb-211ea9a2315e" data-tags="[]" data-execution_count="44">
-<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a>path <span class="op">=</span> pathlib.Path(<span class="st">'/root/.fastai/data/mnist_png'</span>)</span>
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a>path <span class="op">=</span> fastai.imports.Path(<span class="st">'/root/.fastai/data/mnist_png'</span>)</span>
 <span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>path</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="44">
 <pre><code>Path('/root/.fastai/data/mnist_png')</code></pre>
@@ -923,7 +888,7 @@ Cybenko, George. 1989. <span>“Approximation by Superpositions of a Sigmoidal F
 <h2 class="anchored" data-anchor-id="d.-데이터정리">D. 데이터정리</h2>
 <p><code>-</code> 데이터가 저장된 path 설정</p>
 <div id="ef86287c-3500-4ddb-8268-f9cbfabe9500" class="cell" data-tags="[]" data-execution_count="48">
-<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a>path <span class="op">=</span> pathlib.Path(<span class="st">'/root/.fastai/data/mnist_png'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a>path <span class="op">=</span> fastai.imports.Path(<span class="st">'/root/.fastai/data/mnist_png'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p><code>-</code> <code>X</code> ,<code>y</code>를 만듦</p>
 <div id="dd9897fa-d5e7-407a-bd70-954ac8f1477b" class="cell" data-tags="[]" data-execution_count="49">
@@ -951,7 +916,7 @@ Cybenko, George. 1989. <span>“Approximation by Superpositions of a Sigmoidal F
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="04wk-1_files/figure-html/cell-54-output-1.png" class="img-fluid figure-img"></p>
+<p><img src="04wk-1_files/figure-html/cell-53-output-1.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
@@ -1000,7 +965,7 @@ Cybenko, George. 1989. <span>“Approximation by Superpositions of a Sigmoidal F
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="04wk-1_files/figure-html/cell-57-output-1.png" class="img-fluid figure-img"></p>
+<p><img src="04wk-1_files/figure-html/cell-56-output-1.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
@@ -1055,7 +1020,7 @@ Cybenko, George. 1989. <span>“Approximation by Superpositions of a Sigmoidal F
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="04wk-1_files/figure-html/cell-64-output-1.png" class="img-fluid figure-img"></p>
+<p><img src="04wk-1_files/figure-html/cell-63-output-1.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
@@ -1106,7 +1071,7 @@ Cybenko, George. 1989. <span>“Approximation by Superpositions of a Sigmoidal F
 <p>(풀이)</p>
 <div id="62db9d94-64e9-47a5-a3e1-1d547c49287f" class="cell" data-tags="[]" data-execution_count="46">
 <div class="sourceCode cell-code" id="cb91"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb91-1"><a href="#cb91-1" aria-hidden="true" tabindex="-1"></a><span class="co">## Step1 </span></span>
-<span id="cb91-2"><a href="#cb91-2" aria-hidden="true" tabindex="-1"></a>path <span class="op">=</span> pathlib.Path(<span class="st">'root/.fastai/data/mnist_png'</span>)</span>
+<span id="cb91-2"><a href="#cb91-2" aria-hidden="true" tabindex="-1"></a>path <span class="op">=</span> fastai.imports.Path(<span class="st">'root/.fastai/data/mnist_png'</span>)</span>
 <span id="cb91-3"><a href="#cb91-3" aria-hidden="true" tabindex="-1"></a>X3 <span class="op">=</span> torch.stack([torchvision.io.read_image(<span class="bu">str</span>(i)) <span class="cf">for</span> i <span class="kw">in</span> (path<span class="op">/</span><span class="st">'training/3'</span>).ls()],axis<span class="op">=</span><span class="dv">0</span>)</span>
 <span id="cb91-4"><a href="#cb91-4" aria-hidden="true" tabindex="-1"></a>X7 <span class="op">=</span> torch.stack([torchvision.io.read_image(<span class="bu">str</span>(i)) <span class="cf">for</span> i <span class="kw">in</span> (path<span class="op">/</span><span class="st">'training/7'</span>).ls()],axis<span class="op">=</span><span class="dv">0</span>)</span>
 <span id="cb91-5"><a href="#cb91-5" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> torch.concat([X3,X7],axis<span class="op">=</span><span class="dv">0</span>).reshape(<span class="op">-</span><span class="dv">1</span>,<span class="dv">28</span><span class="op">*</span><span class="dv">28</span>).<span class="bu">float</span>()</span>
