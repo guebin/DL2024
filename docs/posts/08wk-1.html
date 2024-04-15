@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.533">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="최규빈">
+<meta name="dcterms.date" content="2024-04-22">
+
+<title>DL2024 - 08wk-1: 적대적 생성 신경망 (GAN)</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">DL2024</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/guebin/DL2024"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.youtube.com/channel/UCQk9RyBNgXc7ORIsYlOfQrg/playlists?view=50&amp;sort=dd&amp;shelf_id=2"> <i class="bi bi-youtube" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+          <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#강의영상" id="toc-강의영상" class="nav-link active" data-scroll-target="#강의영상">1. 강의영상</a></li>
+  <li><a href="#imports" id="toc-imports" class="nav-link" data-scroll-target="#imports">2. Imports</a></li>
+  <li><a href="#gan-intro" id="toc-gan-intro" class="nav-link" data-scroll-target="#gan-intro">3. GAN intro</a>
+  <ul class="collapse">
+  <li><a href="#a.-생성모형이란-쉬운-설명" id="toc-a.-생성모형이란-쉬운-설명" class="nav-link" data-scroll-target="#a.-생성모형이란-쉬운-설명">A. 생성모형이란? (쉬운 설명)</a></li>
+  <li><a href="#b.-gan의-응용분야" id="toc-b.-gan의-응용분야" class="nav-link" data-scroll-target="#b.-gan의-응용분야">B. GAN의 응용분야</a></li>
+  <li><a href="#c.-생성모형이란-통계학과-버전의-설명" id="toc-c.-생성모형이란-통계학과-버전의-설명" class="nav-link" data-scroll-target="#c.-생성모형이란-통계학과-버전의-설명">C. 생성모형이란? 통계학과 버전의 설명</a></li>
+  <li><a href="#d.-gan의-원리" id="toc-d.-gan의-원리" class="nav-link" data-scroll-target="#d.-gan의-원리">D. GAN의 원리</a></li>
+  </ul></li>
+  <li><a href="#gan의-구현" id="toc-gan의-구현" class="nav-link" data-scroll-target="#gan의-구현">4. GAN의 구현</a>
+  <ul class="collapse">
+  <li><a href="#a.-data" id="toc-a.-data" class="nav-link" data-scroll-target="#a.-data">A. Data</a></li>
+  <li><a href="#b.-위조지폐범의-설계-noise-to-가짜이미지를-만들어-내는-네트워크를-만들자." id="toc-b.-위조지폐범의-설계-noise-to-가짜이미지를-만들어-내는-네트워크를-만들자." class="nav-link" data-scroll-target="#b.-위조지폐범의-설계-noise-to-가짜이미지를-만들어-내는-네트워크를-만들자.">B. 위조지폐범의 설계: noise <span class="math inline">\(\to\)</span> 가짜이미지를 만들어 내는 네트워크를 만들자.</a></li>
+  <li><a href="#c.-경찰의-설계-진짜이미지는-1-가짜이미지는-0으로-판별하는-dnn을-만들자." id="toc-c.-경찰의-설계-진짜이미지는-1-가짜이미지는-0으로-판별하는-dnn을-만들자." class="nav-link" data-scroll-target="#c.-경찰의-설계-진짜이미지는-1-가짜이미지는-0으로-판별하는-dnn을-만들자.">C. 경찰의 설계: 진짜이미지는 1, 가짜이미지는 0으로 판별하는 DNN을 만들자.</a></li>
+  <li><a href="#d.-바보들끼리.." id="toc-d.-바보들끼리.." class="nav-link" data-scroll-target="#d.-바보들끼리..">D. 바보들끼리..</a></li>
+  <li><a href="#e.-경찰네트워크의-실력을-향상시키자." id="toc-e.-경찰네트워크의-실력을-향상시키자." class="nav-link" data-scroll-target="#e.-경찰네트워크의-실력을-향상시키자.">E. 경찰네트워크의 실력을 향상시키자.</a></li>
+  <li><a href="#f.-위조범네트워크의-성능을-향상시키자." id="toc-f.-위조범네트워크의-성능을-향상시키자." class="nav-link" data-scroll-target="#f.-위조범네트워크의-성능을-향상시키자.">F. 위조범네트워크의 성능을 향상시키자.</a></li>
+  <li><a href="#g.-두-적대적-네트워크를-경쟁시키자." id="toc-g.-두-적대적-네트워크를-경쟁시키자." class="nav-link" data-scroll-target="#g.-두-적대적-네트워크를-경쟁시키자.">G. 두 적대적 네트워크를 경쟁시키자.</a></li>
+  </ul></li>
+  </ul>
+<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="08wk-1.out.ipynb" download="08wk-1.out.ipynb"><i class="bi bi-journal-code"></i>Jupyter</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">08wk-1: 적대적 생성 신경망 (GAN)</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>최규빈 </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">April 22, 2024</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="강의영상" class="level1">
+<h1>1. 강의영상</h1>
+</section>
+<section id="imports" class="level1">
+<h1>2. Imports</h1>
+<div id="8f622828-1f15-4ee0-a2fd-680c24d412ad" class="cell" data-tags="[]" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># import torch </span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co"># from fastai.vision.all import *</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="gan-intro" class="level1">
+<h1>3. GAN intro</h1>
+<p><code>-</code> 저자: 이안굿펠로우 - 천재임 - 지도교수가 요수아 벤지오</p>
+<p><code>-</code> 논문 NIPS, 저는 이 논문 읽고 소름돋았어요.. - https://arxiv.org/abs/1406.2661 (현재시점, 38751회 인용되었음 <span class="math inline">\(\to\)</span> 48978회 인용..)</p>
+<p><code>-</code> 최근 10년간 머신러닝 분야에서 가장 혁신적인 아이디어이다. (얀르쿤, 2014년 시점..)</p>
+<p><code>-</code> 무슨내용? 생성모형</p>
+<section id="a.-생성모형이란-쉬운-설명" class="level2">
+<h2 class="anchored" data-anchor-id="a.-생성모형이란-쉬운-설명">A. 생성모형이란? (쉬운 설명)</h2>
+<blockquote class="blockquote">
+<p>만들수 없다면 이해하지 못한 것이다, 리처드 파인만 (천재 물리학자)</p>
+</blockquote>
+<p><code>-</code> 사진속에 들어있는 동물이 개인지 고양이인지 맞출수 있는 기계와 개와 고양이를 그릴수 있는 기계중 어떤것이 더 시각적보에 대한 이해가 깊다고 볼수 있는가?</p>
+<p><code>-</code> 진정으로 인공지능이 이미지를 이해했다면, 이미지를 만들수도 있어야 한다. <span class="math inline">\(\to\)</span> 이미지를 생성하는 모형을 만들어보자 <span class="math inline">\(\to\)</span> 성공</p>
+<p><img src="https://upload.wikimedia.org/wikipedia/commons/1/1f/Woman_1.jpg" class="img-fluid" style="width:70.0%"></p>
+</section>
+<section id="b.-gan의-응용분야" class="level2">
+<h2 class="anchored" data-anchor-id="b.-gan의-응용분야">B. GAN의 응용분야</h2>
+<p><code>-</code> 내가 찍은 사진이 피카소의 화풍으로 표현된다면?</p>
+<p><code>-</code> 퀸의 라이브에이드가 4k로 나온다면?</p>
+<p><code>-</code> 1920년대 서울의 모습이 칼라로 복원된다면?</p>
+<p><code>-</code> 딥페이크: 유명인의 가짜 포르노, 가짜뉴스, 협박(거짓기소)</p>
+<p><code>-</code> 게임영상 (파이널판타지)</p>
+<p><code>-</code> 거북이의 커버..</p>
+<p><code>-</code> 너무 많아요…..</p>
+</section>
+<section id="c.-생성모형이란-통계학과-버전의-설명" class="level2">
+<h2 class="anchored" data-anchor-id="c.-생성모형이란-통계학과-버전의-설명">C. 생성모형이란? 통계학과 버전의 설명</h2>
+<blockquote class="blockquote">
+<p>제한된 정보만으로 어떤 문제를 풀 때, 그 과정에서 원래의 문제보다 일반적인 문제를 풀지 말고, 가능한 원래의 문제를 직접 풀어야한다. 배프닉 (SVM 창시자)</p>
+</blockquote>
+<p><code>-</code> 이미지 <span class="math inline">\(\boldsymbol{x}\)</span>가 주어졌을 경우 라벨을 <span class="math inline">\(y\)</span>라고 하자.</p>
+<p><code>-</code> 이미지를 보고 라벨을 맞추는 일은 <span class="math inline">\(p(y| \boldsymbol{x})\)</span>에 관심이 있다.</p>
+<p><code>-</code> 이미지를 생성하는 일은 <span class="math inline">\(p(\boldsymbol{x},y)\)</span>에 관심이 있는것이다.</p>
+<p><code>-</code> 데이터의 생성확률 <span class="math inline">\(p(\boldsymbol{x},y)\)</span>을 알면 클래스의 사후확률 <span class="math inline">\(p(y|\boldsymbol{x})\)</span>를 알 수 있음. (아래의 수식 참고) 하지만 역은 불가능</p>
+<p><span class="math display">\[p(y|x) = \frac{p(x,y)}{p(x)} = \frac{p(x,y)}{\sum_{y}p(x,y)} \]</span></p>
+<ul>
+<li>즉 이미지를 생성하는일은 분류문제보다 더 어려운 일이라 해석가능</li>
+</ul>
+<p><code>-</code> 따라서 배프닉의 원리에 의하면 식별적 분류가 생성적 분류보다 바람직한 접근법이라 할 수 있음.</p>
+<p><code>-</code> 하지만 다양한 현실문제에서 생성모형이 유용할때가 많다.</p>
+</section>
+<section id="d.-gan의-원리" class="level2">
+<h2 class="anchored" data-anchor-id="d.-gan의-원리">D. GAN의 원리</h2>
+<p><code>-</code> GAN은 생성모형중 하나임</p>
+<p><code>-</code> GAN의 원리는 경찰과 위조지폐범이 서로 선의의(?) 경쟁을 통하여 서로 발전하는 모형으로 설명할 수 있다.</p>
+<blockquote class="blockquote">
+<p>The generative model can be thought of as analogous to a team of counterfeiters, trying to produce fake currency and use it without detection, while the discriminative model is analogous to the police, trying to detect the counterfeit currency. Competition in this game drives both teams to improve their methods until the counterfeits are indistiguishable from the genuine articles.</p>
+</blockquote>
+<p><code>-</code> 서로 적대적인(adversarial) 네트워크(network)를 동시에 학습시켜 가짜이미지를 만든다(generate)</p>
+<p><code>-</code> 무식한 상황극..</p>
+<ul>
+<li>위조범: 가짜돈을 만들어서 부자가 되어야지! (가짜돈을 그림)</li>
+<li>경찰: (위조범이 만든 돈을 보고) 이건 가짜다!</li>
+<li>위조범: 걸렸군.. 더 정교하게 만들어야지..</li>
+<li>경찰: 이건 진짠가?… –&gt; 상사에게 혼남. 그것도 구분못하냐고</li>
+<li>위조범: 더 정교하게 만들자..</li>
+<li>경찰: 더 판별능력을 업그레이드 하자!</li>
+<li>반복..</li>
+</ul>
+<p><code>-</code> 굉장히 우수한 경찰조차도 진짜와 가짜를 구분하지 못할때(=진짜 이미지를 0.5의 확률로만 진짜라고 말할때 = 가짜 이미지를 0.5의 확률로만 가짜라고 말할때) 학습을 멈춘다.</p>
+</section>
+</section>
+<section id="gan의-구현" class="level1">
+<h1>4. GAN의 구현</h1>
+<section id="a.-data" class="level2">
+<h2 class="anchored" data-anchor-id="a.-data">A. Data</h2>
+<div id="bf8730c5-c1ec-4815-8bf3-86bbdcbd9c10" class="cell" data-execution_count="159">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>path <span class="op">=</span> untar_data(URLs.MNIST_SAMPLE)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="d9f4ac1c-20c4-4c6e-be45-6da24fadac09" class="cell" data-execution_count="160">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>threes <span class="op">=</span> (path<span class="op">/</span><span class="st">'train'</span><span class="op">/</span><span class="st">'3'</span>).ls()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="2bf76b21-9526-4233-8d91-22277eb7f5c5" class="cell" data-execution_count="161">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> torch.stack([tensor(Image.<span class="bu">open</span>(i)) <span class="cf">for</span> i <span class="kw">in</span> threes]).<span class="bu">float</span>()<span class="op">/</span><span class="dv">255</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="c46c3ac6-894f-44cf-81da-107ffd75c5f5" class="cell" data-execution_count="162">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>X.shape</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="162">
+<pre><code>torch.Size([6131, 28, 28])</code></pre>
+</div>
+</div>
+<div id="37202b22-48f7-4d6d-bcd8-c6bc79731a27" class="cell" data-execution_count="163">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>plt.imshow(X[<span class="dv">0</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="08wk-1_files/figure-html/cell-7-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><code>-</code> MLP를 이용해 학습하기 위해 X의 차원을 변경</p>
+<div id="12111ace-5b12-4cb2-8163-7376a7d3f0f2" class="cell" data-execution_count="164">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>X<span class="op">=</span>X.reshape(<span class="dv">6131</span>,<span class="dv">28</span><span class="op">*</span><span class="dv">28</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>X.shape</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="164">
+<pre><code>torch.Size([6131, 784])</code></pre>
+</div>
+</div>
+</section>
+<section id="b.-위조지폐범의-설계-noise-to-가짜이미지를-만들어-내는-네트워크를-만들자." class="level2">
+<h2 class="anchored" data-anchor-id="b.-위조지폐범의-설계-noise-to-가짜이미지를-만들어-내는-네트워크를-만들자.">B. 위조지폐범의 설계: noise <span class="math inline">\(\to\)</span> 가짜이미지를 만들어 내는 네트워크를 만들자.</h2>
+<p><code>-</code> 네트워크의 입력? 적당한 벡터, 혹은 매트릭스에 노이즈(랜덤으로 채운 어떠한 숫자들)를 채운것</p>
+<p><code>-</code> 네트워크의 출력? (28,28)의 텐서, 784의 벡터</p>
+<div id="6b11d312-bd4b-4ece-a994-446d37287d18" class="cell" data-execution_count="165">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>net1 <span class="op">=</span> torch.nn.Sequential(torch.nn.Linear(in_features<span class="op">=</span><span class="dv">28</span>, out_features<span class="op">=</span><span class="dv">64</span>),</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>                           torch.nn.ReLU(),</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>                           torch.nn.Linear(in_features<span class="op">=</span><span class="dv">64</span>, out_features<span class="op">=</span><span class="dv">64</span>), </span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>                           torch.nn.ReLU(),</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>                           torch.nn.Linear(in_features<span class="op">=</span><span class="dv">64</span>, out_features<span class="op">=</span><span class="dv">784</span>),</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>                           torch.nn.Sigmoid()) <span class="co">## 마지막의 시그모이드는 출력이 0~1사이로 나오게 하기 위함 </span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>counterfeiter <span class="op">=</span> net1 </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="c.-경찰의-설계-진짜이미지는-1-가짜이미지는-0으로-판별하는-dnn을-만들자." class="level2">
+<h2 class="anchored" data-anchor-id="c.-경찰의-설계-진짜이미지는-1-가짜이미지는-0으로-판별하는-dnn을-만들자.">C. 경찰의 설계: 진짜이미지는 1, 가짜이미지는 0으로 판별하는 DNN을 만들자.</h2>
+<p><code>-</code> 네트워크의 입력? (28,28)의 텐서, 혹은 784의 벡터</p>
+<p><code>-</code> 네트워크의 출력? yhat (y는 0 or 1)</p>
+<div id="98478467-6de5-4a0e-94da-d378e1f7c7de" class="cell" data-execution_count="166">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>net2 <span class="op">=</span> torch.nn.Sequential(torch.nn.Linear(in_features<span class="op">=</span><span class="dv">784</span>,out_features<span class="op">=</span><span class="dv">64</span>),</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>                           torch.nn.ReLU(),</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>                           torch.nn.Linear(in_features<span class="op">=</span><span class="dv">64</span>,out_features<span class="op">=</span><span class="dv">28</span>),</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>                           torch.nn.ReLU(),</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>                           torch.nn.Linear(in_features<span class="op">=</span><span class="dv">28</span>,out_features<span class="op">=</span><span class="dv">1</span>),</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>                           torch.nn.Sigmoid()</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>                           )</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>police <span class="op">=</span> net2 </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="d.-바보들끼리.." class="level2">
+<h2 class="anchored" data-anchor-id="d.-바보들끼리..">D. 바보들끼리..</h2>
+<p><code>-</code> 아래는 진짜이미지</p>
+<div id="fe1e98ac-4d84-4a3c-89ae-2807a1462353" class="cell" data-execution_count="167">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>realimage<span class="op">=</span>X[<span class="dv">0</span>].reshape(<span class="dv">28</span>,<span class="dv">28</span>)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>plt.imshow(realimage)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="08wk-1_files/figure-html/cell-11-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><code>-</code> 위와 같은 진짜 이미지를 경찰이 봤음 <span class="math inline">\(\to\)</span> yhat이 나오겠죠?</p>
+<div id="7d354e26-5918-4f54-9874-06d4852e9ffa" class="cell" data-execution_count="168">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>policehat_from_realimage <span class="op">=</span> police(realimage.reshape(<span class="op">-</span><span class="dv">1</span>))</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>policehat_from_realimage</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="168">
+<pre><code>tensor([0.5241], grad_fn=&lt;SigmoidBackward0&gt;)</code></pre>
+</div>
+</div>
+<ul>
+<li>진짜 이미지일수록 policehat_from_realimage <span class="math inline">\(\approx\)</span> 1 이어야 함</li>
+<li>하지만 그렇지 못함 (배운것이 없는 무능한 경찰)</li>
+</ul>
+<p><code>-</code> 이번에는 가짜이미지를 경찰이 봤다고 생각해보자.</p>
+<p>(step1) 랜덤으로 아무숫자나 28개를 생성한다.</p>
+<div id="585219ac-5751-4b93-9873-733be85a5568" class="cell" data-execution_count="169">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>err<span class="op">=</span> torch.randn(<span class="dv">28</span>)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>err</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="169">
+<pre><code>tensor([-0.8568, -2.2982,  0.3489, -1.5801,  1.8611,  0.9158, -0.2985,  1.1087,
+         1.3798,  1.4870, -0.4455,  0.2140,  1.0784,  1.4805, -1.4886,  0.5036,
+         0.3742, -0.7351,  1.0031,  0.4538,  1.5372,  1.0739,  0.7793, -1.5347,
+        -0.5060,  0.0113,  0.2833, -0.8466])</code></pre>
+</div>
+</div>
+<p>(step2) 위조범은 err를 입력으로 받고 가짜이미지를 만든다.</p>
+<div id="b443a6c5-81f4-4f33-a33e-4ebb0ce964c1" class="cell" data-execution_count="170">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>couterfeiter_output <span class="op">=</span> counterfeiter(err)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>fakeimage<span class="op">=</span>couterfeiter_output.reshape(<span class="dv">28</span>,<span class="dv">28</span>)</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>plt.imshow(fakeimage.detach())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="08wk-1_files/figure-html/cell-14-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li>누가봐도 가짜자료임</li>
+<li>위조범의 실력이 형편없음</li>
+</ul>
+<p>(step3) 위조범이 생성한 이미지를 경찰한테 넘긴다.</p>
+<div id="cbd1ebe9-5896-4082-aeb3-cb83dba390c1" class="cell" data-execution_count="171">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>policehat_from_fakeimage <span class="op">=</span> police(couterfeiter_output)</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="co">#policehat_from_fakeimage = police(fakeimage.detach().reshape(-1))</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>policehat_from_fakeimage</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="171">
+<pre><code>tensor([0.5290], grad_fn=&lt;SigmoidBackward0&gt;)</code></pre>
+</div>
+</div>
+<p><code>-</code> 경찰의 실력도 형편없고 위조범의 실력도 형편없다.</p>
+</section>
+<section id="e.-경찰네트워크의-실력을-향상시키자." class="level2">
+<h2 class="anchored" data-anchor-id="e.-경찰네트워크의-실력을-향상시키자.">E. 경찰네트워크의 실력을 향상시키자.</h2>
+<p><code>-</code> 데이터 정리 - 원래 <span class="math inline">\(n=6131\)</span>개의 이미지 자료가 있음. 이를 <span class="math inline">\({\bf X}\)</span>라고 하자. 따라서 <span class="math inline">\({\bf X}\)</span>의 차원은 (6131,784). - 위조범이 만든 가짜자료를 원래 자료와 같은 숫자인 6131개 만듬. 이 가짜자료를 <span class="math inline">\(\tilde{\bf X}\)</span>라고 하자. 따라서 <span class="math inline">\(\tilde{\bf X}\)</span>의 차원은 (6131,784). - 진짜자료는 1, 가짜자료는 0으로 라벨링.</p>
+<div id="f5101a24-dc5a-4e13-9798-4e284a304265" class="cell" data-execution_count="172">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>X.shape</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="172">
+<pre><code>torch.Size([6131, 784])</code></pre>
+</div>
+</div>
+<div id="7830665e-724b-4d29-9358-d6e6c61a8ba7" class="cell" data-execution_count="173">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>err<span class="op">=</span> torch.randn(<span class="dv">6131</span>,<span class="dv">28</span>)</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>counterfeiter_output <span class="op">=</span> counterfeiter(err) <span class="co"># counterfeiter_output를 Xtilde로 생각하면 된다. </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="44041d1e-7a9a-4933-8a68-b20dab19fb3d" class="cell" data-execution_count="174">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>real_label<span class="op">=</span>torch.tensor([[<span class="fl">1.0</span>]]<span class="op">*</span><span class="dv">6131</span>) <span class="co">## y=1 </span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>fake_label<span class="op">=</span>torch.tensor([[<span class="fl">0.0</span>]]<span class="op">*</span><span class="dv">6131</span>) <span class="co">## y=0</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><code>-</code> step1: yhat, 경찰의 예측</p>
+<div id="d02923a8-d424-4ad5-ac06-ee4279d6119b" class="cell" data-execution_count="175">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>policehat_from_realimage <span class="op">=</span> police(X) </span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>policehat_from_fakeimage <span class="op">=</span> police(counterfeiter_output) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><code>-</code> step2: 손실함수? 경찰의 미덕은 (1) 가짜를 가짜라고 하고 (2) 진짜를 진짜라 해야한다.</p>
+<div id="854b6110-cd12-4c0a-a5d1-35f1ca961e0f" class="cell" data-execution_count="176">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>loss_fn <span class="op">=</span> torch.nn.BCELoss() </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="23ffdd50-0588-4a9a-87ee-dea7a10ad5b9" class="cell" data-execution_count="181">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>loss_of_police <span class="op">=\</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>loss_fn(policehat_from_fakeimage,fake_label)<span class="op">+\</span></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>loss_fn(policehat_from_realimage,real_label)</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>loss_of_police</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="181">
+<pre><code>tensor(1.4023, grad_fn=&lt;AddBackward0&gt;)</code></pre>
+</div>
+</div>
+<p><code>-</code> step3~4는 미분이후 업데이트</p>
+<p><code>-</code> 옵티마이저를 설계하자.</p>
+<div id="60a29217-54b3-470e-9f9c-ca057bad67c9" class="cell" data-execution_count="182">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>optimizer_of_police <span class="op">=</span> torch.optim.Adam(police.parameters())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><code>-</code> for 문을 돌리자.</p>
+<div id="e78fdad9-4ea3-41df-a286-5d8c59272695" class="cell" data-execution_count="183">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">50</span>): </span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">## 1 yhat </span></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>    policehat_from_realimage <span class="op">=</span> police(X) </span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>    <span class="co">#policehat_from_fakeimage = police(Xitlde)</span></span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>    err<span class="op">=</span> torch.randn(<span class="dv">6131</span>,<span class="dv">28</span>)</span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>    counterfeiter_output <span class="op">=</span> counterfeiter(err) <span class="co"># counterfeiter_output를 Xtilde로 생각하면 된다. </span></span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>    policehat_from_fakeimage<span class="op">=</span> police(counterfeiter_output)</span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a>    <span class="co">## 2 loss </span></span>
+<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a>    loss_of_police <span class="op">=\</span></span>
+<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a>    loss_fn(policehat_from_fakeimage,fake_label)<span class="op">+\</span></span>
+<span id="cb29-13"><a href="#cb29-13" aria-hidden="true" tabindex="-1"></a>    loss_fn(policehat_from_realimage,real_label)</span>
+<span id="cb29-14"><a href="#cb29-14" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb29-15"><a href="#cb29-15" aria-hidden="true" tabindex="-1"></a>    <span class="co">## 3 back propagation </span></span>
+<span id="cb29-16"><a href="#cb29-16" aria-hidden="true" tabindex="-1"></a>    loss_of_police.backward()</span>
+<span id="cb29-17"><a href="#cb29-17" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb29-18"><a href="#cb29-18" aria-hidden="true" tabindex="-1"></a>    <span class="co">## 4 update</span></span>
+<span id="cb29-19"><a href="#cb29-19" aria-hidden="true" tabindex="-1"></a>    optimizer_of_police.step()</span>
+<span id="cb29-20"><a href="#cb29-20" aria-hidden="true" tabindex="-1"></a>    optimizer_of_police.zero_grad()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><code>-</code> 훈련된 경찰의 성능을 살펴보자.</p>
+<div id="e93125f7-63c1-4460-9257-23087f481a31" class="cell" data-execution_count="185">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>police(counterfeiter_output)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="185">
+<pre><code>tensor([[0.0061],
+        [0.0061],
+        [0.0061],
+        ...,
+        [0.0062],
+        [0.0061],
+        [0.0061]], grad_fn=&lt;SigmoidBackward0&gt;)</code></pre>
+</div>
+</div>
+<div id="561cfbef-129a-4588-81bf-3f47fc3a81c0" class="cell" data-execution_count="186">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>police(X)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="186">
+<pre><code>tensor([[0.9999],
+        [0.9989],
+        [0.9995],
+        ...,
+        [0.9969],
+        [0.9995],
+        [0.9973]], grad_fn=&lt;SigmoidBackward0&gt;)</code></pre>
+</div>
+</div>
+<p><code>-</code> 우수한 경찰 (비록 위조범의 수준이 낮긴하지만)</p>
+</section>
+<section id="f.-위조범네트워크의-성능을-향상시키자." class="level2">
+<h2 class="anchored" data-anchor-id="f.-위조범네트워크의-성능을-향상시키자.">F. 위조범네트워크의 성능을 향상시키자.</h2>
+<p><code>-</code> 자료구조: X는 임의의 에러이미지, net(X)는 fakeimage</p>
+<div id="dd833ee0-6107-4a19-9adc-4243a8086096" class="cell" data-execution_count="187">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>err<span class="op">=</span>torch.randn(<span class="dv">6131</span>,<span class="dv">28</span>) </span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>counterfeiter_output<span class="op">=</span> counterfeiter(err) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><code>-</code> 손실함수: 잘 훈련된 경찰조차도 잘못된 판단을 내릴만큼 가짜지폐를 잘 만들면 위조범의 실력이 우수하다 볼 수 있음</p>
+<div id="5c488a46-8373-4705-8e23-7411c0b2e28b" class="cell" data-execution_count="188">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>policehat_from_fakeimage <span class="op">=</span> police(counterfeiter_output) </span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>loss_of_counterfeiter <span class="op">=</span> loss_fn(policehat_from_fakeimage,real_label) <span class="co">## 가짜이미지를 보고 경찰이 진짜라고 믿으면 위조범의 실력이 좋은것임  </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><code>-</code> 옵티마이저</p>
+<div id="cbcfc6f5-a2e6-4677-83e4-2fabf6ee2f12" class="cell" data-execution_count="189">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>optimizer_of_counterfeiter <span class="op">=</span> torch.optim.Adam(counterfeiter.parameters())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><code>-</code> 학습</p>
+<div id="1c72f516-88e6-40d1-b4b3-926b478379d9" class="cell" data-execution_count="190">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">50</span>): </span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">## 1 </span></span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>    err<span class="op">=</span>torch.randn(<span class="dv">6131</span>,<span class="dv">28</span>) </span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>    counterfeiter_output<span class="op">=</span> counterfeiter(err)  </span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>    policehat_from_fakeimage <span class="op">=</span> police(counterfeiter_output) </span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a>    <span class="co">## 2 </span></span>
+<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a>    loss_of_counterfeiter <span class="op">=</span> loss_fn(policehat_from_fakeimage,real_label)</span>
+<span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a>    <span class="co">## 3 </span></span>
+<span id="cb37-9"><a href="#cb37-9" aria-hidden="true" tabindex="-1"></a>    loss_of_counterfeiter.backward()</span>
+<span id="cb37-10"><a href="#cb37-10" aria-hidden="true" tabindex="-1"></a>    <span class="co">## 4 </span></span>
+<span id="cb37-11"><a href="#cb37-11" aria-hidden="true" tabindex="-1"></a>    optimizer_of_counterfeiter.step()</span>
+<span id="cb37-12"><a href="#cb37-12" aria-hidden="true" tabindex="-1"></a>    optimizer_of_counterfeiter.zero_grad()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><code>-</code> 위조범의 실력향상을 감상해보자.</p>
+<div id="abd3bfec-ad5d-4598-bd75-3dd3759fb16e" class="cell" data-execution_count="195">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>plt.imshow(counterfeiter_output[<span class="dv">0</span>].reshape(<span class="dv">28</span>,<span class="dv">28</span>).data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="08wk-1_files/figure-html/cell-30-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="g.-두-적대적-네트워크를-경쟁시키자." class="level2">
+<h2 class="anchored" data-anchor-id="g.-두-적대적-네트워크를-경쟁시키자.">G. 두 적대적 네트워크를 경쟁시키자.</h2>
+<div id="5a46e28b-0d1c-48db-9760-1ebf91b625d3" class="cell" data-execution_count="196">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> k <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">100</span>): </span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">50</span>): </span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>        <span class="co">## 1 yhat </span></span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>        policehat_from_realimage <span class="op">=</span> police(X) </span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a>        <span class="co">#policehat_from_fakeimage = police(Xitlde)</span></span>
+<span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a>        err<span class="op">=</span> torch.randn(<span class="dv">6131</span>,<span class="dv">28</span>)</span>
+<span id="cb39-8"><a href="#cb39-8" aria-hidden="true" tabindex="-1"></a>        counterfeiter_output <span class="op">=</span> counterfeiter(err) <span class="co"># counterfeiter_output를 Xtilde로 생각하면 된다. </span></span>
+<span id="cb39-9"><a href="#cb39-9" aria-hidden="true" tabindex="-1"></a>        policehat_from_fakeimage<span class="op">=</span> police(counterfeiter_output)</span>
+<span id="cb39-10"><a href="#cb39-10" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb39-11"><a href="#cb39-11" aria-hidden="true" tabindex="-1"></a>        <span class="co">## 2 loss </span></span>
+<span id="cb39-12"><a href="#cb39-12" aria-hidden="true" tabindex="-1"></a>        loss_of_police <span class="op">=\</span></span>
+<span id="cb39-13"><a href="#cb39-13" aria-hidden="true" tabindex="-1"></a>        loss_fn(policehat_from_fakeimage,fake_label)<span class="op">+\</span></span>
+<span id="cb39-14"><a href="#cb39-14" aria-hidden="true" tabindex="-1"></a>        loss_fn(policehat_from_realimage,real_label)</span>
+<span id="cb39-15"><a href="#cb39-15" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb39-16"><a href="#cb39-16" aria-hidden="true" tabindex="-1"></a>        <span class="co">## 3 back propagation </span></span>
+<span id="cb39-17"><a href="#cb39-17" aria-hidden="true" tabindex="-1"></a>        loss_of_police.backward()</span>
+<span id="cb39-18"><a href="#cb39-18" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb39-19"><a href="#cb39-19" aria-hidden="true" tabindex="-1"></a>        <span class="co">## 4 update</span></span>
+<span id="cb39-20"><a href="#cb39-20" aria-hidden="true" tabindex="-1"></a>        optimizer_of_police.step()</span>
+<span id="cb39-21"><a href="#cb39-21" aria-hidden="true" tabindex="-1"></a>        optimizer_of_police.zero_grad()</span>
+<span id="cb39-22"><a href="#cb39-22" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb39-23"><a href="#cb39-23" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">50</span>): </span>
+<span id="cb39-24"><a href="#cb39-24" aria-hidden="true" tabindex="-1"></a>        <span class="co">## 1 </span></span>
+<span id="cb39-25"><a href="#cb39-25" aria-hidden="true" tabindex="-1"></a>        err<span class="op">=</span>torch.randn(<span class="dv">6131</span>,<span class="dv">28</span>) </span>
+<span id="cb39-26"><a href="#cb39-26" aria-hidden="true" tabindex="-1"></a>        counterfeiter_output<span class="op">=</span> counterfeiter(err)  </span>
+<span id="cb39-27"><a href="#cb39-27" aria-hidden="true" tabindex="-1"></a>        policehat_from_fakeimage <span class="op">=</span> police(counterfeiter_output) </span>
+<span id="cb39-28"><a href="#cb39-28" aria-hidden="true" tabindex="-1"></a>        <span class="co">## 2 </span></span>
+<span id="cb39-29"><a href="#cb39-29" aria-hidden="true" tabindex="-1"></a>        loss_of_counterfeiter <span class="op">=</span> loss_fn(policehat_from_fakeimage,real_label)</span>
+<span id="cb39-30"><a href="#cb39-30" aria-hidden="true" tabindex="-1"></a>        <span class="co">## 3 </span></span>
+<span id="cb39-31"><a href="#cb39-31" aria-hidden="true" tabindex="-1"></a>        loss_of_counterfeiter.backward()</span>
+<span id="cb39-32"><a href="#cb39-32" aria-hidden="true" tabindex="-1"></a>        <span class="co">## 4 </span></span>
+<span id="cb39-33"><a href="#cb39-33" aria-hidden="true" tabindex="-1"></a>        optimizer_of_counterfeiter.step()</span>
+<span id="cb39-34"><a href="#cb39-34" aria-hidden="true" tabindex="-1"></a>        optimizer_of_counterfeiter.zero_grad()        </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><code>-</code> 위조범의 최종적 실력향상감상</p>
+<div id="14b1607a-0300-436b-8dd5-1110b1d6c9d6" class="cell" data-execution_count="198">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>plt.imshow(counterfeiter_output[<span class="dv">0</span>].reshape(<span class="dv">28</span>,<span class="dv">28</span>).data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="08wk-1_files/figure-html/cell-32-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      return note.innerHTML;
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<script src="https://utteranc.es/client.js" repo="guebin/DL2024" issue-term="pathname" theme="github-light" crossorigin="anonymous" async="">
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
