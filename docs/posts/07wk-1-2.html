@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.533">
+<meta name="generator" content="quarto-1.4.520">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -128,33 +128,6 @@ div.csl-indent {
 
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
 
 <link rel="stylesheet" href="../styles.css">
 </head>
@@ -972,7 +945,7 @@ torch.Size([1, 2]) -- flatten(ap(l(net1(x)))))=flatten(ap(WHY))</code></pre>
 <li>특정위치에 존재하는 엄청 큰 값들은, <code>x</code>가 고양이 이미지라고 판단하는 근거가 된다.</li>
 </ul>
 <div id="6c7aee16-9705-4d98-99f5-3498843e8eec" class="cell" data-execution_count="341">
-<div class="sourceCode cell-code" id="cb76"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a>WHY[<span class="dv">0</span>,<span class="dv">1</span>,:,:].<span class="bu">int</span>() <span class="co"># 이 값들의 평균이 2.7846임. 그리고 이 평균값이 클수록 고양이</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb76"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a>WHY[<span class="dv">0</span>,<span class="dv">1</span>,:,:].<span class="bu">int</span>() <span class="co"># 이 값들의 평균이 -2.7945임. 그리고 이 평균값이 클수록 강아지</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="341">
 <pre><code>TensorImage([[  0,   0,  -1,  -1,  -1,   0,   0,   0,   0,   0,   0,   0,   0,
                 0,   0,   0],
@@ -1009,7 +982,10 @@ torch.Size([1, 2]) -- flatten(ap(l(net1(x)))))=flatten(ap(WHY))</code></pre>
 </div>
 </div>
 <ul>
-<li>특정위치에 존재하는 작은 값들은, 이 그림이 고양이가 아니라고 판단하는 근거가 된다.</li>
+<li>이 값들의 평균은 -2.7945임.</li>
+<li>이 값들이 클수록 이 그림은 강아지라는 의미임 = 이 값이 작을수록 이 그림은 강아지가 아니라는 의미임.</li>
+<li>그런데 살펴보니 대부분의 위치에서 0에 가까운 값을 가지고, 특정 위치에서만 엄청 큰 작은값이 있어서 -2.7945라는 값이 나온 것임.</li>
+<li>특정위치에 존재하는 엄청 큰 작은값들은, <code>x</code>가 강아지 이미지가 아니라고 판단하는 근거가 된다.</li>
 </ul>
 <p><span class="math display">\[\underset{(1,2,16,16)}{{\bf WHY}}\overset{ap}{\to} \underset{(1,2,1,1)}{{\boldsymbol \sharp}}\overset{flatten}{\to} \underset{(1,2)}{\hat{\boldsymbol y}} = [[2.7846,-2.7945]]\]</span></p>
 <p><code>-</code> 시각화1</p>
@@ -1032,7 +1008,7 @@ torch.Size([1, 2]) -- flatten(ap(l(net1(x)))))=flatten(ap(WHY))</code></pre>
 </div>
 <ul>
 <li>magma: 검은색 &lt; 보라색 &lt; 빨간색 &lt; 노란색</li>
-<li>가운데 그림의 노란부분은 고양이라는 증거, 오른쪽 그림의 검보라색 부분은 고양이가 아니라는 증거</li>
+<li>가운데 그림의 노란부분은 고양이라는 증거, 오른쪽 그림의 검보라색 부분은 강아지가 아니라는 증거</li>
 </ul>
 <p><code>-</code> 시각화2</p>
 <div id="e4b4d2e2-ef6a-4a00-b7cc-fe284e704a76" class="cell" data-execution_count="360">
@@ -1372,6 +1348,27 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       }
     }
     stripColumnClz(note)
+    const typesetMath = (el) => {
+      if (window.MathJax) {
+        // MathJax Typeset
+        window.MathJax.typeset([el]);
+      } else if (window.katex) {
+        // KaTeX Render
+        var mathElements = el.getElementsByClassName("math");
+        var macros = [];
+        for (var i = 0; i < mathElements.length; i++) {
+          var texText = mathElements[i].firstChild;
+          if (mathElements[i].tagName == "SPAN") {
+            window.katex.render(texText.data, mathElements[i], {
+              displayMode: mathElements[i].classList.contains('display'),
+              throwOnError: false,
+              macros: macros,
+              fleqn: false
+            });
+          }
+        }
+      }
+    }
     if (id === null || id.startsWith('sec-')) {
       // Special case sections, only their first couple elements
       const container = document.createElement("div");
@@ -1386,14 +1383,10 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             break;
           }
         }
-        if (window.Quarto?.typesetMath) {
-          window.Quarto.typesetMath(container);
-        }
+        typesetMath(container);
         return container.innerHTML
       } else {
-        if (window.Quarto?.typesetMath) {
-          window.Quarto.typesetMath(note);
-        }
+        typesetMath(note);
         return note.innerHTML;
       }
     } else {
@@ -1402,9 +1395,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       if (anchorLink) {
         anchorLink.remove();
       }
-      if (window.Quarto?.typesetMath) {
-        window.Quarto.typesetMath(note);
-      }
+      typesetMath(note);
       return note.innerHTML;
     }
   }
