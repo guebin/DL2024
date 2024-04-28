@@ -490,7 +490,12 @@ window.Quarto = {
 <pre><code>torch.Size([6131, 1, 28, 28])</code></pre>
 </div>
 </div>
-<p><code>-</code> 데이터 정리 - 원래 <span class="math inline">\(n=6131\)</span>개의 이미지 자료가 있음. 이를 <span class="math inline">\({\bf X}_{real}\)</span> 라고 하자. 따라서 <span class="math inline">\({\bf X}_{real}\)</span> 의 차원은 (6131,1,28,28). - 위조범이 만든 가짜자료를 원래 자료와 같은 숫자인 6131개 만듦. 이 가짜자료를 <span class="math inline">\({\bf X}_{fake}\)</span> 라고 하자. 따라서 <span class="math inline">\({\bf X}_{fake}\)</span> 의 차원은 (6131,1,28,28). - 진짜자료는 0, 가짜자료는 1으로 라벨링.</p>
+<p><code>-</code> 데이터 정리</p>
+<ul>
+<li>원래 <span class="math inline">\(n=6131\)</span>개의 이미지 자료가 있음. 이를 <span class="math inline">\({\bf X}_{real}\)</span> 라고 하자. 따라서 <span class="math inline">\({\bf X}_{real}\)</span> 의 차원은 (6131,1,28,28).</li>
+<li>위조범이 만든 가짜자료를 원래 자료와 같은 숫자인 6131개 만듦. 이 가짜자료를 <span class="math inline">\({\bf X}_{fake}\)</span> 라고 하자. 따라서 <span class="math inline">\({\bf X}_{fake}\)</span> 의 차원은 (6131,1,28,28).</li>
+<li>진짜자료는 0, 가짜자료는 1으로 라벨링.</li>
+</ul>
 <div id="cbfedf23-b6ec-4bc2-baa7-c1716a627627" class="cell" data-tags="[]" data-execution_count="19">
 <div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>Noise <span class="op">=</span> torch.randn(<span class="dv">6131</span>,<span class="dv">4</span>)</span>
 <span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>X_fake <span class="op">=</span> net_faker(Noise).data</span>
@@ -666,7 +671,7 @@ window.Quarto = {
 <span id="cb46-12"><a href="#cb46-12" aria-hidden="true" tabindex="-1"></a>    torch.nn.Linear(in_features<span class="op">=</span><span class="dv">64</span>, out_features<span class="op">=</span><span class="dv">64</span>), <span class="co"># (n,64) -&gt; (n,64)   </span></span>
 <span id="cb46-13"><a href="#cb46-13" aria-hidden="true" tabindex="-1"></a>    torch.nn.ReLU(),</span>
 <span id="cb46-14"><a href="#cb46-14" aria-hidden="true" tabindex="-1"></a>    torch.nn.Linear(in_features<span class="op">=</span><span class="dv">64</span>, out_features<span class="op">=</span><span class="dv">784</span>), <span class="co"># (n,64) -&gt; (n,784) </span></span>
-<span id="cb46-15"><a href="#cb46-15" aria-hidden="true" tabindex="-1"></a>    torch.nn.Sigmoid(), <span class="co"># 출력을 0~1로 눌러주는 역할.. -- 저는 이 레이어가 일종의 문화충격이었어요.. (시그모이드를 이렇게 쓴다고??)</span></span>
+<span id="cb46-15"><a href="#cb46-15" aria-hidden="true" tabindex="-1"></a>    torch.nn.Sigmoid(), </span>
 <span id="cb46-16"><a href="#cb46-16" aria-hidden="true" tabindex="-1"></a>    Reshape2828()</span>
 <span id="cb46-17"><a href="#cb46-17" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb46-18"><a href="#cb46-18" aria-hidden="true" tabindex="-1"></a>bce <span class="op">=</span> torch.nn.BCELoss()</span>
