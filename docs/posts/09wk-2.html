@@ -150,7 +150,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#크롤링을-통한-이미지-분석-및-cam" id="toc-크롤링을-통한-이미지-분석-및-cam" class="nav-link active" data-scroll-target="#크롤링을-통한-이미지-분석-및-cam"><code>1</code>. 크롤링을 통한 이미지 분석 및 CAM</a></li>
+  <li><a href="#크롤링을-통한-이미지-분석-및-cam-30점" id="toc-크롤링을-통한-이미지-분석-및-cam-30점" class="nav-link active" data-scroll-target="#크롤링을-통한-이미지-분석-및-cam-30점"><code>1</code>. 크롤링을 통한 이미지 분석 및 CAM – 30점</a></li>
+  <li><a href="#생성모형-gan-40점" id="toc-생성모형-gan-40점" class="nav-link" data-scroll-target="#생성모형-gan-40점"><code>2</code>. 생성모형 / GAN – 40점</a></li>
   </ul>
 <div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="09wk-2.out.ipynb" download="09wk-2.out.ipynb"><i class="bi bi-journal-code"></i>Jupyter</a></li></ul></div></nav>
     </div>
@@ -190,17 +191,165 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <div id="911f01f4-c5a9-4ac0-b41d-7500b8e3abc8" class="cell" data-tags="[]" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch </span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd </span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> fastai.vision.<span class="bu">all</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torchvision</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd </span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> fastai.vision.<span class="bu">all</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<section id="크롤링을-통한-이미지-분석-및-cam" class="level2">
-<h2 class="anchored" data-anchor-id="크롤링을-통한-이미지-분석-및-cam"><code>1</code>. 크롤링을 통한 이미지 분석 및 CAM</h2>
+<p><a href="https://colab.research.google.com/github/guebin/DL2024/blob/main/posts/09wk-2.ipynb"><img src="https://colab.research.google.com/assets/colab-badge.svg" style="text-align: left"></a></p>
+<section id="크롤링을-통한-이미지-분석-및-cam-30점" class="level1">
+<h1><code>1</code>. 크롤링을 통한 이미지 분석 및 CAM – 30점</h1>
 <p><code>(1)</code> 두 가지 키워드로 크롤링을 수행하여 이미지자료를 모아라. (키워드는 각자 마음에 드는 것으로 설정할 것) – 01wk-1 의 HW를 그대로 활용해도 무방</p>
 <p><code>(2)</code> ImageDataLoaders.from_folder 를 이용하여 dls를 만들어라.</p>
 <p><code>(3)</code> resnet34를 이용하여 학습하라.</p>
 <p><code>(4)</code> CAM (class activation mapping)을 이용하여 (3)의 모형의 판단근거를 시각화하라.</p>
+</section>
+<section id="생성모형-gan-40점" class="level1">
+<h1><code>2</code>. 생성모형 / GAN – 40점</h1>
+<p>아래는 <code>torchvision</code>을 활용하여 MNIST 데이터를 불러오고 <code>DataLoader</code>를 생성하는 코드이다.</p>
+<div id="af1442a6-f77a-40f6-a682-f90dcaf3837a" class="cell" data-tags="[]" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Data preprocessing</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>ds <span class="op">=</span> dataset <span class="op">=</span> torchvision.datasets.MNIST(</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    root <span class="op">=</span> <span class="st">'./data'</span>,</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    download<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    transform <span class="op">=</span> torchvision.transforms.Compose([</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>        torchvision.transforms.Resize(<span class="dv">64</span>), <span class="co"># 이미지를 (64,64)로 resize </span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>        torchvision.transforms.ToTensor(),</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>        torchvision.transforms.Normalize((<span class="fl">0.5</span>,), (<span class="fl">0.5</span>,))</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    ])</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Dataloader</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>dl <span class="op">=</span> torch.utils.data.DataLoader(</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>    ds, </span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>    batch_size<span class="op">=</span><span class="dv">120</span>,</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>    shuffle<span class="op">=</span><span class="va">True</span>, </span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><code>(1)</code> <code>iter</code>와 <code>next</code>를 이용하여 데이터로더의 첫번째 배치를 출력하라. 하나의 배치에 몇개의 이미지가 있는가? 이미지는 흑백인가 칼라인가? 이미지의 크기는 얼마인가?</p>
+<p>(풀이)</p>
+<p><strong>힌트:</strong> 120개의 배치가 있고, 흑백이미지이며, 이미지의 크기는 (64,64)임.</p>
+<p><code>(2)</code> 아래의 함수를 이용하여 하나의 배치에 포함된 이미지를 출력하라.</p>
+<div id="e49c21b4-58c7-49fb-ae1b-5c32c77af7fa" class="cell" data-tags="[]" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> imshow(xi_real):</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    plt.imshow(torch.einsum(<span class="st">'cij-&gt;ijc'</span>,torchvision.utils.make_grid(xi_real, padding<span class="op">=</span><span class="dv">2</span>, normalize<span class="op">=</span><span class="va">True</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>(풀이)</p>
+<p><strong>힌트</strong>: 출력예시는 아래와 같다. 여기에서 <code>xi_real.shape</code>은 (120,1,64,64) 이다.</p>
+<div id="b1178905-bf55-4015-b4d8-c5ff14b91614" class="cell" data-tags="[]" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>imshow(xi_real)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="09wk-2_files/figure-html/cell-5-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><code>(3)</code> 아래의 코드를 이용하여 <code>net_police</code>를 생성하라.</p>
+<div id="637d0218-fa38-4405-abf6-cdf461088d6e" class="cell" data-tags="[]" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>net_police <span class="op">=</span> torch.nn.Sequential(</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Layer1</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    torch.nn.Conv2d(<span class="dv">1</span>, <span class="dv">64</span>, kernel_size<span class="op">=</span><span class="dv">4</span>, stride<span class="op">=</span><span class="dv">2</span>, padding<span class="op">=</span><span class="dv">1</span>, bias<span class="op">=</span><span class="va">False</span>),</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    torch.nn.LeakyReLU(<span class="fl">0.2</span>),</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Layer2</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    torch.nn.Conv2d(<span class="dv">64</span>, <span class="dv">128</span>, kernel_size<span class="op">=</span><span class="dv">4</span>, stride<span class="op">=</span><span class="dv">2</span>, padding<span class="op">=</span><span class="dv">1</span>, bias<span class="op">=</span><span class="va">False</span>),</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    torch.nn.BatchNorm2d(<span class="dv">128</span>),</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    torch.nn.LeakyReLU(<span class="fl">0.2</span>),</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Layer3</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    torch.nn.Conv2d(<span class="dv">128</span>, <span class="dv">256</span>, kernel_size<span class="op">=</span><span class="dv">4</span>, stride<span class="op">=</span><span class="dv">2</span>, padding<span class="op">=</span><span class="dv">1</span>, bias<span class="op">=</span><span class="va">False</span>),</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    torch.nn.BatchNorm2d(<span class="dv">256</span>),</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    torch.nn.LeakyReLU(<span class="fl">0.2</span>),</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Layer4</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>    torch.nn.Conv2d(<span class="dv">256</span>, <span class="dv">512</span>, kernel_size<span class="op">=</span><span class="dv">4</span>, stride<span class="op">=</span><span class="dv">2</span>, padding<span class="op">=</span><span class="dv">1</span>, bias<span class="op">=</span><span class="va">False</span>),</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>    torch.nn.BatchNorm2d(<span class="dv">512</span>),</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>    torch.nn.LeakyReLU(<span class="fl">0.2</span>),</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Layer5</span></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>    torch.nn.Conv2d(<span class="dv">512</span>, <span class="dv">1</span>, kernel_size<span class="op">=</span><span class="dv">4</span>, stride<span class="op">=</span><span class="dv">1</span>, padding<span class="op">=</span><span class="dv">0</span>, bias<span class="op">=</span><span class="va">False</span>),</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>    torch.nn.Sigmoid(),</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>    torch.nn.Flatten()</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><code>net_police</code>에 하나의 배치를 넣어보고 각 층별 출력크기를 조사하라.</p>
+<p>(풀이)</p>
+<p><strong>hint</strong> 정답예시는 아래와 같다.</p>
+<pre><code>xi_real -- torch.Size([120, 1, 64, 64])
+Layer1 -- torch.Size([120, 64, 32, 32])
+Layer2 -- torch.Size([120, 128, 16, 16])
+Layer3 -- torch.Size([120, 256, 8, 8])
+Layer4 -- torch.Size([120, 512, 4, 4])
+Layer5 -- torch.Size([120, 1])</code></pre>
+<p><code>(4)</code> 아래의 코드를 이용하여 <code>net_faker</code>를 생성하라.</p>
+<div id="6d5a1414-02cf-40c1-b52a-60f4b5e24395" class="cell" data-tags="[]" data-execution_count="12">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>net_faker <span class="op">=</span> torch.nn.Sequential(</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Layer1</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    torch.nn.ConvTranspose2d(<span class="dv">100</span>, <span class="dv">512</span>, kernel_size<span class="op">=</span><span class="dv">4</span>, stride<span class="op">=</span><span class="dv">1</span>, padding<span class="op">=</span><span class="dv">0</span>, bias<span class="op">=</span><span class="va">False</span>),</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    torch.nn.BatchNorm2d(<span class="dv">512</span>),</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    torch.nn.ReLU(),</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Layer2</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    torch.nn.ConvTranspose2d(<span class="dv">512</span>, <span class="dv">256</span>, kernel_size<span class="op">=</span><span class="dv">4</span>, stride<span class="op">=</span><span class="dv">2</span>, padding<span class="op">=</span><span class="dv">1</span>, bias<span class="op">=</span><span class="va">False</span>),</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    torch.nn.BatchNorm2d(<span class="dv">256</span>),</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    torch.nn.ReLU(),</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Layer3</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    torch.nn.ConvTranspose2d(<span class="dv">256</span>, <span class="dv">128</span>, kernel_size<span class="op">=</span><span class="dv">4</span>, stride<span class="op">=</span><span class="dv">2</span>, padding<span class="op">=</span><span class="dv">1</span>, bias<span class="op">=</span><span class="va">False</span>),</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    torch.nn.BatchNorm2d(<span class="dv">128</span>),</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>    torch.nn.ReLU(),</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Layer4</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>    torch.nn.ConvTranspose2d(<span class="dv">128</span>, <span class="dv">64</span>, kernel_size<span class="op">=</span><span class="dv">4</span>, stride<span class="op">=</span><span class="dv">2</span>, padding<span class="op">=</span><span class="dv">1</span>, bias<span class="op">=</span><span class="va">False</span>),</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>    torch.nn.BatchNorm2d(<span class="dv">64</span>),</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>    torch.nn.ReLU(),</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Layer5</span></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>    torch.nn.ConvTranspose2d(<span class="dv">64</span>, <span class="dv">1</span>, kernel_size<span class="op">=</span><span class="dv">4</span>, stride<span class="op">=</span><span class="dv">2</span>, padding<span class="op">=</span><span class="dv">1</span>, bias<span class="op">=</span><span class="va">False</span>),</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>    torch.nn.Tanh()</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><code>net_faker</code>에 아래의 noise를 넣어보고 각 층별 출력크기를 조사하라.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>ni <span class="op">=</span> torch.randn(batch_size, <span class="dv">100</span>, <span class="dv">1</span>, <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>(풀이)</p>
+<p><strong>hint</strong>: 여기에서 <code>batch_size</code>는 (1)에서 조사한 batch_size(=120)를 넣을 것</p>
+<p><strong>hint:</strong> 정답예시는 아래와 같다.</p>
+<pre><code>ni -- torch.Size([120, 100, 1, 1])
+Layer1 -- torch.Size([120, 512, 4, 4])
+Layer2 -- torch.Size([120, 256, 8, 8])
+Layer3 -- torch.Size([120, 128, 16, 16])
+Layer4 -- torch.Size([120, 64, 32, 32])
+Layer5 -- torch.Size([120, 1, 64, 64])</code></pre>
+<p><code>(5)</code> 아래와 같이 두개의 <code>optimizr</code> 를 선언하라.</p>
+<div id="c5f13678-e792-4579-834e-b9cfc0fc1071" class="cell" data-tags="[]" data-execution_count="17">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>optimizr_police <span class="op">=</span> torch.optim.Adam(net_police.parameters(), lr<span class="op">=</span><span class="fl">0.0002</span>, betas<span class="op">=</span>(<span class="fl">0.5</span>, <span class="fl">0.999</span>))</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>optimizr_faker <span class="op">=</span> torch.optim.Adam(net_faker.parameters(), lr<span class="op">=</span><span class="fl">0.0002</span>, betas<span class="op">=</span>(<span class="fl">0.5</span>, <span class="fl">0.999</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>아래의 세부지침에 맞추어 <code>net_police</code> 와 <code>net_faker</code>를 학습하라.</p>
+<ol type="1">
+<li>5 Epoch을 진행하여 학습할 것</li>
+<li>GPU를 이용하여 학습할 것</li>
+</ol>
+<p>(풀이)</p>
+<p><strong>hint</strong> 아래와 같은 얼개로 사용하면된다. ?? 와 .. 에 해당하는 부분은 적당히 채울것</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 08wk-1,2 - G 에서 제시된 코드를 살짝 변형하여 풀면 됩니다</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> epoc <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">5</span>):</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> ?? , _ <span class="kw">in</span> dl:</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>        <span class="co"># net_police 을 훈련</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>        ...</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>        ...</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>        <span class="co"># net_faker 를 훈련</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>        ...</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>        ...</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><code>(6)</code> 학습결과를 (2)의 imshow 함수를 이용하여 시각화하라.</p>
+<p>(풀이)</p>
+<p><strong>hint</strong> 시각화 예시는 아래와 같다.</p>
+<div id="6d2020ec-a2f3-4882-851c-2a2194fed790" class="cell" data-execution_count="26">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>ni <span class="op">=</span> torch.randn(<span class="dv">120</span>, <span class="dv">100</span>, <span class="dv">1</span>, <span class="dv">1</span>).to(<span class="st">"cuda:0"</span>)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>xi_fake <span class="op">=</span> net_faker(ni).data.to(<span class="st">"cpu"</span>)</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>imshow(xi_fake)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="09wk-2_files/figure-html/cell-9-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
 
 
 </section>
