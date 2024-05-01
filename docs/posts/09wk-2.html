@@ -9,7 +9,7 @@
 <meta name="author" content="최규빈">
 <meta name="dcterms.date" content="2024-05-01">
 
-<title>DL2024 - 09wk-2: 중간고사 (예상문제)</title>
+<title>DL2024 - 09wk-2: 중간고사</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -103,6 +103,35 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   }
 }</script>
 
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="../styles.css">
 </head>
@@ -152,6 +181,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul>
   <li><a href="#크롤링을-통한-이미지-분석-및-cam-30점" id="toc-크롤링을-통한-이미지-분석-및-cam-30점" class="nav-link active" data-scroll-target="#크롤링을-통한-이미지-분석-및-cam-30점"><code>1</code>. 크롤링을 통한 이미지 분석 및 CAM – 30점</a></li>
   <li><a href="#생성모형-gan-40점" id="toc-생성모형-gan-40점" class="nav-link" data-scroll-target="#생성모형-gan-40점"><code>2</code>. 생성모형 / GAN – 40점</a></li>
+  <li><a href="#단순회귀문제-10점" id="toc-단순회귀문제-10점" class="nav-link" data-scroll-target="#단순회귀문제-10점">3. 단순회귀문제 – 10점</a></li>
+  <li><a href="#네트워크-설계-10점" id="toc-네트워크-설계-10점" class="nav-link" data-scroll-target="#네트워크-설계-10점">4. 네트워크 설계 – 10점</a></li>
+  <li><a href="#신경망의-학습-10점" id="toc-신경망의-학습-10점" class="nav-link" data-scroll-target="#신경망의-학습-10점">5. 신경망의 학습 – 10점</a></li>
   </ul>
 <div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="09wk-2.out.ipynb" download="09wk-2.out.ipynb"><i class="bi bi-journal-code"></i>Jupyter</a></li></ul></div></nav>
     </div>
@@ -160,7 +192,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">09wk-2: 중간고사 (예상문제)</h1>
+<h1 class="title">09wk-2: 중간고사</h1>
 </div>
 
 
@@ -189,7 +221,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<div id="911f01f4-c5a9-4ac0-b41d-7500b8e3abc8" class="cell" data-tags="[]" data-execution_count="1">
+<div id="911f01f4-c5a9-4ac0-b41d-7500b8e3abc8" class="cell" data-tags="[]" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch </span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torchvision</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -367,6 +399,83 @@ Layer5 -- torch.Size([120, 1, 64, 64])</code></pre>
 </div>
 </div>
 </div>
+</section>
+<section id="단순회귀문제-10점" class="level1">
+<h1>3. 단순회귀문제 – 10점</h1>
+<p>주어진 자료가 아래와 같다고 하자.</p>
+<div id="70398fe0-782d-4243-8c2d-6ef4e22bd207" class="cell" data-tags="[]" data-execution_count="79">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>torch.manual_seed(<span class="dv">43052</span>)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>x,_ <span class="op">=</span> torch.randn(<span class="dv">100</span>).sort()</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> x.reshape(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>)</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>ϵ <span class="op">=</span> torch.randn(<span class="dv">100</span>).reshape(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>)<span class="op">*</span><span class="fl">0.5</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> <span class="fl">2.5</span><span class="op">+</span> <span class="dv">4</span><span class="op">*</span>x <span class="op">+</span> ϵ</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="600cd651-ca75-4eb0-8c09-52a052367e4f" class="cell" data-tags="[]" data-execution_count="80">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>plt.plot(x,y,<span class="st">'o'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="09wk-2_files/figure-html/cell-11-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><code>(1)</code> <code>torch.nn.Linear</code>를 이용하여 아래와 같은 최초의 직선을 생성하는 네트워크를 설계하라. – 1점</p>
+<p><span class="math display">\[\hat{y}_i = -5.0 + 10.0 x_i \]</span></p>
+<p><code>(2)</code> 아래의 수식에 대응하는 <code>loss</code>를 계산하라. 여기에서 <span class="math inline">\(\hat{y}_i\)</span>은 (1)의 결과로 얻은 값을 사용하라. – 1점</p>
+<p><span class="math display">\[loss = \frac{1}{n}\sum_{i=1}^{n}(y_i-\hat{y}_i)^2\]</span></p>
+<p><code>(3)</code> 적당한 matrix <span class="math inline">\({\bf X}_{n\times 2}\)</span> 와 <span class="math inline">\(\hat{\bf W}_{2\times 1}\)</span> 을 정의하여 아래와 같이 <span class="math inline">\(\hat{y}_i\)</span>을 구하라. – 1점</p>
+<p><span class="math display">\[\hat{y}_i = -5.0 + 5.0 x_i \]</span></p>
+<p><code>(4)</code> 아래의 수식에 대응하는 <code>loss</code>를 계산하라. 여기에서 <span class="math inline">\(\hat{y}_i\)</span>은 (3)의 결과로 얻은 값을 사용하라. – 1점</p>
+<p><span class="math display">\[loss = \frac{1}{n}\sum_{i=1}^{n}(y_i-\hat{y}_i)^2\]</span></p>
+<p><code>(5)</code> (2)에서 얻은 <span class="math inline">\(\hat{y}_i\)</span> (4)에서 얻은 <span class="math inline">\(\hat{y}_i\)</span> 중 무엇이 더 적절하다고 생각하는가? 이유는 무엇인가? 손실(=loss)에 근거하여 설명하라. – 2점</p>
+<p><code>(6)</code> <code>.backward()</code> 를 이용하여 (2)와 (4)에 해당하는 미분값을 계산하라. 학습률이 0.01인 경사하강법을 이용하여 (1),(3) 에 대응하는 가중치를 update 하라. – 4점</p>
+</section>
+<section id="네트워크-설계-10점" class="level1">
+<h1>4. 네트워크 설계 – 10점</h1>
+<p>아래는 mnist자료를 분류하는 네트워크의 예시이다. 그림에 대응하는 네트워크를 파이토치로 설계하라.</p>
+<p><img src="https://editor.analyticsvidhya.com/uploads/90650dnn2.jpeg" class="img-fluid"></p>
+<ul>
+<li>그림에서 n1=6, n2=16 으로 설정하고, 드랍아웃비율은 50%로 설정하라.</li>
+<li>인풋이미지의 차원은 (28,28,1) 이 아니라 (n,1,28,28) 로 해석하라. 동일한 논리로 Conv1의 통과결과도 (n,n1,24,24) 로 해석하라.</li>
+<li>valid padding 의 의미는 padding 을 하지 않는다는 의미이다.</li>
+</ul>
+</section>
+<section id="신경망의-학습-10점" class="level1">
+<h1>5. 신경망의 학습 – 10점</h1>
+<p>아래를 이용하여 데이터를 불러오라.</p>
+<div id="6ad2decf-ec6a-44fc-8916-b71570ede32c" class="cell" data-tags="[]" data-execution_count="132">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> torch.linspace(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">2000</span>).reshape(<span class="dv">2000</span>,<span class="dv">1</span>)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>u <span class="op">=</span> <span class="op">-</span><span class="dv">1</span> <span class="op">+</span> <span class="dv">5</span><span class="op">*</span>x</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>v <span class="op">=</span> torch.exp(u) <span class="op">/</span> (<span class="dv">1</span><span class="op">+</span>torch.exp(u)) </span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> torch.bernoulli(v)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="9033e388-1a28-45e6-8703-0db5770e5b16" class="cell" data-tags="[]" data-execution_count="133">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>plt.plot(x,y,<span class="st">'.'</span>,alpha<span class="op">=</span><span class="fl">0.03</span>)</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>plt.plot(x[<span class="dv">0</span>],y[<span class="dv">0</span>],<span class="st">'o'</span>,label<span class="op">=</span><span class="vs">r"$(x_i,y_i)$"</span>,color<span class="op">=</span><span class="st">"C0"</span>)</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>plt.plot(x,v,<span class="st">'--r'</span>,label<span class="op">=</span><span class="vs">r"prob (true, unknown) = $\frac{exp(-1+5x)}{1+exp(-1+5x)}$"</span>)</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>plt.legend()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="09wk-2_files/figure-html/cell-13-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><code>(1)</code> <code>torch.utils.data.TensorDataset</code>, <code>torch.utils.data.DataLoader</code> 를 이용하여 아래의 세부지침을 따르는 적당한 dataloader를 만들라. – 2점</p>
+<p><strong>세부지침</strong></p>
+<ol type="1">
+<li><code>batch_size = 128</code> 로 설정할 것</li>
+<li><code>shuffle = False</code> 로 설정할 것</li>
+</ol>
+<p><code>(2)</code> 주어진 자료를 해석할 수 있는 적절한 <code>net</code> 및 손실함수를 설정하고 아래의 세부지침에 맞추어 학습하라. – 8점</p>
+<p><strong>세부지침</strong></p>
+<ol type="1">
+<li>30 epochs 학습</li>
+<li>GPU를 이용하여 학습 할 것</li>
+<li>옵티마이저로 <code>torch.optim.Adam</code>을 사용하고 학습률은 0.05로 설정할 것</li>
+</ol>
 
 
 </section>
