@@ -56,7 +56,27 @@ div.sourceCode
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="../site_libs/quarto-nav/quarto-nav.js"></script>
@@ -154,7 +174,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul>
   <li><a href="#강의영상" id="toc-강의영상" class="nav-link active" data-scroll-target="#강의영상">1. 강의영상</a></li>
   <li><a href="#imports" id="toc-imports" class="nav-link" data-scroll-target="#imports">2. Imports</a></li>
-  <li><a href="#gan-intro" id="toc-gan-intro" class="nav-link" data-scroll-target="#gan-intro">3. GAN intro</a>
+  <li><a href="#gan-goodfellow2014generative-intro" id="toc-gan-goodfellow2014generative-intro" class="nav-link" data-scroll-target="#gan-goodfellow2014generative-intro">3. GAN <span class="citation" data-cites="goodfellow2014generative">(Goodfellow et al. 2014)</span> intro</a>
   <ul class="collapse">
   <li><a href="#a.-생성모형이란-쉬운-설명" id="toc-a.-생성모형이란-쉬운-설명" class="nav-link" data-scroll-target="#a.-생성모형이란-쉬운-설명">A. 생성모형이란? (쉬운 설명)</a></li>
   <li><a href="#b.-gan의-응용분야" id="toc-b.-gan의-응용분야" class="nav-link" data-scroll-target="#b.-gan의-응용분야">B. GAN의 응용분야</a></li>
@@ -176,7 +196,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="08wk-1,2.out.ipynb" download="08wk-1,2.out.ipynb"><i class="bi bi-journal-code"></i>Jupyter</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content page-columns page-full" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
@@ -223,10 +243,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="gan-intro" class="level1">
-<h1>3. GAN intro</h1>
-<p><code>-</code> 저자: 이안굿펠로우 - 천재임 - 지도교수가 요수아 벤지오</p>
-<p><code>-</code> 논문 NIPS, 저는 이 논문 읽고 소름돋았어요.. - https://arxiv.org/abs/1406.2661 (2021-09, 38751회 인용.. <span class="math inline">\(\to\)</span> 2022-09, 48978회 인용.. <span class="math inline">\(\to\)</span> 2024-03, 66609 인용..)</p>
+<section id="gan-goodfellow2014generative-intro" class="level1 page-columns page-full">
+<h1>3. GAN <span class="citation" data-cites="goodfellow2014generative">(<a href="#ref-goodfellow2014generative" role="doc-biblioref">Goodfellow et al. 2014</a>)</span> intro</h1>
+<div class="no-row-height column-margin column-container"><div id="ref-goodfellow2014generative" class="csl-entry" role="listitem">
+Goodfellow, Ian, Jean Pouget-Abadie, Mehdi Mirza, Bing Xu, David Warde-Farley, Sherjil Ozair, Aaron Courville, and Yoshua Bengio. 2014. <span>“Generative Adversarial Nets.”</span> <em>Advances in Neural Information Processing Systems</em> 27.
+</div></div><p><code>-</code> 저자: 이안굿펠로우</p>
+<ul>
+<li>천재임</li>
+<li>지도교수가 요수아 벤지오</li>
+</ul>
+<p><code>-</code> 저는 아래의 논문 읽고 소름돋았어요..</p>
+<ul>
+<li>https://arxiv.org/abs/1406.2661 (2021-09, 38751회 인용.. <span class="math inline">\(\to\)</span> 2022-09, 48978회 인용.. <span class="math inline">\(\to\)</span> 2024-03, 66609 인용..)</li>
+</ul>
 <p><code>-</code> 최근 10년간 머신러닝 분야에서 가장 혁신적인 아이디어이다. (얀르쿤, 2014년 시점..)</p>
 <p><code>-</code> 무슨내용? 생성모형</p>
 <section id="a.-생성모형이란-쉬운-설명" class="level2">
@@ -702,6 +731,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h1>5. 초기 GAN의 한계점</h1>
 <p><code>-</code> 두 네트워크의 균형이 매우 중요함 – 균형이 깨지는 순간 학습은 실패함</p>
 <p><code>-</code> 생성되는 이미지의 다양성이 부족한 경우가 발생함. (mode collapse)</p>
+
 
 
 </section>
