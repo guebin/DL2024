@@ -1,0 +1,1412 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.520">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="최규빈">
+<meta name="dcterms.date" content="2024-05-01">
+
+<title>DL2024 - 09wk-2: 중간고사</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">DL2024</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/guebin/DL2024"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.youtube.com/channel/UCQk9RyBNgXc7ORIsYlOfQrg/playlists?view=50&amp;sort=dd&amp;shelf_id=2"> <i class="bi bi-youtube" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+          <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#나는-solo-5의-다른구현-torch" id="toc-나는-solo-5의-다른구현-torch" class="nav-link active" data-scroll-target="#나는-solo-5의-다른구현-torch">6. 나는 SOLO – 5의 다른구현 (torch)</a>
+  <ul class="collapse">
+  <li><a href="#a.-임베딩레이어-이용" id="toc-a.-임베딩레이어-이용" class="nav-link" data-scroll-target="#a.-임베딩레이어-이용">A. 임베딩레이어 이용</a></li>
+  <li><a href="#b.-net이용" id="toc-b.-net이용" class="nav-link" data-scroll-target="#b.-net이용">B. net이용</a></li>
+  </ul></li>
+  <li><a href="#나는-solo-5의-다른구현-fastai" id="toc-나는-solo-5의-다른구현-fastai" class="nav-link" data-scroll-target="#나는-solo-5의-다른구현-fastai">7. 나는 SOLO – 5의 다른구현 (fastai)</a>
+  <ul class="collapse">
+  <li><a href="#a.-코딩.." id="toc-a.-코딩.." class="nav-link" data-scroll-target="#a.-코딩..">A. 코딩..</a></li>
+  <li><a href="#b.-fastai-의-net-loss-등을-구경" id="toc-b.-fastai-의-net-loss-등을-구경" class="nav-link" data-scroll-target="#b.-fastai-의-net-loss-등을-구경">B. <code>fastai</code> 의 net, loss 등을 구경</a></li>
+  </ul></li>
+  </ul>
+<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="draft.out.ipynb" download="draft.out.ipynb"><i class="bi bi-journal-code"></i>Jupyter</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">09wk-2: 중간고사</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>최규빈 </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">May 1, 2024</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="나는-solo-5의-다른구현-torch" class="level1">
+<h1>6. 나는 SOLO – 5의 다른구현 (torch)</h1>
+<section id="a.-임베딩레이어-이용" class="level2">
+<h2 class="anchored" data-anchor-id="a.-임베딩레이어-이용">A. 임베딩레이어 이용</h2>
+<div id="3dda2b34-80d2-495f-aa65-94e420733ec9" class="cell" data-tags="[]" data-execution_count="172">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#df_view = pd.read_csv('https://raw.githubusercontent.com/guebin/DL2024/main/posts/solo.csv',index_col=0)</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> df_view.stack().reset_index().set_axis([<span class="st">'W'</span>,<span class="st">'M'</span>,<span class="st">'y'</span>],axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>w <span class="op">=</span> {<span class="st">'옥순'</span>:<span class="dv">0</span>, <span class="st">'영자'</span>:<span class="dv">1</span>, <span class="st">'정숙'</span>:<span class="dv">2</span>, <span class="st">'영숙'</span>:<span class="dv">3</span>, <span class="st">'순자'</span>:<span class="dv">4</span>, <span class="st">'현숙'</span>:<span class="dv">5</span>}</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>m <span class="op">=</span> {<span class="st">'영식'</span>:<span class="dv">0</span>, <span class="st">'영철'</span>:<span class="dv">1</span>, <span class="st">'영호'</span>:<span class="dv">2</span>, <span class="st">'광수'</span>:<span class="dv">3</span>, <span class="st">'상철'</span>:<span class="dv">4</span>, <span class="st">'영수'</span>:<span class="dv">5</span>}</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>X1 <span class="op">=</span> torch.tensor(df[<span class="st">'W'</span>].<span class="bu">map</span>(w)) <span class="co"># length-n vector </span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>X2 <span class="op">=</span> torch.tensor(df[<span class="st">'M'</span>].<span class="bu">map</span>(m)) <span class="co"># length-n vector </span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co"># E1 = torch.nn.functional.one_hot(X1).float()</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co"># E2 = torch.nn.functional.one_hot(X2).float()</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> torch.tensor(df[<span class="st">'y'</span>]).<span class="bu">float</span>().reshape(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="8c7da9c1-6e2c-4bd0-b9fd-0bc62b269669" class="cell" data-tags="[]" data-execution_count="178">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">#--#</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>torch.manual_seed(<span class="dv">43052</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>e1 <span class="op">=</span> torch.nn.Embedding(num_embeddings<span class="op">=</span><span class="dv">6</span>,embedding_dim<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>b1 <span class="op">=</span> torch.nn.Embedding(num_embeddings<span class="op">=</span><span class="dv">6</span>,embedding_dim<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>e2 <span class="op">=</span> torch.nn.Embedding(num_embeddings<span class="op">=</span><span class="dv">6</span>,embedding_dim<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>b2 <span class="op">=</span> torch.nn.Embedding(num_embeddings<span class="op">=</span><span class="dv">6</span>,embedding_dim<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>sig <span class="op">=</span> torch.nn.Sigmoid()</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>loss_fn <span class="op">=</span> torch.nn.MSELoss()</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>optimizr <span class="op">=</span> torch.optim.Adam(</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    <span class="bu">list</span>(e1.parameters())<span class="op">+</span><span class="bu">list</span>(e2.parameters())<span class="op">+</span><span class="bu">list</span>(b1.parameters())<span class="op">+</span><span class="bu">list</span>(b2.parameters()),</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    lr <span class="op">=</span> <span class="fl">0.01</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="co">#--#</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> epoc <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">300</span>):</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>    <span class="co">## step1 </span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>    W_features <span class="op">=</span> e1(X1) </span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>    W_bias <span class="op">=</span> b1(X1)</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>    M_features <span class="op">=</span> e2(X2) </span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>    M_bias <span class="op">=</span> b2(X2)</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>    dot <span class="op">=</span> (W_features <span class="op">*</span> M_features <span class="op">+</span> W_bias <span class="op">+</span> M_bias).<span class="bu">sum</span>(axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>    yhat <span class="op">=</span> (sig(dot)<span class="op">*</span><span class="dv">5</span>).reshape(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>)</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>    <span class="co">## step2 </span></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>    loss <span class="op">=</span> loss_fn(yhat,y)</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>    <span class="co">## step3 </span></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>    loss.backward()</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>    <span class="co">## step4 </span></span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>    optimizr.step()</span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>    optimizr.zero_grad()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="ab8d061a-cc3e-4658-a76f-9610fb298960" class="cell" data-tags="[]" data-execution_count="179">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>df_ebdspace <span class="op">=</span> pd.DataFrame(torch.concat([W_features.data,W_bias.data, M_features.data, M_bias.data],axis<span class="op">=</span><span class="dv">1</span>))</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>df_ebdspace.columns <span class="op">=</span> [<span class="st">'여성잠재특징1'</span>,<span class="st">'여성잠재특징2'</span>,<span class="st">'여성바이어스'</span>,<span class="st">'남성잠재특징1'</span>,<span class="st">'남성잠재특징2'</span>,<span class="st">'남성바이어스'</span>]</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>df_yhat <span class="op">=</span> pd.DataFrame(yhat.data,columns<span class="op">=</span>[<span class="st">'yhat'</span>])</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>pd.concat([df,df_yhat,df_ebdspace],axis<span class="op">=</span><span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="179">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">W</th>
+<th data-quarto-table-cell-role="th">M</th>
+<th data-quarto-table-cell-role="th">y</th>
+<th data-quarto-table-cell-role="th">yhat</th>
+<th data-quarto-table-cell-role="th">여성잠재특징1</th>
+<th data-quarto-table-cell-role="th">여성잠재특징2</th>
+<th data-quarto-table-cell-role="th">여성바이어스</th>
+<th data-quarto-table-cell-role="th">남성잠재특징1</th>
+<th data-quarto-table-cell-role="th">남성잠재특징2</th>
+<th data-quarto-table-cell-role="th">남성바이어스</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>옥순</td>
+<td>영식</td>
+<td>0.79</td>
+<td>0.780502</td>
+<td>-1.222563</td>
+<td>-0.272170</td>
+<td>-1.045559</td>
+<td>1.373276</td>
+<td>-1.022922</td>
+<td>0.902046</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>옥순</td>
+<td>영철</td>
+<td>0.81</td>
+<td>0.047810</td>
+<td>-1.222563</td>
+<td>-0.272170</td>
+<td>-1.045559</td>
+<td>1.030008</td>
+<td>0.553320</td>
+<td>-0.569689</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>옥순</td>
+<td>광수</td>
+<td>0.20</td>
+<td>0.276751</td>
+<td>-1.222563</td>
+<td>-0.272170</td>
+<td>-1.045559</td>
+<td>0.918893</td>
+<td>0.133602</td>
+<td>0.206875</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>옥순</td>
+<td>상철</td>
+<td>0.21</td>
+<td>0.351969</td>
+<td>-1.222563</td>
+<td>-0.272170</td>
+<td>-1.045559</td>
+<td>-0.054492</td>
+<td>0.705167</td>
+<td>-0.182116</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>영자</td>
+<td>영식</td>
+<td>0.81</td>
+<td>0.629324</td>
+<td>-1.804423</td>
+<td>0.426392</td>
+<td>-0.413990</td>
+<td>1.373276</td>
+<td>-1.022922</td>
+<td>0.902046</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">5</td>
+<td>영자</td>
+<td>영호</td>
+<td>0.83</td>
+<td>0.786616</td>
+<td>-1.804423</td>
+<td>0.426392</td>
+<td>-0.413990</td>
+<td>0.372022</td>
+<td>-0.319785</td>
+<td>-0.021331</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">6</td>
+<td>영자</td>
+<td>광수</td>
+<td>0.21</td>
+<td>0.588011</td>
+<td>-1.804423</td>
+<td>0.426392</td>
+<td>-0.413990</td>
+<td>0.918893</td>
+<td>0.133602</td>
+<td>0.206875</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">7</td>
+<td>영자</td>
+<td>영수</td>
+<td>0.19</td>
+<td>0.160942</td>
+<td>-1.804423</td>
+<td>0.426392</td>
+<td>-0.413990</td>
+<td>0.826127</td>
+<td>1.568511</td>
+<td>-0.876783</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">8</td>
+<td>정숙</td>
+<td>영철</td>
+<td>0.95</td>
+<td>0.954222</td>
+<td>1.572679</td>
+<td>0.054415</td>
+<td>-0.977568</td>
+<td>1.030008</td>
+<td>0.553320</td>
+<td>-0.569689</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">9</td>
+<td>정숙</td>
+<td>영호</td>
+<td>0.98</td>
+<td>0.965395</td>
+<td>1.572679</td>
+<td>0.054415</td>
+<td>-0.977568</td>
+<td>0.372022</td>
+<td>-0.319785</td>
+<td>-0.021331</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">10</td>
+<td>정숙</td>
+<td>상철</td>
+<td>0.43</td>
+<td>0.428739</td>
+<td>1.572679</td>
+<td>0.054415</td>
+<td>-0.977568</td>
+<td>-0.054492</td>
+<td>0.705167</td>
+<td>-0.182116</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">11</td>
+<td>정숙</td>
+<td>영수</td>
+<td>0.41</td>
+<td>0.445726</td>
+<td>1.572679</td>
+<td>0.054415</td>
+<td>-0.977568</td>
+<td>0.826127</td>
+<td>1.568511</td>
+<td>-0.876783</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">12</td>
+<td>영숙</td>
+<td>영식</td>
+<td>0.21</td>
+<td>0.390641</td>
+<td>-0.519257</td>
+<td>1.372620</td>
+<td>-1.077490</td>
+<td>1.373276</td>
+<td>-1.022922</td>
+<td>0.902046</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">13</td>
+<td>영숙</td>
+<td>영철</td>
+<td>0.22</td>
+<td>0.221873</td>
+<td>-0.519257</td>
+<td>1.372620</td>
+<td>-1.077490</td>
+<td>1.030008</td>
+<td>0.553320</td>
+<td>-0.569689</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">14</td>
+<td>영숙</td>
+<td>광수</td>
+<td>0.82</td>
+<td>0.577891</td>
+<td>-0.519257</td>
+<td>1.372620</td>
+<td>-1.077490</td>
+<td>0.918893</td>
+<td>0.133602</td>
+<td>0.206875</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">15</td>
+<td>영숙</td>
+<td>상철</td>
+<td>0.83</td>
+<td>0.895109</td>
+<td>-0.519257</td>
+<td>1.372620</td>
+<td>-1.077490</td>
+<td>-0.054492</td>
+<td>0.705167</td>
+<td>-0.182116</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">16</td>
+<td>순자</td>
+<td>영식</td>
+<td>0.21</td>
+<td>0.363970</td>
+<td>-1.409755</td>
+<td>1.407751</td>
+<td>-0.486316</td>
+<td>1.373276</td>
+<td>-1.022922</td>
+<td>0.902046</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">17</td>
+<td>순자</td>
+<td>영철</td>
+<td>0.23</td>
+<td>0.290664</td>
+<td>-1.409755</td>
+<td>1.407751</td>
+<td>-0.486316</td>
+<td>1.030008</td>
+<td>0.553320</td>
+<td>-0.569689</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">18</td>
+<td>순자</td>
+<td>광수</td>
+<td>0.82</td>
+<td>0.794646</td>
+<td>-1.409755</td>
+<td>1.407751</td>
+<td>-0.486316</td>
+<td>0.918893</td>
+<td>0.133602</td>
+<td>0.206875</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">19</td>
+<td>순자</td>
+<td>영수</td>
+<td>0.81</td>
+<td>0.783651</td>
+<td>-1.409755</td>
+<td>1.407751</td>
+<td>-0.486316</td>
+<td>0.826127</td>
+<td>1.568511</td>
+<td>-0.876783</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">20</td>
+<td>현숙</td>
+<td>영철</td>
+<td>0.19</td>
+<td>0.038143</td>
+<td>-0.853443</td>
+<td>-0.618875</td>
+<td>-1.253666</td>
+<td>1.030008</td>
+<td>0.553320</td>
+<td>-0.569689</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">21</td>
+<td>현숙</td>
+<td>영호</td>
+<td>0.21</td>
+<td>0.323960</td>
+<td>-0.853443</td>
+<td>-0.618875</td>
+<td>-1.253666</td>
+<td>0.372022</td>
+<td>-0.319785</td>
+<td>-0.021331</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">22</td>
+<td>현숙</td>
+<td>상철</td>
+<td>0.86</td>
+<td>0.184585</td>
+<td>-0.853443</td>
+<td>-0.618875</td>
+<td>-1.253666</td>
+<td>-0.054492</td>
+<td>0.705167</td>
+<td>-0.182116</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">23</td>
+<td>현숙</td>
+<td>영수</td>
+<td>0.89</td>
+<td>0.013169</td>
+<td>-0.853443</td>
+<td>-0.618875</td>
+<td>-1.253666</td>
+<td>0.826127</td>
+<td>1.568511</td>
+<td>-0.876783</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</section>
+<section id="b.-net이용" class="level2">
+<h2 class="anchored" data-anchor-id="b.-net이용">B. net이용</h2>
+</section>
+</section>
+<section id="나는-solo-5의-다른구현-fastai" class="level1">
+<h1>7. 나는 SOLO – 5의 다른구현 (fastai)</h1>
+<section id="a.-코딩.." class="level2">
+<h2 class="anchored" data-anchor-id="a.-코딩..">A. 코딩..</h2>
+<div id="9ce41559-7b7c-4ca1-9aea-f66063d1ccf8" class="cell" data-tags="[]" data-execution_count="800">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>dls <span class="op">=</span> fastai.collab.CollabDataLoaders.from_df(df,bs<span class="op">=</span><span class="dv">2</span>,valid_pct <span class="op">=</span> <span class="dv">2</span><span class="op">/</span><span class="dv">24</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>lrnr <span class="op">=</span> fastai.collab.collab_learner(dls, n_factors<span class="op">=</span><span class="dv">2</span>, y_range<span class="op">=</span>(<span class="dv">0</span>,<span class="dv">5</span>))</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>lrnr.fit(<span class="dv">30</span>,lr<span class="op">=</span><span class="fl">0.1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+</div>
+<div class="cell-output cell-output-display">
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th">epoch</th>
+<th data-quarto-table-cell-role="th">train_loss</th>
+<th data-quarto-table-cell-role="th">valid_loss</th>
+<th data-quarto-table-cell-role="th">time</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0</td>
+<td>4.506458</td>
+<td>2.765290</td>
+<td>00:00</td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td>3.898577</td>
+<td>3.248128</td>
+<td>00:00</td>
+</tr>
+<tr class="odd">
+<td>2</td>
+<td>3.067885</td>
+<td>1.962692</td>
+<td>00:00</td>
+</tr>
+<tr class="even">
+<td>3</td>
+<td>2.236785</td>
+<td>0.008190</td>
+<td>00:00</td>
+</tr>
+<tr class="odd">
+<td>4</td>
+<td>1.619861</td>
+<td>0.099657</td>
+<td>00:00</td>
+</tr>
+<tr class="even">
+<td>5</td>
+<td>1.221960</td>
+<td>0.093989</td>
+<td>00:00</td>
+</tr>
+<tr class="odd">
+<td>6</td>
+<td>0.933670</td>
+<td>0.096321</td>
+<td>00:00</td>
+</tr>
+<tr class="even">
+<td>7</td>
+<td>0.721858</td>
+<td>0.027466</td>
+<td>00:00</td>
+</tr>
+<tr class="odd">
+<td>8</td>
+<td>0.564464</td>
+<td>0.054740</td>
+<td>00:00</td>
+</tr>
+<tr class="even">
+<td>9</td>
+<td>0.440905</td>
+<td>0.032084</td>
+<td>00:00</td>
+</tr>
+<tr class="odd">
+<td>10</td>
+<td>0.347376</td>
+<td>0.039605</td>
+<td>00:00</td>
+</tr>
+<tr class="even">
+<td>11</td>
+<td>0.274795</td>
+<td>0.037677</td>
+<td>00:00</td>
+</tr>
+<tr class="odd">
+<td>12</td>
+<td>0.218245</td>
+<td>0.059046</td>
+<td>00:00</td>
+</tr>
+<tr class="even">
+<td>13</td>
+<td>0.174156</td>
+<td>0.061565</td>
+<td>00:00</td>
+</tr>
+<tr class="odd">
+<td>14</td>
+<td>0.139679</td>
+<td>0.088224</td>
+<td>00:00</td>
+</tr>
+<tr class="even">
+<td>15</td>
+<td>0.112385</td>
+<td>0.129213</td>
+<td>00:00</td>
+</tr>
+<tr class="odd">
+<td>16</td>
+<td>0.090696</td>
+<td>0.133099</td>
+<td>00:00</td>
+</tr>
+<tr class="even">
+<td>17</td>
+<td>0.073741</td>
+<td>0.125532</td>
+<td>00:00</td>
+</tr>
+<tr class="odd">
+<td>18</td>
+<td>0.068432</td>
+<td>0.190287</td>
+<td>00:00</td>
+</tr>
+<tr class="even">
+<td>19</td>
+<td>0.067985</td>
+<td>0.336540</td>
+<td>00:00</td>
+</tr>
+<tr class="odd">
+<td>20</td>
+<td>0.064085</td>
+<td>0.244691</td>
+<td>00:00</td>
+</tr>
+<tr class="even">
+<td>21</td>
+<td>0.058193</td>
+<td>0.086740</td>
+<td>00:00</td>
+</tr>
+<tr class="odd">
+<td>22</td>
+<td>0.050534</td>
+<td>0.108768</td>
+<td>00:00</td>
+</tr>
+<tr class="even">
+<td>23</td>
+<td>0.042762</td>
+<td>0.087573</td>
+<td>00:00</td>
+</tr>
+<tr class="odd">
+<td>24</td>
+<td>0.035789</td>
+<td>0.156161</td>
+<td>00:00</td>
+</tr>
+<tr class="even">
+<td>25</td>
+<td>0.032321</td>
+<td>0.146785</td>
+<td>00:00</td>
+</tr>
+<tr class="odd">
+<td>26</td>
+<td>0.026845</td>
+<td>0.165115</td>
+<td>00:00</td>
+</tr>
+<tr class="even">
+<td>27</td>
+<td>0.030625</td>
+<td>0.247320</td>
+<td>00:00</td>
+</tr>
+<tr class="odd">
+<td>28</td>
+<td>0.035124</td>
+<td>0.283636</td>
+<td>00:00</td>
+</tr>
+<tr class="even">
+<td>29</td>
+<td>0.040457</td>
+<td>0.192986</td>
+<td>00:00</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p><code>-</code> 예측</p>
+<div id="5728dd67-24ee-43b7-bb71-880666e7eafd" class="cell" data-tags="[]" data-execution_count="806">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>df_test <span class="op">=</span> pd.DataFrame({<span class="st">'W'</span>:[<span class="st">'정숙'</span>]<span class="op">*</span><span class="dv">6</span>, <span class="st">'M'</span>:[<span class="st">'영식'</span>,<span class="st">'영철'</span>,<span class="st">'영호'</span>,<span class="st">'광수'</span>,<span class="st">'상철'</span>,<span class="st">'영수'</span>]})</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>df_test</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="806">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">W</th>
+<th data-quarto-table-cell-role="th">M</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>정숙</td>
+<td>영식</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>정숙</td>
+<td>영철</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>정숙</td>
+<td>영호</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>정숙</td>
+<td>광수</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>정숙</td>
+<td>상철</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">5</td>
+<td>정숙</td>
+<td>영수</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<div id="1fd62382-06ba-469c-9e29-7f8f40297083" class="cell" data-tags="[]" data-execution_count="819">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>yhat,_ <span class="op">=</span> lrnr.get_preds(dl <span class="op">=</span> dls.test_dl(df_test))</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>df_test.assign(yhat <span class="op">=</span> yhat)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+</div>
+<div class="cell-output cell-output-display">
+
+</div>
+<div class="cell-output cell-output-display" data-execution_count="819">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">W</th>
+<th data-quarto-table-cell-role="th">M</th>
+<th data-quarto-table-cell-role="th">yhat</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>정숙</td>
+<td>영식</td>
+<td>4.755944</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>정숙</td>
+<td>영철</td>
+<td>4.883018</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>정숙</td>
+<td>영호</td>
+<td>4.799464</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>정숙</td>
+<td>광수</td>
+<td>1.065324</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>정숙</td>
+<td>상철</td>
+<td>0.853418</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">5</td>
+<td>정숙</td>
+<td>영수</td>
+<td>1.410224</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<ul>
+<li>적절해보임</li>
+</ul>
+</section>
+<section id="b.-fastai-의-net-loss-등을-구경" class="level2">
+<h2 class="anchored" data-anchor-id="b.-fastai-의-net-loss-등을-구경">B. <code>fastai</code> 의 net, loss 등을 구경</h2>
+<div id="b1d159f6-559d-4031-ad6f-19a03d8e0111" class="cell" data-tags="[]" data-execution_count="823">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>lrnr.model</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="823">
+<pre><code>EmbeddingDotBias(
+  (u_weight): Embedding(7, 2)
+  (i_weight): Embedding(7, 2)
+  (u_bias): Embedding(7, 1)
+  (i_bias): Embedding(7, 1)
+)</code></pre>
+</div>
+</div>
+<div id="509a03d6-201b-4137-9282-d43a50c94cce" class="cell" data-tags="[]" data-execution_count="824">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>lrnr.forward?? </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div class="ansi-escaped-output">
+<pre><span class="ansi-red-fg">Signature:</span> lrnr<span class="ansi-blue-fg">.</span>forward<span class="ansi-blue-fg">(</span>x<span class="ansi-blue-fg">)</span>
+<span class="ansi-red-fg">Docstring:</span>
+Define the computation performed at every call.
+Should be overridden by all subclasses.
+.. note::
+    Although the recipe for forward pass needs to be defined within
+    this function, one should call the :class:`Module` instance afterwards
+    instead of this since the former takes care of running the
+    registered hooks while the latter silently ignores them.
+<span class="ansi-red-fg">Source:</span>   
+    <span class="ansi-green-fg">def</span> forward<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">,</span> x<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+        users<span class="ansi-blue-fg">,</span>items <span class="ansi-blue-fg">=</span> x<span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">:</span><span class="ansi-blue-fg">,</span><span class="ansi-cyan-fg">0</span><span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">,</span>x<span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">:</span><span class="ansi-blue-fg">,</span><span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">]</span>
+        dot <span class="ansi-blue-fg">=</span> self<span class="ansi-blue-fg">.</span>u_weight<span class="ansi-blue-fg">(</span>users<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">*</span> self<span class="ansi-blue-fg">.</span>i_weight<span class="ansi-blue-fg">(</span>items<span class="ansi-blue-fg">)</span>
+        res <span class="ansi-blue-fg">=</span> dot<span class="ansi-blue-fg">.</span>sum<span class="ansi-blue-fg">(</span><span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">)</span> <span class="ansi-blue-fg">+</span> self<span class="ansi-blue-fg">.</span>u_bias<span class="ansi-blue-fg">(</span>users<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">.</span>squeeze<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span> <span class="ansi-blue-fg">+</span> self<span class="ansi-blue-fg">.</span>i_bias<span class="ansi-blue-fg">(</span>items<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">.</span>squeeze<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
+        <span class="ansi-green-fg">if</span> self<span class="ansi-blue-fg">.</span>y_range <span class="ansi-green-fg">is</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">:</span> <span class="ansi-green-fg">return</span> res
+        <span class="ansi-green-fg">return</span> torch<span class="ansi-blue-fg">.</span>sigmoid<span class="ansi-blue-fg">(</span>res<span class="ansi-blue-fg">)</span> <span class="ansi-blue-fg">*</span> <span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">.</span>y_range<span class="ansi-blue-fg">[</span><span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">-</span>self<span class="ansi-blue-fg">.</span>y_range<span class="ansi-blue-fg">[</span><span class="ansi-cyan-fg">0</span><span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">)</span> <span class="ansi-blue-fg">+</span> self<span class="ansi-blue-fg">.</span>y_range<span class="ansi-blue-fg">[</span><span class="ansi-cyan-fg">0</span><span class="ansi-blue-fg">]</span>
+<span class="ansi-red-fg">File:</span>      ~/anaconda3/envs/dl2024/lib/python3.11/site-packages/fastai/collab.py
+<span class="ansi-red-fg">Type:</span>      method</pre>
+</div>
+</div>
+</div>
+<ul>
+<li>우리가 만든 모델이랑 같음!</li>
+</ul>
+<div id="0b93f7a4-5a96-4271-91fd-8c7592638e7e" class="cell" data-tags="[]" data-execution_count="826">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>lrnr.loss_func </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="826">
+<pre><code>FlattenedLoss of MSELoss()</code></pre>
+</div>
+</div>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    const typesetMath = (el) => {
+      if (window.MathJax) {
+        // MathJax Typeset
+        window.MathJax.typeset([el]);
+      } else if (window.katex) {
+        // KaTeX Render
+        var mathElements = el.getElementsByClassName("math");
+        var macros = [];
+        for (var i = 0; i < mathElements.length; i++) {
+          var texText = mathElements[i].firstChild;
+          if (mathElements[i].tagName == "SPAN") {
+            window.katex.render(texText.data, mathElements[i], {
+              displayMode: mathElements[i].classList.contains('display'),
+              throwOnError: false,
+              macros: macros,
+              fleqn: false
+            });
+          }
+        }
+      }
+    }
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        typesetMath(container);
+        return container.innerHTML
+      } else {
+        typesetMath(note);
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      typesetMath(note);
+      return note.innerHTML;
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<script src="https://utteranc.es/client.js" repo="guebin/DL2024" issue-term="pathname" theme="github-light" crossorigin="anonymous" async="">
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

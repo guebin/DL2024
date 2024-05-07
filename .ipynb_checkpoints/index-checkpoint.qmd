@@ -18,4 +18,9 @@ title-block-banner: false
 - Zoom: *이메일로 미리 시간을 정할 것*
 - 카카오톡: <http://pf.kakao.com/_txeIFG/chat>
 
+**수업빼먹음**
+- 06wk-2: (1시간) 
+- 08wk-1,2:(1시간) 
+- 09wk-1: (2시간) 
+
 **강의노트** 
