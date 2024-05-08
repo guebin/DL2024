@@ -720,7 +720,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>걱정1: 5.0이 넘는 값도 있네? 잘못잡으면 음수가 나올지도?</li>
 <li>걱정2: 저러한 yhat (4.0189, 3.4776)을 만드는게 꼭 저 조합만 있는게 아님. 당장에 남성의 바이어스에 일괄적으로 -2를 넣고 여성의 바이어스에 일괄적으로 +2를 해도 성립함.</li>
 </ul>
-<p><code>-</code> (걱정은 뒤로 하고) <code>yhat</code> <span class="math inline">\(\approx\)</span> <code>y</code> 를 만족하도록 해보자!</p>
+<p><code>-</code> (걱정은 뒤로 하고) <code>yhat</code> <span class="math inline">\(\approx\)</span> <code>y</code> 를 만족하도록 해보자! (1) 아무 <code>yhat</code> 을 구한다. (2) <code>yhat</code>과 <code>y</code>가 비슷한 정도를 측정한다. (3) 더 적당한 <code>yhat</code>값을 update한다.</p>
 <ul>
 <li><code>yhat</code>은 어떻게 구하지? (여성특징<span class="math inline">\(\otimes\)</span>남성특징).sum() + bias?</li>
 <li>그럼 여성특징,남성특징,여성bias(=여성매력),남성bias(=남성매력)는 어떻게 구하지?? 생각해보니까 데이터에서 주어진건 아니잖아??</li>
