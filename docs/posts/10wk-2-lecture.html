@@ -213,7 +213,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="imports" class="level1">
 <h1>2. Imports</h1>
-<div id="be01850b-e0ed-45be-a675-799d9c90c0ee" class="cell" data-tags="[]" data-execution_count="44">
+<div id="be01850b-e0ed-45be-a675-799d9c90c0ee" class="cell" data-tags="[]" data-execution_count="83">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -223,7 +223,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="예비학습-optimizer-사용-고급" class="level1">
 <h1>3. 예비학습: optimizer 사용 고급</h1>
 <p><code>-</code> 주어진 자료가 아래와 같다고 하자.</p>
-<div id="edb6a36c-9916-471a-ad39-bd823f40eccf" class="cell" data-tags="[]" data-execution_count="45">
+<div id="edb6a36c-9916-471a-ad39-bd823f40eccf" class="cell" data-tags="[]" data-execution_count="84">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>torch.manual_seed(<span class="dv">43052</span>)</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>x,_ <span class="op">=</span> torch.randn(<span class="dv">100</span>).sort()</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> x.reshape(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>)</span>
@@ -232,7 +232,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>ϵ <span class="op">=</span> torch.randn(<span class="dv">100</span>).reshape(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>)<span class="op">*</span><span class="fl">0.5</span></span>
 <span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> <span class="fl">2.5</span><span class="op">+</span> <span class="dv">4</span><span class="op">*</span>x <span class="op">+</span> ϵ</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="2d8460b3-f0aa-4443-9622-b8acb662e46a" class="cell" data-tags="[]" data-execution_count="46">
+<div id="2d8460b3-f0aa-4443-9622-b8acb662e46a" class="cell" data-tags="[]" data-execution_count="85">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>plt.plot(x,y,<span class="st">'o'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
@@ -243,10 +243,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p><code>-</code> 문제1: 아래와 같이 최초의 직선을 생성하였다.</p>
-<div id="1e3993d0-9fd3-4fb4-a059-a7676f282d15" class="cell" data-tags="[]" data-execution_count="47">
+<div id="1e3993d0-9fd3-4fb4-a059-a7676f282d15" class="cell" data-tags="[]" data-execution_count="86">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>What <span class="op">=</span> torch.tensor([[<span class="op">-</span><span class="fl">5.0</span>],[<span class="fl">10.0</span>]],requires_grad<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="67efcd37-16e7-4b23-b557-709d07dfe2ed" class="cell" data-tags="[]" data-execution_count="48">
+<div id="67efcd37-16e7-4b23-b557-709d07dfe2ed" class="cell" data-tags="[]" data-execution_count="87">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>plt.plot(x,y,<span class="st">'o'</span>)</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>plt.plot(x,X<span class="op">@</span>What.data,<span class="st">'--'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
@@ -259,11 +259,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p><code>torch.optim.SGD</code>를 이용하여 What을 update하라. 학습률은 0.1로 설정하고 30회 update하라.</p>
 <p><code>-</code> 문제2: 아래와 같이 최초의 직선을 생성하였다.</p>
-<div id="28923c4e-2a2f-4e3f-93ec-03a071bc4b0a" class="cell" data-tags="[]" data-execution_count="49">
+<div id="28923c4e-2a2f-4e3f-93ec-03a071bc4b0a" class="cell" data-tags="[]" data-execution_count="90">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>w <span class="op">=</span> torch.tensor(<span class="fl">10.0</span>,requires_grad<span class="op">=</span><span class="va">True</span>)</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>b <span class="op">=</span> torch.tensor(<span class="op">-</span><span class="fl">5.0</span>,requires_grad<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="5e117e2b-9916-4f4d-a669-7b76c409f189" class="cell" data-tags="[]" data-execution_count="50">
+<div id="5e117e2b-9916-4f4d-a669-7b76c409f189" class="cell" data-tags="[]" data-execution_count="91">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>plt.plot(x,y,<span class="st">'o'</span>)</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>plt.plot(x,(x<span class="op">*</span>w <span class="op">+</span> b).data,<span class="st">'--'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
@@ -282,10 +282,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="a.-data-나는-solo" class="level2">
 <h2 class="anchored" data-anchor-id="a.-data-나는-solo">A. Data: 나는 SOLO</h2>
 <p><code>-</code> Data</p>
-<div id="9ad42043-cdba-46a1-92f0-51aa4ce6e161" class="cell" data-tags="[]" data-execution_count="51">
+<div id="9ad42043-cdba-46a1-92f0-51aa4ce6e161" class="cell" data-tags="[]" data-execution_count="95">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>df_view <span class="op">=</span> pd.read_csv(<span class="st">'https://raw.githubusercontent.com/guebin/DL2024/main/posts/solo.csv'</span>,index_col<span class="op">=</span><span class="dv">0</span>)</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>df_view</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="51">
+<div class="cell-output cell-output-display" data-execution_count="95">
 <div>
 
 
@@ -436,43 +436,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>영호(IS)의 IS성향, 영호(IS)의 매력 = (0.98 , -0.7), 0.95</li>
 </ul>
 <p><strong>(1)</strong> 옥순(IN)과 영식(IN)의 궁합 <span class="math inline">\(\approx\)</span> 옥순의I성향<span class="math inline">\(\times\)</span>영식의I성향 <span class="math inline">\(+\)</span> 옥순의N성향<span class="math inline">\(\times\)</span>영식의N성향 <span class="math inline">\(+\)</span> 옥순의매력 <span class="math inline">\(+\)</span> 영식의매력</p>
-<div id="96e2b6fb-9dea-432e-bd1a-3ee34975a5ff" class="cell" data-tags="[]" data-execution_count="52">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>옥순성향 <span class="op">=</span> torch.tensor([<span class="fl">0.90</span>,<span class="fl">0.65</span>]).reshape(<span class="dv">2</span>,<span class="dv">1</span>) </span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>옥순매력 <span class="op">=</span> torch.tensor([<span class="fl">1.01</span>]).reshape(<span class="dv">1</span>,<span class="dv">1</span>)</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>영식성향 <span class="op">=</span> torch.tensor([<span class="fl">0.95</span>,<span class="fl">0.62</span>]).reshape(<span class="dv">2</span>,<span class="dv">1</span>) </span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>영식매력 <span class="op">=</span> torch.tensor([<span class="fl">1.00</span>]).reshape(<span class="dv">1</span>,<span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
 <p><strong>(2)</strong> 영자(IN)와 다호(ES)의 궁합 <span class="math inline">\(\approx\)</span> 영자I성향<span class="math inline">\(\times\)</span>다호I성향 <span class="math inline">\(+\)</span> 영자N성향<span class="math inline">\(\times\)</span>다호의N성향 <span class="math inline">\(+\)</span> 영자의매력 <span class="math inline">\(+\)</span> 다호의매력</p>
-<div id="5d7b2b4e-f216-4717-8b38-4815faefa8e4" class="cell" data-tags="[]" data-execution_count="53">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>영자성향 <span class="op">=</span> torch.tensor([<span class="fl">1.00</span>,<span class="fl">0.70</span>]).reshape(<span class="dv">2</span>,<span class="dv">1</span>) </span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>영자매력 <span class="op">=</span> torch.tensor([<span class="fl">0.95</span>]).reshape(<span class="dv">1</span>,<span class="dv">1</span>)</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>다호성향 <span class="op">=</span> torch.tensor([<span class="op">-</span><span class="fl">1.00</span>,<span class="op">-</span><span class="fl">0.82</span>]).reshape(<span class="dv">2</span>,<span class="dv">1</span>) </span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>다호매력 <span class="op">=</span> torch.tensor([<span class="fl">1.05</span>]).reshape(<span class="dv">1</span>,<span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
 <p><strong>(3)</strong> 하니(I)와 영호(IS)의 궁합 <span class="math inline">\(\approx\)</span> 하니I성향<span class="math inline">\(\times\)</span>영호I성향 <span class="math inline">\(+\)</span> 하니N성향<span class="math inline">\(\times\)</span>영호의N성향 <span class="math inline">\(+\)</span> 하니의매력 <span class="math inline">\(+\)</span> 영호의매력</p>
-<div id="bb540bcb-f518-463f-a47d-29d4d3e70e63" class="cell" data-tags="[]" data-execution_count="54">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>하니성향 <span class="op">=</span> torch.tensor([<span class="fl">1.00</span>,<span class="fl">0.00</span>]).reshape(<span class="dv">2</span>,<span class="dv">1</span>) </span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>하니매력 <span class="op">=</span> torch.tensor([<span class="fl">3.00</span>]).reshape(<span class="dv">1</span>,<span class="dv">1</span>)</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>영호성향 <span class="op">=</span> torch.tensor([<span class="fl">0.98</span>,<span class="op">-</span><span class="fl">0.70</span>]).reshape(<span class="dv">2</span>,<span class="dv">1</span>) </span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>영호매력 <span class="op">=</span> torch.tensor([<span class="fl">0.95</span>]).reshape(<span class="dv">1</span>,<span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
 <blockquote class="blockquote">
 <p>전체적으로 그럴싸함</p>
 </blockquote>
 <p><code>-</code> 전체 사용자의 설정값</p>
 <div id="1679a6fd-7604-4e86-92b9-6aa53b834b74" class="cell" data-tags="[]" data-execution_count="55">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>옥순성향 <span class="op">=</span> torch.tensor([<span class="fl">1.22</span>,<span class="fl">0.49</span>]).reshape(<span class="dv">1</span>,<span class="dv">2</span>)</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>영자성향 <span class="op">=</span> torch.tensor([<span class="fl">1.17</span>,<span class="fl">0.44</span>]).reshape(<span class="dv">1</span>,<span class="dv">2</span>)</span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>정숙성향 <span class="op">=</span> torch.tensor([<span class="fl">1.21</span>,<span class="op">-</span><span class="fl">0.45</span>]).reshape(<span class="dv">1</span>,<span class="dv">2</span>)</span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>영숙성향 <span class="op">=</span> torch.tensor([<span class="fl">1.20</span>,<span class="op">-</span><span class="fl">0.50</span>]).reshape(<span class="dv">1</span>,<span class="dv">2</span>)</span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>순자성향 <span class="op">=</span> torch.tensor([<span class="op">-</span><span class="fl">1.20</span>,<span class="fl">0.51</span>]).reshape(<span class="dv">1</span>,<span class="dv">2</span>)</span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>현숙성향 <span class="op">=</span> torch.tensor([<span class="op">-</span><span class="fl">1.23</span>,<span class="fl">0.48</span>]).reshape(<span class="dv">1</span>,<span class="dv">2</span>)</span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>서연성향 <span class="op">=</span> torch.tensor([<span class="op">-</span><span class="fl">1.20</span>,<span class="op">-</span><span class="fl">0.48</span>]).reshape(<span class="dv">1</span>,<span class="dv">2</span>)</span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>보람성향 <span class="op">=</span> torch.tensor([<span class="op">-</span><span class="fl">1.19</span>,<span class="op">-</span><span class="fl">0.49</span>]).reshape(<span class="dv">1</span>,<span class="dv">2</span>)</span>
-<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>하니성향 <span class="op">=</span> torch.tensor([<span class="fl">0.2</span>,<span class="dv">0</span>]).reshape(<span class="dv">1</span>,<span class="dv">2</span>)</span>
-<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>W <span class="op">=</span> torch.concat([옥순성향,영자성향,정숙성향,영숙성향,순자성향,현숙성향,서연성향,보람성향,하니성향])</span>
-<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>b1 <span class="op">=</span> torch.tensor([<span class="fl">1.21</span>,<span class="fl">1.25</span>,<span class="fl">1.10</span>,<span class="fl">1.11</span>,<span class="fl">1.12</span>,<span class="fl">1.13</span>,<span class="fl">1.14</span>,<span class="fl">1.12</span>,<span class="fl">3.6</span>]).reshape(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>) </span>
-<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>W,b1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>옥순성향 <span class="op">=</span> torch.tensor([<span class="fl">1.22</span>,<span class="fl">0.49</span>]).reshape(<span class="dv">1</span>,<span class="dv">2</span>)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>영자성향 <span class="op">=</span> torch.tensor([<span class="fl">1.17</span>,<span class="fl">0.44</span>]).reshape(<span class="dv">1</span>,<span class="dv">2</span>)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>정숙성향 <span class="op">=</span> torch.tensor([<span class="fl">1.21</span>,<span class="op">-</span><span class="fl">0.45</span>]).reshape(<span class="dv">1</span>,<span class="dv">2</span>)</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>영숙성향 <span class="op">=</span> torch.tensor([<span class="fl">1.20</span>,<span class="op">-</span><span class="fl">0.50</span>]).reshape(<span class="dv">1</span>,<span class="dv">2</span>)</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>순자성향 <span class="op">=</span> torch.tensor([<span class="op">-</span><span class="fl">1.20</span>,<span class="fl">0.51</span>]).reshape(<span class="dv">1</span>,<span class="dv">2</span>)</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>현숙성향 <span class="op">=</span> torch.tensor([<span class="op">-</span><span class="fl">1.23</span>,<span class="fl">0.48</span>]).reshape(<span class="dv">1</span>,<span class="dv">2</span>)</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>서연성향 <span class="op">=</span> torch.tensor([<span class="op">-</span><span class="fl">1.20</span>,<span class="op">-</span><span class="fl">0.48</span>]).reshape(<span class="dv">1</span>,<span class="dv">2</span>)</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>보람성향 <span class="op">=</span> torch.tensor([<span class="op">-</span><span class="fl">1.19</span>,<span class="op">-</span><span class="fl">0.49</span>]).reshape(<span class="dv">1</span>,<span class="dv">2</span>)</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>하니성향 <span class="op">=</span> torch.tensor([<span class="fl">0.2</span>,<span class="dv">0</span>]).reshape(<span class="dv">1</span>,<span class="dv">2</span>)</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>W <span class="op">=</span> torch.concat([옥순성향,영자성향,정숙성향,영숙성향,순자성향,현숙성향,서연성향,보람성향,하니성향])</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>b1 <span class="op">=</span> torch.tensor([<span class="fl">1.21</span>,<span class="fl">1.25</span>,<span class="fl">1.10</span>,<span class="fl">1.11</span>,<span class="fl">1.12</span>,<span class="fl">1.13</span>,<span class="fl">1.14</span>,<span class="fl">1.12</span>,<span class="fl">3.6</span>]).reshape(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>) </span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>W,b1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="55">
 <pre><code>(tensor([[ 1.2200,  0.4900],
          [ 1.1700,  0.4400],
@@ -495,17 +477,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <div id="946ea60e-e30b-4188-8bae-7c1b25ca0f47" class="cell" data-tags="[]" data-execution_count="56">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>영식성향 <span class="op">=</span> torch.tensor([<span class="fl">1.20</span>,<span class="fl">0.5</span>]).reshape(<span class="dv">1</span>,<span class="dv">2</span>)</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>영철성향 <span class="op">=</span> torch.tensor([<span class="fl">1.22</span>,<span class="fl">0.45</span>]).reshape(<span class="dv">1</span>,<span class="dv">2</span>)</span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>영호성향 <span class="op">=</span> torch.tensor([<span class="fl">1.23</span>,<span class="op">-</span><span class="fl">0.7</span>]).reshape(<span class="dv">1</span>,<span class="dv">2</span>)</span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>광수성향 <span class="op">=</span> torch.tensor([<span class="fl">1.21</span>,<span class="op">-</span><span class="fl">0.6</span>]).reshape(<span class="dv">1</span>,<span class="dv">2</span>)</span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>상철성향 <span class="op">=</span> torch.tensor([<span class="op">-</span><span class="fl">1.28</span>,<span class="fl">0.6</span>]).reshape(<span class="dv">1</span>,<span class="dv">2</span>)</span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>영수성향 <span class="op">=</span> torch.tensor([<span class="op">-</span><span class="fl">1.24</span>,<span class="fl">0.5</span>]).reshape(<span class="dv">1</span>,<span class="dv">2</span>)</span>
-<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>규빈성향 <span class="op">=</span> torch.tensor([<span class="op">-</span><span class="fl">1.20</span>,<span class="op">-</span><span class="fl">0.5</span>]).reshape(<span class="dv">1</span>,<span class="dv">2</span>)</span>
-<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>다호성향 <span class="op">=</span> torch.tensor([<span class="op">-</span><span class="fl">1.22</span>,<span class="op">-</span><span class="fl">0.6</span>]).reshape(<span class="dv">1</span>,<span class="dv">2</span>)</span>
-<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>M <span class="op">=</span> torch.concat([영식성향,영철성향,영호성향,광수성향,상철성향,영수성향,규빈성향,다호성향]) <span class="co"># 각 column은 남성출연자의 성향을 의미함</span></span>
-<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>b2 <span class="op">=</span> torch.tensor([<span class="fl">1.2</span>,<span class="fl">1.10</span>,<span class="fl">1.11</span>,<span class="fl">1.25</span>,<span class="fl">1.18</span>,<span class="fl">1.11</span>,<span class="fl">1.15</span>,<span class="fl">1.15</span>]).reshape(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>)</span>
-<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>M,b2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>영식성향 <span class="op">=</span> torch.tensor([<span class="fl">1.20</span>,<span class="fl">0.5</span>]).reshape(<span class="dv">1</span>,<span class="dv">2</span>)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>영철성향 <span class="op">=</span> torch.tensor([<span class="fl">1.22</span>,<span class="fl">0.45</span>]).reshape(<span class="dv">1</span>,<span class="dv">2</span>)</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>영호성향 <span class="op">=</span> torch.tensor([<span class="fl">1.23</span>,<span class="op">-</span><span class="fl">0.7</span>]).reshape(<span class="dv">1</span>,<span class="dv">2</span>)</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>광수성향 <span class="op">=</span> torch.tensor([<span class="fl">1.21</span>,<span class="op">-</span><span class="fl">0.6</span>]).reshape(<span class="dv">1</span>,<span class="dv">2</span>)</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>상철성향 <span class="op">=</span> torch.tensor([<span class="op">-</span><span class="fl">1.28</span>,<span class="fl">0.6</span>]).reshape(<span class="dv">1</span>,<span class="dv">2</span>)</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>영수성향 <span class="op">=</span> torch.tensor([<span class="op">-</span><span class="fl">1.24</span>,<span class="fl">0.5</span>]).reshape(<span class="dv">1</span>,<span class="dv">2</span>)</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>규빈성향 <span class="op">=</span> torch.tensor([<span class="op">-</span><span class="fl">1.20</span>,<span class="op">-</span><span class="fl">0.5</span>]).reshape(<span class="dv">1</span>,<span class="dv">2</span>)</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>다호성향 <span class="op">=</span> torch.tensor([<span class="op">-</span><span class="fl">1.22</span>,<span class="op">-</span><span class="fl">0.6</span>]).reshape(<span class="dv">1</span>,<span class="dv">2</span>)</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>M <span class="op">=</span> torch.concat([영식성향,영철성향,영호성향,광수성향,상철성향,영수성향,규빈성향,다호성향]) <span class="co"># 각 column은 남성출연자의 성향을 의미함</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>b2 <span class="op">=</span> torch.tensor([<span class="fl">1.2</span>,<span class="fl">1.10</span>,<span class="fl">1.11</span>,<span class="fl">1.25</span>,<span class="fl">1.18</span>,<span class="fl">1.11</span>,<span class="fl">1.15</span>,<span class="fl">1.15</span>]).reshape(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>)</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>M,b2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="56">
 <pre><code>(tensor([[ 1.2000,  0.5000],
          [ 1.2200,  0.4500],
@@ -527,7 +509,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p><code>-</code> 아래의 행렬곱 관찰</p>
 <div id="8bebe3b6-ae46-4f8e-b5dd-bc580ec4448d" class="cell" data-tags="[]" data-execution_count="57">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>W <span class="op">@</span> M.T <span class="op">+</span> (b1 <span class="op">+</span> b2.T)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>W <span class="op">@</span> M.T <span class="op">+</span> (b1 <span class="op">+</span> b2.T)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="57">
 <pre><code>tensor([[4.1190, 4.0189, 3.4776, 3.6422, 1.1224, 1.0522, 0.6510, 0.5776],
         [4.0740, 3.9754, 3.4911, 3.6517, 1.1964, 1.1292, 0.7760, 0.7086],
@@ -655,8 +637,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="c.-할일1의-구현">C. 할일1의 구현</h2>
 <p><code>-</code> dataframe의 변형</p>
 <div id="2148df47-d9f0-4216-b4b5-54c0d141ba64" class="cell" data-tags="[]" data-execution_count="23">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>df_train <span class="op">=</span> df_view.stack().reset_index().set_axis([<span class="st">'W'</span>,<span class="st">'M'</span>,<span class="st">'y'</span>],axis<span class="op">=</span><span class="dv">1</span>)</span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>df_train[:<span class="dv">5</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>df_train <span class="op">=</span> df_view.stack().reset_index().set_axis([<span class="st">'W'</span>,<span class="st">'M'</span>,<span class="st">'y'</span>],axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>df_train[:<span class="dv">5</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="23">
 <div>
 
@@ -709,13 +691,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p><code>-</code> 이름을 숫자화</p>
 <div id="75a555d0-cac7-4077-866c-3693e643a0e8" class="cell" data-tags="[]" data-execution_count="24">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>w <span class="op">=</span> {<span class="st">'옥순(IN)'</span>:<span class="dv">0</span>, <span class="st">'영자(IN)'</span>:<span class="dv">1</span>, <span class="st">'정숙(IS)'</span>:<span class="dv">2</span>, <span class="st">'영숙(IS)'</span>:<span class="dv">3</span>, <span class="st">'순자(EN)'</span>:<span class="dv">4</span>, <span class="st">'현숙(EN)'</span>:<span class="dv">5</span>, <span class="st">'서연(ES)'</span>:<span class="dv">6</span>, <span class="st">'보람(ES)'</span>:<span class="dv">7</span>, <span class="st">'하니(I)'</span>:<span class="dv">8</span>}</span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>m <span class="op">=</span> {<span class="st">'영식(IN)'</span>:<span class="dv">0</span>, <span class="st">'영철(IN)'</span>:<span class="dv">1</span>, <span class="st">'영호(IS)'</span>:<span class="dv">2</span>, <span class="st">'광수(IS)'</span>:<span class="dv">3</span>, <span class="st">'상철(EN)'</span>:<span class="dv">4</span>, <span class="st">'영수(EN)'</span>:<span class="dv">5</span>, <span class="st">'규빈(ES)'</span>:<span class="dv">6</span>, <span class="st">'다호(ES)'</span>:<span class="dv">7</span>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>w <span class="op">=</span> {<span class="st">'옥순(IN)'</span>:<span class="dv">0</span>, <span class="st">'영자(IN)'</span>:<span class="dv">1</span>, <span class="st">'정숙(IS)'</span>:<span class="dv">2</span>, <span class="st">'영숙(IS)'</span>:<span class="dv">3</span>, <span class="st">'순자(EN)'</span>:<span class="dv">4</span>, <span class="st">'현숙(EN)'</span>:<span class="dv">5</span>, <span class="st">'서연(ES)'</span>:<span class="dv">6</span>, <span class="st">'보람(ES)'</span>:<span class="dv">7</span>, <span class="st">'하니(I)'</span>:<span class="dv">8</span>}</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>m <span class="op">=</span> {<span class="st">'영식(IN)'</span>:<span class="dv">0</span>, <span class="st">'영철(IN)'</span>:<span class="dv">1</span>, <span class="st">'영호(IS)'</span>:<span class="dv">2</span>, <span class="st">'광수(IS)'</span>:<span class="dv">3</span>, <span class="st">'상철(EN)'</span>:<span class="dv">4</span>, <span class="st">'영수(EN)'</span>:<span class="dv">5</span>, <span class="st">'규빈(ES)'</span>:<span class="dv">6</span>, <span class="st">'다호(ES)'</span>:<span class="dv">7</span>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div id="b279a1ee-3ee7-4dea-92fc-fc711b93d61b" class="cell" data-tags="[]" data-execution_count="25">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>df_train[<span class="st">'X1'</span>] <span class="op">=</span> df_train[<span class="st">'W'</span>].<span class="bu">map</span>(w)</span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>df_train[<span class="st">'X2'</span>] <span class="op">=</span> df_train[<span class="st">'M'</span>].<span class="bu">map</span>(m)</span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>df_train[::<span class="dv">3</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>df_train[<span class="st">'X1'</span>] <span class="op">=</span> df_train[<span class="st">'W'</span>].<span class="bu">map</span>(w)</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>df_train[<span class="st">'X2'</span>] <span class="op">=</span> df_train[<span class="st">'M'</span>].<span class="bu">map</span>(m)</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>df_train[::<span class="dv">3</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="25">
 <div>
 
@@ -918,121 +900,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="e.-코드정리" class="level2">
 <h2 class="anchored" data-anchor-id="e.-코드정리">E. 코드정리</h2>
-<div id="34694bd1-fc74-4927-806c-23fdc931cb7b" class="cell" data-tags="[]" data-execution_count="59">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>df_view <span class="op">=</span> pd.read_csv(<span class="st">'https://raw.githubusercontent.com/guebin/DL2024/main/posts/solo.csv'</span>,index_col<span class="op">=</span><span class="dv">0</span>)</span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> df_view.stack().reset_index().set_axis([<span class="st">'W'</span>,<span class="st">'M'</span>,<span class="st">'y'</span>],axis<span class="op">=</span><span class="dv">1</span>)</span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>w <span class="op">=</span> {<span class="st">'옥순(IN)'</span>:<span class="dv">0</span>, <span class="st">'영자(IN)'</span>:<span class="dv">1</span>, <span class="st">'정숙(IS)'</span>:<span class="dv">2</span>, <span class="st">'영숙(IS)'</span>:<span class="dv">3</span>, <span class="st">'순자(EN)'</span>:<span class="dv">4</span>, <span class="st">'현숙(EN)'</span>:<span class="dv">5</span>, <span class="st">'서연(ES)'</span>:<span class="dv">6</span>, <span class="st">'보람(ES)'</span>:<span class="dv">7</span>, <span class="st">'하니(I)'</span>:<span class="dv">8</span>}</span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>m <span class="op">=</span> {<span class="st">'영식(IN)'</span>:<span class="dv">0</span>, <span class="st">'영철(IN)'</span>:<span class="dv">1</span>, <span class="st">'영호(IS)'</span>:<span class="dv">2</span>, <span class="st">'광수(IS)'</span>:<span class="dv">3</span>, <span class="st">'상철(EN)'</span>:<span class="dv">4</span>, <span class="st">'영수(EN)'</span>:<span class="dv">5</span>, <span class="st">'규빈(ES)'</span>:<span class="dv">6</span>, <span class="st">'다호(ES)'</span>:<span class="dv">7</span>}</span>
-<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>X1 <span class="op">=</span> torch.tensor(df[<span class="st">'W'</span>].<span class="bu">map</span>(w)) <span class="co"># length-n vector </span></span>
-<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>X2 <span class="op">=</span> torch.tensor(df[<span class="st">'M'</span>].<span class="bu">map</span>(m)) <span class="co"># length-n vector </span></span>
-<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>E1 <span class="op">=</span> torch.nn.functional.one_hot(X1).<span class="bu">float</span>()</span>
-<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>E2 <span class="op">=</span> torch.nn.functional.one_hot(X2).<span class="bu">float</span>()</span>
-<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> torch.tensor(df[<span class="st">'y'</span>]).<span class="bu">float</span>().reshape(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>)</span>
-<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a><span class="co">#--#</span></span>
-<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>torch.manual_seed(<span class="dv">0</span>)</span>
-<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a>l1 <span class="op">=</span> torch.nn.Linear(in_features<span class="op">=</span><span class="dv">9</span>,out_features<span class="op">=</span><span class="dv">2</span>,bias<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a>b1 <span class="op">=</span> torch.nn.Linear(in_features<span class="op">=</span><span class="dv">9</span>,out_features<span class="op">=</span><span class="dv">1</span>,bias<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a>l2 <span class="op">=</span> torch.nn.Linear(in_features<span class="op">=</span><span class="dv">8</span>,out_features<span class="op">=</span><span class="dv">2</span>,bias<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a>b2 <span class="op">=</span> torch.nn.Linear(in_features<span class="op">=</span><span class="dv">8</span>,out_features<span class="op">=</span><span class="dv">1</span>,bias<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a>sig <span class="op">=</span> torch.nn.Sigmoid()</span>
-<span id="cb22-17"><a href="#cb22-17" aria-hidden="true" tabindex="-1"></a>loss_fn <span class="op">=</span> torch.nn.MSELoss()</span>
-<span id="cb22-18"><a href="#cb22-18" aria-hidden="true" tabindex="-1"></a>optimizr <span class="op">=</span> torch.optim.Adam(</span>
-<span id="cb22-19"><a href="#cb22-19" aria-hidden="true" tabindex="-1"></a>    <span class="bu">list</span>(l1.parameters())<span class="op">+</span><span class="bu">list</span>(l2.parameters())<span class="op">+</span><span class="bu">list</span>(b1.parameters())<span class="op">+</span><span class="bu">list</span>(b2.parameters()),</span>
-<span id="cb22-20"><a href="#cb22-20" aria-hidden="true" tabindex="-1"></a>    lr<span class="op">=</span><span class="fl">0.1</span></span>
-<span id="cb22-21"><a href="#cb22-21" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb22-22"><a href="#cb22-22" aria-hidden="true" tabindex="-1"></a><span class="co">#--#</span></span>
-<span id="cb22-23"><a href="#cb22-23" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> epoc <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">100</span>):</span>
-<span id="cb22-24"><a href="#cb22-24" aria-hidden="true" tabindex="-1"></a>    <span class="co">## step1 </span></span>
-<span id="cb22-25"><a href="#cb22-25" aria-hidden="true" tabindex="-1"></a>    W_features <span class="op">=</span> l1(E1) </span>
-<span id="cb22-26"><a href="#cb22-26" aria-hidden="true" tabindex="-1"></a>    W_bias <span class="op">=</span> b1(E1)</span>
-<span id="cb22-27"><a href="#cb22-27" aria-hidden="true" tabindex="-1"></a>    M_features <span class="op">=</span> l2(E2) </span>
-<span id="cb22-28"><a href="#cb22-28" aria-hidden="true" tabindex="-1"></a>    M_bias <span class="op">=</span> b2(E2)</span>
-<span id="cb22-29"><a href="#cb22-29" aria-hidden="true" tabindex="-1"></a>    dot <span class="op">=</span> (W_features <span class="op">*</span> M_features).<span class="bu">sum</span>(axis<span class="op">=</span><span class="dv">1</span>).reshppe</span>
-<span id="cb22-30"><a href="#cb22-30" aria-hidden="true" tabindex="-1"></a>    yhat <span class="op">=</span> sig(dot).reshape(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>) <span class="op">*</span> <span class="dv">5</span></span>
-<span id="cb22-31"><a href="#cb22-31" aria-hidden="true" tabindex="-1"></a>    <span class="co">## step2 </span></span>
-<span id="cb22-32"><a href="#cb22-32" aria-hidden="true" tabindex="-1"></a>    loss <span class="op">=</span> loss_fn(yhat,y)</span>
-<span id="cb22-33"><a href="#cb22-33" aria-hidden="true" tabindex="-1"></a>    <span class="co">## step3 </span></span>
-<span id="cb22-34"><a href="#cb22-34" aria-hidden="true" tabindex="-1"></a>    loss.backward()</span>
-<span id="cb22-35"><a href="#cb22-35" aria-hidden="true" tabindex="-1"></a>    <span class="co">## step4 </span></span>
-<span id="cb22-36"><a href="#cb22-36" aria-hidden="true" tabindex="-1"></a>    optimizr.step()</span>
-<span id="cb22-37"><a href="#cb22-37" aria-hidden="true" tabindex="-1"></a>    optimizr.zero_grad()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="34694bd1-fc74-4927-806c-23fdc931cb7b" class="cell" data-tags="[]" data-execution_count="65">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>df_view <span class="op">=</span> pd.read_csv(<span class="st">'https://raw.githubusercontent.com/guebin/DL2024/main/posts/solo.csv'</span>,index_col<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>df_train <span class="op">=</span> df_view.stack().reset_index().set_axis([<span class="st">'W'</span>,<span class="st">'M'</span>,<span class="st">'y'</span>],axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>w <span class="op">=</span> {<span class="st">'옥순(IN)'</span>:<span class="dv">0</span>, <span class="st">'영자(IN)'</span>:<span class="dv">1</span>, <span class="st">'정숙(IS)'</span>:<span class="dv">2</span>, <span class="st">'영숙(IS)'</span>:<span class="dv">3</span>, <span class="st">'순자(EN)'</span>:<span class="dv">4</span>, <span class="st">'현숙(EN)'</span>:<span class="dv">5</span>, <span class="st">'서연(ES)'</span>:<span class="dv">6</span>, <span class="st">'보람(ES)'</span>:<span class="dv">7</span>, <span class="st">'하니(I)'</span>:<span class="dv">8</span>}</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>m <span class="op">=</span> {<span class="st">'영식(IN)'</span>:<span class="dv">0</span>, <span class="st">'영철(IN)'</span>:<span class="dv">1</span>, <span class="st">'영호(IS)'</span>:<span class="dv">2</span>, <span class="st">'광수(IS)'</span>:<span class="dv">3</span>, <span class="st">'상철(EN)'</span>:<span class="dv">4</span>, <span class="st">'영수(EN)'</span>:<span class="dv">5</span>, <span class="st">'규빈(ES)'</span>:<span class="dv">6</span>, <span class="st">'다호(ES)'</span>:<span class="dv">7</span>}</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>X1 <span class="op">=</span> torch.tensor(df_train[<span class="st">'W'</span>].<span class="bu">map</span>(w)) <span class="co"># length-n vector </span></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>X2 <span class="op">=</span> torch.tensor(df_train[<span class="st">'M'</span>].<span class="bu">map</span>(m)) <span class="co"># length-n vector </span></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>E1 <span class="op">=</span> torch.nn.functional.one_hot(X1).<span class="bu">float</span>()</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>E2 <span class="op">=</span> torch.nn.functional.one_hot(X2).<span class="bu">float</span>()</span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> torch.tensor(df_train[<span class="st">'y'</span>]).<span class="bu">float</span>().reshape(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="f9172ac3-1a80-4bb9-9679-c0085412905b" class="cell" data-tags="[]" data-execution_count="60">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>pd.concat([df_train[<span class="st">'y'</span>], pd.DataFrame(yhat.data, columns<span class="op">=</span>[<span class="st">'yhat'</span>])],axis<span class="op">=</span><span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="60">
-<div>
-
-
-<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
-<thead>
-<tr class="header">
-<th data-quarto-table-cell-role="th"></th>
-<th data-quarto-table-cell-role="th">y</th>
-<th data-quarto-table-cell-role="th">yhat</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td data-quarto-table-cell-role="th">0</td>
-<td>4.02</td>
-<td>4.055200</td>
-</tr>
-<tr class="even">
-<td data-quarto-table-cell-role="th">1</td>
-<td>3.45</td>
-<td>3.476963</td>
-</tr>
-<tr class="odd">
-<td data-quarto-table-cell-role="th">2</td>
-<td>3.42</td>
-<td>3.375471</td>
-</tr>
-<tr class="even">
-<td data-quarto-table-cell-role="th">3</td>
-<td>0.84</td>
-<td>0.908366</td>
-</tr>
-<tr class="odd">
-<td data-quarto-table-cell-role="th">4</td>
-<td>1.12</td>
-<td>0.949417</td>
-</tr>
-<tr class="even">
-<td data-quarto-table-cell-role="th">...</td>
-<td>...</td>
-<td>...</td>
-</tr>
-<tr class="odd">
-<td data-quarto-table-cell-role="th">58</td>
-<td>4.98</td>
-<td>4.972519</td>
-</tr>
-<tr class="even">
-<td data-quarto-table-cell-role="th">59</td>
-<td>4.53</td>
-<td>4.432314</td>
-</tr>
-<tr class="odd">
-<td data-quarto-table-cell-role="th">60</td>
-<td>4.39</td>
-<td>4.520156</td>
-</tr>
-<tr class="even">
-<td data-quarto-table-cell-role="th">61</td>
-<td>4.45</td>
-<td>4.478360</td>
-</tr>
-<tr class="odd">
-<td data-quarto-table-cell-role="th">62</td>
-<td>4.52</td>
-<td>4.500105</td>
-</tr>
-</tbody>
-</table>
-
-<p>63 rows × 2 columns</p>
-</div>
-</div>
+<div id="d372224c" class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>df_view</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="f.-모형의-해석" class="level2">
