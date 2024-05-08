@@ -165,7 +165,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#c.-할일1의-구현" id="toc-c.-할일1의-구현" class="nav-link" data-scroll-target="#c.-할일1의-구현">C. 할일1의 구현</a></li>
   <li><a href="#d.-할일2의-구현-step14-수행" id="toc-d.-할일2의-구현-step14-수행" class="nav-link" data-scroll-target="#d.-할일2의-구현-step14-수행">D. 할일2의 구현 – step1~4 수행</a></li>
   <li><a href="#e.-코드정리" id="toc-e.-코드정리" class="nav-link" data-scroll-target="#e.-코드정리">E. 코드정리</a></li>
-  <li><a href="#f.-모형의-해석" id="toc-f.-모형의-해석" class="nav-link" data-scroll-target="#f.-모형의-해석">F. 모형의 해석</a></li>
+  <li><a href="#f.-모형의-해석-쉬운-경우" id="toc-f.-모형의-해석-쉬운-경우" class="nav-link" data-scroll-target="#f.-모형의-해석-쉬운-경우">F. 모형의 해석 – 쉬운 경우</a></li>
+  <li><a href="#g.-모형의-해석-어려운-경우-1" id="toc-g.-모형의-해석-어려운-경우-1" class="nav-link" data-scroll-target="#g.-모형의-해석-어려운-경우-1">G. 모형의 해석 – 어려운 경우 (1)</a></li>
+  <li><a href="#h.-모형의-해석-어려운-경우-2" id="toc-h.-모형의-해석-어려운-경우-2" class="nav-link" data-scroll-target="#h.-모형의-해석-어려운-경우-2">H. 모형의 해석 – 어려운 경우 (2)</a></li>
   </ul></li>
   </ul>
 <div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="10wk-2.out.ipynb" download="10wk-2.out.ipynb"><i class="bi bi-journal-code"></i>Jupyter</a></li></ul></div></nav>
@@ -702,6 +704,28 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td style="text-align: center;">2.32<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a></td>
 <td style="text-align: center;">3.4776</td>
 <td style="text-align: center;">3.45</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">…</td>
+<td style="text-align: center;">…</td>
+<td style="text-align: center;">…</td>
+<td style="text-align: center;">…</td>
+<td style="text-align: center;">…</td>
+<td style="text-align: center;">…</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">하니(I)</td>
+<td style="text-align: center;">영식(IN)</td>
+<td style="text-align: center;">0.20, 0.00</td>
+<td style="text-align: center;">1.20, 0.5</td>
+<td style="text-align: center;">0.24</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">4.8</td>
+<td style="text-align: center;">5.04</td>
+<td style="text-align: center;">4.85</td>
 </tr>
 <tr class="odd">
 <td style="text-align: center;">…</td>
@@ -1433,8 +1457,8 @@ E2.shape: torch.Size([63, 8]) // 이때 8은 남성참가자의 수</code></pre>
 </div>
 </div>
 </section>
-<section id="f.-모형의-해석" class="level2">
-<h2 class="anchored" data-anchor-id="f.-모형의-해석">F. 모형의 해석</h2>
+<section id="f.-모형의-해석-쉬운-경우" class="level2">
+<h2 class="anchored" data-anchor-id="f.-모형의-해석-쉬운-경우">F. 모형의 해석 – 쉬운 경우</h2>
 <div id="de49800a-7972-4d6c-ad0a-ccd5e19ce680" class="cell" data-tags="[]" data-execution_count="1101">
 <div class="sourceCode cell-code" id="cb68"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a>df_ebdspace <span class="op">=</span> pd.DataFrame(torch.concat([W_features.data<span class="op">*</span>M_features.data,W_bias.data, M_bias.data],axis<span class="op">=</span><span class="dv">1</span>))</span>
 <span id="cb68-2"><a href="#cb68-2" aria-hidden="true" tabindex="-1"></a>df_ebdspace.columns <span class="op">=</span> [<span class="st">'잠재특징1궁합'</span>,<span class="st">'잠재특징2궁합'</span>,<span class="st">'여성바이어스'</span>,<span class="st">'남성바이어스'</span>]</span>
@@ -2081,9 +2105,9 @@ E2.shape: torch.Size([63, 8]) // 이때 8은 남성참가자의 수</code></pre>
 </div>
 </div>
 </div>
-<div id="0ea31d76-3b58-4051-bf16-abf04fb60347" class="cell" data-tags="[]" data-execution_count="1102">
+<div id="0ea31d76-3b58-4051-bf16-abf04fb60347" class="cell" data-tags="[]" data-execution_count="1122">
 <div class="sourceCode cell-code" id="cb69"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a>pd.concat([df_train,df_yhat,df_ebdspace],axis<span class="op">=</span><span class="dv">1</span>)[<span class="dv">56</span>:]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="1102">
+<div class="cell-output cell-output-display" data-execution_count="1122">
 <div>
 
 
@@ -2107,77 +2131,77 @@ E2.shape: torch.Size([63, 8]) // 이때 8은 남성참가자의 수</code></pre>
 <td>하니(I)</td>
 <td>영식(IN)</td>
 <td>4.85</td>
-<td>4.894904</td>
-<td>0.881758</td>
-<td>0.175226</td>
-<td>2.362003</td>
-<td>0.422094</td>
+<td>4.848317</td>
+<td>1.060690</td>
+<td>-0.203189</td>
+<td>2.224155</td>
+<td>0.382940</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">57</td>
 <td>하니(I)</td>
 <td>영철(IN)</td>
 <td>4.82</td>
-<td>4.898754</td>
-<td>0.855905</td>
-<td>0.171567</td>
-<td>2.362003</td>
-<td>0.489706</td>
+<td>4.851951</td>
+<td>1.022445</td>
+<td>-0.197461</td>
+<td>2.224155</td>
+<td>0.440450</td>
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">58</td>
 <td>하니(I)</td>
 <td>광수(IS)</td>
 <td>4.98</td>
-<td>4.903782</td>
-<td>1.060992</td>
-<td>-0.096634</td>
-<td>2.362003</td>
-<td>0.604784</td>
+<td>4.904417</td>
+<td>1.308467</td>
+<td>0.268345</td>
+<td>2.224155</td>
+<td>0.136925</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">59</td>
 <td>하니(I)</td>
 <td>상철(EN)</td>
 <td>4.53</td>
-<td>4.424208</td>
-<td>-0.764916</td>
-<td>0.184017</td>
-<td>2.362003</td>
-<td>0.257996</td>
+<td>4.349900</td>
+<td>-1.090041</td>
+<td>0.251617</td>
+<td>2.224155</td>
+<td>0.515050</td>
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">60</td>
 <td>하니(I)</td>
 <td>영수(EN)</td>
 <td>4.39</td>
-<td>4.504849</td>
-<td>-0.735018</td>
-<td>0.143679</td>
-<td>2.362003</td>
-<td>0.437384</td>
+<td>4.457994</td>
+<td>-1.059969</td>
+<td>0.305148</td>
+<td>2.224155</td>
+<td>0.637843</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">61</td>
 <td>하니(I)</td>
 <td>규빈(ES)</td>
 <td>4.45</td>
-<td>4.475366</td>
-<td>-0.632184</td>
-<td>-0.041175</td>
-<td>2.362003</td>
-<td>0.454997</td>
+<td>4.534276</td>
+<td>-0.918791</td>
+<td>0.623218</td>
+<td>2.224155</td>
+<td>0.347246</td>
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">62</td>
 <td>하니(I)</td>
 <td>다호(ES)</td>
 <td>4.52</td>
-<td>4.512313</td>
-<td>-0.630985</td>
-<td>-0.073776</td>
-<td>2.362003</td>
-<td>0.567650</td>
+<td>4.587080</td>
+<td>-0.924281</td>
+<td>0.687805</td>
+<td>2.224155</td>
+<td>0.420066</td>
 </tr>
 </tbody>
 </table>
@@ -2185,6 +2209,1491 @@ E2.shape: torch.Size([63, 8]) // 이때 8은 남성참가자의 수</code></pre>
 </div>
 </div>
 </div>
+</section>
+<section id="g.-모형의-해석-어려운-경우-1" class="level2">
+<h2 class="anchored" data-anchor-id="g.-모형의-해석-어려운-경우-1">G. 모형의 해석 – 어려운 경우 (1)</h2>
+<div id="11c8452e-7f00-4dc8-8be3-01ecb5accfb2" class="cell" data-tags="[]" data-execution_count="1153">
+<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a>df_view <span class="op">=</span> pd.read_csv(<span class="st">'https://raw.githubusercontent.com/guebin/DL2024/main/posts/solo.csv'</span>,index_col<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb70-2"><a href="#cb70-2" aria-hidden="true" tabindex="-1"></a>df_train <span class="op">=</span> df_view.stack().reset_index().set_axis([<span class="st">'W'</span>,<span class="st">'M'</span>,<span class="st">'y'</span>],axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb70-3"><a href="#cb70-3" aria-hidden="true" tabindex="-1"></a>w <span class="op">=</span> {<span class="st">'옥순(IN)'</span>:<span class="dv">0</span>, <span class="st">'영자(IN)'</span>:<span class="dv">1</span>, <span class="st">'정숙(IS)'</span>:<span class="dv">2</span>, <span class="st">'영숙(IS)'</span>:<span class="dv">3</span>, <span class="st">'순자(EN)'</span>:<span class="dv">4</span>, <span class="st">'현숙(EN)'</span>:<span class="dv">5</span>, <span class="st">'서연(ES)'</span>:<span class="dv">6</span>, <span class="st">'보람(ES)'</span>:<span class="dv">7</span>, <span class="st">'하니(I)'</span>:<span class="dv">8</span>}</span>
+<span id="cb70-4"><a href="#cb70-4" aria-hidden="true" tabindex="-1"></a>m <span class="op">=</span> {<span class="st">'영식(IN)'</span>:<span class="dv">0</span>, <span class="st">'영철(IN)'</span>:<span class="dv">1</span>, <span class="st">'영호(IS)'</span>:<span class="dv">2</span>, <span class="st">'광수(IS)'</span>:<span class="dv">3</span>, <span class="st">'상철(EN)'</span>:<span class="dv">4</span>, <span class="st">'영수(EN)'</span>:<span class="dv">5</span>, <span class="st">'규빈(ES)'</span>:<span class="dv">6</span>, <span class="st">'다호(ES)'</span>:<span class="dv">7</span>}</span>
+<span id="cb70-5"><a href="#cb70-5" aria-hidden="true" tabindex="-1"></a>X1 <span class="op">=</span> torch.tensor(df_train[<span class="st">'W'</span>].<span class="bu">map</span>(w)) <span class="co"># length-n vector </span></span>
+<span id="cb70-6"><a href="#cb70-6" aria-hidden="true" tabindex="-1"></a>X2 <span class="op">=</span> torch.tensor(df_train[<span class="st">'M'</span>].<span class="bu">map</span>(m)) <span class="co"># length-n vector </span></span>
+<span id="cb70-7"><a href="#cb70-7" aria-hidden="true" tabindex="-1"></a>E1 <span class="op">=</span> torch.nn.functional.one_hot(X1).<span class="bu">float</span>()</span>
+<span id="cb70-8"><a href="#cb70-8" aria-hidden="true" tabindex="-1"></a>E2 <span class="op">=</span> torch.nn.functional.one_hot(X2).<span class="bu">float</span>()</span>
+<span id="cb70-9"><a href="#cb70-9" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> torch.tensor(df_train[<span class="st">'y'</span>]).<span class="bu">float</span>().reshape(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>)</span>
+<span id="cb70-10"><a href="#cb70-10" aria-hidden="true" tabindex="-1"></a><span class="co">#--#</span></span>
+<span id="cb70-11"><a href="#cb70-11" aria-hidden="true" tabindex="-1"></a>torch.manual_seed(<span class="dv">8</span>)</span>
+<span id="cb70-12"><a href="#cb70-12" aria-hidden="true" tabindex="-1"></a>l1 <span class="op">=</span> torch.nn.Linear(in_features<span class="op">=</span><span class="dv">9</span>,out_features<span class="op">=</span><span class="dv">2</span>,bias<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb70-13"><a href="#cb70-13" aria-hidden="true" tabindex="-1"></a>b1 <span class="op">=</span> torch.nn.Linear(in_features<span class="op">=</span><span class="dv">9</span>,out_features<span class="op">=</span><span class="dv">1</span>,bias<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb70-14"><a href="#cb70-14" aria-hidden="true" tabindex="-1"></a>l2 <span class="op">=</span> torch.nn.Linear(in_features<span class="op">=</span><span class="dv">8</span>,out_features<span class="op">=</span><span class="dv">2</span>,bias<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb70-15"><a href="#cb70-15" aria-hidden="true" tabindex="-1"></a>b2 <span class="op">=</span> torch.nn.Linear(in_features<span class="op">=</span><span class="dv">8</span>,out_features<span class="op">=</span><span class="dv">1</span>,bias<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb70-16"><a href="#cb70-16" aria-hidden="true" tabindex="-1"></a>sig <span class="op">=</span> torch.nn.Sigmoid()</span>
+<span id="cb70-17"><a href="#cb70-17" aria-hidden="true" tabindex="-1"></a>loss_fn <span class="op">=</span> torch.nn.MSELoss()</span>
+<span id="cb70-18"><a href="#cb70-18" aria-hidden="true" tabindex="-1"></a>params <span class="op">=</span> <span class="bu">list</span>(l1.parameters()) <span class="op">+</span> <span class="bu">list</span>(b1.parameters()) <span class="op">+</span> <span class="bu">list</span>(l2.parameters()) <span class="op">+</span> <span class="bu">list</span>(b2.parameters())</span>
+<span id="cb70-19"><a href="#cb70-19" aria-hidden="true" tabindex="-1"></a>optimizr <span class="op">=</span> torch.optim.Adam(params,lr<span class="op">=</span><span class="fl">0.1</span>)</span>
+<span id="cb70-20"><a href="#cb70-20" aria-hidden="true" tabindex="-1"></a><span class="co">#--#</span></span>
+<span id="cb70-21"><a href="#cb70-21" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> epoc <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">100</span>):</span>
+<span id="cb70-22"><a href="#cb70-22" aria-hidden="true" tabindex="-1"></a>    <span class="co">## step1 </span></span>
+<span id="cb70-23"><a href="#cb70-23" aria-hidden="true" tabindex="-1"></a>    W_features <span class="op">=</span> l1(E1) </span>
+<span id="cb70-24"><a href="#cb70-24" aria-hidden="true" tabindex="-1"></a>    W_bias <span class="op">=</span> b1(E1)</span>
+<span id="cb70-25"><a href="#cb70-25" aria-hidden="true" tabindex="-1"></a>    M_features <span class="op">=</span> l2(E2) </span>
+<span id="cb70-26"><a href="#cb70-26" aria-hidden="true" tabindex="-1"></a>    M_bias <span class="op">=</span> b2(E2)</span>
+<span id="cb70-27"><a href="#cb70-27" aria-hidden="true" tabindex="-1"></a>    match_scores <span class="op">=</span> (W_features <span class="op">*</span> M_features).<span class="bu">sum</span>(axis<span class="op">=</span><span class="dv">1</span>).reshape(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>) <span class="op">+</span> W_bias <span class="op">+</span> M_bias</span>
+<span id="cb70-28"><a href="#cb70-28" aria-hidden="true" tabindex="-1"></a>    yhat <span class="op">=</span> sig(match_scores)<span class="op">*</span><span class="dv">5</span> </span>
+<span id="cb70-29"><a href="#cb70-29" aria-hidden="true" tabindex="-1"></a>    <span class="co">## step2 </span></span>
+<span id="cb70-30"><a href="#cb70-30" aria-hidden="true" tabindex="-1"></a>    loss <span class="op">=</span> loss_fn(yhat,y)</span>
+<span id="cb70-31"><a href="#cb70-31" aria-hidden="true" tabindex="-1"></a>    <span class="co">## step3 </span></span>
+<span id="cb70-32"><a href="#cb70-32" aria-hidden="true" tabindex="-1"></a>    loss.backward()</span>
+<span id="cb70-33"><a href="#cb70-33" aria-hidden="true" tabindex="-1"></a>    <span class="co">## step4 </span></span>
+<span id="cb70-34"><a href="#cb70-34" aria-hidden="true" tabindex="-1"></a>    optimizr.step()</span>
+<span id="cb70-35"><a href="#cb70-35" aria-hidden="true" tabindex="-1"></a>    optimizr.zero_grad()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="52ce9ac2-ef60-45e8-9626-a456a14da57a" class="cell" data-tags="[]" data-execution_count="1154">
+<div class="sourceCode cell-code" id="cb71"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a>df_ebdspace <span class="op">=</span> pd.DataFrame(torch.concat([W_features.data<span class="op">*</span>M_features.data,W_bias.data, M_bias.data],axis<span class="op">=</span><span class="dv">1</span>))</span>
+<span id="cb71-2"><a href="#cb71-2" aria-hidden="true" tabindex="-1"></a>df_ebdspace.columns <span class="op">=</span> [<span class="st">'잠재특징1궁합'</span>,<span class="st">'잠재특징2궁합'</span>,<span class="st">'여성바이어스'</span>,<span class="st">'남성바이어스'</span>]</span>
+<span id="cb71-3"><a href="#cb71-3" aria-hidden="true" tabindex="-1"></a>df_yhat <span class="op">=</span> pd.DataFrame(yhat.data,columns<span class="op">=</span>[<span class="st">'yhat'</span>])</span>
+<span id="cb71-4"><a href="#cb71-4" aria-hidden="true" tabindex="-1"></a>pd.concat([df_train,df_yhat,df_ebdspace],axis<span class="op">=</span><span class="dv">1</span>)[:<span class="dv">56</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="1154">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">W</th>
+<th data-quarto-table-cell-role="th">M</th>
+<th data-quarto-table-cell-role="th">y</th>
+<th data-quarto-table-cell-role="th">yhat</th>
+<th data-quarto-table-cell-role="th">잠재특징1궁합</th>
+<th data-quarto-table-cell-role="th">잠재특징2궁합</th>
+<th data-quarto-table-cell-role="th">여성바이어스</th>
+<th data-quarto-table-cell-role="th">남성바이어스</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>옥순(IN)</td>
+<td>영철(IN)</td>
+<td>4.02</td>
+<td>4.038645</td>
+<td>0.302724</td>
+<td>1.411065</td>
+<td>-0.983853</td>
+<td>0.705386</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>옥순(IN)</td>
+<td>영호(IS)</td>
+<td>3.45</td>
+<td>3.468559</td>
+<td>0.743988</td>
+<td>0.439198</td>
+<td>-0.983853</td>
+<td>0.618197</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>옥순(IN)</td>
+<td>광수(IS)</td>
+<td>3.42</td>
+<td>3.363777</td>
+<td>0.776415</td>
+<td>0.382274</td>
+<td>-0.983853</td>
+<td>0.545838</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>옥순(IN)</td>
+<td>상철(EN)</td>
+<td>0.84</td>
+<td>0.896818</td>
+<td>-0.992729</td>
+<td>-0.430939</td>
+<td>-0.983853</td>
+<td>0.886856</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>옥순(IN)</td>
+<td>영수(EN)</td>
+<td>1.12</td>
+<td>0.962312</td>
+<td>-0.942706</td>
+<td>-0.539754</td>
+<td>-0.983853</td>
+<td>1.032223</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">5</td>
+<td>옥순(IN)</td>
+<td>규빈(ES)</td>
+<td>0.43</td>
+<td>0.528844</td>
+<td>-0.569901</td>
+<td>-1.434720</td>
+<td>-0.983853</td>
+<td>0.853764</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">6</td>
+<td>옥순(IN)</td>
+<td>다호(ES)</td>
+<td>0.49</td>
+<td>0.563829</td>
+<td>-0.556357</td>
+<td>-1.467226</td>
+<td>-0.983853</td>
+<td>0.944640</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">7</td>
+<td>영자(IN)</td>
+<td>영식(IN)</td>
+<td>3.93</td>
+<td>4.011552</td>
+<td>0.323436</td>
+<td>1.356050</td>
+<td>-0.930421</td>
+<td>0.651731</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">8</td>
+<td>영자(IN)</td>
+<td>영철(IN)</td>
+<td>3.99</td>
+<td>3.999045</td>
+<td>0.324665</td>
+<td>1.285471</td>
+<td>-0.930421</td>
+<td>0.705386</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">9</td>
+<td>영자(IN)</td>
+<td>영호(IS)</td>
+<td>3.63</td>
+<td>3.540108</td>
+<td>0.797912</td>
+<td>0.400107</td>
+<td>-0.930421</td>
+<td>0.618197</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">10</td>
+<td>영자(IN)</td>
+<td>광수(IS)</td>
+<td>3.43</td>
+<td>3.445972</td>
+<td>0.832689</td>
+<td>0.348249</td>
+<td>-0.930421</td>
+<td>0.545838</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">11</td>
+<td>영자(IN)</td>
+<td>상철(EN)</td>
+<td>0.98</td>
+<td>0.911509</td>
+<td>-1.064682</td>
+<td>-0.392583</td>
+<td>-0.930421</td>
+<td>0.886856</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">12</td>
+<td>영자(IN)</td>
+<td>영수(EN)</td>
+<td>0.96</td>
+<td>0.988332</td>
+<td>-1.011034</td>
+<td>-0.491713</td>
+<td>-0.930421</td>
+<td>1.032223</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">13</td>
+<td>영자(IN)</td>
+<td>규빈(ES)</td>
+<td>0.52</td>
+<td>0.598705</td>
+<td>-0.611208</td>
+<td>-1.307021</td>
+<td>-0.930421</td>
+<td>0.853764</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">14</td>
+<td>정숙(IS)</td>
+<td>영식(IN)</td>
+<td>3.52</td>
+<td>3.417089</td>
+<td>0.659914</td>
+<td>0.304652</td>
+<td>-0.846774</td>
+<td>0.651731</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">15</td>
+<td>정숙(IS)</td>
+<td>영철(IN)</td>
+<td>3.42</td>
+<td>3.460365</td>
+<td>0.662421</td>
+<td>0.288796</td>
+<td>-0.846774</td>
+<td>0.705386</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">16</td>
+<td>정숙(IS)</td>
+<td>영호(IS)</td>
+<td>4.05</td>
+<td>4.079874</td>
+<td>1.627999</td>
+<td>0.089888</td>
+<td>-0.846774</td>
+<td>0.618197</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">17</td>
+<td>정숙(IS)</td>
+<td>광수(IS)</td>
+<td>4.06</td>
+<td>4.070033</td>
+<td>1.698955</td>
+<td>0.078238</td>
+<td>-0.846774</td>
+<td>0.545838</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">18</td>
+<td>정숙(IS)</td>
+<td>상철(EN)</td>
+<td>0.39</td>
+<td>0.489662</td>
+<td>-2.172296</td>
+<td>-0.088198</td>
+<td>-0.846774</td>
+<td>0.886856</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">19</td>
+<td>정숙(IS)</td>
+<td>규빈(ES)</td>
+<td>0.93</td>
+<td>0.887259</td>
+<td>-1.247061</td>
+<td>-0.293637</td>
+<td>-0.846774</td>
+<td>0.853764</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">20</td>
+<td>정숙(IS)</td>
+<td>다호(ES)</td>
+<td>0.99</td>
+<td>0.973428</td>
+<td>-1.217423</td>
+<td>-0.300290</td>
+<td>-0.846774</td>
+<td>0.944640</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">21</td>
+<td>영숙(IS)</td>
+<td>영식(IN)</td>
+<td>3.43</td>
+<td>3.453432</td>
+<td>0.628118</td>
+<td>0.407719</td>
+<td>-0.884238</td>
+<td>0.651731</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">22</td>
+<td>영숙(IS)</td>
+<td>영철(IN)</td>
+<td>3.57</td>
+<td>3.490377</td>
+<td>0.630504</td>
+<td>0.386498</td>
+<td>-0.884238</td>
+<td>0.705386</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">23</td>
+<td>영숙(IS)</td>
+<td>광수(IS)</td>
+<td>3.95</td>
+<td>3.997684</td>
+<td>1.617095</td>
+<td>0.104707</td>
+<td>-0.884238</td>
+<td>0.545838</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">24</td>
+<td>영숙(IS)</td>
+<td>상철(EN)</td>
+<td>0.56</td>
+<td>0.506416</td>
+<td>-2.067629</td>
+<td>-0.118037</td>
+<td>-0.884238</td>
+<td>0.886856</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">25</td>
+<td>영숙(IS)</td>
+<td>영수(EN)</td>
+<td>0.52</td>
+<td>0.615553</td>
+<td>-1.963442</td>
+<td>-0.147842</td>
+<td>-0.884238</td>
+<td>1.032223</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">26</td>
+<td>영숙(IS)</td>
+<td>규빈(ES)</td>
+<td>0.89</td>
+<td>0.832648</td>
+<td>-1.186974</td>
+<td>-0.392978</td>
+<td>-0.884238</td>
+<td>0.853764</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">27</td>
+<td>영숙(IS)</td>
+<td>다호(ES)</td>
+<td>0.89</td>
+<td>0.911946</td>
+<td>-1.158764</td>
+<td>-0.401881</td>
+<td>-0.884238</td>
+<td>0.944640</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">28</td>
+<td>순자(EN)</td>
+<td>영식(IN)</td>
+<td>1.12</td>
+<td>1.073751</td>
+<td>-0.553524</td>
+<td>-0.133968</td>
+<td>-1.260765</td>
+<td>0.651731</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">29</td>
+<td>순자(EN)</td>
+<td>영호(IS)</td>
+<td>0.59</td>
+<td>0.571460</td>
+<td>-1.365535</td>
+<td>-0.039528</td>
+<td>-1.260765</td>
+<td>0.618197</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">30</td>
+<td>순자(EN)</td>
+<td>광수(IS)</td>
+<td>0.43</td>
+<td>0.510373</td>
+<td>-1.425051</td>
+<td>-0.034405</td>
+<td>-1.260765</td>
+<td>0.545838</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">31</td>
+<td>순자(EN)</td>
+<td>상철(EN)</td>
+<td>4.01</td>
+<td>4.078105</td>
+<td>1.822081</td>
+<td>0.038784</td>
+<td>-1.260765</td>
+<td>0.886856</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">32</td>
+<td>순자(EN)</td>
+<td>영수(EN)</td>
+<td>4.16</td>
+<td>4.124788</td>
+<td>1.730267</td>
+<td>0.048578</td>
+<td>-1.260765</td>
+<td>1.032223</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">33</td>
+<td>순자(EN)</td>
+<td>규빈(ES)</td>
+<td>3.52</td>
+<td>3.415586</td>
+<td>1.046011</td>
+<td>0.129124</td>
+<td>-1.260765</td>
+<td>0.853764</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">34</td>
+<td>순자(EN)</td>
+<td>다호(ES)</td>
+<td>3.38</td>
+<td>3.489245</td>
+<td>1.021151</td>
+<td>0.132050</td>
+<td>-1.260765</td>
+<td>0.944640</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">35</td>
+<td>현숙(EN)</td>
+<td>영식(IN)</td>
+<td>0.94</td>
+<td>0.907247</td>
+<td>-0.521171</td>
+<td>-0.265791</td>
+<td>-1.371327</td>
+<td>0.651731</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">36</td>
+<td>현숙(EN)</td>
+<td>영철(IN)</td>
+<td>1.05</td>
+<td>0.956914</td>
+<td>-0.523151</td>
+<td>-0.251958</td>
+<td>-1.371327</td>
+<td>0.705386</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">37</td>
+<td>현숙(EN)</td>
+<td>영호(IS)</td>
+<td>0.32</td>
+<td>0.537146</td>
+<td>-1.285721</td>
+<td>-0.078422</td>
+<td>-1.371327</td>
+<td>0.618197</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">38</td>
+<td>현숙(EN)</td>
+<td>광수(IS)</td>
+<td>0.45</td>
+<td>0.483035</td>
+<td>-1.341758</td>
+<td>-0.068258</td>
+<td>-1.371327</td>
+<td>0.545838</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">39</td>
+<td>현숙(EN)</td>
+<td>상철(EN)</td>
+<td>4.02</td>
+<td>3.935941</td>
+<td>1.715582</td>
+<td>0.076948</td>
+<td>-1.371327</td>
+<td>0.886856</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">40</td>
+<td>현숙(EN)</td>
+<td>영수(EN)</td>
+<td>3.78</td>
+<td>4.000092</td>
+<td>1.629135</td>
+<td>0.096378</td>
+<td>-1.371327</td>
+<td>1.032223</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">41</td>
+<td>현숙(EN)</td>
+<td>다호(ES)</td>
+<td>3.54</td>
+<td>3.446409</td>
+<td>0.961466</td>
+<td>0.261986</td>
+<td>-1.371327</td>
+<td>0.944640</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">42</td>
+<td>서연(ES)</td>
+<td>영식(IN)</td>
+<td>0.51</td>
+<td>0.520202</td>
+<td>-0.218469</td>
+<td>-1.394457</td>
+<td>-1.191920</td>
+<td>0.651731</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">43</td>
+<td>서연(ES)</td>
+<td>영철(IN)</td>
+<td>0.56</td>
+<td>0.581619</td>
+<td>-0.219299</td>
+<td>-1.321879</td>
+<td>-1.191920</td>
+<td>0.705386</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">44</td>
+<td>서연(ES)</td>
+<td>영호(IS)</td>
+<td>0.88</td>
+<td>0.894277</td>
+<td>-0.538959</td>
+<td>-0.411439</td>
+<td>-1.191920</td>
+<td>0.618197</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">45</td>
+<td>서연(ES)</td>
+<td>광수(IS)</td>
+<td>0.89</td>
+<td>0.863477</td>
+<td>-0.562449</td>
+<td>-0.358112</td>
+<td>-1.191920</td>
+<td>0.545838</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">46</td>
+<td>서연(ES)</td>
+<td>상철(EN)</td>
+<td>3.50</td>
+<td>3.468835</td>
+<td>0.719152</td>
+<td>0.403702</td>
+<td>-1.191920</td>
+<td>0.886856</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">47</td>
+<td>서연(ES)</td>
+<td>영수(EN)</td>
+<td>3.64</td>
+<td>3.683471</td>
+<td>0.682914</td>
+<td>0.505639</td>
+<td>-1.191920</td>
+<td>1.032223</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">48</td>
+<td>서연(ES)</td>
+<td>규빈(ES)</td>
+<td>4.04</td>
+<td>4.025697</td>
+<td>0.412847</td>
+<td>1.344040</td>
+<td>-1.191920</td>
+<td>0.853764</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">49</td>
+<td>서연(ES)</td>
+<td>다호(ES)</td>
+<td>4.10</td>
+<td>4.110211</td>
+<td>0.403035</td>
+<td>1.374491</td>
+<td>-1.191920</td>
+<td>0.944640</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">50</td>
+<td>보람(ES)</td>
+<td>영식(IN)</td>
+<td>0.48</td>
+<td>0.580562</td>
+<td>-0.269182</td>
+<td>-1.233859</td>
+<td>-1.178461</td>
+<td>0.651731</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">51</td>
+<td>보람(ES)</td>
+<td>영철(IN)</td>
+<td>0.51</td>
+<td>0.643266</td>
+<td>-0.270204</td>
+<td>-1.169639</td>
+<td>-1.178461</td>
+<td>0.705386</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">52</td>
+<td>보람(ES)</td>
+<td>영호(IS)</td>
+<td>1.03</td>
+<td>0.848056</td>
+<td>-0.664067</td>
+<td>-0.364054</td>
+<td>-1.178461</td>
+<td>0.618197</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">53</td>
+<td>보람(ES)</td>
+<td>상철(EN)</td>
+<td>3.52</td>
+<td>3.607276</td>
+<td>0.886088</td>
+<td>0.357208</td>
+<td>-1.178461</td>
+<td>0.886856</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">54</td>
+<td>보람(ES)</td>
+<td>영수(EN)</td>
+<td>4.00</td>
+<td>3.790789</td>
+<td>0.841439</td>
+<td>0.447405</td>
+<td>-1.178461</td>
+<td>1.032223</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">55</td>
+<td>보람(ES)</td>
+<td>규빈(ES)</td>
+<td>3.82</td>
+<td>3.989508</td>
+<td>0.508681</td>
+<td>1.189248</td>
+<td>-1.178461</td>
+<td>0.853764</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<ul>
+<li>I보다 E성향 남성이 좀 더 인기 있음.</li>
+<li>E보다 I성향 여성이 좀 더 인기 있음.</li>
+<li>궁합1: (IN, IN) = 1.4 // (IN, IS) = 0.4 // (IN, EN) = -0.2 // (IN, ES) = -1.2</li>
+<li>궁합2: (IN, IN) = 0.3 // (IN, IS) = 0.8 // (IN, EN) = -1.0 // (IN, ES) = -0.5</li>
+</ul>
+<div id="d86928db-0403-4c82-8e4f-450626550e15" class="cell" data-tags="[]" data-execution_count="1156">
+<div class="sourceCode cell-code" id="cb72"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a>pd.concat([df_train,df_yhat,df_ebdspace],axis<span class="op">=</span><span class="dv">1</span>)[<span class="dv">56</span>:]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="1156">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">W</th>
+<th data-quarto-table-cell-role="th">M</th>
+<th data-quarto-table-cell-role="th">y</th>
+<th data-quarto-table-cell-role="th">yhat</th>
+<th data-quarto-table-cell-role="th">잠재특징1궁합</th>
+<th data-quarto-table-cell-role="th">잠재특징2궁합</th>
+<th data-quarto-table-cell-role="th">여성바이어스</th>
+<th data-quarto-table-cell-role="th">남성바이어스</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">56</td>
+<td>하니(I)</td>
+<td>영식(IN)</td>
+<td>4.85</td>
+<td>4.855811</td>
+<td>0.209820</td>
+<td>0.540235</td>
+<td>2.115016</td>
+<td>0.651731</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">57</td>
+<td>하니(I)</td>
+<td>영철(IN)</td>
+<td>4.82</td>
+<td>4.859453</td>
+<td>0.210617</td>
+<td>0.512117</td>
+<td>2.115016</td>
+<td>0.705386</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">58</td>
+<td>하니(I)</td>
+<td>광수(IS)</td>
+<td>4.98</td>
+<td>4.828842</td>
+<td>0.540183</td>
+<td>0.138738</td>
+<td>2.115016</td>
+<td>0.545838</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">59</td>
+<td>하니(I)</td>
+<td>상철(EN)</td>
+<td>4.53</td>
+<td>4.480578</td>
+<td>-0.690681</td>
+<td>-0.156401</td>
+<td>2.115016</td>
+<td>0.886856</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">60</td>
+<td>하니(I)</td>
+<td>영수(EN)</td>
+<td>4.39</td>
+<td>4.542505</td>
+<td>-0.655878</td>
+<td>-0.195893</td>
+<td>2.115016</td>
+<td>1.032223</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">61</td>
+<td>하니(I)</td>
+<td>규빈(ES)</td>
+<td>4.45</td>
+<td>4.430533</td>
+<td>-0.396503</td>
+<td>-0.520703</td>
+<td>2.115016</td>
+<td>0.853764</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">62</td>
+<td>하니(I)</td>
+<td>다호(ES)</td>
+<td>4.52</td>
+<td>4.473690</td>
+<td>-0.387079</td>
+<td>-0.532500</td>
+<td>2.115016</td>
+<td>0.944640</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</section>
+<section id="h.-모형의-해석-어려운-경우-2" class="level2">
+<h2 class="anchored" data-anchor-id="h.-모형의-해석-어려운-경우-2">H. 모형의 해석 – 어려운 경우 (2)</h2>
+<div id="b9818630-8240-42f7-996a-8deeac5bca40" class="cell" data-tags="[]" data-execution_count="1157">
+<div class="sourceCode cell-code" id="cb73"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a>df_view <span class="op">=</span> pd.read_csv(<span class="st">'https://raw.githubusercontent.com/guebin/DL2024/main/posts/solo.csv'</span>,index_col<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb73-2"><a href="#cb73-2" aria-hidden="true" tabindex="-1"></a>df_train <span class="op">=</span> df_view.stack().reset_index().set_axis([<span class="st">'W'</span>,<span class="st">'M'</span>,<span class="st">'y'</span>],axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb73-3"><a href="#cb73-3" aria-hidden="true" tabindex="-1"></a>w <span class="op">=</span> {<span class="st">'옥순(IN)'</span>:<span class="dv">0</span>, <span class="st">'영자(IN)'</span>:<span class="dv">1</span>, <span class="st">'정숙(IS)'</span>:<span class="dv">2</span>, <span class="st">'영숙(IS)'</span>:<span class="dv">3</span>, <span class="st">'순자(EN)'</span>:<span class="dv">4</span>, <span class="st">'현숙(EN)'</span>:<span class="dv">5</span>, <span class="st">'서연(ES)'</span>:<span class="dv">6</span>, <span class="st">'보람(ES)'</span>:<span class="dv">7</span>, <span class="st">'하니(I)'</span>:<span class="dv">8</span>}</span>
+<span id="cb73-4"><a href="#cb73-4" aria-hidden="true" tabindex="-1"></a>m <span class="op">=</span> {<span class="st">'영식(IN)'</span>:<span class="dv">0</span>, <span class="st">'영철(IN)'</span>:<span class="dv">1</span>, <span class="st">'영호(IS)'</span>:<span class="dv">2</span>, <span class="st">'광수(IS)'</span>:<span class="dv">3</span>, <span class="st">'상철(EN)'</span>:<span class="dv">4</span>, <span class="st">'영수(EN)'</span>:<span class="dv">5</span>, <span class="st">'규빈(ES)'</span>:<span class="dv">6</span>, <span class="st">'다호(ES)'</span>:<span class="dv">7</span>}</span>
+<span id="cb73-5"><a href="#cb73-5" aria-hidden="true" tabindex="-1"></a>X1 <span class="op">=</span> torch.tensor(df_train[<span class="st">'W'</span>].<span class="bu">map</span>(w)) <span class="co"># length-n vector </span></span>
+<span id="cb73-6"><a href="#cb73-6" aria-hidden="true" tabindex="-1"></a>X2 <span class="op">=</span> torch.tensor(df_train[<span class="st">'M'</span>].<span class="bu">map</span>(m)) <span class="co"># length-n vector </span></span>
+<span id="cb73-7"><a href="#cb73-7" aria-hidden="true" tabindex="-1"></a>E1 <span class="op">=</span> torch.nn.functional.one_hot(X1).<span class="bu">float</span>()</span>
+<span id="cb73-8"><a href="#cb73-8" aria-hidden="true" tabindex="-1"></a>E2 <span class="op">=</span> torch.nn.functional.one_hot(X2).<span class="bu">float</span>()</span>
+<span id="cb73-9"><a href="#cb73-9" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> torch.tensor(df_train[<span class="st">'y'</span>]).<span class="bu">float</span>().reshape(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>)</span>
+<span id="cb73-10"><a href="#cb73-10" aria-hidden="true" tabindex="-1"></a><span class="co">#--#</span></span>
+<span id="cb73-11"><a href="#cb73-11" aria-hidden="true" tabindex="-1"></a>torch.manual_seed(<span class="dv">9</span>)</span>
+<span id="cb73-12"><a href="#cb73-12" aria-hidden="true" tabindex="-1"></a>l1 <span class="op">=</span> torch.nn.Linear(in_features<span class="op">=</span><span class="dv">9</span>,out_features<span class="op">=</span><span class="dv">2</span>,bias<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb73-13"><a href="#cb73-13" aria-hidden="true" tabindex="-1"></a>b1 <span class="op">=</span> torch.nn.Linear(in_features<span class="op">=</span><span class="dv">9</span>,out_features<span class="op">=</span><span class="dv">1</span>,bias<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb73-14"><a href="#cb73-14" aria-hidden="true" tabindex="-1"></a>l2 <span class="op">=</span> torch.nn.Linear(in_features<span class="op">=</span><span class="dv">8</span>,out_features<span class="op">=</span><span class="dv">2</span>,bias<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb73-15"><a href="#cb73-15" aria-hidden="true" tabindex="-1"></a>b2 <span class="op">=</span> torch.nn.Linear(in_features<span class="op">=</span><span class="dv">8</span>,out_features<span class="op">=</span><span class="dv">1</span>,bias<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb73-16"><a href="#cb73-16" aria-hidden="true" tabindex="-1"></a>sig <span class="op">=</span> torch.nn.Sigmoid()</span>
+<span id="cb73-17"><a href="#cb73-17" aria-hidden="true" tabindex="-1"></a>loss_fn <span class="op">=</span> torch.nn.MSELoss()</span>
+<span id="cb73-18"><a href="#cb73-18" aria-hidden="true" tabindex="-1"></a>params <span class="op">=</span> <span class="bu">list</span>(l1.parameters()) <span class="op">+</span> <span class="bu">list</span>(b1.parameters()) <span class="op">+</span> <span class="bu">list</span>(l2.parameters()) <span class="op">+</span> <span class="bu">list</span>(b2.parameters())</span>
+<span id="cb73-19"><a href="#cb73-19" aria-hidden="true" tabindex="-1"></a>optimizr <span class="op">=</span> torch.optim.Adam(params,lr<span class="op">=</span><span class="fl">0.1</span>)</span>
+<span id="cb73-20"><a href="#cb73-20" aria-hidden="true" tabindex="-1"></a><span class="co">#--#</span></span>
+<span id="cb73-21"><a href="#cb73-21" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> epoc <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">100</span>):</span>
+<span id="cb73-22"><a href="#cb73-22" aria-hidden="true" tabindex="-1"></a>    <span class="co">## step1 </span></span>
+<span id="cb73-23"><a href="#cb73-23" aria-hidden="true" tabindex="-1"></a>    W_features <span class="op">=</span> l1(E1) </span>
+<span id="cb73-24"><a href="#cb73-24" aria-hidden="true" tabindex="-1"></a>    W_bias <span class="op">=</span> b1(E1)</span>
+<span id="cb73-25"><a href="#cb73-25" aria-hidden="true" tabindex="-1"></a>    M_features <span class="op">=</span> l2(E2) </span>
+<span id="cb73-26"><a href="#cb73-26" aria-hidden="true" tabindex="-1"></a>    M_bias <span class="op">=</span> b2(E2)</span>
+<span id="cb73-27"><a href="#cb73-27" aria-hidden="true" tabindex="-1"></a>    match_scores <span class="op">=</span> (W_features <span class="op">*</span> M_features).<span class="bu">sum</span>(axis<span class="op">=</span><span class="dv">1</span>).reshape(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>) <span class="op">+</span> W_bias <span class="op">+</span> M_bias</span>
+<span id="cb73-28"><a href="#cb73-28" aria-hidden="true" tabindex="-1"></a>    yhat <span class="op">=</span> sig(match_scores)<span class="op">*</span><span class="dv">5</span> </span>
+<span id="cb73-29"><a href="#cb73-29" aria-hidden="true" tabindex="-1"></a>    <span class="co">## step2 </span></span>
+<span id="cb73-30"><a href="#cb73-30" aria-hidden="true" tabindex="-1"></a>    loss <span class="op">=</span> loss_fn(yhat,y)</span>
+<span id="cb73-31"><a href="#cb73-31" aria-hidden="true" tabindex="-1"></a>    <span class="co">## step3 </span></span>
+<span id="cb73-32"><a href="#cb73-32" aria-hidden="true" tabindex="-1"></a>    loss.backward()</span>
+<span id="cb73-33"><a href="#cb73-33" aria-hidden="true" tabindex="-1"></a>    <span class="co">## step4 </span></span>
+<span id="cb73-34"><a href="#cb73-34" aria-hidden="true" tabindex="-1"></a>    optimizr.step()</span>
+<span id="cb73-35"><a href="#cb73-35" aria-hidden="true" tabindex="-1"></a>    optimizr.zero_grad()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="6890cc6d-f466-4e85-981e-ef88b3615bce" class="cell" data-tags="[]" data-execution_count="1158">
+<div class="sourceCode cell-code" id="cb74"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a>df_ebdspace <span class="op">=</span> pd.DataFrame(torch.concat([W_features.data<span class="op">*</span>M_features.data,W_bias.data, M_bias.data],axis<span class="op">=</span><span class="dv">1</span>))</span>
+<span id="cb74-2"><a href="#cb74-2" aria-hidden="true" tabindex="-1"></a>df_ebdspace.columns <span class="op">=</span> [<span class="st">'잠재특징1궁합'</span>,<span class="st">'잠재특징2궁합'</span>,<span class="st">'여성바이어스'</span>,<span class="st">'남성바이어스'</span>]</span>
+<span id="cb74-3"><a href="#cb74-3" aria-hidden="true" tabindex="-1"></a>df_yhat <span class="op">=</span> pd.DataFrame(yhat.data,columns<span class="op">=</span>[<span class="st">'yhat'</span>])</span>
+<span id="cb74-4"><a href="#cb74-4" aria-hidden="true" tabindex="-1"></a>pd.concat([df_train,df_yhat,df_ebdspace],axis<span class="op">=</span><span class="dv">1</span>)[:<span class="dv">56</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="1158">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">W</th>
+<th data-quarto-table-cell-role="th">M</th>
+<th data-quarto-table-cell-role="th">y</th>
+<th data-quarto-table-cell-role="th">yhat</th>
+<th data-quarto-table-cell-role="th">잠재특징1궁합</th>
+<th data-quarto-table-cell-role="th">잠재특징2궁합</th>
+<th data-quarto-table-cell-role="th">여성바이어스</th>
+<th data-quarto-table-cell-role="th">남성바이어스</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>옥순(IN)</td>
+<td>영철(IN)</td>
+<td>4.02</td>
+<td>4.062502</td>
+<td>1.435507</td>
+<td>-0.165281</td>
+<td>-0.278946</td>
+<td>0.475059</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>옥순(IN)</td>
+<td>영호(IS)</td>
+<td>3.45</td>
+<td>3.464628</td>
+<td>1.871552</td>
+<td>-0.839896</td>
+<td>-0.278946</td>
+<td>0.061122</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>옥순(IN)</td>
+<td>광수(IS)</td>
+<td>3.42</td>
+<td>3.354547</td>
+<td>1.867424</td>
+<td>-0.842010</td>
+<td>-0.278946</td>
+<td>-0.034168</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>옥순(IN)</td>
+<td>상철(EN)</td>
+<td>0.84</td>
+<td>0.897560</td>
+<td>-1.918263</td>
+<td>0.118734</td>
+<td>-0.278946</td>
+<td>0.558818</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>옥순(IN)</td>
+<td>영수(EN)</td>
+<td>1.12</td>
+<td>0.933940</td>
+<td>-1.843509</td>
+<td>0.012792</td>
+<td>-0.278946</td>
+<td>0.638645</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">5</td>
+<td>옥순(IN)</td>
+<td>규빈(ES)</td>
+<td>0.43</td>
+<td>0.535671</td>
+<td>-1.650710</td>
+<td>-0.411928</td>
+<td>-0.278946</td>
+<td>0.221230</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">6</td>
+<td>옥순(IN)</td>
+<td>다호(ES)</td>
+<td>0.49</td>
+<td>0.529836</td>
+<td>-1.640078</td>
+<td>-0.490892</td>
+<td>-0.278946</td>
+<td>0.277304</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">7</td>
+<td>영자(IN)</td>
+<td>영식(IN)</td>
+<td>3.93</td>
+<td>3.979140</td>
+<td>1.432805</td>
+<td>-0.131123</td>
+<td>-0.337481</td>
+<td>0.396219</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">8</td>
+<td>영자(IN)</td>
+<td>영철(IN)</td>
+<td>3.99</td>
+<td>4.003114</td>
+<td>1.371557</td>
+<td>-0.118944</td>
+<td>-0.337481</td>
+<td>0.475059</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">9</td>
+<td>영자(IN)</td>
+<td>영호(IS)</td>
+<td>3.63</td>
+<td>3.562331</td>
+<td>1.788177</td>
+<td>-0.604426</td>
+<td>-0.337481</td>
+<td>0.061122</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">10</td>
+<td>영자(IN)</td>
+<td>광수(IS)</td>
+<td>3.43</td>
+<td>3.456962</td>
+<td>1.784233</td>
+<td>-0.605948</td>
+<td>-0.337481</td>
+<td>-0.034168</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">11</td>
+<td>영자(IN)</td>
+<td>상철(EN)</td>
+<td>0.98</td>
+<td>0.892881</td>
+<td>-1.832807</td>
+<td>0.085446</td>
+<td>-0.337481</td>
+<td>0.558818</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">12</td>
+<td>영자(IN)</td>
+<td>영수(EN)</td>
+<td>0.96</td>
+<td>0.949228</td>
+<td>-1.761383</td>
+<td>0.009206</td>
+<td>-0.337481</td>
+<td>0.638645</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">13</td>
+<td>영자(IN)</td>
+<td>규빈(ES)</td>
+<td>0.52</td>
+<td>0.601355</td>
+<td>-1.577173</td>
+<td>-0.296442</td>
+<td>-0.337481</td>
+<td>0.221230</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">14</td>
+<td>정숙(IS)</td>
+<td>영식(IN)</td>
+<td>3.52</td>
+<td>3.448972</td>
+<td>1.190434</td>
+<td>0.219636</td>
+<td>-1.007130</td>
+<td>0.396219</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">15</td>
+<td>정숙(IS)</td>
+<td>영철(IN)</td>
+<td>3.42</td>
+<td>3.457041</td>
+<td>1.139547</td>
+<td>0.199235</td>
+<td>-1.007130</td>
+<td>0.475059</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">16</td>
+<td>정숙(IS)</td>
+<td>영호(IS)</td>
+<td>4.05</td>
+<td>4.126097</td>
+<td>1.485692</td>
+<td>1.012434</td>
+<td>-1.007130</td>
+<td>0.061122</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">17</td>
+<td>정숙(IS)</td>
+<td>광수(IS)</td>
+<td>4.06</td>
+<td>4.054678</td>
+<td>1.482415</td>
+<td>1.014983</td>
+<td>-1.007130</td>
+<td>-0.034168</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">18</td>
+<td>정숙(IS)</td>
+<td>상철(EN)</td>
+<td>0.39</td>
+<td>0.538617</td>
+<td>-1.522772</td>
+<td>-0.143125</td>
+<td>-1.007130</td>
+<td>0.558818</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">19</td>
+<td>정숙(IS)</td>
+<td>규빈(ES)</td>
+<td>0.93</td>
+<td>0.840096</td>
+<td>-1.310381</td>
+<td>0.496550</td>
+<td>-1.007130</td>
+<td>0.221230</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">20</td>
+<td>정숙(IS)</td>
+<td>다호(ES)</td>
+<td>0.99</td>
+<td>0.957703</td>
+<td>-1.301941</td>
+<td>0.591736</td>
+<td>-1.007130</td>
+<td>0.277304</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">21</td>
+<td>영숙(IS)</td>
+<td>영식(IN)</td>
+<td>3.43</td>
+<td>3.476910</td>
+<td>1.223345</td>
+<td>0.188010</td>
+<td>-0.982170</td>
+<td>0.396219</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">22</td>
+<td>영숙(IS)</td>
+<td>영철(IN)</td>
+<td>3.57</td>
+<td>3.486514</td>
+<td>1.171051</td>
+<td>0.170547</td>
+<td>-0.982170</td>
+<td>0.475059</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">23</td>
+<td>영숙(IS)</td>
+<td>광수(IS)</td>
+<td>3.95</td>
+<td>3.991654</td>
+<td>1.523398</td>
+<td>0.868833</td>
+<td>-0.982170</td>
+<td>-0.034168</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">24</td>
+<td>영숙(IS)</td>
+<td>상철(EN)</td>
+<td>0.56</td>
+<td>0.540287</td>
+<td>-1.564871</td>
+<td>-0.122516</td>
+<td>-0.982170</td>
+<td>0.558818</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">25</td>
+<td>영숙(IS)</td>
+<td>영수(EN)</td>
+<td>0.52</td>
+<td>0.673158</td>
+<td>-1.503889</td>
+<td>-0.013200</td>
+<td>-0.982170</td>
+<td>0.638645</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">26</td>
+<td>영숙(IS)</td>
+<td>규빈(ES)</td>
+<td>0.89</td>
+<td>0.783825</td>
+<td>-1.346608</td>
+<td>0.425051</td>
+<td>-0.982170</td>
+<td>0.221230</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">27</td>
+<td>영숙(IS)</td>
+<td>다호(ES)</td>
+<td>0.89</td>
+<td>0.885391</td>
+<td>-1.337935</td>
+<td>0.506530</td>
+<td>-0.982170</td>
+<td>0.277304</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">28</td>
+<td>순자(EN)</td>
+<td>영식(IN)</td>
+<td>1.12</td>
+<td>1.110633</td>
+<td>-1.095525</td>
+<td>-0.068369</td>
+<td>-0.485641</td>
+<td>0.396219</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">29</td>
+<td>순자(EN)</td>
+<td>영호(IS)</td>
+<td>0.59</td>
+<td>0.542132</td>
+<td>-1.367243</td>
+<td>-0.315154</td>
+<td>-0.485641</td>
+<td>0.061122</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">30</td>
+<td>순자(EN)</td>
+<td>광수(IS)</td>
+<td>0.43</td>
+<td>0.498760</td>
+<td>-1.364228</td>
+<td>-0.315948</td>
+<td>-0.485641</td>
+<td>-0.034168</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">31</td>
+<td>순자(EN)</td>
+<td>상철(EN)</td>
+<td>4.01</td>
+<td>4.102027</td>
+<td>1.401367</td>
+<td>0.044552</td>
+<td>-0.485641</td>
+<td>0.558818</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">32</td>
+<td>순자(EN)</td>
+<td>영수(EN)</td>
+<td>4.16</td>
+<td>4.091268</td>
+<td>1.346757</td>
+<td>0.004800</td>
+<td>-0.485641</td>
+<td>0.638645</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">33</td>
+<td>순자(EN)</td>
+<td>규빈(ES)</td>
+<td>3.52</td>
+<td>3.435859</td>
+<td>1.205909</td>
+<td>-0.154568</td>
+<td>-0.485641</td>
+<td>0.221230</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">34</td>
+<td>순자(EN)</td>
+<td>다호(ES)</td>
+<td>3.38</td>
+<td>3.455863</td>
+<td>1.198142</td>
+<td>-0.184198</td>
+<td>-0.485641</td>
+<td>0.277304</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">35</td>
+<td>현숙(EN)</td>
+<td>영식(IN)</td>
+<td>0.94</td>
+<td>0.888466</td>
+<td>-1.177789</td>
+<td>-0.020081</td>
+<td>-0.730403</td>
+<td>0.396219</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">36</td>
+<td>현숙(EN)</td>
+<td>영철(IN)</td>
+<td>1.05</td>
+<td>0.988285</td>
+<td>-1.127442</td>
+<td>-0.018216</td>
+<td>-0.730403</td>
+<td>0.475059</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">37</td>
+<td>현숙(EN)</td>
+<td>영호(IS)</td>
+<td>0.32</td>
+<td>0.484673</td>
+<td>-1.469911</td>
+<td>-0.092567</td>
+<td>-0.730403</td>
+<td>0.061122</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">38</td>
+<td>현숙(EN)</td>
+<td>광수(IS)</td>
+<td>0.45</td>
+<td>0.445757</td>
+<td>-1.466669</td>
+<td>-0.092800</td>
+<td>-0.730403</td>
+<td>-0.034168</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">39</td>
+<td>현숙(EN)</td>
+<td>상철(EN)</td>
+<td>4.02</td>
+<td>3.969092</td>
+<td>1.506597</td>
+<td>0.013086</td>
+<td>-0.730403</td>
+<td>0.558818</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">40</td>
+<td>현숙(EN)</td>
+<td>영수(EN)</td>
+<td>3.78</td>
+<td>3.976796</td>
+<td>1.447886</td>
+<td>0.001410</td>
+<td>-0.730403</td>
+<td>0.638645</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">41</td>
+<td>현숙(EN)</td>
+<td>다호(ES)</td>
+<td>3.54</td>
+<td>3.429381</td>
+<td>1.288112</td>
+<td>-0.054102</td>
+<td>-0.730403</td>
+<td>0.277304</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">42</td>
+<td>서연(ES)</td>
+<td>영식(IN)</td>
+<td>0.51</td>
+<td>0.486675</td>
+<td>-1.555222</td>
+<td>0.402335</td>
+<td>-1.470524</td>
+<td>0.396219</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">43</td>
+<td>서연(ES)</td>
+<td>영철(IN)</td>
+<td>0.56</td>
+<td>0.536203</td>
+<td>-1.488741</td>
+<td>0.364964</td>
+<td>-1.470524</td>
+<td>0.475059</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">44</td>
+<td>서연(ES)</td>
+<td>영호(IS)</td>
+<td>0.88</td>
+<td>0.915298</td>
+<td>-1.940956</td>
+<td>1.854605</td>
+<td>-1.470524</td>
+<td>0.061122</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">45</td>
+<td>서연(ES)</td>
+<td>광수(IS)</td>
+<td>0.89</td>
+<td>0.852497</td>
+<td>-1.936675</td>
+<td>1.859275</td>
+<td>-1.470524</td>
+<td>-0.034168</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">46</td>
+<td>서연(ES)</td>
+<td>상철(EN)</td>
+<td>3.50</td>
+<td>3.466415</td>
+<td>1.989399</td>
+<td>-0.262180</td>
+<td>-1.470524</td>
+<td>0.558818</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">47</td>
+<td>서연(ES)</td>
+<td>영수(EN)</td>
+<td>3.64</td>
+<td>3.705552</td>
+<td>1.911873</td>
+<td>-0.028247</td>
+<td>-1.470524</td>
+<td>0.638645</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">48</td>
+<td>서연(ES)</td>
+<td>규빈(ES)</td>
+<td>4.04</td>
+<td>3.988696</td>
+<td>1.711924</td>
+<td>0.909594</td>
+<td>-1.470524</td>
+<td>0.221230</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">49</td>
+<td>서연(ES)</td>
+<td>다호(ES)</td>
+<td>4.10</td>
+<td>4.154231</td>
+<td>1.700898</td>
+<td>1.083958</td>
+<td>-1.470524</td>
+<td>0.277304</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">50</td>
+<td>보람(ES)</td>
+<td>영식(IN)</td>
+<td>0.48</td>
+<td>0.548715</td>
+<td>-1.519627</td>
+<td>0.364900</td>
+<td>-1.334860</td>
+<td>0.396219</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">51</td>
+<td>보람(ES)</td>
+<td>영철(IN)</td>
+<td>0.51</td>
+<td>0.604751</td>
+<td>-1.454668</td>
+<td>0.331006</td>
+<td>-1.334860</td>
+<td>0.475059</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">52</td>
+<td>보람(ES)</td>
+<td>영호(IS)</td>
+<td>1.03</td>
+<td>0.920940</td>
+<td>-1.896533</td>
+<td>1.682044</td>
+<td>-1.334860</td>
+<td>0.061122</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">53</td>
+<td>보람(ES)</td>
+<td>상철(EN)</td>
+<td>3.52</td>
+<td>3.585416</td>
+<td>1.943868</td>
+<td>-0.237786</td>
+<td>-1.334860</td>
+<td>0.558818</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">54</td>
+<td>보람(ES)</td>
+<td>영수(EN)</td>
+<td>4.00</td>
+<td>3.794156</td>
+<td>1.868116</td>
+<td>-0.025618</td>
+<td>-1.334860</td>
+<td>0.638645</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">55</td>
+<td>보람(ES)</td>
+<td>규빈(ES)</td>
+<td>3.82</td>
+<td>3.998222</td>
+<td>1.672743</td>
+<td>0.824961</td>
+<td>-1.334860</td>
+<td>0.221230</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<ul>
+<li>몰라요</li>
+</ul>
 
 
 </section>
