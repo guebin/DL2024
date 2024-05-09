@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.520">
+<meta name="generator" content="quarto-1.4.533">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -108,6 +108,33 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="../styles.css">
 </head>
@@ -610,11 +637,67 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>—저거 따져보자—</p>
-<p><span class="math inline">\({\bf W} = \begin{bmatrix} 1.2200 &amp; 0.4900 \\ 1.1700 &amp; 0.4400 \\ 1.2100 &amp; -0.4500 \\ 1.2000 &amp; -0.5000 \\ -1.2000 &amp; 0.5100 \\ -1.2300 &amp; 0.4800 \\ -1.2000 &amp; -0.4800 \\ -1.1900 &amp; -0.4900 \\ 0.2000 &amp; 0.0000 \end{bmatrix}\)</span></p>
-<p><span class="math inline">\({\bf M}^\top = \begin{bmatrix} 1.2000 &amp; 1.2200 &amp; 1.2300 &amp; 1.2100 &amp; -1.2800 &amp; -1.2400 &amp; -1.2000 &amp; -1.2200 \\ 0.5000 &amp; 0.4500 &amp; -0.7000 &amp; -0.6000 &amp; 0.6000 &amp; 0.5000 &amp; -0.5000 &amp; -0.6000 \end{bmatrix}\)</span></p>
-<p><span class="math inline">\({\bf W} @ {\bf M}^\top = \begin{bmatrix} 1.7090 &amp; 1.7089 &amp; 1.1576 &amp; 1.1822 &amp; -1.2676 &amp; -1.2678 &amp; -1.7090 &amp; -1.7824 \\ 1.6240 &amp; 1.6254 &amp; 1.1311 &amp; 1.1517 &amp; -1.2336 &amp; -1.2308 &amp; -1.6240 &amp; -1.6914 \\ 1.2270 &amp; 1.2737 &amp; 1.8033 &amp; 1.7341 &amp; -1.8188 &amp; -1.7254 &amp; -1.2270 &amp; -1.2062 \\ 1.1900 &amp; 1.2390 &amp; 1.8260 &amp; 1.7520 &amp; -1.8360 &amp; -1.7380 &amp; -1.1900 &amp; -1.1640 \\ -1.1850 &amp; -1.2345 &amp; -1.8330 &amp; -1.7580 &amp; 1.8420 &amp; 1.7430 &amp; 1.1850 &amp; 1.1580 \\ -1.2360 &amp; -1.2846 &amp; -1.8489 &amp; -1.7763 &amp; 1.8624 &amp; 1.7652 &amp; 1.2360 &amp; 1.2126 \\ -1.6800 &amp; -1.6800 &amp; -1.1400 &amp; -1.1640 &amp; 1.2480 &amp; 1.2480 &amp; 1.6800 &amp; 1.7520 \\ -1.6730 &amp; -1.6723 &amp; -1.1207 &amp; -1.1459 &amp; 1.2292 &amp; 1.2306 &amp; 1.6730 &amp; 1.7458 \\ 0.2400 &amp; 0.2440 &amp; 0.2460 &amp; 0.2420 &amp; -0.2560 &amp; -0.2480 &amp; -0.2400 &amp; -0.2440 \end{bmatrix}\)</span></p>
-<p><span class="math inline">\(\begin{align*} bias =~&amp; \begin{bmatrix} 1.2100 \\ 1.2500 \\ 1.1000 \\ 1.1100 \\ 1.1200 \\ 1.1300 \\ 1.1400 \\ 1.1200 \\ 3.6000 \end{bmatrix} +\begin{bmatrix} 1.2000 &amp; 1.1000 &amp; 1.1100 &amp; 1.2500 &amp; 1.1800 &amp; 1.1100 &amp; 1.1500 &amp; 1.1500 \end{bmatrix}\\ \\ =~&amp; \begin{bmatrix} 2.4100 &amp; 2.3100 &amp; 2.3200 &amp; 2.4600 &amp; 2.3900 &amp; 2.3200 &amp; 2.3600 &amp; 2.3600 \\ 2.4500 &amp; 2.3500 &amp; 2.3600 &amp; 2.5000 &amp; 2.4300 &amp; 2.3600 &amp; 2.4000 &amp; 2.4000 \\ 2.3000 &amp; 2.2000 &amp; 2.2100 &amp; 2.3500 &amp; 2.2800 &amp; 2.2100 &amp; 2.2500 &amp; 2.2500 \\ 2.3100 &amp; 2.2100 &amp; 2.2200 &amp; 2.3600 &amp; 2.2900 &amp; 2.2200 &amp; 2.2600 &amp; 2.2600 \\ 2.3200 &amp; 2.2200 &amp; 2.2300 &amp; 2.3700 &amp; 2.3000 &amp; 2.2300 &amp; 2.2700 &amp; 2.2700 \\ 2.3300 &amp; 2.2300 &amp; 2.2400 &amp; 2.3800 &amp; 2.3100 &amp; 2.2400 &amp; 2.2800 &amp; 2.2800 \\ 2.3400 &amp; 2.2400 &amp; 2.2500 &amp; 2.3900 &amp; 2.3200 &amp; 2.2500 &amp; 2.2900 &amp; 2.2900 \\ 2.3200 &amp; 2.2200 &amp; 2.2300 &amp; 2.3700 &amp; 2.3000 &amp; 2.2300 &amp; 2.2700 &amp; 2.2700 \\ 4.8000 &amp; 4.7000 &amp; 4.7100 &amp; 4.8500 &amp; 4.7800 &amp; 4.7100 &amp; 4.7500 &amp; 4.7500 \end{bmatrix} \end{align*}\)</span></p>
-<p><span class="math inline">\({\bf W} @ {\bf M}^\top + bias = \begin{bmatrix} 4.1190 &amp; 4.0189 &amp; 3.4776 &amp; 3.6422 &amp; 1.1224 &amp; 1.0522 &amp; 0.6510 &amp; 0.5776 \\ 4.0740 &amp; 3.9754 &amp; 3.4911 &amp; 3.6517 &amp; 1.1964 &amp; 1.1292 &amp; 0.7760 &amp; 0.7086 \\ 3.5270 &amp; 3.4737 &amp; 4.0133 &amp; 4.0841 &amp; 0.4612 &amp; 0.4846 &amp; 1.0230 &amp; 1.0438 \\ 3.5000 &amp; 3.4490 &amp; 4.0460 &amp; 4.1120 &amp; 0.4540 &amp; 0.4820 &amp; 1.0700 &amp; 1.0960 \\ 1.1350 &amp; 0.9855 &amp; 0.3970 &amp; 0.6120 &amp; 4.1420 &amp; 3.9730 &amp; 3.4550 &amp; 3.4280 \\ 1.0940 &amp; 0.9454 &amp; 0.3911 &amp; 0.6037 &amp; 4.1724 &amp; 4.0052 &amp; 3.5160 &amp; 3.4926 \\ 0.6600 &amp; 0.5600 &amp; 1.1100 &amp; 1.2260 &amp; 3.5680 &amp; 3.4980 &amp; 3.9700 &amp; 4.0420 \\ 0.6470 &amp; 0.5477 &amp; 1.1093 &amp; 1.2241 &amp; 3.5292 &amp; 3.4606 &amp; 3.9430 &amp; 4.0158 \\ 5.0400 &amp; 4.9440 &amp; 4.9560 &amp; 5.0920 &amp; 4.5240 &amp; 4.4620 &amp; 4.5100 &amp; 4.5060 \end{bmatrix}\)</span></p>
+<p><span class="math inline">\({\bf W} = \begin{bmatrix}
+1.2200 &amp; 0.4900 \\
+1.1700 &amp; 0.4400 \\
+1.2100 &amp; -0.4500 \\
+1.2000 &amp; -0.5000 \\
+-1.2000 &amp; 0.5100 \\
+-1.2300 &amp; 0.4800 \\
+-1.2000 &amp; -0.4800 \\
+-1.1900 &amp; -0.4900 \\
+0.2000 &amp; 0.0000
+\end{bmatrix}\)</span></p>
+<p><span class="math inline">\({\bf M}^\top = \begin{bmatrix}
+1.2000 &amp; 1.2200 &amp; 1.2300 &amp; 1.2100 &amp; -1.2800 &amp; -1.2400 &amp; -1.2000 &amp; -1.2200 \\
+0.5000 &amp; 0.4500 &amp; -0.7000 &amp; -0.6000 &amp; 0.6000 &amp; 0.5000 &amp; -0.5000 &amp; -0.6000
+\end{bmatrix}\)</span></p>
+<p><span class="math inline">\({\bf W} @ {\bf M}^\top = \begin{bmatrix}
+1.7090 &amp; 1.7089 &amp; 1.1576 &amp; 1.1822 &amp; -1.2676 &amp; -1.2678 &amp; -1.7090 &amp; -1.7824 \\
+1.6240 &amp; 1.6254 &amp; 1.1311 &amp; 1.1517 &amp; -1.2336 &amp; -1.2308 &amp; -1.6240 &amp; -1.6914 \\
+1.2270 &amp; 1.2737 &amp; 1.8033 &amp; 1.7341 &amp; -1.8188 &amp; -1.7254 &amp; -1.2270 &amp; -1.2062 \\
+1.1900 &amp; 1.2390 &amp; 1.8260 &amp; 1.7520 &amp; -1.8360 &amp; -1.7380 &amp; -1.1900 &amp; -1.1640 \\
+-1.1850 &amp; -1.2345 &amp; -1.8330 &amp; -1.7580 &amp;  1.8420 &amp;  1.7430 &amp;  1.1850 &amp;  1.1580 \\
+-1.2360 &amp; -1.2846 &amp; -1.8489 &amp; -1.7763 &amp;  1.8624 &amp;  1.7652 &amp;  1.2360 &amp;  1.2126 \\
+-1.6800 &amp; -1.6800 &amp; -1.1400 &amp; -1.1640 &amp;  1.2480 &amp;  1.2480 &amp;  1.6800 &amp;  1.7520 \\
+-1.6730 &amp; -1.6723 &amp; -1.1207 &amp; -1.1459 &amp;  1.2292 &amp;  1.2306 &amp;  1.6730 &amp;  1.7458 \\
+0.2400 &amp;  0.2440 &amp;  0.2460 &amp;  0.2420 &amp; -0.2560 &amp; -0.2480 &amp; -0.2400 &amp; -0.2440
+\end{bmatrix}\)</span></p>
+<p><span class="math inline">\(\begin{align*} bias =~&amp; \begin{bmatrix}
+1.2100 \\
+1.2500 \\
+1.1000 \\
+1.1100 \\
+1.1200 \\
+1.1300 \\
+1.1400 \\
+1.1200 \\
+3.6000
+\end{bmatrix} +\begin{bmatrix}
+1.2000 &amp; 1.1000 &amp; 1.1100 &amp; 1.2500 &amp; 1.1800 &amp; 1.1100 &amp; 1.1500 &amp; 1.1500
+\end{bmatrix}\\ \\
+=~&amp; \begin{bmatrix}
+2.4100 &amp; 2.3100 &amp; 2.3200 &amp; 2.4600 &amp; 2.3900 &amp; 2.3200 &amp; 2.3600 &amp; 2.3600 \\
+2.4500 &amp; 2.3500 &amp; 2.3600 &amp; 2.5000 &amp; 2.4300 &amp; 2.3600 &amp; 2.4000 &amp; 2.4000 \\
+2.3000 &amp; 2.2000 &amp; 2.2100 &amp; 2.3500 &amp; 2.2800 &amp; 2.2100 &amp; 2.2500 &amp; 2.2500 \\
+2.3100 &amp; 2.2100 &amp; 2.2200 &amp; 2.3600 &amp; 2.2900 &amp; 2.2200 &amp; 2.2600 &amp; 2.2600 \\
+2.3200 &amp; 2.2200 &amp; 2.2300 &amp; 2.3700 &amp; 2.3000 &amp; 2.2300 &amp; 2.2700 &amp; 2.2700 \\
+2.3300 &amp; 2.2300 &amp; 2.2400 &amp; 2.3800 &amp; 2.3100 &amp; 2.2400 &amp; 2.2800 &amp; 2.2800 \\
+2.3400 &amp; 2.2400 &amp; 2.2500 &amp; 2.3900 &amp; 2.3200 &amp; 2.2500 &amp; 2.2900 &amp; 2.2900 \\
+2.3200 &amp; 2.2200 &amp; 2.2300 &amp; 2.3700 &amp; 2.3000 &amp; 2.2300 &amp; 2.2700 &amp; 2.2700 \\
+4.8000 &amp; 4.7000 &amp; 4.7100 &amp; 4.8500 &amp; 4.7800 &amp; 4.7100 &amp; 4.7500 &amp; 4.7500
+\end{bmatrix} \end{align*}\)</span></p>
+<p><span class="math inline">\({\bf W} @ {\bf M}^\top + bias = \begin{bmatrix}
+4.1190 &amp; 4.0189 &amp; 3.4776 &amp; 3.6422 &amp; 1.1224 &amp; 1.0522 &amp; 0.6510 &amp; 0.5776 \\
+4.0740 &amp; 3.9754 &amp; 3.4911 &amp; 3.6517 &amp; 1.1964 &amp; 1.1292 &amp; 0.7760 &amp; 0.7086 \\
+3.5270 &amp; 3.4737 &amp; 4.0133 &amp; 4.0841 &amp; 0.4612 &amp; 0.4846 &amp; 1.0230 &amp; 1.0438 \\
+3.5000 &amp; 3.4490 &amp; 4.0460 &amp; 4.1120 &amp; 0.4540 &amp; 0.4820 &amp; 1.0700 &amp; 1.0960 \\
+1.1350 &amp; 0.9855 &amp; 0.3970 &amp; 0.6120 &amp; 4.1420 &amp; 3.9730 &amp; 3.4550 &amp; 3.4280 \\
+1.0940 &amp; 0.9454 &amp; 0.3911 &amp; 0.6037 &amp; 4.1724 &amp; 4.0052 &amp; 3.5160 &amp; 3.4926 \\
+0.6600 &amp; 0.5600 &amp; 1.1100 &amp; 1.2260 &amp; 3.5680 &amp; 3.4980 &amp; 3.9700 &amp; 4.0420 \\
+0.6470 &amp; 0.5477 &amp; 1.1093 &amp; 1.2241 &amp; 3.5292 &amp; 3.4606 &amp; 3.9430 &amp; 4.0158 \\
+5.0400 &amp; 4.9440 &amp; 4.9560 &amp; 5.0920 &amp; 4.5240 &amp; 4.4620 &amp; 4.5100 &amp; 4.5060
+\end{bmatrix}\)</span></p>
 <p><code>-</code> <span class="math inline">\({\bf W} @ {\bf M}^\top + bias\)</span> 의 (1,1)의 원소값을 계산해보면 아래와 같다.</p>
 <ul>
 <li>옥순의I성향<span class="math inline">\(\times\)</span>영식의I성향 <span class="math inline">\(+\)</span> 옥순의N성향<span class="math inline">\(\times\)</span>영식의N성향 <span class="math inline">\(+\)</span> 옥순의매력 <span class="math inline">\(+\)</span> 영식의매력 = 4.1190</li>
@@ -2615,6 +2698,91 @@ E2.shape: torch.Size([63, 8]),   E2.dtype: torch.float32 -- shape에서 8은 남
 </section>
 <section id="hw" class="level1">
 <h1>5. HW</h1>
+<p>아래의 코드를 활용하여 net를 적합시켜라.</p>
+<div id="aeddc768-783d-4987-a1f8-63b26a6d5c08" class="cell" data-tags="[]" data-execution_count="1169">
+<div class="sourceCode cell-code" id="cb72"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a>df_view <span class="op">=</span> pd.read_csv(<span class="st">'https://raw.githubusercontent.com/guebin/DL2024/main/posts/solo.csv'</span>,index_col<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb72-2"><a href="#cb72-2" aria-hidden="true" tabindex="-1"></a>df_train <span class="op">=</span> df_view.stack().reset_index().set_axis([<span class="st">'W'</span>,<span class="st">'M'</span>,<span class="st">'y'</span>],axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb72-3"><a href="#cb72-3" aria-hidden="true" tabindex="-1"></a>w <span class="op">=</span> {<span class="st">'옥순(IN)'</span>:<span class="dv">0</span>, <span class="st">'영자(IN)'</span>:<span class="dv">1</span>, <span class="st">'정숙(IS)'</span>:<span class="dv">2</span>, <span class="st">'영숙(IS)'</span>:<span class="dv">3</span>, <span class="st">'순자(EN)'</span>:<span class="dv">4</span>, <span class="st">'현숙(EN)'</span>:<span class="dv">5</span>, <span class="st">'서연(ES)'</span>:<span class="dv">6</span>, <span class="st">'보람(ES)'</span>:<span class="dv">7</span>, <span class="st">'하니(I)'</span>:<span class="dv">8</span>}</span>
+<span id="cb72-4"><a href="#cb72-4" aria-hidden="true" tabindex="-1"></a>m <span class="op">=</span> {<span class="st">'영식(IN)'</span>:<span class="dv">0</span>, <span class="st">'영철(IN)'</span>:<span class="dv">1</span>, <span class="st">'영호(IS)'</span>:<span class="dv">2</span>, <span class="st">'광수(IS)'</span>:<span class="dv">3</span>, <span class="st">'상철(EN)'</span>:<span class="dv">4</span>, <span class="st">'영수(EN)'</span>:<span class="dv">5</span>, <span class="st">'규빈(ES)'</span>:<span class="dv">6</span>, <span class="st">'다호(ES)'</span>:<span class="dv">7</span>}</span>
+<span id="cb72-5"><a href="#cb72-5" aria-hidden="true" tabindex="-1"></a>X1 <span class="op">=</span> torch.tensor(df_train[<span class="st">'W'</span>].<span class="bu">map</span>(w)) <span class="co"># length-n vector </span></span>
+<span id="cb72-6"><a href="#cb72-6" aria-hidden="true" tabindex="-1"></a>X2 <span class="op">=</span> torch.tensor(df_train[<span class="st">'M'</span>].<span class="bu">map</span>(m)) <span class="co"># length-n vector </span></span>
+<span id="cb72-7"><a href="#cb72-7" aria-hidden="true" tabindex="-1"></a>E1 <span class="op">=</span> torch.nn.functional.one_hot(X1).<span class="bu">float</span>()</span>
+<span id="cb72-8"><a href="#cb72-8" aria-hidden="true" tabindex="-1"></a>E2 <span class="op">=</span> torch.nn.functional.one_hot(X2).<span class="bu">float</span>()</span>
+<span id="cb72-9"><a href="#cb72-9" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> torch.tensor(df_train[<span class="st">'y'</span>]).<span class="bu">float</span>().reshape(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>)</span>
+<span id="cb72-10"><a href="#cb72-10" aria-hidden="true" tabindex="-1"></a><span class="co">#--#</span></span>
+<span id="cb72-11"><a href="#cb72-11" aria-hidden="true" tabindex="-1"></a>torch.manual_seed(<span class="dv">43052</span>)</span>
+<span id="cb72-12"><a href="#cb72-12" aria-hidden="true" tabindex="-1"></a>l1 <span class="op">=</span> torch.nn.Linear(in_features<span class="op">=</span><span class="dv">9</span>, out_features<span class="op">=</span><span class="dv">2</span>, bias<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb72-13"><a href="#cb72-13" aria-hidden="true" tabindex="-1"></a>b1 <span class="op">=</span> torch.nn.Linear(in_features<span class="op">=</span><span class="dv">9</span>, out_features<span class="op">=</span><span class="dv">1</span>, bias<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb72-14"><a href="#cb72-14" aria-hidden="true" tabindex="-1"></a>l2 <span class="op">=</span> torch.nn.Linear(in_features<span class="op">=</span><span class="dv">8</span>, out_features<span class="op">=</span><span class="dv">2</span>, bias<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb72-15"><a href="#cb72-15" aria-hidden="true" tabindex="-1"></a>b2 <span class="op">=</span> torch.nn.Linear(in_features<span class="op">=</span><span class="dv">8</span>, out_features<span class="op">=</span><span class="dv">1</span>, bias<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb72-16"><a href="#cb72-16" aria-hidden="true" tabindex="-1"></a>sig <span class="op">=</span> torch.nn.Sigmoid()</span>
+<span id="cb72-17"><a href="#cb72-17" aria-hidden="true" tabindex="-1"></a>loss_fn <span class="op">=</span> torch.nn.MSELoss()</span>
+<span id="cb72-18"><a href="#cb72-18" aria-hidden="true" tabindex="-1"></a>params <span class="op">=</span> <span class="bu">list</span>(l1.parameters())<span class="op">+</span><span class="bu">list</span>(b1.parameters())<span class="op">+</span><span class="bu">list</span>(l2.parameters())<span class="op">+</span><span class="bu">list</span>(b2.parameters())</span>
+<span id="cb72-19"><a href="#cb72-19" aria-hidden="true" tabindex="-1"></a>optimizr <span class="op">=</span> torch.optim.Adam(params, lr<span class="op">=</span><span class="fl">0.1</span>) </span>
+<span id="cb72-20"><a href="#cb72-20" aria-hidden="true" tabindex="-1"></a><span class="co">#--#</span></span>
+<span id="cb72-21"><a href="#cb72-21" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> epoc <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">100</span>):</span>
+<span id="cb72-22"><a href="#cb72-22" aria-hidden="true" tabindex="-1"></a>    <span class="co">## step1 </span></span>
+<span id="cb72-23"><a href="#cb72-23" aria-hidden="true" tabindex="-1"></a>    W_features <span class="op">=</span> l1(E1)</span>
+<span id="cb72-24"><a href="#cb72-24" aria-hidden="true" tabindex="-1"></a>    W_bias <span class="op">=</span> b1(E1)</span>
+<span id="cb72-25"><a href="#cb72-25" aria-hidden="true" tabindex="-1"></a>    M_features <span class="op">=</span> l2(E2) </span>
+<span id="cb72-26"><a href="#cb72-26" aria-hidden="true" tabindex="-1"></a>    M_bias <span class="op">=</span> b2(E2)</span>
+<span id="cb72-27"><a href="#cb72-27" aria-hidden="true" tabindex="-1"></a>    score <span class="op">=</span> (W_features <span class="op">*</span> M_features).<span class="bu">sum</span>(axis<span class="op">=</span><span class="dv">1</span>).reshape(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>) <span class="op">+</span> W_bias <span class="op">+</span> M_bias</span>
+<span id="cb72-28"><a href="#cb72-28" aria-hidden="true" tabindex="-1"></a>    yhat <span class="op">=</span> sig(score) <span class="op">*</span> <span class="dv">5</span> </span>
+<span id="cb72-29"><a href="#cb72-29" aria-hidden="true" tabindex="-1"></a>    <span class="co">## step2 </span></span>
+<span id="cb72-30"><a href="#cb72-30" aria-hidden="true" tabindex="-1"></a>    loss <span class="op">=</span> loss_fn(yhat,y)</span>
+<span id="cb72-31"><a href="#cb72-31" aria-hidden="true" tabindex="-1"></a>    <span class="co">## step3 </span></span>
+<span id="cb72-32"><a href="#cb72-32" aria-hidden="true" tabindex="-1"></a>    loss.backward()</span>
+<span id="cb72-33"><a href="#cb72-33" aria-hidden="true" tabindex="-1"></a>    <span class="co">## step4 </span></span>
+<span id="cb72-34"><a href="#cb72-34" aria-hidden="true" tabindex="-1"></a>    optimizr.step()</span>
+<span id="cb72-35"><a href="#cb72-35" aria-hidden="true" tabindex="-1"></a>    optimizr.zero_grad()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>적합된 네트워크를 바탕으로 아래의 값에 대한 예측을 수행하라.</p>
+<div id="ad9a7607-4228-4047-b0c1-83a037653b92" class="cell" data-tags="[]" data-execution_count="1178">
+<div class="sourceCode cell-code" id="cb73"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a>df_test <span class="op">=</span> pd.DataFrame({<span class="st">'W'</span>:[<span class="st">'옥순(IN)'</span>,<span class="st">'보람(ES)'</span>,<span class="st">'하니(I)'</span>],<span class="st">'M'</span>:[<span class="st">'영식(IN)'</span>,<span class="st">'다호(ES)'</span>,<span class="st">'영호(IS)'</span>]})</span>
+<span id="cb73-2"><a href="#cb73-2" aria-hidden="true" tabindex="-1"></a>df_test</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="1178">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">W</th>
+<th data-quarto-table-cell-role="th">M</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>옥순(IN)</td>
+<td>영식(IN)</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>보람(ES)</td>
+<td>다호(ES)</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>하니(I)</td>
+<td>영호(IS)</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p><strong>hint</strong> 답은 아래와 같다.</p>
+<div id="8d59c0a5-f053-4685-b306-3b9209c394df" class="cell" data-tags="[]" data-execution_count="1183">
+<div class="sourceCode cell-code" id="cb74"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a>yyhat.data</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="1183">
+<pre><code>tensor([[4.0671],
+        [4.1238],
+        [4.9121]])</code></pre>
+</div>
+</div>
 
 
 </section>
@@ -2749,27 +2917,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       }
     }
     stripColumnClz(note)
-    const typesetMath = (el) => {
-      if (window.MathJax) {
-        // MathJax Typeset
-        window.MathJax.typeset([el]);
-      } else if (window.katex) {
-        // KaTeX Render
-        var mathElements = el.getElementsByClassName("math");
-        var macros = [];
-        for (var i = 0; i < mathElements.length; i++) {
-          var texText = mathElements[i].firstChild;
-          if (mathElements[i].tagName == "SPAN") {
-            window.katex.render(texText.data, mathElements[i], {
-              displayMode: mathElements[i].classList.contains('display'),
-              throwOnError: false,
-              macros: macros,
-              fleqn: false
-            });
-          }
-        }
-      }
-    }
     if (id === null || id.startsWith('sec-')) {
       // Special case sections, only their first couple elements
       const container = document.createElement("div");
@@ -2784,10 +2931,14 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             break;
           }
         }
-        typesetMath(container);
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
         return container.innerHTML
       } else {
-        typesetMath(note);
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
         return note.innerHTML;
       }
     } else {
@@ -2796,7 +2947,9 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       if (anchorLink) {
         anchorLink.remove();
       }
-      typesetMath(note);
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
       return note.innerHTML;
     }
   }
