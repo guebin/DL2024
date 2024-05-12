@@ -2,14 +2,14 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.533">
+<meta name="generator" content="quarto-1.4.520">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="최규빈">
 <meta name="dcterms.date" content="2024-05-08">
 
-<title>DL2024 - 10wk-2: 추천시스템 (1) – optimizer 사용 고급, 추천시스템의 학습</title>
+<title>DL2024 - 10wk-2: 추천시스템 (1) – optimizer 사용 고급, MF-based 추천시스템의 학습</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -109,33 +109,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
-
 <link rel="stylesheet" href="../styles.css">
 </head>
 
@@ -185,7 +158,7 @@ window.Quarto = {
   <li><a href="#강의영상" id="toc-강의영상" class="nav-link active" data-scroll-target="#강의영상">1. 강의영상</a></li>
   <li><a href="#imports" id="toc-imports" class="nav-link" data-scroll-target="#imports">2. Imports</a></li>
   <li><a href="#예비학습-optimizer-사용-고급" id="toc-예비학습-optimizer-사용-고급" class="nav-link" data-scroll-target="#예비학습-optimizer-사용-고급">3. 예비학습: optimizer 사용 고급</a></li>
-  <li><a href="#추천시스템의-학습전략" id="toc-추천시스템의-학습전략" class="nav-link" data-scroll-target="#추천시스템의-학습전략">4. 추천시스템의 학습전략</a>
+  <li><a href="#mf-based-추천시스템" id="toc-mf-based-추천시스템" class="nav-link" data-scroll-target="#mf-based-추천시스템">4. MF-based 추천시스템</a>
   <ul class="collapse">
   <li><a href="#a.-data-나는-solo" id="toc-a.-data-나는-solo" class="nav-link" data-scroll-target="#a.-data-나는-solo">A. Data: 나는 SOLO</a></li>
   <li><a href="#b.-fit-predict" id="toc-b.-fit-predict" class="nav-link" data-scroll-target="#b.-fit-predict">B. Fit / Predict</a></li>
@@ -205,7 +178,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">10wk-2: 추천시스템 (1) – optimizer 사용 고급, 추천시스템의 학습</h1>
+<h1 class="title">10wk-2: 추천시스템 (1) – optimizer 사용 고급, MF-based 추천시스템의 학습</h1>
 </div>
 
 
@@ -357,8 +330,8 @@ window.Quarto = {
 </div>
 </div>
 </section>
-<section id="추천시스템의-학습전략" class="level1 page-columns page-full">
-<h1>4. 추천시스템의 학습전략</h1>
+<section id="mf-based-추천시스템" class="level1 page-columns page-full">
+<h1>4. MF-based 추천시스템</h1>
 <p>ref: <a href="https://namu.wiki/w/나는%20SOLO" class="uri">https://namu.wiki/w/나는%20SOLO</a></p>
 <section id="a.-data-나는-solo" class="level2">
 <h2 class="anchored" data-anchor-id="a.-data-나는-solo">A. Data: 나는 SOLO</h2>
@@ -637,67 +610,11 @@ window.Quarto = {
 </div>
 </div>
 <p>—저거 따져보자—</p>
-<p><span class="math inline">\({\bf W} = \begin{bmatrix}
-1.2200 &amp; 0.4900 \\
-1.1700 &amp; 0.4400 \\
-1.2100 &amp; -0.4500 \\
-1.2000 &amp; -0.5000 \\
--1.2000 &amp; 0.5100 \\
--1.2300 &amp; 0.4800 \\
--1.2000 &amp; -0.4800 \\
--1.1900 &amp; -0.4900 \\
-0.2000 &amp; 0.0000
-\end{bmatrix}\)</span></p>
-<p><span class="math inline">\({\bf M}^\top = \begin{bmatrix}
-1.2000 &amp; 1.2200 &amp; 1.2300 &amp; 1.2100 &amp; -1.2800 &amp; -1.2400 &amp; -1.2000 &amp; -1.2200 \\
-0.5000 &amp; 0.4500 &amp; -0.7000 &amp; -0.6000 &amp; 0.6000 &amp; 0.5000 &amp; -0.5000 &amp; -0.6000
-\end{bmatrix}\)</span></p>
-<p><span class="math inline">\({\bf W} @ {\bf M}^\top = \begin{bmatrix}
-1.7090 &amp; 1.7089 &amp; 1.1576 &amp; 1.1822 &amp; -1.2676 &amp; -1.2678 &amp; -1.7090 &amp; -1.7824 \\
-1.6240 &amp; 1.6254 &amp; 1.1311 &amp; 1.1517 &amp; -1.2336 &amp; -1.2308 &amp; -1.6240 &amp; -1.6914 \\
-1.2270 &amp; 1.2737 &amp; 1.8033 &amp; 1.7341 &amp; -1.8188 &amp; -1.7254 &amp; -1.2270 &amp; -1.2062 \\
-1.1900 &amp; 1.2390 &amp; 1.8260 &amp; 1.7520 &amp; -1.8360 &amp; -1.7380 &amp; -1.1900 &amp; -1.1640 \\
--1.1850 &amp; -1.2345 &amp; -1.8330 &amp; -1.7580 &amp;  1.8420 &amp;  1.7430 &amp;  1.1850 &amp;  1.1580 \\
--1.2360 &amp; -1.2846 &amp; -1.8489 &amp; -1.7763 &amp;  1.8624 &amp;  1.7652 &amp;  1.2360 &amp;  1.2126 \\
--1.6800 &amp; -1.6800 &amp; -1.1400 &amp; -1.1640 &amp;  1.2480 &amp;  1.2480 &amp;  1.6800 &amp;  1.7520 \\
--1.6730 &amp; -1.6723 &amp; -1.1207 &amp; -1.1459 &amp;  1.2292 &amp;  1.2306 &amp;  1.6730 &amp;  1.7458 \\
-0.2400 &amp;  0.2440 &amp;  0.2460 &amp;  0.2420 &amp; -0.2560 &amp; -0.2480 &amp; -0.2400 &amp; -0.2440
-\end{bmatrix}\)</span></p>
-<p><span class="math inline">\(\begin{align*} bias =~&amp; \begin{bmatrix}
-1.2100 \\
-1.2500 \\
-1.1000 \\
-1.1100 \\
-1.1200 \\
-1.1300 \\
-1.1400 \\
-1.1200 \\
-3.6000
-\end{bmatrix} +\begin{bmatrix}
-1.2000 &amp; 1.1000 &amp; 1.1100 &amp; 1.2500 &amp; 1.1800 &amp; 1.1100 &amp; 1.1500 &amp; 1.1500
-\end{bmatrix}\\ \\
-=~&amp; \begin{bmatrix}
-2.4100 &amp; 2.3100 &amp; 2.3200 &amp; 2.4600 &amp; 2.3900 &amp; 2.3200 &amp; 2.3600 &amp; 2.3600 \\
-2.4500 &amp; 2.3500 &amp; 2.3600 &amp; 2.5000 &amp; 2.4300 &amp; 2.3600 &amp; 2.4000 &amp; 2.4000 \\
-2.3000 &amp; 2.2000 &amp; 2.2100 &amp; 2.3500 &amp; 2.2800 &amp; 2.2100 &amp; 2.2500 &amp; 2.2500 \\
-2.3100 &amp; 2.2100 &amp; 2.2200 &amp; 2.3600 &amp; 2.2900 &amp; 2.2200 &amp; 2.2600 &amp; 2.2600 \\
-2.3200 &amp; 2.2200 &amp; 2.2300 &amp; 2.3700 &amp; 2.3000 &amp; 2.2300 &amp; 2.2700 &amp; 2.2700 \\
-2.3300 &amp; 2.2300 &amp; 2.2400 &amp; 2.3800 &amp; 2.3100 &amp; 2.2400 &amp; 2.2800 &amp; 2.2800 \\
-2.3400 &amp; 2.2400 &amp; 2.2500 &amp; 2.3900 &amp; 2.3200 &amp; 2.2500 &amp; 2.2900 &amp; 2.2900 \\
-2.3200 &amp; 2.2200 &amp; 2.2300 &amp; 2.3700 &amp; 2.3000 &amp; 2.2300 &amp; 2.2700 &amp; 2.2700 \\
-4.8000 &amp; 4.7000 &amp; 4.7100 &amp; 4.8500 &amp; 4.7800 &amp; 4.7100 &amp; 4.7500 &amp; 4.7500
-\end{bmatrix} \end{align*}\)</span></p>
-<p><span class="math inline">\({\bf W} @ {\bf M}^\top + bias = \begin{bmatrix}
-4.1190 &amp; 4.0189 &amp; 3.4776 &amp; 3.6422 &amp; 1.1224 &amp; 1.0522 &amp; 0.6510 &amp; 0.5776 \\
-4.0740 &amp; 3.9754 &amp; 3.4911 &amp; 3.6517 &amp; 1.1964 &amp; 1.1292 &amp; 0.7760 &amp; 0.7086 \\
-3.5270 &amp; 3.4737 &amp; 4.0133 &amp; 4.0841 &amp; 0.4612 &amp; 0.4846 &amp; 1.0230 &amp; 1.0438 \\
-3.5000 &amp; 3.4490 &amp; 4.0460 &amp; 4.1120 &amp; 0.4540 &amp; 0.4820 &amp; 1.0700 &amp; 1.0960 \\
-1.1350 &amp; 0.9855 &amp; 0.3970 &amp; 0.6120 &amp; 4.1420 &amp; 3.9730 &amp; 3.4550 &amp; 3.4280 \\
-1.0940 &amp; 0.9454 &amp; 0.3911 &amp; 0.6037 &amp; 4.1724 &amp; 4.0052 &amp; 3.5160 &amp; 3.4926 \\
-0.6600 &amp; 0.5600 &amp; 1.1100 &amp; 1.2260 &amp; 3.5680 &amp; 3.4980 &amp; 3.9700 &amp; 4.0420 \\
-0.6470 &amp; 0.5477 &amp; 1.1093 &amp; 1.2241 &amp; 3.5292 &amp; 3.4606 &amp; 3.9430 &amp; 4.0158 \\
-5.0400 &amp; 4.9440 &amp; 4.9560 &amp; 5.0920 &amp; 4.5240 &amp; 4.4620 &amp; 4.5100 &amp; 4.5060
-\end{bmatrix}\)</span></p>
+<p><span class="math inline">\({\bf W} = \begin{bmatrix} 1.2200 &amp; 0.4900 \\ 1.1700 &amp; 0.4400 \\ 1.2100 &amp; -0.4500 \\ 1.2000 &amp; -0.5000 \\ -1.2000 &amp; 0.5100 \\ -1.2300 &amp; 0.4800 \\ -1.2000 &amp; -0.4800 \\ -1.1900 &amp; -0.4900 \\ 0.2000 &amp; 0.0000 \end{bmatrix}\)</span></p>
+<p><span class="math inline">\({\bf M}^\top = \begin{bmatrix} 1.2000 &amp; 1.2200 &amp; 1.2300 &amp; 1.2100 &amp; -1.2800 &amp; -1.2400 &amp; -1.2000 &amp; -1.2200 \\ 0.5000 &amp; 0.4500 &amp; -0.7000 &amp; -0.6000 &amp; 0.6000 &amp; 0.5000 &amp; -0.5000 &amp; -0.6000 \end{bmatrix}\)</span></p>
+<p><span class="math inline">\({\bf W} @ {\bf M}^\top = \begin{bmatrix} 1.7090 &amp; 1.7089 &amp; 1.1576 &amp; 1.1822 &amp; -1.2676 &amp; -1.2678 &amp; -1.7090 &amp; -1.7824 \\ 1.6240 &amp; 1.6254 &amp; 1.1311 &amp; 1.1517 &amp; -1.2336 &amp; -1.2308 &amp; -1.6240 &amp; -1.6914 \\ 1.2270 &amp; 1.2737 &amp; 1.8033 &amp; 1.7341 &amp; -1.8188 &amp; -1.7254 &amp; -1.2270 &amp; -1.2062 \\ 1.1900 &amp; 1.2390 &amp; 1.8260 &amp; 1.7520 &amp; -1.8360 &amp; -1.7380 &amp; -1.1900 &amp; -1.1640 \\ -1.1850 &amp; -1.2345 &amp; -1.8330 &amp; -1.7580 &amp; 1.8420 &amp; 1.7430 &amp; 1.1850 &amp; 1.1580 \\ -1.2360 &amp; -1.2846 &amp; -1.8489 &amp; -1.7763 &amp; 1.8624 &amp; 1.7652 &amp; 1.2360 &amp; 1.2126 \\ -1.6800 &amp; -1.6800 &amp; -1.1400 &amp; -1.1640 &amp; 1.2480 &amp; 1.2480 &amp; 1.6800 &amp; 1.7520 \\ -1.6730 &amp; -1.6723 &amp; -1.1207 &amp; -1.1459 &amp; 1.2292 &amp; 1.2306 &amp; 1.6730 &amp; 1.7458 \\ 0.2400 &amp; 0.2440 &amp; 0.2460 &amp; 0.2420 &amp; -0.2560 &amp; -0.2480 &amp; -0.2400 &amp; -0.2440 \end{bmatrix}\)</span></p>
+<p><span class="math inline">\(\begin{align*} bias =~&amp; \begin{bmatrix} 1.2100 \\ 1.2500 \\ 1.1000 \\ 1.1100 \\ 1.1200 \\ 1.1300 \\ 1.1400 \\ 1.1200 \\ 3.6000 \end{bmatrix} +\begin{bmatrix} 1.2000 &amp; 1.1000 &amp; 1.1100 &amp; 1.2500 &amp; 1.1800 &amp; 1.1100 &amp; 1.1500 &amp; 1.1500 \end{bmatrix}\\ \\ =~&amp; \begin{bmatrix} 2.4100 &amp; 2.3100 &amp; 2.3200 &amp; 2.4600 &amp; 2.3900 &amp; 2.3200 &amp; 2.3600 &amp; 2.3600 \\ 2.4500 &amp; 2.3500 &amp; 2.3600 &amp; 2.5000 &amp; 2.4300 &amp; 2.3600 &amp; 2.4000 &amp; 2.4000 \\ 2.3000 &amp; 2.2000 &amp; 2.2100 &amp; 2.3500 &amp; 2.2800 &amp; 2.2100 &amp; 2.2500 &amp; 2.2500 \\ 2.3100 &amp; 2.2100 &amp; 2.2200 &amp; 2.3600 &amp; 2.2900 &amp; 2.2200 &amp; 2.2600 &amp; 2.2600 \\ 2.3200 &amp; 2.2200 &amp; 2.2300 &amp; 2.3700 &amp; 2.3000 &amp; 2.2300 &amp; 2.2700 &amp; 2.2700 \\ 2.3300 &amp; 2.2300 &amp; 2.2400 &amp; 2.3800 &amp; 2.3100 &amp; 2.2400 &amp; 2.2800 &amp; 2.2800 \\ 2.3400 &amp; 2.2400 &amp; 2.2500 &amp; 2.3900 &amp; 2.3200 &amp; 2.2500 &amp; 2.2900 &amp; 2.2900 \\ 2.3200 &amp; 2.2200 &amp; 2.2300 &amp; 2.3700 &amp; 2.3000 &amp; 2.2300 &amp; 2.2700 &amp; 2.2700 \\ 4.8000 &amp; 4.7000 &amp; 4.7100 &amp; 4.8500 &amp; 4.7800 &amp; 4.7100 &amp; 4.7500 &amp; 4.7500 \end{bmatrix} \end{align*}\)</span></p>
+<p><span class="math inline">\({\bf W} @ {\bf M}^\top + bias = \begin{bmatrix} 4.1190 &amp; 4.0189 &amp; 3.4776 &amp; 3.6422 &amp; 1.1224 &amp; 1.0522 &amp; 0.6510 &amp; 0.5776 \\ 4.0740 &amp; 3.9754 &amp; 3.4911 &amp; 3.6517 &amp; 1.1964 &amp; 1.1292 &amp; 0.7760 &amp; 0.7086 \\ 3.5270 &amp; 3.4737 &amp; 4.0133 &amp; 4.0841 &amp; 0.4612 &amp; 0.4846 &amp; 1.0230 &amp; 1.0438 \\ 3.5000 &amp; 3.4490 &amp; 4.0460 &amp; 4.1120 &amp; 0.4540 &amp; 0.4820 &amp; 1.0700 &amp; 1.0960 \\ 1.1350 &amp; 0.9855 &amp; 0.3970 &amp; 0.6120 &amp; 4.1420 &amp; 3.9730 &amp; 3.4550 &amp; 3.4280 \\ 1.0940 &amp; 0.9454 &amp; 0.3911 &amp; 0.6037 &amp; 4.1724 &amp; 4.0052 &amp; 3.5160 &amp; 3.4926 \\ 0.6600 &amp; 0.5600 &amp; 1.1100 &amp; 1.2260 &amp; 3.5680 &amp; 3.4980 &amp; 3.9700 &amp; 4.0420 \\ 0.6470 &amp; 0.5477 &amp; 1.1093 &amp; 1.2241 &amp; 3.5292 &amp; 3.4606 &amp; 3.9430 &amp; 4.0158 \\ 5.0400 &amp; 4.9440 &amp; 4.9560 &amp; 5.0920 &amp; 4.5240 &amp; 4.4620 &amp; 4.5100 &amp; 4.5060 \end{bmatrix}\)</span></p>
 <p><code>-</code> <span class="math inline">\({\bf W} @ {\bf M}^\top + bias\)</span> 의 (1,1)의 원소값을 계산해보면 아래와 같다.</p>
 <ul>
 <li>옥순의I성향<span class="math inline">\(\times\)</span>영식의I성향 <span class="math inline">\(+\)</span> 옥순의N성향<span class="math inline">\(\times\)</span>영식의N성향 <span class="math inline">\(+\)</span> 옥순의매력 <span class="math inline">\(+\)</span> 영식의매력 = 4.1190</li>
@@ -2917,6 +2834,27 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       }
     }
     stripColumnClz(note)
+    const typesetMath = (el) => {
+      if (window.MathJax) {
+        // MathJax Typeset
+        window.MathJax.typeset([el]);
+      } else if (window.katex) {
+        // KaTeX Render
+        var mathElements = el.getElementsByClassName("math");
+        var macros = [];
+        for (var i = 0; i < mathElements.length; i++) {
+          var texText = mathElements[i].firstChild;
+          if (mathElements[i].tagName == "SPAN") {
+            window.katex.render(texText.data, mathElements[i], {
+              displayMode: mathElements[i].classList.contains('display'),
+              throwOnError: false,
+              macros: macros,
+              fleqn: false
+            });
+          }
+        }
+      }
+    }
     if (id === null || id.startsWith('sec-')) {
       // Special case sections, only their first couple elements
       const container = document.createElement("div");
@@ -2931,14 +2869,10 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             break;
           }
         }
-        if (window.Quarto?.typesetMath) {
-          window.Quarto.typesetMath(container);
-        }
+        typesetMath(container);
         return container.innerHTML
       } else {
-        if (window.Quarto?.typesetMath) {
-          window.Quarto.typesetMath(note);
-        }
+        typesetMath(note);
         return note.innerHTML;
       }
     } else {
@@ -2947,9 +2881,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       if (anchorLink) {
         anchorLink.remove();
       }
-      if (window.Quarto?.typesetMath) {
-        window.Quarto.typesetMath(note);
-      }
+      typesetMath(note);
       return note.innerHTML;
     }
   }
