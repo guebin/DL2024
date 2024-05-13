@@ -960,7 +960,7 @@ tensor([[-0.2002, -0.4890,  0.2081]], requires_grad=True)</code></pre>
 <span id="cb54-6"><a href="#cb54-6" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> torch.tensor(df_train[<span class="st">'y'</span>]).<span class="bu">float</span>().reshape(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>) <span class="co"># (n,1) float vector</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>사용자정의 네트워크를 이용하여 MF-based 추천시스템을 설계하라.</p>
-<p>(풀이1)</p>
+<p>(풀이1) – <code>net(X1,X2)</code></p>
 <div id="38c3ae91-f198-418f-9fd3-a81fb754d8fc" class="cell" data-tags="[]" data-execution_count="86">
 <div class="sourceCode cell-code" id="cb55"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Net(torch.nn.Module):</span>
 <span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>):</span>
@@ -1014,7 +1014,7 @@ tensor([[-0.2002, -0.4890,  0.2081]], requires_grad=True)</code></pre>
         [4.6336, 4.3900]])</code></pre>
 </div>
 </div>
-<p>(풀이2)</p>
+<p>(풀이2) – <code>net(X)</code></p>
 <div id="a1d5df19-0796-446e-a285-9df9a336f12c" class="cell" data-tags="[]" data-execution_count="89">
 <div class="sourceCode cell-code" id="cb59"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> torch.stack([X1,X2],axis<span class="op">=</span><span class="dv">1</span>)</span>
 <span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a>X[:<span class="dv">5</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
