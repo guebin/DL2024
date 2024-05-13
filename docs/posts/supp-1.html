@@ -2,14 +2,14 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.520">
+<meta name="generator" content="quarto-1.4.533">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="최규빈">
-<meta name="dcterms.date" content="2024-04-10">
+<meta name="dcterms.date" content="2024-06-29">
 
-<title>DL2024 - 06wk-2: 합성곱신경망 (3) – XAI (Class Activation Map, CAM)</title>
+<title>DL2024 - supp-1: 용어정리, 참고문헌</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -106,6 +106,33 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
 <link rel="stylesheet" href="../styles.css">
 </head>
 
@@ -161,16 +188,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#e.-다양한-코드들" id="toc-e.-다양한-코드들" class="nav-link" data-scroll-target="#e.-다양한-코드들">E. 다양한 코드들</a></li>
   </ul></li>
   <li><a href="#a2.-참고자료들" id="toc-a2.-참고자료들" class="nav-link" data-scroll-target="#a2.-참고자료들">A2. 참고자료들</a></li>
-  <li><a href="#a3.-dnn-ann-mlp" id="toc-a3.-dnn-ann-mlp" class="nav-link" data-scroll-target="#a3.-dnn-ann-mlp">A3. DNN, ANN, MLP</a></li>
   </ul>
 <div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="supp-1.out.ipynb" download="supp-1.out.ipynb"><i class="bi bi-journal-code"></i>Jupyter</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content page-columns page-full" id="quarto-document-content">
+<main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">06wk-2: 합성곱신경망 (3) – XAI (Class Activation Map, CAM)</h1>
+<h1 class="title">supp-1: 용어정리, 참고문헌</h1>
 </div>
 
 
@@ -187,7 +213,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">April 10, 2024</p>
+      <p class="date">June 29, 2024</p>
     </div>
   </div>
   
@@ -333,64 +359,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><code>-</code> 상속: <a href="https://guebin.github.io/PP2023/posts/03_Class/2023-06-12-15wk-1.html" class="uri">https://guebin.github.io/PP2023/posts/03_Class/2023-06-12-15wk-1.html</a></p>
 <p><code>-</code> sklearn/autogluon: <a href="https://guebin.github.io/MP2023/" class="uri">https://guebin.github.io/MP2023/</a></p>
 <p><code>-</code> 리눅스관련: <a href="https://guebin.github.io/DSTBX2024/" class="uri">https://guebin.github.io/DSTBX2024/</a> – 자료 부실함.. 강의영상 없는것 많음..</p>
+<p><code>-</code> 클래스기본: https://guebin.github.io/PP2023/ – <code>10wk-2</code> ~ <code>15wk-2</code></p>
+
+
 </section>
-<section id="a3.-dnn-ann-mlp" class="level1 page-columns page-full">
-<h1>A3. DNN, ANN, MLP</h1>
-<p><code>-</code> DNN 은 깊은신경망, ANN 은 인공신경망, MLP 는 다층퍼셉트론이라 번역된다.</p>
-<p><code>-</code> 아래의 네트워크는 ANN이라 볼 수 있다. 또한 레이어가 2개 있으므로 MLP라고 볼 수 있다. DNN 이라 보기는 애매하다. (그래서 이걸 얕은신경망(shallow network)이라고 표현하기도 합니다)</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>net <span class="op">=</span> torch.nn.Sequential(</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    torch.nn.Linear(in_features<span class="op">=</span><span class="dv">1</span>,out_features<span class="op">=</span><span class="dv">2</span>),</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    torch.nn.ReLU(),</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    torch.nn.Linear(in_features<span class="op">=</span><span class="dv">2</span>,out_features<span class="op">=</span><span class="dv">1</span>),</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    torch.nn.Sigmoid()</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p><code>-</code> 아래의 네트워크는 ANN이라 볼 수 있다. 또한 레이어가 7개 있으므로 MLP라고 볼 수 있다. 이 정도면 깊어보이니까 DNN 이라 주장할 수 있어보인다.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>net <span class="op">=</span> torch.nn.Sequential(</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    torch.nn.Linear(in_features<span class="op">=</span><span class="dv">1</span>,out_features<span class="op">=</span><span class="dv">2</span>),</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    torch.nn.ReLU(),</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    torch.nn.Linear(in_features<span class="op">=</span><span class="dv">2</span>,out_features<span class="op">=</span><span class="dv">2</span>),</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    torch.nn.ReLU(),</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    torch.nn.Linear(in_features<span class="op">=</span><span class="dv">2</span>,out_features<span class="op">=</span><span class="dv">2</span>),</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    torch.nn.ReLU(),</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    torch.nn.Linear(in_features<span class="op">=</span><span class="dv">2</span>,out_features<span class="op">=</span><span class="dv">2</span>),</span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    torch.nn.ReLU(),</span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    torch.nn.Linear(in_features<span class="op">=</span><span class="dv">2</span>,out_features<span class="op">=</span><span class="dv">2</span>),</span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    torch.nn.ReLU(),</span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    torch.nn.Linear(in_features<span class="op">=</span><span class="dv">2</span>,out_features<span class="op">=</span><span class="dv">2</span>),</span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>    torch.nn.ReLU(),</span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>    torch.nn.Linear(in_features<span class="op">=</span><span class="dv">2</span>,out_features<span class="op">=</span><span class="dv">1</span>),</span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>    torch.nn.Sigmoid(),    </span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p><code>-</code> 아래의 네트워크는 ANN이라 볼 수 있다. 또한 레이어가 3개 있으므로 MLP라고 볼 수 있다. 이건 DNN이라고 봐야하나? 깊다기 보다는 넓은 신경망인데…</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>net <span class="op">=</span> torch.nn.Sequential(</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    torch.nn.Linear(in_features<span class="op">=</span><span class="dv">1</span>,out_features<span class="op">=</span><span class="dv">1048576</span>),</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    torch.nn.ReLU(),</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    torch.nn.Linear(in_features<span class="op">=</span><span class="dv">1048576</span>,out_features<span class="op">=</span><span class="dv">1048576</span>),</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    torch.nn.ReLU(),</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    torch.nn.Linear(in_features<span class="op">=</span><span class="dv">1048576</span>,out_features<span class="op">=</span><span class="dv">1</span>),</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    torch.nn.Sigmoid(),    </span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p><code>-</code> 아래의 네트워크도 ANN이라 볼 수 있다.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> 레이어는 2장이지만 MLP라고 부르진 않는다.</p>
-<div class="no-row-height column-margin column-container"><li id="fn1"><p><sup>1</sup>&nbsp;그렇지만 이걸 ANN이라고 부르는 사람은 없는듯</p></li></div><div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>net <span class="op">=</span> torch.nn.Sequential(</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    torch.nn.Conv2d(<span class="dv">1</span>,<span class="dv">16</span>,(<span class="dv">5</span>,<span class="dv">5</span>)), <span class="co"># &lt;-- 학습할 파라메터</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    torch.nn.ReLU(),</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    torch.nn.MaxPool2d((<span class="dv">2</span>,<span class="dv">2</span>)),</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    torch.nn.Flatten(),</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    torch.nn.Linear(<span class="dv">2304</span>,<span class="dv">1</span>), <span class="co"># &lt;-- 학습할 파라메터</span></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    torch.nn.Sigmoid()</span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p><code>-</code> 야매개념: 요즘은 거의 ANN <span class="math inline">\(\approx\)</span> MLP <span class="math inline">\(\approx\)</span> DNN 의 느낌으로 이해해도 무방함</p>
-<ul>
-<li>어지간한 모형은 다 ANN이라 우길 수 있다. 회귀분석도, 로지스틱분석도 마음먹으면 ANN으로 우길 수 있다. 그래서 “ANN을 썼다”라는건 엄청 모호한 말이다. 이런 이유로 사람들은 거의 MLP를 쓴 경우에 ANN을 썼다고 하고, 회귀모형을 쓴 경우에는 굳이 ANN을 썼다고 표현하지 않는다.</li>
-<li>MLP과 DNN은 구분이 모호하다. 하나이상의 은닉층만 포함하고 있으면 MLP라고 부를 수 있다. 적은 노드수를 유지하면서 은닉층을 여러개 쓰면 깊은 신경망이라고 하고, 많은 노드를 사용하면서 은닉층을 얇게, 그리고 노드를 많이 쓰면 넓은신경망이라고 한다. 노드수와 관계없이 층이 얇은 경우는 얕은신경망이라고 한다.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> 즉 MLP의 모양에 따라서 “깊은신경망”, “얕은신경망”, “넓은신경망” 등의 용어를 사용한다.</li>
-<li>일반적으로 은닉층이 1개있으면 얕은신경망, 2개 이상이면 깊은신경망이라고 부른다고 합의되어있다. (은닉층이 2층까지 얕은신경망이라고 부르는 사람도 존재함) 얼마나 많은 노드부터 넓은신경망이라고 부르는지는 (제가 아는 한) 합의된바가 없다. 얼마나 깊을때 DNN으로 부를지 명확한 합의가 되어있지 않다. (3층-MLP부터 DNN으로 부르는 방식이 지지를 얻는듯. 그렇지만 4층-MLP 부터 DNN으로 부르는 사람도 존재함.)</li>
-<li>MLP의 정의가 가장 깔끔하다고 생각하지만 요즘 잘 쓰는 용어는 아니다. (MLP의 논문은 너무 예전임. 층을 세는것도 다름)</li>
-<li><strong>제 결론</strong>: 따지고 보자면 DNN <span class="math inline">\(\subset\)</span> MLP <span class="math inline">\(\subset\)</span> ANN 이다. 그렇지만 MLP이지만 DNN은 아닌 네트워크를 지칭한다든가, ANN 이지만 MLP는 아닌 네트워크를 지칭하는 일은 흔하지 않으며, 지칭하더라도 부연설명을 친절하게 해준다. 따라서 부연설명 없이 ANN, MLP, DNN 을 지칭한다면 거의 DNN을 의미한다고 봐도 무방하다. 즉 ANN <span class="math inline">\(\approx\)</span> MLP <span class="math inline">\(\approx\)</span> DNN 라고 보면 된다. (엄밀하게는 틀린개념이죠)</li>
-</ul>
-
-
-<div class="no-row-height column-margin column-container"><li id="fn2"><p><sup>2</sup>&nbsp;저는 이 표현 너무 싫어해요</p></li></div></section>
-
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -521,27 +493,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       }
     }
     stripColumnClz(note)
-    const typesetMath = (el) => {
-      if (window.MathJax) {
-        // MathJax Typeset
-        window.MathJax.typeset([el]);
-      } else if (window.katex) {
-        // KaTeX Render
-        var mathElements = el.getElementsByClassName("math");
-        var macros = [];
-        for (var i = 0; i < mathElements.length; i++) {
-          var texText = mathElements[i].firstChild;
-          if (mathElements[i].tagName == "SPAN") {
-            window.katex.render(texText.data, mathElements[i], {
-              displayMode: mathElements[i].classList.contains('display'),
-              throwOnError: false,
-              macros: macros,
-              fleqn: false
-            });
-          }
-        }
-      }
-    }
     if (id === null || id.startsWith('sec-')) {
       // Special case sections, only their first couple elements
       const container = document.createElement("div");
@@ -556,10 +507,14 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             break;
           }
         }
-        typesetMath(container);
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
         return container.innerHTML
       } else {
-        typesetMath(note);
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
         return note.innerHTML;
       }
     } else {
@@ -568,7 +523,9 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       if (anchorLink) {
         anchorLink.remove();
       }
-      typesetMath(note);
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
       return note.innerHTML;
     }
   }
