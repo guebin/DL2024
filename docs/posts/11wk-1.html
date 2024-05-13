@@ -396,11 +396,17 @@ tensor([[-0.2002, -0.4890,  0.2081]], requires_grad=True)</code></pre>
 <li><p><span class="math inline">\(\text{ebdd}({\boldsymbol x})= \text{linr}\big(\text{onehot}({\boldsymbol x})\big) = \begin{bmatrix} 1 &amp; 0 &amp; 0 \\ 0 &amp; 1 &amp; 0 \\ 0 &amp; 0 &amp; 1 \\ 1 &amp; 0 &amp; 0 \\ 0 &amp; 1 &amp; 0 \end{bmatrix}\begin{bmatrix} -0.8178 \\ -0.7052 \\ -0.5843 \end{bmatrix} = \begin{bmatrix} -0.8178 \\ -0.7052 \\ -0.5843 \\ -0.8178 \\ -0.7052 \end{bmatrix}\)</span></p></li>
 </ul>
 <p><code>-</code> 데이터를 읽으며 해석: 사실상 0,1,2에 대한 의미는 “옥순”,“영숙”,“하니” 같은 자료였고, 임베딩의 결과는 “옥순”,“영숙”,“하니”가 가지는 어떠한 특징이었음 (예를들면 매력같은). 데이터를 상상하며 위의 결과를 다시 해석해보자.</p>
+<p><strong>옥순이 가지는 어떠한 특징 (-0.8470 혹은 -0.8178) 을 바꾸고 싶다면?</strong></p>
 <ul>
-<li>옥순이 가지는 어떠한 특징 (-0.8470 혹은 -0.8178) 을 바꾸고 싶다면? <code>ebdd</code>의 경우 -0.8178 이라는 숫자를 조정하면 된다. 이 조정은 옥순의 특징만 바꾸며 영숙과 하니의 특징은 바꾸지 않는다. 반면 <code>linr</code>의 경우 -0.3467 혹은 -0.8470 을 조정하면 되는데, 이는 옥순의 특징을 바꿈과 동시에 영숙과 하니의 특징까지 같이 바꾼다. 하니, 혹은 영숙이 가지는 특징을 바꾸고 싶을 경우도 마찬가지 현상이 일어남.</li>
-<li>만약에 출연자가 1000명이라면 <code>linr</code>그 1000명의 특징을 단 2개의 파라메터로 조정해야한다. (그리고 하나를 바꾸면 999명이 같이 바뀐다) 하지만 <code>ebdd</code>는 1000개의 특징을 조정할 수 있는 1000개의 파라메터를 확보할 수 있게 된다.</li>
+<li><code>ebdd</code>의 경우: <code>ebdd.weigth</code>에 있는 -0.8178 이라는 숫자를 조정하면 된다. 이 조정은 옥순의 특징만 바꾸며 영숙과 하니의 특징은 바꾸지 않는다. (개별조정이 쉬움)</li>
+<li><code>linr</code>의 경우: <code>linr.weight</code>에 있는 -0.3467 혹은 <code>linr.bias</code>에 있는 -0.8470 을 조정하면 되는데, 이를 조정하면 옥순의 특징을 바꿈과 동시에 영숙/하니의 특징까지 같이 바뀌게 된다. (개별조정이 어려움)</li>
 </ul>
-<p><code>-</code> 결론: ebdd가 더 파라메터 조정을 통하여 특징을 학습하기 용이하다. (독립적으로 특징값을 줄 수 있으니까!)</p>
+<p><strong>만약에 출연자가 1000명이라면??</strong></p>
+<ul>
+<li><code>linr</code>의 경우: 1000명의 특징을 단 2개의 파라메터로 조정해야한다. (그리고 한명의 특징을 바꾸면 999명의 특징이 같이 바뀐다, 개별조정은 애초에 가능하지 않음.)</li>
+<li><code>ebdd</code>의 경우: 1000개의 특징을 조정할 수 있는 1000개의 파라메터를 확보할 수 있게 된다.</li>
+</ul>
+<p><code>-</code> 결론: ebdd가 더 파라메터 미세조정을 통하여 특징을 학습하기 용이하다. (독립적으로 특징값을 줄 수 있으니까!)</p>
 <blockquote class="blockquote">
 <p>만약에 문자열이 “최우수(A)”, “우수(B)”, “보통(C)”, “미흡(D)”, “매우미흡(F)” 이었다면 특징을 뽑아낼때 linr 가 더 적절했겠죠?</p>
 </blockquote>
@@ -408,10 +414,10 @@ tensor([[-0.2002, -0.4890,  0.2081]], requires_grad=True)</code></pre>
 <section id="b.-mf-based-추천시스템-재설계" class="level2">
 <h2 class="anchored" data-anchor-id="b.-mf-based-추천시스템-재설계">B. MF-based 추천시스템 재설계</h2>
 <p>아래의 자료를 활용하여 추천시스템을 설계하고자한다.</p>
-<div id="32312f78-6890-4878-b22c-372df4797dd7" class="cell" data-tags="[]" data-execution_count="28">
+<div id="32312f78-6890-4878-b22c-372df4797dd7" class="cell" data-tags="[]" data-execution_count="115">
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>df_view <span class="op">=</span> pd.read_csv(<span class="st">'https://raw.githubusercontent.com/guebin/DL2024/main/posts/solo.csv'</span>,index_col<span class="op">=</span><span class="dv">0</span>)</span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>df_view</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="28">
+<div class="cell-output cell-output-display" data-execution_count="115">
 <div>
 
 
@@ -535,7 +541,7 @@ tensor([[-0.2002, -0.4890,  0.2081]], requires_grad=True)</code></pre>
 </div>
 </div>
 </div>
-<div id="1a5017f3-f863-483a-a894-c63f960aa739" class="cell" data-tags="[]" data-execution_count="29">
+<div id="1a5017f3-f863-483a-a894-c63f960aa739" class="cell" data-tags="[]" data-execution_count="116">
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>df_train <span class="op">=</span> df_view.stack().reset_index().set_axis([<span class="st">'W'</span>,<span class="st">'M'</span>,<span class="st">'y'</span>],axis<span class="op">=</span><span class="dv">1</span>)</span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>w <span class="op">=</span> {<span class="st">'옥순(IN)'</span>:<span class="dv">0</span>, <span class="st">'영자(IN)'</span>:<span class="dv">1</span>, <span class="st">'정숙(IS)'</span>:<span class="dv">2</span>, <span class="st">'영숙(IS)'</span>:<span class="dv">3</span>, <span class="st">'순자(EN)'</span>:<span class="dv">4</span>, <span class="st">'현숙(EN)'</span>:<span class="dv">5</span>, <span class="st">'서연(ES)'</span>:<span class="dv">6</span>, <span class="st">'보람(ES)'</span>:<span class="dv">7</span>, <span class="st">'하니(I)'</span>:<span class="dv">8</span>}</span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>m <span class="op">=</span> {<span class="st">'영식(IN)'</span>:<span class="dv">0</span>, <span class="st">'영철(IN)'</span>:<span class="dv">1</span>, <span class="st">'영호(IS)'</span>:<span class="dv">2</span>, <span class="st">'광수(IS)'</span>:<span class="dv">3</span>, <span class="st">'상철(EN)'</span>:<span class="dv">4</span>, <span class="st">'영수(EN)'</span>:<span class="dv">5</span>, <span class="st">'규빈(ES)'</span>:<span class="dv">6</span>, <span class="st">'다호(ES)'</span>:<span class="dv">7</span>}</span>
@@ -713,8 +719,9 @@ tensor([[-0.2002, -0.4890,  0.2081]], requires_grad=True)</code></pre>
 <span id="cb43-10"><a href="#cb43-10" aria-hidden="true" tabindex="-1"></a>        <span class="co">## 정의 끝</span></span>
 <span id="cb43-11"><a href="#cb43-11" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> yhat</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <ul>
-<li>net(X)에 사용하는 X임, yhat은 net.forward(X) 함수의 리턴값임</li>
-<li>사실, X/yhat은 다른 변수로 써도 무방하나 (예를들면 input/output 이라든지, netin/netout 이라든지) 설명의 편의상 X와 yhat을 고정한다.</li>
+<li><code>forward</code>의 입력: <code>X</code>는 <code>net(X)</code>에 사용하는 <code>X</code>임</li>
+<li><code>forward</code>의 출력: <code>yhat</code>은 <code>net.forward(X)</code> 함수의 리턴값임</li>
+<li>사실, <code>X</code>/<code>yhat</code>은 다른 변수로 써도 무방하나 (예를들면 <code>input</code>/<code>output</code> 이라든지, <code>netin</code>/<code>netout</code> 이라든지) 설명의 편의상 <code>X</code>와 <code>yhat</code>을 고정한다.</li>
 </ul>
 <p><strong>step2:</strong> <code>def __init__(self):</code>에 yhat을 구하기 위해 필요한 재료를 레이어를 정의하고 이름을 붙인다. 이름은 항상 <code>self.xxx</code> 와 같은 식으로 정의한다.</p>
 <div class="sourceCode" id="cb44"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> XXXX(torch.nn.Module):</span>
