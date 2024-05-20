@@ -170,7 +170,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#b.-순환신경망-알고리즘" id="toc-b.-순환신경망-알고리즘" class="nav-link" data-scroll-target="#b.-순환신경망-알고리즘">B. 순환신경망 알고리즘</a></li>
   <li><a href="#c.-구현1-rnncell" id="toc-c.-구현1-rnncell" class="nav-link" data-scroll-target="#c.-구현1-rnncell">C. 구현1 – rNNCell</a></li>
   <li><a href="#d.-구현2-rnncell" id="toc-d.-구현2-rnncell" class="nav-link" data-scroll-target="#d.-구현2-rnncell">D. 구현2 – RNNCell</a></li>
-  <li><a href="#e.-구현3-rnn" id="toc-e.-구현3-rnn" class="nav-link" data-scroll-target="#e.-구현3-rnn">E. 구현3 – RNN</a></li>
   </ul></li>
   </ul>
 <div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="12wk-1.out.ipynb" download="12wk-1.out.ipynb"><i class="bi bi-journal-code"></i>Jupyter</a></li></ul></div></nav>
@@ -888,70 +887,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <ul>
 <li>구현1과 같은 결과</li>
-</ul>
-</section>
-<section id="e.-구현3-rnn" class="level2">
-<h2 class="anchored" data-anchor-id="e.-구현3-rnn">E. 구현3 – RNN</h2>
-<p>ref: <a href="https://pytorch.org/docs/stable/generated/torch.nn.RNN.html" class="uri">https://pytorch.org/docs/stable/generated/torch.nn.RNN.html</a></p>
-<p><code>-</code> 데이터정리</p>
-<div id="034999da-1bed-4a20-8262-7251688fb84a" class="cell" data-tags="[]" data-execution_count="153">
-<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> torch.tensor(df_train.x.<span class="bu">map</span>({<span class="st">'A'</span>:<span class="dv">0</span>,<span class="st">'b'</span>:<span class="dv">1</span>,<span class="st">'c'</span>:<span class="dv">2</span>,<span class="st">'d'</span>:<span class="dv">3</span>}))</span>
-<span id="cb66-2"><a href="#cb66-2" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> torch.tensor(df_train.y.<span class="bu">map</span>({<span class="st">'A'</span>:<span class="dv">0</span>,<span class="st">'b'</span>:<span class="dv">1</span>,<span class="st">'c'</span>:<span class="dv">2</span>,<span class="st">'d'</span>:<span class="dv">3</span>}))</span>
-<span id="cb66-3"><a href="#cb66-3" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> torch.nn.functional.one_hot(x).<span class="bu">float</span>()</span>
-<span id="cb66-4"><a href="#cb66-4" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> torch.nn.functional.one_hot(y).<span class="bu">float</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p><code>-</code> Net설계 및 가중치 설정 (구현1,2와 동일하도록 가중치 초기화)</p>
-<div id="1d8e0482-8785-4dfb-91af-ac191f0ac4dd" class="cell" data-tags="[]" data-execution_count="154">
-<div class="sourceCode cell-code" id="cb67"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a>torch.manual_seed(<span class="dv">43052</span>)</span>
-<span id="cb67-2"><a href="#cb67-2" aria-hidden="true" tabindex="-1"></a>_rnncell <span class="op">=</span> rNNCell()</span>
-<span id="cb67-3"><a href="#cb67-3" aria-hidden="true" tabindex="-1"></a>cook <span class="op">=</span> torch.nn.Linear(<span class="dv">2</span>,<span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div id="5e9510b8-7651-4399-89a3-7d097add4dfd" class="cell" data-tags="[]" data-execution_count="155">
-<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a>rnn <span class="op">=</span> torch.nn.RNN(<span class="dv">4</span>,<span class="dv">2</span>)</span>
-<span id="cb68-2"><a href="#cb68-2" aria-hidden="true" tabindex="-1"></a>rnn.weight_ih_l0.data <span class="op">=</span> _rnncell.i2h.weight.data </span>
-<span id="cb68-3"><a href="#cb68-3" aria-hidden="true" tabindex="-1"></a>rnn.weight_hh_l0.data <span class="op">=</span> _rnncell.h2h.weight.data </span>
-<span id="cb68-4"><a href="#cb68-4" aria-hidden="true" tabindex="-1"></a>rnn.bias_ih_l0.data <span class="op">=</span> _rnncell.i2h.bias.data </span>
-<span id="cb68-5"><a href="#cb68-5" aria-hidden="true" tabindex="-1"></a>rnn.bias_hh_l0.data <span class="op">=</span> _rnncell.h2h.bias.data </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p><code>-</code> 손실함수 및 옵티마이저 설정</p>
-<div id="88787449-54e6-4c99-a3ed-75d769abcd46" class="cell" data-tags="[]" data-execution_count="156">
-<div class="sourceCode cell-code" id="cb69"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a>loss_fn <span class="op">=</span> torch.nn.CrossEntropyLoss() </span>
-<span id="cb69-2"><a href="#cb69-2" aria-hidden="true" tabindex="-1"></a>optimizr <span class="op">=</span> torch.optim.Adam(<span class="bu">list</span>(rnn.parameters())<span class="op">+</span><span class="bu">list</span>(cook.parameters()),lr<span class="op">=</span><span class="fl">0.1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p><code>-</code> 학습</p>
-<div id="30085ad0-3446-4040-868e-4f3ea342718f" class="cell" data-tags="[]" data-execution_count="157">
-<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a>Water <span class="op">=</span> torch.zeros(<span class="dv">1</span>,<span class="dv">2</span>) <span class="co"># 여기에서 1=D*num_layers임 //  D는 단방향=1 양방향=2, num_layers는 stacking RNN의 중첩수 </span></span>
-<span id="cb70-2"><a href="#cb70-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> epoc <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">200</span>):</span>
-<span id="cb70-3"><a href="#cb70-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">## 1 </span></span>
-<span id="cb70-4"><a href="#cb70-4" aria-hidden="true" tabindex="-1"></a>    h,hL <span class="op">=</span> rnn(X,Water)</span>
-<span id="cb70-5"><a href="#cb70-5" aria-hidden="true" tabindex="-1"></a>    netout <span class="op">=</span> cook(h) </span>
-<span id="cb70-6"><a href="#cb70-6" aria-hidden="true" tabindex="-1"></a>    <span class="co">## 2 </span></span>
-<span id="cb70-7"><a href="#cb70-7" aria-hidden="true" tabindex="-1"></a>    loss <span class="op">=</span> loss_fn(netout,y)</span>
-<span id="cb70-8"><a href="#cb70-8" aria-hidden="true" tabindex="-1"></a>    <span class="co">## 3 </span></span>
-<span id="cb70-9"><a href="#cb70-9" aria-hidden="true" tabindex="-1"></a>    loss.backward()</span>
-<span id="cb70-10"><a href="#cb70-10" aria-hidden="true" tabindex="-1"></a>    <span class="co">## 4 </span></span>
-<span id="cb70-11"><a href="#cb70-11" aria-hidden="true" tabindex="-1"></a>    optimizr.step()</span>
-<span id="cb70-12"><a href="#cb70-12" aria-hidden="true" tabindex="-1"></a>    optimizr.zero_grad()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p><code>-</code> 결과확인</p>
-<div id="b6c70654-35d5-4e71-a4dc-68187e22b0a5" class="cell" data-tags="[]" data-execution_count="158">
-<div class="sourceCode cell-code" id="cb71"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a>h,_ <span class="op">=</span> rnn(X,Water)</span>
-<span id="cb71-2"><a href="#cb71-2" aria-hidden="true" tabindex="-1"></a>netout <span class="op">=</span> cook(h)</span>
-<span id="cb71-3"><a href="#cb71-3" aria-hidden="true" tabindex="-1"></a>yhat <span class="op">=</span> soft(netout)</span>
-<span id="cb71-4"><a href="#cb71-4" aria-hidden="true" tabindex="-1"></a>yhat</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="158">
-<pre><code>tensor([[4.1805e-03, 9.4591e-01, 1.9270e-06, 4.9911e-02],
-        [9.9994e-01, 5.5487e-05, 8.4018e-10, 1.3082e-06],
-        [2.1175e-07, 1.1337e-06, 9.7028e-01, 2.9717e-02],
-        ...,
-        [2.1166e-07, 1.1331e-06, 9.7029e-01, 2.9709e-02],
-        [9.9900e-01, 9.7465e-04, 6.9224e-09, 2.2068e-05],
-        [7.5071e-04, 2.6708e-02, 3.1534e-02, 9.4101e-01]],
-       grad_fn=&lt;SoftmaxBackward0&gt;)</code></pre>
-</div>
-</div>
-<ul>
-<li>구현1, 구현2와 같은결과</li>
 </ul>
 
 
