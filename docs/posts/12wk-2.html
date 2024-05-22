@@ -161,7 +161,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#b.-구현1-rnncell-지난시간" id="toc-b.-구현1-rnncell-지난시간" class="nav-link" data-scroll-target="#b.-구현1-rnncell-지난시간">B. 구현1 – RNNCell (지난시간)</a></li>
   <li><a href="#c.-구현2-rnn" id="toc-c.-구현2-rnn" class="nav-link" data-scroll-target="#c.-구현2-rnn">C. 구현2 – RNN</a></li>
   <li><a href="#d.-구현3-rnn-gpu" id="toc-d.-구현3-rnn-gpu" class="nav-link" data-scroll-target="#d.-구현3-rnn-gpu">D. 구현3 – RNN + GPU</a></li>
-  <li><a href="#e.-구현4-rnn-gpu-맹물생략" id="toc-e.-구현4-rnn-gpu-맹물생략" class="nav-link" data-scroll-target="#e.-구현4-rnn-gpu-맹물생략">E. 구현4 – RNN + GPU + 맹물생략</a></li>
+  <li><a href="#e.-구현4-rnn-gpu-맹물x" id="toc-e.-구현4-rnn-gpu-맹물x" class="nav-link" data-scroll-target="#e.-구현4-rnn-gpu-맹물x">E. 구현4 – RNN + GPU + 맹물X</a></li>
   <li><a href="#f.-은닉노드-비교실험" id="toc-f.-은닉노드-비교실험" class="nav-link" data-scroll-target="#f.-은닉노드-비교실험">F. 은닉노드 비교실험</a></li>
   </ul></li>
   <li><a href="#abcabc" id="toc-abcabc" class="nav-link" data-scroll-target="#abcabc">4. <code>abcabC</code></a>
@@ -498,8 +498,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="e.-구현4-rnn-gpu-맹물생략" class="level2">
-<h2 class="anchored" data-anchor-id="e.-구현4-rnn-gpu-맹물생략">E. 구현4 – RNN + GPU + 맹물생략</h2>
+<section id="e.-구현4-rnn-gpu-맹물x" class="level2">
+<h2 class="anchored" data-anchor-id="e.-구현4-rnn-gpu-맹물x">E. 구현4 – RNN + GPU + 맹물X</h2>
 <div id="0bd76e8a-d000-443b-830d-85e540dd52aa" class="cell" data-tags="[]" data-execution_count="90">
 <div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> torch.tensor(df_train.x.<span class="bu">map</span>({<span class="st">'A'</span>:<span class="dv">0</span>,<span class="st">'b'</span>:<span class="dv">1</span>,<span class="st">'c'</span>:<span class="dv">2</span>,<span class="st">'d'</span>:<span class="dv">3</span>}))</span>
 <span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> torch.tensor(df_train.y.<span class="bu">map</span>({<span class="st">'A'</span>:<span class="dv">0</span>,<span class="st">'b'</span>:<span class="dv">1</span>,<span class="st">'c'</span>:<span class="dv">2</span>,<span class="st">'d'</span>:<span class="dv">3</span>}))</span>
