@@ -9,7 +9,7 @@
 <meta name="author" content="최규빈">
 <meta name="dcterms.date" content="2024-05-27">
 
-<title>DL2024 - 13wk-1: 순환신경망 (4) LSTM의 계산과정 재현, LSTM은 왜 강한가?</title>
+<title>DL2024 - 13wk-1: 순환신경망 (4) – LSTM 계산과정 재현, LSTM은 왜 강한가?</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -185,7 +185,7 @@ window.Quarto = {
   <li><a href="#강의영상" id="toc-강의영상" class="nav-link active" data-scroll-target="#강의영상">1. 강의영상</a></li>
   <li><a href="#import" id="toc-import" class="nav-link" data-scroll-target="#import">2. Import</a></li>
   <li><a href="#data-abcabc" id="toc-data-abcabc" class="nav-link" data-scroll-target="#data-abcabc">3. Data – <code>abcabC</code></a></li>
-  <li><a href="#lstm의-계산과정-재현" id="toc-lstm의-계산과정-재현" class="nav-link" data-scroll-target="#lstm의-계산과정-재현">4. LSTM의 계산과정 재현</a>
+  <li><a href="#lstm-계산과정-재현" id="toc-lstm-계산과정-재현" class="nav-link" data-scroll-target="#lstm-계산과정-재현">4. LSTM 계산과정 재현</a>
   <ul class="collapse">
   <li><a href="#a.-torch.nn.lstmcell" id="toc-a.-torch.nn.lstmcell" class="nav-link" data-scroll-target="#a.-torch.nn.lstmcell">A. <code>torch.nn.LSTMCell</code></a></li>
   <li><a href="#b.-직접구현" id="toc-b.-직접구현" class="nav-link" data-scroll-target="#b.-직접구현">B. 직접구현</a>
@@ -213,7 +213,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">13wk-1: 순환신경망 (4) LSTM의 계산과정 재현, LSTM은 왜 강한가?</h1>
+<h1 class="title">13wk-1: 순환신경망 (4) – LSTM 계산과정 재현, LSTM은 왜 강한가?</h1>
 </div>
 
 
@@ -321,8 +321,8 @@ window.Quarto = {
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> torch.nn.functional.one_hot(y).<span class="bu">float</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="lstm의-계산과정-재현" class="level1">
-<h1>4. LSTM의 계산과정 재현</h1>
+<section id="lstm-계산과정-재현" class="level1">
+<h1>4. LSTM 계산과정 재현</h1>
 <section id="a.-torch.nn.lstmcell" class="level2">
 <h2 class="anchored" data-anchor-id="a.-torch.nn.lstmcell">A. <code>torch.nn.LSTMCell</code></h2>
 <div id="5ab20de4-0757-45a2-82b0-71ca68896365" class="cell" data-tags="[]" data-execution_count="7">
