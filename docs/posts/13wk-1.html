@@ -9,7 +9,7 @@
 <meta name="author" content="최규빈">
 <meta name="dcterms.date" content="2024-05-27">
 
-<title>DL2024 - 13wk-1: 순환신경망 (4)</title>
+<title>DL2024 - 13wk-1: 순환신경망 (4) LSTM의 계산과정 재현, LSTM은 왜 강한가?</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -213,7 +213,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">13wk-1: 순환신경망 (4)</h1>
+<h1 class="title">13wk-1: 순환신경망 (4) LSTM의 계산과정 재현, LSTM은 왜 강한가?</h1>
 </div>
 
 
@@ -247,12 +247,12 @@ window.Quarto = {
 </section>
 <section id="import" class="level1">
 <h1>2. Import</h1>
-<div id="7b9d91c0-5d8b-419c-8bd1-900b958ab38b" class="cell" data-tags="[]" data-execution_count="3">
+<div id="46662b63-dee5-453b-8539-9d1d0e7929c2" class="cell" data-tags="[]" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="94b48461-2be7-4dc9-9c8b-6538bf629cc2" class="cell" data-tags="[]" data-execution_count="4">
+<div id="61756f58-25dc-4f07-8f93-0ed355f58c02" class="cell" data-tags="[]" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>soft <span class="op">=</span> torch.nn.Softmax(dim<span class="op">=</span><span class="dv">1</span>)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>sig <span class="op">=</span> torch.nn.Sigmoid()</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>tanh <span class="op">=</span> torch.nn.Tanh()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -260,17 +260,17 @@ window.Quarto = {
 </section>
 <section id="data-abcabc" class="level1">
 <h1>3. Data – <code>abcabC</code></h1>
-<div id="01e05d7e-833a-400f-80ac-68b24310ab6a" class="cell" data-tags="[]" data-execution_count="6">
+<div id="86a18822-5d02-4b72-915d-f434ba4a5a69" class="cell" data-tags="[]" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>txt <span class="op">=</span> <span class="bu">list</span>(<span class="st">'abcabC'</span>)<span class="op">*</span><span class="dv">50</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>txt[:<span class="dv">10</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="6">
+<div class="cell-output cell-output-display" data-execution_count="4">
 <pre><code>['a', 'b', 'c', 'a', 'b', 'C', 'a', 'b', 'c', 'a']</code></pre>
 </div>
 </div>
-<div id="b4937931-a9f2-4efa-95c2-39bed26cd779" class="cell" data-tags="[]" data-execution_count="7">
+<div id="94c9e9bc-e4e4-4e04-b717-a3080d09f2e4" class="cell" data-tags="[]" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>df_train <span class="op">=</span> pd.DataFrame({<span class="st">'x'</span>:txt[:<span class="op">-</span><span class="dv">1</span>], <span class="st">'y'</span>:txt[<span class="dv">1</span>:]})</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>df_train[:<span class="dv">5</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="7">
+<div class="cell-output cell-output-display" data-execution_count="5">
 <div>
 
 
@@ -314,7 +314,7 @@ window.Quarto = {
 </div>
 </div>
 </div>
-<div id="a8bc9363-4c7f-41dd-b5d4-c1537937979f" class="cell" data-tags="[]" data-execution_count="8">
+<div id="910fd73a-46c9-4545-b2bc-db0e1720d441" class="cell" data-tags="[]" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> torch.tensor(df_train.x.<span class="bu">map</span>({<span class="st">'a'</span>:<span class="dv">0</span>,<span class="st">'b'</span>:<span class="dv">1</span>,<span class="st">'c'</span>:<span class="dv">2</span>,<span class="st">'C'</span>:<span class="dv">3</span>}))</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> torch.tensor(df_train.y.<span class="bu">map</span>({<span class="st">'a'</span>:<span class="dv">0</span>,<span class="st">'b'</span>:<span class="dv">1</span>,<span class="st">'c'</span>:<span class="dv">2</span>,<span class="st">'C'</span>:<span class="dv">3</span>}))</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> torch.nn.functional.one_hot(x).<span class="bu">float</span>()</span>
@@ -325,35 +325,34 @@ window.Quarto = {
 <h1>4. LSTM의 계산과정 재현</h1>
 <section id="a.-torch.nn.lstmcell" class="level2">
 <h2 class="anchored" data-anchor-id="a.-torch.nn.lstmcell">A. <code>torch.nn.LSTMCell</code></h2>
-<div id="3ee83a6c-4e7f-4c70-9a87-9b6c824abaf9" class="cell" data-tags="[]" data-execution_count="6">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>torch.manual_seed(<span class="dv">43052</span>) </span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>lstmcell <span class="op">=</span> torch.nn.LSTMCell(<span class="dv">4</span>,<span class="dv">2</span>) </span>
+<div id="5ab20de4-0757-45a2-82b0-71ca68896365" class="cell" data-tags="[]" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>torch.manual_seed(<span class="dv">43052</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>lstmcell <span class="op">=</span> torch.nn.LSTMCell(<span class="dv">4</span>,<span class="dv">2</span>) <span class="co"># 숙성담당</span></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>cook <span class="op">=</span> torch.nn.Linear(<span class="dv">2</span>,<span class="dv">4</span>)</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>loss_fn <span class="op">=</span> torch.nn.CrossEntropyLoss() </span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>optimizr <span class="op">=</span> torch.optim.Adam(<span class="bu">list</span>(lstmcell.parameters())<span class="op">+</span><span class="bu">list</span>(cook.parameters()),lr<span class="op">=</span><span class="fl">0.1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>loss_fn <span class="op">=</span> torch.nn.CrossEntropyLoss()</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>optimizr <span class="op">=</span> torch.optim.Adam(<span class="bu">list</span>(lstmcell.parameters())<span class="op">+</span><span class="bu">list</span>(cook.parameters()),lr<span class="op">=</span><span class="fl">0.1</span>) </span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="co">#---#</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>L <span class="op">=</span> <span class="bu">len</span>(X)</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> epoc <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>):</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 1~2 </span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    loss <span class="op">=</span> <span class="dv">0</span> </span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    ht <span class="op">=</span> torch.zeros(<span class="dv">2</span>)</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    ct <span class="op">=</span> torch.zeros(<span class="dv">2</span>)</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> t <span class="kw">in</span> <span class="bu">range</span>(L):</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>        Xt,yt <span class="op">=</span> X[t],y[t]</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>        ht,ct <span class="op">=</span> lstmcell(Xt,(ht,ct))</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>        netout_t <span class="op">=</span> cook(ht)</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>        loss <span class="op">=</span> loss <span class="op">+</span> loss_fn(netout_t,yt) </span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>    loss <span class="op">=</span> loss<span class="op">/</span>L</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 3</span></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>    loss.backward()</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 4 </span></span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>    optimizr.step()</span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>    optimizr.zero_grad()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="73a1b4a0-644e-463e-abd1-46ee676cdd33" class="cell" data-tags="[]" data-execution_count="9">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>L <span class="op">=</span> <span class="bu">len</span>(x) </span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> epoc <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>):</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    ht <span class="op">=</span> torch.zeros(<span class="dv">2</span>)</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    ct <span class="op">=</span> torch.zeros(<span class="dv">2</span>)</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    loss <span class="op">=</span> <span class="dv">0</span> </span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    <span class="co">## 1~2</span></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> t <span class="kw">in</span> <span class="bu">range</span>(L):</span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>        Xt,yt <span class="op">=</span> X[t], y[t]</span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>        ht,ct <span class="op">=</span> lstmcell(Xt,(ht,ct))</span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>        ot <span class="op">=</span> cook(ht) </span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>        loss <span class="op">=</span> loss <span class="op">+</span> loss_fn(ot,yt)</span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>    loss <span class="op">=</span> loss <span class="op">/</span> L</span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>    <span class="co">## 3 </span></span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>    loss.backward()</span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>    <span class="co">## 4 </span></span>
-<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>    optimizr.step()</span>
-<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>    optimizr.zero_grad()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div id="b21e6c50-233c-497d-99b7-b8a9601a0781" class="cell" data-tags="[]" data-execution_count="10">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>ht,ct </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="10">
+<div id="c92202a8-2847-48e5-86f8-771b497bc3cc" class="cell" data-tags="[]" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>ht,ct</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="8">
 <pre><code>(tensor([0.0533, 0.2075], grad_fn=&lt;SqueezeBackward1&gt;),
  tensor([0.1218, 0.5590], grad_fn=&lt;SqueezeBackward1&gt;))</code></pre>
 </div>
@@ -364,34 +363,34 @@ window.Quarto = {
 <section id="t0-to-t1" class="level3">
 <h3 class="anchored" data-anchor-id="t0-to-t1"><strong><em>t=0 <span class="math inline">\(\to\)</span> t=1</em></strong></h3>
 <p><code>-</code> <code>lstmcell</code>을 이용하여 <span class="math inline">\(t=0 \to t=1\)</span>을 구현해보자. (결과비교용)</p>
-<div id="5576af40-3645-45d9-8fbe-08c22d65865e" class="cell" data-tags="[]" data-execution_count="93">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>torch.manual_seed(<span class="dv">43052</span>)</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>lstmcell <span class="op">=</span> torch.nn.LSTMCell(<span class="dv">4</span>,<span class="dv">2</span>)</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>cook <span class="op">=</span> torch.nn.Linear(<span class="dv">2</span>,<span class="dv">4</span>)</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co">#--#</span></span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>loss_fn <span class="op">=</span> torch.nn.CrossEntropyLoss()</span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>optimizr <span class="op">=</span> torch.optim.Adam(<span class="bu">list</span>(lstmcell.parameters())<span class="op">+</span><span class="bu">list</span>(cook.parameters()),lr<span class="op">=</span><span class="fl">0.1</span>)</span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="co">#--#</span></span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>L <span class="op">=</span> <span class="bu">len</span>(X)</span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> epoc <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>):</span>
-<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>    <span class="co"># step1~2</span></span>
-<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>    ht,ct <span class="op">=</span> torch.zeros(<span class="dv">2</span>),torch.zeros(<span class="dv">2</span>)</span>
-<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>    loss <span class="op">=</span> <span class="dv">0</span> </span>
-<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> t <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>):</span>
-<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>        Xt,yt <span class="op">=</span> X[t],y[t]</span>
-<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>        ht,ct <span class="op">=</span> lstmcell(Xt,(ht,ct))</span>
-<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>        netout_t <span class="op">=</span> cook(ht)  <span class="co"># 원래는 ot 로 썼는데, 여기서는 기호가 겹쳐서..</span></span>
-<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>        loss <span class="op">=</span> loss <span class="op">+</span> loss_fn(netout_t,yt)</span>
-<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>    loss <span class="op">=</span> loss<span class="op">/</span>L </span>
-<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>    <span class="co"># step3</span></span>
-<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>    loss.backward()</span>
-<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>    <span class="co"># step4 </span></span>
-<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a>    optimizr.step()</span>
-<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>    optimizr.zero_grad()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="206cb5a9-00c4-409b-9d1b-6e3bf3c54b97" class="cell" data-tags="[]" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>torch.manual_seed(<span class="dv">43052</span>)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>lstmcell <span class="op">=</span> torch.nn.LSTMCell(<span class="dv">4</span>,<span class="dv">2</span>) <span class="co"># 숙성담당</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>cook <span class="op">=</span> torch.nn.Linear(<span class="dv">2</span>,<span class="dv">4</span>)</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>loss_fn <span class="op">=</span> torch.nn.CrossEntropyLoss()</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>optimizr <span class="op">=</span> torch.optim.Adam(<span class="bu">list</span>(lstmcell.parameters())<span class="op">+</span><span class="bu">list</span>(cook.parameters()),lr<span class="op">=</span><span class="fl">0.1</span>) </span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="co">#---#</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>L <span class="op">=</span> <span class="bu">len</span>(X)</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> epoc <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>):</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 1~2 </span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>    loss <span class="op">=</span> <span class="dv">0</span> </span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>    ht <span class="op">=</span> torch.zeros(<span class="dv">2</span>)</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>    ct <span class="op">=</span> torch.zeros(<span class="dv">2</span>)</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> t <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>):</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>        Xt,yt <span class="op">=</span> X[t],y[t]</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>        ht,ct <span class="op">=</span> lstmcell(Xt,(ht,ct))</span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>        netout_t <span class="op">=</span> cook(ht)</span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>        loss <span class="op">=</span> loss <span class="op">+</span> loss_fn(netout_t,yt) </span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>    loss <span class="op">=</span> loss<span class="op">/</span>L</span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 3</span></span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>    loss.backward()</span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 4 </span></span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>    optimizr.step()</span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>    optimizr.zero_grad()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="f5d6a1e6-ff0d-42b5-866a-04f5e4ad2898" class="cell" data-tags="[]" data-execution_count="94">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>ht,ct</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="94">
+<div id="a714f717-0571-4c61-8ba4-9e737891a8e9" class="cell" data-tags="[]" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>ht,ct</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="10">
 <pre><code>(tensor([0.1067, 0.1069], grad_fn=&lt;SqueezeBackward1&gt;),
  tensor([0.1734, 0.2688], grad_fn=&lt;SqueezeBackward1&gt;))</code></pre>
 </div>
@@ -400,192 +399,150 @@ window.Quarto = {
 <li>이런결과를 어떻게 만드는걸까?</li>
 <li><a href="https://pytorch.org/docs/stable/generated/torch.nn.LSTM.html" class="uri">https://pytorch.org/docs/stable/generated/torch.nn.LSTM.html</a></li>
 </ul>
-<p><code>-</code> 직접계산 (ifgo)</p>
-<div id="b393586b-9ab0-4e88-948d-7c5fae238361" class="cell" data-tags="[]" data-execution_count="95">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>torch.manual_seed(<span class="dv">0</span>)</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>lstmcell <span class="op">=</span> torch.nn.LSTMCell(<span class="dv">4</span>,<span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><code>-</code> 직접계산 (<span class="math inline">\({\boldsymbol i}_t, {\boldsymbol f}_t, {\boldsymbol g}_t, {\boldsymbol o}_t\)</span>)</p>
+<div id="32fc61c5-071d-4f1e-91e2-4a1d66661040" class="cell" data-tags="[]" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>torch.manual_seed(<span class="dv">43052</span>)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>lstmcell <span class="op">=</span> torch.nn.LSTMCell(<span class="dv">4</span>,<span class="dv">2</span>) <span class="co"># 숙성담당</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="f4ff023f-52ab-48cd-af5c-7155cad02f43" class="cell" data-tags="[]" data-execution_count="96">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(lstmcell.weight_ih.T)</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(lstmcell.bias_ih)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>tensor([[-0.0053, -0.2723, -0.0628, -0.6755,  0.2795,  0.2568, -0.1140, -0.4452],
-        [ 0.3793,  0.1896,  0.1871, -0.4683,  0.4243,  0.5872,  0.0748, -0.1790],
-        [-0.5820, -0.0140, -0.2137, -0.2915, -0.4794, -0.1455,  0.6403, -0.2756],
-        [-0.5204,  0.5607, -0.1390,  0.0262, -0.3079,  0.5291, -0.6560,  0.6109]],
-       grad_fn=&lt;PermuteBackward0&gt;)
-Parameter containing:
-tensor([-0.3136, -0.0255,  0.4522,  0.7030,  0.2806,  0.0955,  0.4741, -0.4163],
-       requires_grad=True)</code></pre>
+<div id="bd84a2d6-23a7-4e88-be20-b4649b4f2a65" class="cell" data-tags="[]" data-execution_count="12">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>Wih <span class="op">=</span> lstmcell.weight_ih.T</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>Wih02 <span class="op">=</span> Wih[:,<span class="dv">0</span>:<span class="dv">2</span>]</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>Wih24 <span class="op">=</span> Wih[:,<span class="dv">2</span>:<span class="dv">4</span>]</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>Wih46 <span class="op">=</span> Wih[:,<span class="dv">4</span>:<span class="dv">6</span>]</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>Wih68 <span class="op">=</span> Wih[:,<span class="dv">6</span>:<span class="dv">8</span>]</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="co">#--#</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>Whh <span class="op">=</span> lstmcell.weight_hh.T</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>Whh02 <span class="op">=</span> Whh[:,<span class="dv">0</span>:<span class="dv">2</span>]</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>Whh24 <span class="op">=</span> Whh[:,<span class="dv">2</span>:<span class="dv">4</span>]</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>Whh46 <span class="op">=</span> Whh[:,<span class="dv">4</span>:<span class="dv">6</span>]</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>Whh68 <span class="op">=</span> Whh[:,<span class="dv">6</span>:<span class="dv">8</span>]</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a><span class="co">#--#</span></span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>bih02 <span class="op">=</span> lstmcell.bias_ih[<span class="dv">0</span>:<span class="dv">2</span>]</span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>bih24 <span class="op">=</span> lstmcell.bias_ih[<span class="dv">2</span>:<span class="dv">4</span>]</span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>bih46 <span class="op">=</span> lstmcell.bias_ih[<span class="dv">4</span>:<span class="dv">6</span>]</span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>bih68 <span class="op">=</span> lstmcell.bias_ih[<span class="dv">6</span>:<span class="dv">8</span>]</span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a><span class="co">#--#</span></span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a>bhh02 <span class="op">=</span> lstmcell.bias_hh[<span class="dv">0</span>:<span class="dv">2</span>]</span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a>bhh24 <span class="op">=</span> lstmcell.bias_hh[<span class="dv">2</span>:<span class="dv">4</span>]</span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a>bhh46 <span class="op">=</span> lstmcell.bias_hh[<span class="dv">4</span>:<span class="dv">6</span>]</span>
+<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a>bhh68 <span class="op">=</span> lstmcell.bias_hh[<span class="dv">6</span>:<span class="dv">8</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<div id="081f8f9b-cc35-4cb9-9cfe-58117ab96309" class="cell" data-tags="[]" data-execution_count="13">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>ht <span class="op">=</span> torch.zeros(<span class="dv">2</span>)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>ct <span class="op">=</span> torch.zeros(<span class="dv">2</span>)</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="co">#--#</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>it <span class="op">=</span> sig(Xt<span class="op">@</span>Wih02 <span class="op">+</span> bih02 <span class="op">+</span> ht<span class="op">@</span>Whh02 <span class="op">+</span> bhh02)</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>ft <span class="op">=</span> sig(Xt<span class="op">@</span>Wih24 <span class="op">+</span> bih24 <span class="op">+</span> ht<span class="op">@</span>Whh24 <span class="op">+</span> bhh24)</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>gt <span class="op">=</span> tanh(Xt<span class="op">@</span>Wih46 <span class="op">+</span> bih46 <span class="op">+</span> ht<span class="op">@</span>Whh46 <span class="op">+</span> bhh46)</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>ot <span class="op">=</span> sig(Xt<span class="op">@</span>Wih68 <span class="op">+</span> bih68 <span class="op">+</span> ht<span class="op">@</span>Whh68 <span class="op">+</span> bhh68)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="e1fad132-b936-442a-9ce3-47bcc95d83b8" class="cell" data-tags="[]" data-execution_count="97">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(lstmcell.weight_hh.T)</span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(lstmcell.bias_hh)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>tensor([[-0.4583, -0.4940, -0.4128,  0.3155,  0.0372,  0.1196, -0.5109,  0.4461],
-        [-0.3255, -0.6622,  0.6078,  0.3427, -0.3625, -0.6602, -0.3645,  0.4146]],
-       grad_fn=&lt;PermuteBackward0&gt;)
-Parameter containing:
-tensor([ 0.1318, -0.5482, -0.4901, -0.3653,  0.3199,  0.2844, -0.4189,  0.2136],
-       requires_grad=True)</code></pre>
-</div>
-</div>
-<div id="b7805e69-b7e4-4c8f-b619-77410b81e5b0" class="cell" data-tags="[]" data-execution_count="98">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>Wih02 <span class="op">=</span> lstmcell.weight_ih.T[:,<span class="dv">0</span>:<span class="dv">2</span>] <span class="co"># (4,2)</span></span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>Wih24 <span class="op">=</span> lstmcell.weight_ih.T[:,<span class="dv">2</span>:<span class="dv">4</span>] <span class="co"># (4,2)</span></span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>Wih46 <span class="op">=</span> lstmcell.weight_ih.T[:,<span class="dv">4</span>:<span class="dv">6</span>] <span class="co"># (4,2)</span></span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>Wih68 <span class="op">=</span> lstmcell.weight_ih.T[:,<span class="dv">6</span>:<span class="dv">8</span>] <span class="co"># (4,2)</span></span>
-<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="co">#--#</span></span>
-<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>Whh02 <span class="op">=</span> lstmcell.weight_hh.T[:,<span class="dv">0</span>:<span class="dv">2</span>] <span class="co"># (2,2)</span></span>
-<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>Whh24 <span class="op">=</span> lstmcell.weight_hh.T[:,<span class="dv">2</span>:<span class="dv">4</span>] <span class="co"># (2,2)</span></span>
-<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>Whh46 <span class="op">=</span> lstmcell.weight_hh.T[:,<span class="dv">4</span>:<span class="dv">6</span>] <span class="co"># (2,2)</span></span>
-<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>Whh68 <span class="op">=</span> lstmcell.weight_hh.T[:,<span class="dv">6</span>:<span class="dv">8</span>] <span class="co"># (2,2) </span></span>
-<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a><span class="co">#--#</span></span>
-<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>bih02 <span class="op">=</span> lstmcell.bias_ih[<span class="dv">0</span>:<span class="dv">2</span>] </span>
-<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>bih24 <span class="op">=</span> lstmcell.bias_ih[<span class="dv">2</span>:<span class="dv">4</span>] </span>
-<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>bih46 <span class="op">=</span> lstmcell.bias_ih[<span class="dv">4</span>:<span class="dv">6</span>] </span>
-<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>bih68 <span class="op">=</span> lstmcell.bias_ih[<span class="dv">6</span>:<span class="dv">8</span>]</span>
-<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a><span class="co">#--#</span></span>
-<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>bhh02 <span class="op">=</span> lstmcell.bias_hh[<span class="dv">0</span>:<span class="dv">2</span>] </span>
-<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a>bhh24 <span class="op">=</span> lstmcell.bias_hh[<span class="dv">2</span>:<span class="dv">4</span>] </span>
-<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a>bhh46 <span class="op">=</span> lstmcell.bias_hh[<span class="dv">4</span>:<span class="dv">6</span>] </span>
-<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a>bhh68 <span class="op">=</span> lstmcell.bias_hh[<span class="dv">6</span>:<span class="dv">8</span>] </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div id="bf85ef07-c362-4492-877e-503f59ab01cb" class="cell" data-tags="[]" data-execution_count="99">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>ht <span class="op">=</span> torch.zeros(<span class="dv">2</span>)</span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>ct <span class="op">=</span> torch.zeros(<span class="dv">2</span>)</span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="co">#--#</span></span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>it <span class="op">=</span> sig((Xt<span class="op">@</span>Wih02 <span class="op">+</span> bih02) <span class="op">+</span> (ht<span class="op">@</span>Whh02 <span class="op">+</span> bhh02))</span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>ft <span class="op">=</span> sig((Xt<span class="op">@</span>Wih24 <span class="op">+</span> bih24) <span class="op">+</span> (ht<span class="op">@</span>Whh24 <span class="op">+</span> bhh24))</span>
-<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>gt <span class="op">=</span> tanh((Xt<span class="op">@</span>Wih46 <span class="op">+</span> bih46) <span class="op">+</span> (ht<span class="op">@</span>Whh46 <span class="op">+</span> bhh46))</span>
-<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>ot <span class="op">=</span> sig((Xt<span class="op">@</span>Wih68 <span class="op">+</span> bih68) <span class="op">+</span> (ht<span class="op">@</span>Whh68 <span class="op">+</span> bhh68))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div id="6da747e9-458e-4ec3-9d21-06c03d56087c" class="cell" data-tags="[]" data-execution_count="100">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>it,ft,gt,ot</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="100">
-<pre><code>(tensor([0.4534, 0.3003], grad_fn=&lt;SigmoidBackward0&gt;),
- tensor([0.4749, 0.4163], grad_fn=&lt;SigmoidBackward0&gt;),
- tensor([0.7065, 0.5627], grad_fn=&lt;TanhBackward0&gt;),
- tensor([0.4853, 0.3435], grad_fn=&lt;SigmoidBackward0&gt;))</code></pre>
+<div id="6a6f42e8-47f2-486c-81c0-cddf869a51a5" class="cell" data-tags="[]" data-execution_count="14">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>it,ft,gt,ot</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="14">
+<pre><code>(tensor([0.3081, 0.5949], grad_fn=&lt;SigmoidBackward0&gt;),
+ tensor([0.5065, 0.4264], grad_fn=&lt;SigmoidBackward0&gt;),
+ tensor([0.5629, 0.4518], grad_fn=&lt;TanhBackward0&gt;),
+ tensor([0.6216, 0.4072], grad_fn=&lt;SigmoidBackward0&gt;))</code></pre>
 </div>
 </div>
 <p>그런데 아래와 같이 계산할수도 있음.</p>
-<div id="412ba4e5-232c-4ea2-a980-47e14aab4d76" class="cell" data-tags="[]" data-execution_count="101">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>i <span class="op">=</span> (Xt<span class="op">@</span>Wih02 <span class="op">+</span> bih02) <span class="op">+</span> (ht<span class="op">@</span>Whh02 <span class="op">+</span> bhh02)</span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>f <span class="op">=</span> (Xt<span class="op">@</span>Wih24 <span class="op">+</span> bih24) <span class="op">+</span> (ht<span class="op">@</span>Whh24 <span class="op">+</span> bhh24)</span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>g <span class="op">=</span> (Xt<span class="op">@</span>Wih46 <span class="op">+</span> bih46) <span class="op">+</span> (ht<span class="op">@</span>Whh46 <span class="op">+</span> bhh46)</span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>o <span class="op">=</span> (Xt<span class="op">@</span>Wih68 <span class="op">+</span> bih68) <span class="op">+</span> (ht<span class="op">@</span>Whh68 <span class="op">+</span> bhh68)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="b00426c0-d330-4e1a-b41a-a097b58904fb" class="cell" data-tags="[]" data-execution_count="15">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>ifgo <span class="op">=</span> Xt <span class="op">@</span> lstmcell.weight_ih.T <span class="op">+</span>  lstmcell.bias_ih <span class="op">+\</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>ht <span class="op">@</span> lstmcell.weight_hh.T <span class="op">+</span>  lstmcell.bias_hh</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="389a9d54-ecb5-49d0-88e2-4ba8730f6f53" class="cell" data-tags="[]" data-execution_count="102">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>torch.concat([i,f,g,o],axis<span class="op">=</span><span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="102">
-<pre><code>tensor([-0.1871, -0.8461, -0.1006, -0.3379,  0.8801,  0.6367, -0.0587, -0.6479],
-       grad_fn=&lt;CatBackward0&gt;)</code></pre>
-</div>
-</div>
-<div id="85505ad1-d25f-4ebe-9b41-89833d4bb315" class="cell" data-tags="[]" data-execution_count="103">
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>ifgo <span class="op">=</span> Xt<span class="op">@</span> lstmcell.weight_ih.T <span class="op">+</span> lstmcell.bias_ih <span class="op">+</span> ht<span class="op">@</span> lstmcell.weight_hh.T <span class="op">+</span> lstmcell.bias_hh</span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>ifgo</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="103">
-<pre><code>tensor([-0.1871, -0.8461, -0.1006, -0.3379,  0.8801,  0.6367, -0.0587, -0.6479],
-       grad_fn=&lt;AddBackward0&gt;)</code></pre>
+<div id="986e497c-ce5d-4be0-8a69-b2b85b40908e" class="cell" data-tags="[]" data-execution_count="16">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"it = </span><span class="sc">{</span>sig(ifgo[<span class="dv">0</span>:<span class="dv">2</span>])<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"ft = </span><span class="sc">{</span>sig(ifgo[<span class="dv">2</span>:<span class="dv">4</span>])<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"gt = </span><span class="sc">{</span>tanh(ifgo[<span class="dv">4</span>:<span class="dv">6</span>])<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"ot = </span><span class="sc">{</span>sig(ifgo[<span class="dv">6</span>:<span class="dv">8</span>])<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>it = tensor([0.3081, 0.5949], grad_fn=&lt;SigmoidBackward0&gt;)
+ft = tensor([0.5065, 0.4264], grad_fn=&lt;SigmoidBackward0&gt;)
+gt = tensor([0.5629, 0.4518], grad_fn=&lt;TanhBackward0&gt;)
+ot = tensor([0.6216, 0.4072], grad_fn=&lt;SigmoidBackward0&gt;)</code></pre>
 </div>
 </div>
-<div id="dd6611b1-5e1b-4454-8eee-7fc9642023bb" class="cell" data-tags="[]" data-execution_count="104">
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>sig(ifgo[<span class="dv">0</span>:<span class="dv">2</span>]), sig(ifgo[<span class="dv">2</span>:<span class="dv">4</span>]), tanh(ifgo[<span class="dv">4</span>:<span class="dv">6</span>]), sig(ifgo[<span class="dv">6</span>:<span class="dv">8</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="104">
-<pre><code>(tensor([0.4534, 0.3003], grad_fn=&lt;SigmoidBackward0&gt;),
- tensor([0.4749, 0.4163], grad_fn=&lt;SigmoidBackward0&gt;),
- tensor([0.7065, 0.5627], grad_fn=&lt;TanhBackward0&gt;),
- tensor([0.4853, 0.3435], grad_fn=&lt;SigmoidBackward0&gt;))</code></pre>
+<p><code>-</code> 직접계산 (<span class="math inline">\({\boldsymbol c}_t, {\boldsymbol h}_t\)</span>)</p>
+<div id="af028ce3-a056-4083-b6bd-e33fe00f98f0" class="cell" data-tags="[]" data-execution_count="19">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>ct <span class="op">=</span> it<span class="op">*</span>gt <span class="op">+</span> ft<span class="op">*</span>ct </span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>ht <span class="op">=</span> ot<span class="op">*</span>tanh(ct)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-</div>
-<p><code>-</code> 직접계산 (ch)</p>
-<div id="e7fc5a2f-d5c7-497d-9097-5a2382749acd" class="cell" data-tags="[]" data-execution_count="105">
-<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>ht <span class="op">=</span> torch.zeros(<span class="dv">2</span>)</span>
-<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>ct <span class="op">=</span> torch.zeros(<span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div id="333dda9f-017c-4b22-a0bb-4a04e4a990e0" class="cell" data-tags="[]" data-execution_count="106">
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>ct <span class="op">=</span> it<span class="op">*</span>gt <span class="op">+</span> ft<span class="op">*</span>ct</span>
-<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>ht <span class="op">=</span> ot<span class="op">*</span>tanh(ct)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div id="bfb3eb04-4d29-4e24-ac0f-b9623720901c" class="cell" data-tags="[]" data-execution_count="107">
-<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>ht,ct</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="107">
-<pre><code>(tensor([0.1503, 0.0575], grad_fn=&lt;MulBackward0&gt;),
- tensor([0.3203, 0.1689], grad_fn=&lt;AddBackward0&gt;))</code></pre>
+<div id="735c92bf-d197-4a63-946f-fcfe54c138df" class="cell" data-tags="[]" data-execution_count="20">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>ht,ct</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="20">
+<pre><code>(tensor([0.1588, 0.1489], grad_fn=&lt;MulBackward0&gt;),
+ tensor([0.2613, 0.3834], grad_fn=&lt;AddBackward0&gt;))</code></pre>
 </div>
 </div>
 </section>
 <section id="t0-to-tl" class="level3">
 <h3 class="anchored" data-anchor-id="t0-to-tl"><code>#</code> <strong><em>t=0 <span class="math inline">\(\to\)</span> t=L</em></strong></h3>
 <p><code>-</code> <code>lstmcell</code>을 이용하여 구현해보자. (결과비교용)</p>
-<div id="5833df00-46f7-4cb9-afc4-6e9f690fc90f" class="cell" data-tags="[]" data-execution_count="110">
-<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>torch.manual_seed(<span class="dv">43052</span>)</span>
-<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>lstmcell <span class="op">=</span> torch.nn.LSTMCell(<span class="dv">4</span>,<span class="dv">2</span>)</span>
-<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>cook <span class="op">=</span> torch.nn.Linear(<span class="dv">2</span>,<span class="dv">4</span>)</span>
-<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a><span class="co">#--#</span></span>
-<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>loss_fn <span class="op">=</span> torch.nn.CrossEntropyLoss()</span>
-<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a>optimizr <span class="op">=</span> torch.optim.Adam(<span class="bu">list</span>(lstmcell.parameters())<span class="op">+</span><span class="bu">list</span>(cook.parameters()),lr<span class="op">=</span><span class="fl">0.1</span>)</span>
-<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a><span class="co">#--#</span></span>
-<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a>L <span class="op">=</span> <span class="bu">len</span>(X)</span>
-<span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> epoc <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>):</span>
-<span id="cb34-10"><a href="#cb34-10" aria-hidden="true" tabindex="-1"></a>    <span class="co"># step1~2</span></span>
-<span id="cb34-11"><a href="#cb34-11" aria-hidden="true" tabindex="-1"></a>    ht,ct <span class="op">=</span> torch.zeros(<span class="dv">2</span>),torch.zeros(<span class="dv">2</span>)</span>
-<span id="cb34-12"><a href="#cb34-12" aria-hidden="true" tabindex="-1"></a>    loss <span class="op">=</span> <span class="dv">0</span> </span>
-<span id="cb34-13"><a href="#cb34-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> t <span class="kw">in</span> <span class="bu">range</span>(L):</span>
-<span id="cb34-14"><a href="#cb34-14" aria-hidden="true" tabindex="-1"></a>        Xt,yt <span class="op">=</span> X[t],y[t]</span>
-<span id="cb34-15"><a href="#cb34-15" aria-hidden="true" tabindex="-1"></a>        ht,ct <span class="op">=</span> lstmcell(Xt,(ht,ct))</span>
-<span id="cb34-16"><a href="#cb34-16" aria-hidden="true" tabindex="-1"></a>        netout_t <span class="op">=</span> cook(ht) </span>
-<span id="cb34-17"><a href="#cb34-17" aria-hidden="true" tabindex="-1"></a>        loss <span class="op">=</span> loss <span class="op">+</span> loss_fn(netout_t,yt)</span>
-<span id="cb34-18"><a href="#cb34-18" aria-hidden="true" tabindex="-1"></a>    loss <span class="op">=</span> loss<span class="op">/</span>L </span>
-<span id="cb34-19"><a href="#cb34-19" aria-hidden="true" tabindex="-1"></a>    <span class="co"># step3</span></span>
-<span id="cb34-20"><a href="#cb34-20" aria-hidden="true" tabindex="-1"></a>    loss.backward()</span>
-<span id="cb34-21"><a href="#cb34-21" aria-hidden="true" tabindex="-1"></a>    <span class="co"># step4 </span></span>
-<span id="cb34-22"><a href="#cb34-22" aria-hidden="true" tabindex="-1"></a>    optimizr.step()</span>
-<span id="cb34-23"><a href="#cb34-23" aria-hidden="true" tabindex="-1"></a>    optimizr.zero_grad()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="4219bb6f-0275-41f4-81d9-c97b35803feb" class="cell" data-tags="[]" data-execution_count="21">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>torch.manual_seed(<span class="dv">43052</span>)</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>lstmcell <span class="op">=</span> torch.nn.LSTMCell(<span class="dv">4</span>,<span class="dv">2</span>) <span class="co"># 숙성담당</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>cook <span class="op">=</span> torch.nn.Linear(<span class="dv">2</span>,<span class="dv">4</span>)</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>loss_fn <span class="op">=</span> torch.nn.CrossEntropyLoss()</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>optimizr <span class="op">=</span> torch.optim.Adam(<span class="bu">list</span>(lstmcell.parameters())<span class="op">+</span><span class="bu">list</span>(cook.parameters()),lr<span class="op">=</span><span class="fl">0.1</span>) </span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a><span class="co">#---#</span></span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>L <span class="op">=</span> <span class="bu">len</span>(X)</span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> epoc <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>):</span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 1~2 </span></span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>    loss <span class="op">=</span> <span class="dv">0</span> </span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>    ht <span class="op">=</span> torch.zeros(<span class="dv">2</span>)</span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>    ct <span class="op">=</span> torch.zeros(<span class="dv">2</span>)</span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> t <span class="kw">in</span> <span class="bu">range</span>(L):</span>
+<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a>        Xt,yt <span class="op">=</span> X[t],y[t]</span>
+<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a>        ht,ct <span class="op">=</span> lstmcell(Xt,(ht,ct))</span>
+<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a>        netout_t <span class="op">=</span> cook(ht)</span>
+<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a>        loss <span class="op">=</span> loss <span class="op">+</span> loss_fn(netout_t,yt) </span>
+<span id="cb24-18"><a href="#cb24-18" aria-hidden="true" tabindex="-1"></a>    loss <span class="op">=</span> loss<span class="op">/</span>L</span>
+<span id="cb24-19"><a href="#cb24-19" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 3</span></span>
+<span id="cb24-20"><a href="#cb24-20" aria-hidden="true" tabindex="-1"></a>    loss.backward()</span>
+<span id="cb24-21"><a href="#cb24-21" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 4 </span></span>
+<span id="cb24-22"><a href="#cb24-22" aria-hidden="true" tabindex="-1"></a>    optimizr.step()</span>
+<span id="cb24-23"><a href="#cb24-23" aria-hidden="true" tabindex="-1"></a>    optimizr.zero_grad()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="98f40144-30d9-442a-b848-6716095e8218" class="cell" data-tags="[]" data-execution_count="111">
-<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>ht,ct</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="111">
+<div id="0aa701ff-b7e6-4036-b8c6-ee4cd69b80a9" class="cell" data-tags="[]" data-execution_count="22">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>ht,ct</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="22">
 <pre><code>(tensor([0.0533, 0.2075], grad_fn=&lt;SqueezeBackward1&gt;),
  tensor([0.1218, 0.5590], grad_fn=&lt;SqueezeBackward1&gt;))</code></pre>
 </div>
 </div>
 <p><code>-</code> 직접구현</p>
-<div id="e2a12f64-c20f-471a-81c9-ba62751377b7" class="cell" data-tags="[]" data-execution_count="115">
-<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>torch.manual_seed(<span class="dv">43052</span>)</span>
-<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>lstmcell <span class="op">=</span> torch.nn.LSTMCell(<span class="dv">4</span>,<span class="dv">2</span>)</span>
-<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>cook <span class="op">=</span> torch.nn.Linear(<span class="dv">2</span>,<span class="dv">4</span>)</span>
-<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a><span class="co">#--#</span></span>
-<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>loss_fn <span class="op">=</span> torch.nn.CrossEntropyLoss()</span>
-<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a>optimizr <span class="op">=</span> torch.optim.Adam(<span class="bu">list</span>(lstmcell.parameters())<span class="op">+</span><span class="bu">list</span>(cook.parameters()),lr<span class="op">=</span><span class="fl">0.1</span>)</span>
-<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a><span class="co">#--#</span></span>
-<span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a>L <span class="op">=</span> <span class="bu">len</span>(X)</span>
-<span id="cb37-9"><a href="#cb37-9" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> epoc <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>):</span>
-<span id="cb37-10"><a href="#cb37-10" aria-hidden="true" tabindex="-1"></a>    <span class="co"># step1~2</span></span>
-<span id="cb37-11"><a href="#cb37-11" aria-hidden="true" tabindex="-1"></a>    ht,ct <span class="op">=</span> torch.zeros(<span class="dv">2</span>),torch.zeros(<span class="dv">2</span>)</span>
-<span id="cb37-12"><a href="#cb37-12" aria-hidden="true" tabindex="-1"></a>    loss <span class="op">=</span> <span class="dv">0</span> </span>
-<span id="cb37-13"><a href="#cb37-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> t <span class="kw">in</span> <span class="bu">range</span>(L):</span>
-<span id="cb37-14"><a href="#cb37-14" aria-hidden="true" tabindex="-1"></a>        Xt,yt <span class="op">=</span> X[t],y[t]</span>
-<span id="cb37-15"><a href="#cb37-15" aria-hidden="true" tabindex="-1"></a>        ifgo <span class="op">=</span> Xt<span class="op">@</span>lstmcell.weight_ih.T <span class="op">+</span> lstmcell.bias_ih <span class="op">+\</span></span>
-<span id="cb37-16"><a href="#cb37-16" aria-hidden="true" tabindex="-1"></a>                ht<span class="op">@</span>lstmcell.weight_hh.T <span class="op">+</span> lstmcell.bias_hh</span>
-<span id="cb37-17"><a href="#cb37-17" aria-hidden="true" tabindex="-1"></a>        it,ft,gt,ot <span class="op">=</span> sig(ifgo[<span class="dv">0</span>:<span class="dv">2</span>]), sig(ifgo[<span class="dv">2</span>:<span class="dv">4</span>]), tanh(ifgo[<span class="dv">4</span>:<span class="dv">6</span>]), sig(ifgo[<span class="dv">6</span>:<span class="dv">8</span>])</span>
-<span id="cb37-18"><a href="#cb37-18" aria-hidden="true" tabindex="-1"></a>        ct <span class="op">=</span> it<span class="op">*</span>gt <span class="op">+</span> ft<span class="op">*</span>ct</span>
-<span id="cb37-19"><a href="#cb37-19" aria-hidden="true" tabindex="-1"></a>        ht <span class="op">=</span> ot<span class="op">*</span>tanh(ct)</span>
-<span id="cb37-20"><a href="#cb37-20" aria-hidden="true" tabindex="-1"></a>        netout_t <span class="op">=</span> cook(ht) </span>
-<span id="cb37-21"><a href="#cb37-21" aria-hidden="true" tabindex="-1"></a>        loss <span class="op">=</span> loss <span class="op">+</span> loss_fn(netout_t,yt)</span>
-<span id="cb37-22"><a href="#cb37-22" aria-hidden="true" tabindex="-1"></a>    loss <span class="op">=</span> loss<span class="op">/</span>L </span>
-<span id="cb37-23"><a href="#cb37-23" aria-hidden="true" tabindex="-1"></a>    <span class="co"># step3</span></span>
-<span id="cb37-24"><a href="#cb37-24" aria-hidden="true" tabindex="-1"></a>    loss.backward()</span>
-<span id="cb37-25"><a href="#cb37-25" aria-hidden="true" tabindex="-1"></a>    <span class="co"># step4 </span></span>
-<span id="cb37-26"><a href="#cb37-26" aria-hidden="true" tabindex="-1"></a>    optimizr.step()</span>
-<span id="cb37-27"><a href="#cb37-27" aria-hidden="true" tabindex="-1"></a>    optimizr.zero_grad()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="46c85c22-20c5-4648-b362-7b706fc69ff2" class="cell" data-tags="[]" data-execution_count="23">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>torch.manual_seed(<span class="dv">43052</span>)</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>lstmcell <span class="op">=</span> torch.nn.LSTMCell(<span class="dv">4</span>,<span class="dv">2</span>) <span class="co"># 숙성담당</span></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>cook <span class="op">=</span> torch.nn.Linear(<span class="dv">2</span>,<span class="dv">4</span>)</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>loss_fn <span class="op">=</span> torch.nn.CrossEntropyLoss()</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>optimizr <span class="op">=</span> torch.optim.Adam(<span class="bu">list</span>(lstmcell.parameters())<span class="op">+</span><span class="bu">list</span>(cook.parameters()),lr<span class="op">=</span><span class="fl">0.1</span>) </span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a><span class="co">#---#</span></span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>L <span class="op">=</span> <span class="bu">len</span>(X)</span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> epoc <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>):</span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 1~2 </span></span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a>    loss <span class="op">=</span> <span class="dv">0</span> </span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a>    ht <span class="op">=</span> torch.zeros(<span class="dv">2</span>)</span>
+<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a>    ct <span class="op">=</span> torch.zeros(<span class="dv">2</span>)</span>
+<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> t <span class="kw">in</span> <span class="bu">range</span>(L):</span>
+<span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a>        Xt,yt <span class="op">=</span> X[t],y[t]</span>
+<span id="cb27-15"><a href="#cb27-15" aria-hidden="true" tabindex="-1"></a>        ifgo <span class="op">=</span> Xt <span class="op">@</span> lstmcell.weight_ih.T <span class="op">+</span>  lstmcell.bias_ih <span class="op">+\</span></span>
+<span id="cb27-16"><a href="#cb27-16" aria-hidden="true" tabindex="-1"></a>                ht <span class="op">@</span> lstmcell.weight_hh.T <span class="op">+</span>  lstmcell.bias_hh</span>
+<span id="cb27-17"><a href="#cb27-17" aria-hidden="true" tabindex="-1"></a>        it,ft,gt,ot <span class="op">=</span> sig(ifgo[<span class="dv">0</span>:<span class="dv">2</span>]),sig(ifgo[<span class="dv">2</span>:<span class="dv">4</span>]),tanh(ifgo[<span class="dv">4</span>:<span class="dv">6</span>]),sig(ifgo[<span class="dv">6</span>:<span class="dv">8</span>])</span>
+<span id="cb27-18"><a href="#cb27-18" aria-hidden="true" tabindex="-1"></a>        ct <span class="op">=</span> it<span class="op">*</span>gt <span class="op">+</span> ft<span class="op">*</span>ct</span>
+<span id="cb27-19"><a href="#cb27-19" aria-hidden="true" tabindex="-1"></a>        ht <span class="op">=</span> ot<span class="op">*</span>tanh(ct)</span>
+<span id="cb27-20"><a href="#cb27-20" aria-hidden="true" tabindex="-1"></a>        netout_t <span class="op">=</span> cook(ht)</span>
+<span id="cb27-21"><a href="#cb27-21" aria-hidden="true" tabindex="-1"></a>        loss <span class="op">=</span> loss <span class="op">+</span> loss_fn(netout_t,yt) </span>
+<span id="cb27-22"><a href="#cb27-22" aria-hidden="true" tabindex="-1"></a>    loss <span class="op">=</span> loss<span class="op">/</span>L</span>
+<span id="cb27-23"><a href="#cb27-23" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 3</span></span>
+<span id="cb27-24"><a href="#cb27-24" aria-hidden="true" tabindex="-1"></a>    loss.backward()</span>
+<span id="cb27-25"><a href="#cb27-25" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 4 </span></span>
+<span id="cb27-26"><a href="#cb27-26" aria-hidden="true" tabindex="-1"></a>    optimizr.step()</span>
+<span id="cb27-27"><a href="#cb27-27" aria-hidden="true" tabindex="-1"></a>    optimizr.zero_grad()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="6a11eabe-cb1b-42d0-b7de-e1afc3b67db8" class="cell" data-tags="[]" data-execution_count="116">
-<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>ht,ct</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="116">
+<div id="aa871391-e37a-4f3d-aa5d-7dad101f6f1c" class="cell" data-tags="[]" data-execution_count="24">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>ht,ct</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="24">
 <pre><code>(tensor([0.0533, 0.2075], grad_fn=&lt;MulBackward0&gt;),
  tensor([0.1218, 0.5590], grad_fn=&lt;AddBackward0&gt;))</code></pre>
 </div>
@@ -594,41 +551,35 @@ tensor([ 0.1318, -0.5482, -0.4901, -0.3653,  0.3199,  0.2844, -0.4189,  0.2136],
 </section>
 <section id="c.-torch.nn.lstm" class="level2">
 <h2 class="anchored" data-anchor-id="c.-torch.nn.lstm">C. <code>torch.nn.LSTM</code></h2>
-<div id="3cda7558-9132-41ba-b445-86413b517609" class="cell" data-tags="[]" data-execution_count="27">
-<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>torch.manual_seed(<span class="dv">43052</span>) </span>
-<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>lstmcell <span class="op">=</span> torch.nn.LSTMCell(<span class="dv">4</span>,<span class="dv">2</span>)</span>
-<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>cook <span class="op">=</span> torch.nn.Linear(<span class="dv">2</span>,<span class="dv">4</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="684038c5-dca4-4db0-8a56-58ccf2d06fee" class="cell" data-tags="[]" data-execution_count="25">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>torch.manual_seed(<span class="dv">43052</span>)</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>lstmcell <span class="op">=</span> torch.nn.LSTMCell(<span class="dv">4</span>,<span class="dv">2</span>) <span class="co"># 숙성담당</span></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>cook <span class="op">=</span> torch.nn.Linear(<span class="dv">2</span>,<span class="dv">4</span>)</span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>lstm <span class="op">=</span> torch.nn.LSTM(<span class="dv">4</span>,<span class="dv">2</span>) <span class="co"># &lt;-- 이거로 학습</span></span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>lstm.weight_ih_l0.data <span class="op">=</span> lstmcell.weight_ih.data</span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>lstm.weight_hh_l0.data <span class="op">=</span> lstmcell.weight_hh.data </span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>lstm.bias_ih_l0.data <span class="op">=</span> lstmcell.bias_ih.data</span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>lstm.bias_hh_l0.data <span class="op">=</span> lstmcell.bias_hh.data</span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a>loss_fn <span class="op">=</span> torch.nn.CrossEntropyLoss()</span>
+<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a>optimizr <span class="op">=</span> torch.optim.Adam(<span class="bu">list</span>(lstmcell.parameters())<span class="op">+</span><span class="bu">list</span>(cook.parameters()),lr<span class="op">=</span><span class="fl">0.1</span>) </span>
+<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a><span class="co">#---#</span></span>
+<span id="cb30-12"><a href="#cb30-12" aria-hidden="true" tabindex="-1"></a>L <span class="op">=</span> <span class="bu">len</span>(X)</span>
+<span id="cb30-13"><a href="#cb30-13" aria-hidden="true" tabindex="-1"></a>Water <span class="op">=</span> torch.zeros(<span class="dv">1</span>,<span class="dv">2</span>)</span>
+<span id="cb30-14"><a href="#cb30-14" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> epoc <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>):</span>
+<span id="cb30-15"><a href="#cb30-15" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 1 </span></span>
+<span id="cb30-16"><a href="#cb30-16" aria-hidden="true" tabindex="-1"></a>    h,(hL,cL) <span class="op">=</span> lstm(X,(Water,Water))</span>
+<span id="cb30-17"><a href="#cb30-17" aria-hidden="true" tabindex="-1"></a>    netout <span class="op">=</span> cook(h)</span>
+<span id="cb30-18"><a href="#cb30-18" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 2 </span></span>
+<span id="cb30-19"><a href="#cb30-19" aria-hidden="true" tabindex="-1"></a>    loss <span class="op">=</span> loss_fn(netout,y)</span>
+<span id="cb30-20"><a href="#cb30-20" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 3</span></span>
+<span id="cb30-21"><a href="#cb30-21" aria-hidden="true" tabindex="-1"></a>    loss.backward()</span>
+<span id="cb30-22"><a href="#cb30-22" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 4 </span></span>
+<span id="cb30-23"><a href="#cb30-23" aria-hidden="true" tabindex="-1"></a>    optimizr.step()</span>
+<span id="cb30-24"><a href="#cb30-24" aria-hidden="true" tabindex="-1"></a>    optimizr.zero_grad()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="0cead8bf-4892-482b-aac4-59f9dc8e9bee" class="cell" data-tags="[]" data-execution_count="28">
-<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>lstm <span class="op">=</span> torch.nn.LSTM(<span class="dv">4</span>,<span class="dv">2</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div id="d6032b0d-2620-421c-8d7f-a96781bc5cca" class="cell" data-tags="[]" data-execution_count="29">
-<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>lstm.weight_hh_l0.data <span class="op">=</span> lstmcell.weight_hh.data </span>
-<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>lstm.bias_hh_l0.data <span class="op">=</span> lstmcell.bias_hh.data </span>
-<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>lstm.weight_ih_l0.data <span class="op">=</span> lstmcell.weight_ih.data </span>
-<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a>lstm.bias_ih_l0.data <span class="op">=</span> lstmcell.bias_ih.data </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div id="368458a1-9147-41f2-9416-0ae157cbba28" class="cell" data-tags="[]" data-execution_count="30">
-<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>loss_fn <span class="op">=</span> torch.nn.CrossEntropyLoss()</span>
-<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>optimizr <span class="op">=</span> torch.optim.Adam(<span class="bu">list</span>(lstm.parameters()) <span class="op">+</span> <span class="bu">list</span>(cook.parameters()), lr<span class="op">=</span><span class="fl">0.1</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div id="1a6e1c71-cf26-4343-b75c-48de428f7902" class="cell" data-tags="[]" data-execution_count="31">
-<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>Water <span class="op">=</span> torch.zeros(<span class="dv">1</span>,<span class="dv">2</span>) </span>
-<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> epoc <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>): </span>
-<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">## step1 </span></span>
-<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>    h, (ht,ct) <span class="op">=</span> lstm(X,(Water,Water))</span>
-<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a>    netout <span class="op">=</span> cook(h)</span>
-<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a>    <span class="co">## step2</span></span>
-<span id="cb44-7"><a href="#cb44-7" aria-hidden="true" tabindex="-1"></a>    loss <span class="op">=</span> loss_fn(netout,y) </span>
-<span id="cb44-8"><a href="#cb44-8" aria-hidden="true" tabindex="-1"></a>    <span class="co">## step3</span></span>
-<span id="cb44-9"><a href="#cb44-9" aria-hidden="true" tabindex="-1"></a>    loss.backward()</span>
-<span id="cb44-10"><a href="#cb44-10" aria-hidden="true" tabindex="-1"></a>    <span class="co">## step4 </span></span>
-<span id="cb44-11"><a href="#cb44-11" aria-hidden="true" tabindex="-1"></a>    optimizr.step()</span>
-<span id="cb44-12"><a href="#cb44-12" aria-hidden="true" tabindex="-1"></a>    optimizr.zero_grad() </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div id="7876e8be-6e9f-4454-a387-292df4625930" class="cell" data-tags="[]" data-execution_count="32">
-<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>ht,ct</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="32">
+<div id="7f78e4d4-91ec-44a9-a72a-e2f203601eb2" class="cell" data-tags="[]" data-execution_count="26">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>hL,cL</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="26">
 <pre><code>(tensor([[0.0533, 0.2075]], grad_fn=&lt;SqueezeBackward1&gt;),
  tensor([[0.1218, 0.5590]], grad_fn=&lt;SqueezeBackward1&gt;))</code></pre>
 </div>
@@ -640,71 +591,74 @@ tensor([ 0.1318, -0.5482, -0.4901, -0.3653,  0.3199,  0.2844, -0.4189,  0.2136],
 <section id="a.-적합-및-시각화" class="level2">
 <h2 class="anchored" data-anchor-id="a.-적합-및-시각화">A. 적합 및 시각화</h2>
 <p><code>-</code> 적합</p>
-<div id="40e55dd1-58ea-441b-9075-80fd9a2ccc17" class="cell" data-tags="[]" data-execution_count="10">
-<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>torch.manual_seed(<span class="dv">43052</span>)</span>
-<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>lstm <span class="op">=</span> torch.nn.LSTM(<span class="dv">4</span>,<span class="dv">2</span>)</span>
-<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a>cook <span class="op">=</span> torch.nn.Linear(<span class="dv">2</span>,<span class="dv">4</span>)</span>
-<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a>loss_fn <span class="op">=</span> torch.nn.CrossEntropyLoss() </span>
-<span id="cb47-5"><a href="#cb47-5" aria-hidden="true" tabindex="-1"></a>optimizr <span class="op">=</span> torch.optim.Adam(<span class="bu">list</span>(lstm.parameters())<span class="op">+</span> <span class="bu">list</span>(cook.parameters()),lr<span class="op">=</span><span class="fl">0.1</span>)</span>
-<span id="cb47-6"><a href="#cb47-6" aria-hidden="true" tabindex="-1"></a><span class="co">#--#</span></span>
-<span id="cb47-7"><a href="#cb47-7" aria-hidden="true" tabindex="-1"></a>Water <span class="op">=</span> torch.zeros(<span class="dv">1</span>,<span class="dv">2</span>) </span>
-<span id="cb47-8"><a href="#cb47-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> epoc <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">200</span>): </span>
-<span id="cb47-9"><a href="#cb47-9" aria-hidden="true" tabindex="-1"></a>    <span class="co">## step1 </span></span>
-<span id="cb47-10"><a href="#cb47-10" aria-hidden="true" tabindex="-1"></a>    h, (ht,ct) <span class="op">=</span> lstm(X,(Water,Water))</span>
-<span id="cb47-11"><a href="#cb47-11" aria-hidden="true" tabindex="-1"></a>    netout <span class="op">=</span> cook(h)</span>
-<span id="cb47-12"><a href="#cb47-12" aria-hidden="true" tabindex="-1"></a>    <span class="co">## step2</span></span>
-<span id="cb47-13"><a href="#cb47-13" aria-hidden="true" tabindex="-1"></a>    loss <span class="op">=</span> loss_fn(netout,y) </span>
-<span id="cb47-14"><a href="#cb47-14" aria-hidden="true" tabindex="-1"></a>    <span class="co">## step3</span></span>
-<span id="cb47-15"><a href="#cb47-15" aria-hidden="true" tabindex="-1"></a>    loss.backward()</span>
-<span id="cb47-16"><a href="#cb47-16" aria-hidden="true" tabindex="-1"></a>    <span class="co">## step4 </span></span>
-<span id="cb47-17"><a href="#cb47-17" aria-hidden="true" tabindex="-1"></a>    optimizr.step()</span>
-<span id="cb47-18"><a href="#cb47-18" aria-hidden="true" tabindex="-1"></a>    optimizr.zero_grad() </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="bced9cca-dcf7-4471-9bcf-99e30264db34" class="cell" data-tags="[]" data-execution_count="27">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>torch.manual_seed(<span class="dv">43052</span>)</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>lstm <span class="op">=</span> torch.nn.LSTM(<span class="dv">4</span>,<span class="dv">2</span>)</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>cook <span class="op">=</span> torch.nn.Linear(<span class="dv">2</span>,<span class="dv">4</span>)</span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>loss_fn <span class="op">=</span> torch.nn.CrossEntropyLoss() </span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>optimizr <span class="op">=</span> torch.optim.Adam(<span class="bu">list</span>(lstm.parameters())<span class="op">+</span> <span class="bu">list</span>(cook.parameters()),lr<span class="op">=</span><span class="fl">0.1</span>)</span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a><span class="co">#--#</span></span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>Water <span class="op">=</span> torch.zeros(<span class="dv">1</span>,<span class="dv">2</span>) </span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> epoc <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">200</span>): </span>
+<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a>    <span class="co">## step1 </span></span>
+<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a>    h, (hL,cL) <span class="op">=</span> lstm(X,(Water,Water))</span>
+<span id="cb33-11"><a href="#cb33-11" aria-hidden="true" tabindex="-1"></a>    netout <span class="op">=</span> cook(h)</span>
+<span id="cb33-12"><a href="#cb33-12" aria-hidden="true" tabindex="-1"></a>    <span class="co">## step2</span></span>
+<span id="cb33-13"><a href="#cb33-13" aria-hidden="true" tabindex="-1"></a>    loss <span class="op">=</span> loss_fn(netout,y) </span>
+<span id="cb33-14"><a href="#cb33-14" aria-hidden="true" tabindex="-1"></a>    <span class="co">## step3</span></span>
+<span id="cb33-15"><a href="#cb33-15" aria-hidden="true" tabindex="-1"></a>    loss.backward()</span>
+<span id="cb33-16"><a href="#cb33-16" aria-hidden="true" tabindex="-1"></a>    <span class="co">## step4 </span></span>
+<span id="cb33-17"><a href="#cb33-17" aria-hidden="true" tabindex="-1"></a>    optimizr.step()</span>
+<span id="cb33-18"><a href="#cb33-18" aria-hidden="true" tabindex="-1"></a>    optimizr.zero_grad() </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p><code>-</code> 시각화</p>
-<div id="e608d5c4-c983-48b0-a73c-6ba639e89f67" class="cell" data-tags="[]" data-execution_count="20">
-<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>L <span class="op">=</span> <span class="bu">len</span>(X)</span>
-<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>i <span class="op">=</span> input_gate <span class="op">=</span> torch.zeros(L,<span class="dv">2</span>)</span>
-<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>f <span class="op">=</span> forget_gate <span class="op">=</span> torch.zeros(L,<span class="dv">2</span>)</span>
-<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a>g <span class="op">=</span> gihhen_state <span class="op">=</span> torch.zeros(L,<span class="dv">2</span>)</span>
-<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a>o <span class="op">=</span> output_gate <span class="op">=</span> torch.zeros(L,<span class="dv">2</span>)</span>
-<span id="cb48-6"><a href="#cb48-6" aria-hidden="true" tabindex="-1"></a>c <span class="op">=</span> cell_state <span class="op">=</span> torch.zeros(L,<span class="dv">2</span>)</span>
-<span id="cb48-7"><a href="#cb48-7" aria-hidden="true" tabindex="-1"></a>h <span class="op">=</span> hidden_state <span class="op">=</span> torch.zeros(L,<span class="dv">2</span>) </span>
-<span id="cb48-8"><a href="#cb48-8" aria-hidden="true" tabindex="-1"></a><span class="co">#--#</span></span>
-<span id="cb48-9"><a href="#cb48-9" aria-hidden="true" tabindex="-1"></a>water <span class="op">=</span> torch.zeros(<span class="dv">2</span>)</span>
-<span id="cb48-10"><a href="#cb48-10" aria-hidden="true" tabindex="-1"></a>ifgo <span class="op">=</span> X[<span class="dv">0</span>] <span class="op">@</span> lstm.weight_ih_l0.T <span class="op">+</span> water <span class="op">@</span> lstm.weight_hh_l0.T <span class="op">+</span> lstm.bias_ih_l0 <span class="op">+</span> lstm.bias_hh_l0 </span>
-<span id="cb48-11"><a href="#cb48-11" aria-hidden="true" tabindex="-1"></a>i[<span class="dv">0</span>] <span class="op">=</span> sig(ifgo[<span class="dv">0</span>:<span class="dv">2</span>])</span>
-<span id="cb48-12"><a href="#cb48-12" aria-hidden="true" tabindex="-1"></a>f[<span class="dv">0</span>] <span class="op">=</span> sig(ifgo[<span class="dv">2</span>:<span class="dv">4</span>])</span>
-<span id="cb48-13"><a href="#cb48-13" aria-hidden="true" tabindex="-1"></a>g[<span class="dv">0</span>] <span class="op">=</span> tanh(ifgo[<span class="dv">4</span>:<span class="dv">6</span>])</span>
-<span id="cb48-14"><a href="#cb48-14" aria-hidden="true" tabindex="-1"></a>o[<span class="dv">0</span>] <span class="op">=</span> sig(ifgo[<span class="dv">6</span>:<span class="dv">8</span>])</span>
-<span id="cb48-15"><a href="#cb48-15" aria-hidden="true" tabindex="-1"></a>c[<span class="dv">0</span>] <span class="op">=</span> f[<span class="dv">0</span>] <span class="op">*</span> water <span class="op">+</span> i[<span class="dv">0</span>] <span class="op">*</span> g[<span class="dv">0</span>]</span>
-<span id="cb48-16"><a href="#cb48-16" aria-hidden="true" tabindex="-1"></a>h[<span class="dv">0</span>] <span class="op">=</span> o[<span class="dv">0</span>] <span class="op">*</span> tanh(c[<span class="dv">0</span>])</span>
-<span id="cb48-17"><a href="#cb48-17" aria-hidden="true" tabindex="-1"></a><span class="co">#--#</span></span>
-<span id="cb48-18"><a href="#cb48-18" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> t <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>,L): </span>
-<span id="cb48-19"><a href="#cb48-19" aria-hidden="true" tabindex="-1"></a>    <span class="co">## 1: calculate _ifgo </span></span>
-<span id="cb48-20"><a href="#cb48-20" aria-hidden="true" tabindex="-1"></a>    ifgo <span class="op">=</span> X[t] <span class="op">@</span> lstm.weight_ih_l0.T <span class="op">+</span> h[t<span class="op">-</span><span class="dv">1</span>] <span class="op">@</span> lstm.weight_hh_l0.T <span class="op">+</span> lstm.bias_ih_l0 <span class="op">+</span> lstm.bias_hh_l0 </span>
-<span id="cb48-21"><a href="#cb48-21" aria-hidden="true" tabindex="-1"></a>    <span class="co">## 2: decompose _ifgo </span></span>
-<span id="cb48-22"><a href="#cb48-22" aria-hidden="true" tabindex="-1"></a>    i[t] <span class="op">=</span> sig(ifgo[<span class="dv">0</span>:<span class="dv">2</span>])</span>
-<span id="cb48-23"><a href="#cb48-23" aria-hidden="true" tabindex="-1"></a>    f[t] <span class="op">=</span> sig(ifgo[<span class="dv">2</span>:<span class="dv">4</span>])</span>
-<span id="cb48-24"><a href="#cb48-24" aria-hidden="true" tabindex="-1"></a>    g[t] <span class="op">=</span> tanh(ifgo[<span class="dv">4</span>:<span class="dv">6</span>])</span>
-<span id="cb48-25"><a href="#cb48-25" aria-hidden="true" tabindex="-1"></a>    o[t] <span class="op">=</span> sig(ifgo[<span class="dv">6</span>:<span class="dv">8</span>])</span>
-<span id="cb48-26"><a href="#cb48-26" aria-hidden="true" tabindex="-1"></a>    <span class="co">## 3: calculate ht,ct </span></span>
-<span id="cb48-27"><a href="#cb48-27" aria-hidden="true" tabindex="-1"></a>    c[t] <span class="op">=</span> f[t] <span class="op">*</span> c[t<span class="op">-</span><span class="dv">1</span>] <span class="op">+</span> i[t] <span class="op">*</span> g[t]</span>
-<span id="cb48-28"><a href="#cb48-28" aria-hidden="true" tabindex="-1"></a>    h[t] <span class="op">=</span> o[t] <span class="op">*</span> tanh(c[t])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="92933a9f-34e7-48af-93a2-214369af9a89" class="cell" data-tags="[]" data-execution_count="28">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>L <span class="op">=</span> <span class="bu">len</span>(X)</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>i <span class="op">=</span> input_gate <span class="op">=</span> torch.zeros(L,<span class="dv">2</span>)</span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>f <span class="op">=</span> forget_gate <span class="op">=</span> torch.zeros(L,<span class="dv">2</span>)</span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>g <span class="op">=</span> gihhen_state <span class="op">=</span> torch.zeros(L,<span class="dv">2</span>)</span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>o <span class="op">=</span> output_gate <span class="op">=</span> torch.zeros(L,<span class="dv">2</span>)</span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a>c <span class="op">=</span> cell_state <span class="op">=</span> torch.zeros(L,<span class="dv">2</span>)</span>
+<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a>h <span class="op">=</span> hidden_state <span class="op">=</span> torch.zeros(L,<span class="dv">2</span>) </span>
+<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a><span class="co">#--#</span></span>
+<span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a>water <span class="op">=</span> torch.zeros(<span class="dv">2</span>)</span>
+<span id="cb34-10"><a href="#cb34-10" aria-hidden="true" tabindex="-1"></a>ifgo <span class="op">=</span> X[<span class="dv">0</span>] <span class="op">@</span> lstm.weight_ih_l0.T <span class="op">+</span> lstm.bias_ih_l0 <span class="op">+\</span></span>
+<span id="cb34-11"><a href="#cb34-11" aria-hidden="true" tabindex="-1"></a>        water <span class="op">@</span> lstm.weight_hh_l0.T <span class="op">+</span> lstm.bias_hh_l0 </span>
+<span id="cb34-12"><a href="#cb34-12" aria-hidden="true" tabindex="-1"></a><span class="co"># 위에서 water는 h0에 대응</span></span>
+<span id="cb34-13"><a href="#cb34-13" aria-hidden="true" tabindex="-1"></a>i[<span class="dv">0</span>] <span class="op">=</span> sig(ifgo[<span class="dv">0</span>:<span class="dv">2</span>])</span>
+<span id="cb34-14"><a href="#cb34-14" aria-hidden="true" tabindex="-1"></a>f[<span class="dv">0</span>] <span class="op">=</span> sig(ifgo[<span class="dv">2</span>:<span class="dv">4</span>])</span>
+<span id="cb34-15"><a href="#cb34-15" aria-hidden="true" tabindex="-1"></a>g[<span class="dv">0</span>] <span class="op">=</span> tanh(ifgo[<span class="dv">4</span>:<span class="dv">6</span>])</span>
+<span id="cb34-16"><a href="#cb34-16" aria-hidden="true" tabindex="-1"></a>o[<span class="dv">0</span>] <span class="op">=</span> sig(ifgo[<span class="dv">6</span>:<span class="dv">8</span>])</span>
+<span id="cb34-17"><a href="#cb34-17" aria-hidden="true" tabindex="-1"></a>c[<span class="dv">0</span>] <span class="op">=</span> f[<span class="dv">0</span>] <span class="op">*</span> water <span class="op">+</span> i[<span class="dv">0</span>] <span class="op">*</span> g[<span class="dv">0</span>] <span class="co"># water는 c0에 대응 </span></span>
+<span id="cb34-18"><a href="#cb34-18" aria-hidden="true" tabindex="-1"></a>h[<span class="dv">0</span>] <span class="op">=</span> o[<span class="dv">0</span>] <span class="op">*</span> tanh(c[<span class="dv">0</span>])</span>
+<span id="cb34-19"><a href="#cb34-19" aria-hidden="true" tabindex="-1"></a><span class="co">#--#</span></span>
+<span id="cb34-20"><a href="#cb34-20" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> t <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>,L): </span>
+<span id="cb34-21"><a href="#cb34-21" aria-hidden="true" tabindex="-1"></a>    <span class="co">## 1: calculate ifgo </span></span>
+<span id="cb34-22"><a href="#cb34-22" aria-hidden="true" tabindex="-1"></a>    ifgo <span class="op">=</span> X[t] <span class="op">@</span> lstm.weight_ih_l0.T <span class="op">+</span> lstm.bias_ih_l0 <span class="op">+\</span></span>
+<span id="cb34-23"><a href="#cb34-23" aria-hidden="true" tabindex="-1"></a>            h[t<span class="op">-</span><span class="dv">1</span>] <span class="op">@</span> lstm.weight_hh_l0.T <span class="op">+</span>  lstm.bias_hh_l0 </span>
+<span id="cb34-24"><a href="#cb34-24" aria-hidden="true" tabindex="-1"></a>    <span class="co">## 2: decompose ifgo </span></span>
+<span id="cb34-25"><a href="#cb34-25" aria-hidden="true" tabindex="-1"></a>    i[t] <span class="op">=</span> sig(ifgo[<span class="dv">0</span>:<span class="dv">2</span>])</span>
+<span id="cb34-26"><a href="#cb34-26" aria-hidden="true" tabindex="-1"></a>    f[t] <span class="op">=</span> sig(ifgo[<span class="dv">2</span>:<span class="dv">4</span>])</span>
+<span id="cb34-27"><a href="#cb34-27" aria-hidden="true" tabindex="-1"></a>    g[t] <span class="op">=</span> tanh(ifgo[<span class="dv">4</span>:<span class="dv">6</span>])</span>
+<span id="cb34-28"><a href="#cb34-28" aria-hidden="true" tabindex="-1"></a>    o[t] <span class="op">=</span> sig(ifgo[<span class="dv">6</span>:<span class="dv">8</span>])</span>
+<span id="cb34-29"><a href="#cb34-29" aria-hidden="true" tabindex="-1"></a>    <span class="co">## 3: calculate ht,ct </span></span>
+<span id="cb34-30"><a href="#cb34-30" aria-hidden="true" tabindex="-1"></a>    c[t] <span class="op">=</span> f[t] <span class="op">*</span> c[t<span class="op">-</span><span class="dv">1</span>] <span class="op">+</span> i[t] <span class="op">*</span> g[t]</span>
+<span id="cb34-31"><a href="#cb34-31" aria-hidden="true" tabindex="-1"></a>    h[t] <span class="op">=</span> o[t] <span class="op">*</span> tanh(c[t])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="f0a2a0db-0a9a-4e95-8f34-f1310f01b9aa" class="cell" data-tags="[]" data-execution_count="12">
-<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>mat <span class="op">=</span> torch.concat([g,h,soft(netout)],axis<span class="op">=</span><span class="dv">1</span>)[:<span class="dv">8</span>].data</span>
-<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>plt.matshow(mat,cmap<span class="op">=</span><span class="st">'bwr'</span>,vmin<span class="op">=-</span><span class="dv">1</span>,vmax<span class="op">=</span><span class="dv">1</span>)<span class="op">;</span></span>
-<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a>plt.axvline(x<span class="op">=</span><span class="fl">3.5</span>,color<span class="op">=</span><span class="st">"lime"</span>)</span>
-<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a>plt.xticks(</span>
-<span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a>    ticks<span class="op">=</span><span class="bu">range</span>(mat.shape[<span class="op">-</span><span class="dv">1</span>]),</span>
-<span id="cb49-6"><a href="#cb49-6" aria-hidden="true" tabindex="-1"></a>    labels<span class="op">=</span>[<span class="vs">r"$g_0$"</span>,<span class="vs">r"$g_1$"</span>,<span class="vs">r"$h_0$"</span>,<span class="vs">r"$h_1$"</span>,</span>
-<span id="cb49-7"><a href="#cb49-7" aria-hidden="true" tabindex="-1"></a>            <span class="vs">r"$P_a$"</span>,<span class="vs">r"$P_b$"</span>,<span class="vs">r"$P_c$"</span>,<span class="vs">r"$P_C$"</span>]</span>
-<span id="cb49-8"><a href="#cb49-8" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb49-9"><a href="#cb49-9" aria-hidden="true" tabindex="-1"></a>plt.colorbar()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="2a840f6a-c978-4a9e-9fa2-a9982e405fb9" class="cell" data-tags="[]" data-execution_count="29">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>mat <span class="op">=</span> torch.concat([g,h,soft(netout)],axis<span class="op">=</span><span class="dv">1</span>)[:<span class="dv">8</span>].data</span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>plt.matshow(mat,cmap<span class="op">=</span><span class="st">'bwr'</span>,vmin<span class="op">=-</span><span class="dv">1</span>,vmax<span class="op">=</span><span class="dv">1</span>)<span class="op">;</span></span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>plt.axvline(x<span class="op">=</span><span class="fl">3.5</span>,color<span class="op">=</span><span class="st">"lime"</span>)</span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>plt.xticks(</span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>    ticks<span class="op">=</span><span class="bu">range</span>(mat.shape[<span class="op">-</span><span class="dv">1</span>]),</span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>    labels<span class="op">=</span>[<span class="vs">r"$g_0$"</span>,<span class="vs">r"$g_1$"</span>,<span class="vs">r"$h_0$"</span>,<span class="vs">r"$h_1$"</span>,</span>
+<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a>            <span class="vs">r"$P_a$"</span>,<span class="vs">r"$P_b$"</span>,<span class="vs">r"$P_c$"</span>,<span class="vs">r"$P_C$"</span>]</span>
+<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb35-9"><a href="#cb35-9" aria-hidden="true" tabindex="-1"></a>plt.colorbar()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="13wk-1_files/figure-html/cell-37-output-1.png" class="img-fluid figure-img"></p>
+<p><img src="13wk-1_files/figure-html/cell-28-output-1.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
@@ -712,37 +666,41 @@ tensor([ 0.1318, -0.5482, -0.4901, -0.3653,  0.3199,  0.2844, -0.4189,  0.2136],
 </section>
 <section id="b.-시각화1-boldsymbol-g_t-boldsymbol-c_t-1-to-boldsymbol-c_t" class="level2">
 <h2 class="anchored" data-anchor-id="b.-시각화1-boldsymbol-g_t-boldsymbol-c_t-1-to-boldsymbol-c_t">B. 시각화1: <span class="math inline">\(({\boldsymbol g}_t, {\boldsymbol c}_{t-1}) \to {\boldsymbol c}_{t}\)</span></h2>
-<div id="4e89e3d1-f1df-406e-a4ca-8ded1ce089dc" class="cell" data-tags="[]" data-execution_count="14">
-<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>mat1 <span class="op">=</span> torch.concat([g[<span class="dv">1</span>:<span class="dv">9</span>],i[<span class="dv">1</span>:<span class="dv">9</span>],g[<span class="dv">1</span>:<span class="dv">9</span>]<span class="op">*</span>i[<span class="dv">1</span>:<span class="dv">9</span>]],axis<span class="op">=</span><span class="dv">1</span>).data</span>
-<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>mat2 <span class="op">=</span> torch.concat([c[:<span class="dv">8</span>],f[<span class="dv">1</span>:<span class="dv">9</span>],c[:<span class="dv">8</span>]<span class="op">*</span>f[<span class="dv">1</span>:<span class="dv">9</span>]],axis<span class="op">=</span><span class="dv">1</span>).data</span>
-<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a>mat3 <span class="op">=</span> torch.concat([g[<span class="dv">1</span>:<span class="dv">9</span>]<span class="op">*</span>i[<span class="dv">1</span>:<span class="dv">9</span>],c[:<span class="dv">8</span>]<span class="op">*</span>f[<span class="dv">1</span>:<span class="dv">9</span>],c[<span class="dv">1</span>:<span class="dv">9</span>]],axis<span class="op">=</span><span class="dv">1</span>).data</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="3dd1ed7b-47af-4cbf-84fb-9762ec630baf" class="cell" data-tags="[]" data-execution_count="30">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>mat1 <span class="op">=</span> torch.concat([g[<span class="dv">1</span>:<span class="dv">9</span>],i[<span class="dv">1</span>:<span class="dv">9</span>],g[<span class="dv">1</span>:<span class="dv">9</span>]<span class="op">*</span>i[<span class="dv">1</span>:<span class="dv">9</span>]],axis<span class="op">=</span><span class="dv">1</span>).data</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>mat2 <span class="op">=</span> torch.concat([c[:<span class="dv">8</span>],f[<span class="dv">1</span>:<span class="dv">9</span>],c[:<span class="dv">8</span>]<span class="op">*</span>f[<span class="dv">1</span>:<span class="dv">9</span>]],axis<span class="op">=</span><span class="dv">1</span>).data</span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>mat3 <span class="op">=</span> torch.concat([g[<span class="dv">1</span>:<span class="dv">9</span>]<span class="op">*</span>i[<span class="dv">1</span>:<span class="dv">9</span>],c[:<span class="dv">8</span>]<span class="op">*</span>f[<span class="dv">1</span>:<span class="dv">9</span>],c[<span class="dv">1</span>:<span class="dv">9</span>]],axis<span class="op">=</span><span class="dv">1</span>).data</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="a56f7ea4-9f64-4c09-89fe-dbaa498608e8" class="cell" data-tags="[]" data-execution_count="15">
-<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>c[:<span class="dv">8</span>].<span class="bu">min</span>(),c[:<span class="dv">8</span>].<span class="bu">max</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="15">
+<div id="60a3f9bc-998c-49c6-a36e-8ebdc6409014" class="cell" data-tags="[]" data-execution_count="32">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>c[:<span class="dv">8</span>].<span class="bu">min</span>(),c[:<span class="dv">8</span>].<span class="bu">max</span>() </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="32">
 <pre><code>(tensor(-1.0900, grad_fn=&lt;MinBackward1&gt;),
  tensor(0.9979, grad_fn=&lt;MaxBackward1&gt;))</code></pre>
 </div>
 </div>
-<div id="21930975-d835-4198-a750-4fca0254614c" class="cell" data-tags="[]" data-execution_count="16">
-<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>fig,ax <span class="op">=</span> plt.subplots(<span class="dv">1</span>,<span class="dv">3</span>,figsize<span class="op">=</span>(<span class="dv">10</span>,<span class="dv">10</span>))</span>
-<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">0</span>].matshow(mat1,cmap<span class="op">=</span><span class="st">'bwr'</span>,vmin<span class="op">=-</span><span class="dv">1</span>,vmax<span class="op">=</span><span class="dv">1</span>)<span class="op">;</span></span>
-<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">0</span>].axvline(x<span class="op">=</span><span class="fl">1.5</span>,linestyle<span class="op">=</span><span class="st">"dashed"</span>,color<span class="op">=</span><span class="st">"lime"</span>)</span>
-<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">0</span>].axvline(x<span class="op">=</span><span class="fl">3.5</span>,linestyle<span class="op">=</span><span class="st">"dashed"</span>,color<span class="op">=</span><span class="st">"lime"</span>)</span>
-<span id="cb53-5"><a href="#cb53-5" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">0</span>].set_xticks(ticks<span class="op">=</span> [<span class="fl">0.5</span>,<span class="fl">2.5</span>,<span class="fl">4.5</span>],labels<span class="op">=</span>[<span class="vs">r'${\bf g}_t$'</span>,<span class="vs">r'${\bf i}_t$'</span>,<span class="vs">r'${\bf g}_t \odot {\bf i}_t$'</span>])<span class="op">;</span></span>
-<span id="cb53-6"><a href="#cb53-6" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">1</span>].matshow(mat2,cmap<span class="op">=</span><span class="st">'bwr'</span>,vmin<span class="op">=-</span><span class="dv">1</span>,vmax<span class="op">=</span><span class="dv">1</span>)<span class="op">;</span></span>
-<span id="cb53-7"><a href="#cb53-7" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">1</span>].axvline(x<span class="op">=</span><span class="fl">1.5</span>,linestyle<span class="op">=</span><span class="st">"dashed"</span>,color<span class="op">=</span><span class="st">"lime"</span>)</span>
-<span id="cb53-8"><a href="#cb53-8" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">1</span>].axvline(x<span class="op">=</span><span class="fl">3.5</span>,linestyle<span class="op">=</span><span class="st">"dashed"</span>,color<span class="op">=</span><span class="st">"lime"</span>)</span>
-<span id="cb53-9"><a href="#cb53-9" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">1</span>].set_xticks(ticks<span class="op">=</span> [<span class="fl">0.5</span>,<span class="fl">2.5</span>,<span class="fl">4.5</span>],labels<span class="op">=</span>[<span class="vs">r'${\bf c}_{t-1}$'</span>,<span class="vs">r'${\bf f}_t$'</span>,<span class="vs">r'${\bf c}_{t-1} \odot {\bf f}_t$'</span>])<span class="op">;</span></span>
-<span id="cb53-10"><a href="#cb53-10" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">2</span>].matshow(mat3,cmap<span class="op">=</span><span class="st">'bwr'</span>,vmin<span class="op">=-</span><span class="dv">1</span>,vmax<span class="op">=</span><span class="dv">1</span>)<span class="op">;</span></span>
-<span id="cb53-11"><a href="#cb53-11" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">2</span>].axvline(x<span class="op">=</span><span class="fl">1.5</span>,linestyle<span class="op">=</span><span class="st">"dashed"</span>,color<span class="op">=</span><span class="st">"lime"</span>)</span>
-<span id="cb53-12"><a href="#cb53-12" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">2</span>].axvline(x<span class="op">=</span><span class="fl">3.5</span>,linestyle<span class="op">=</span><span class="st">"dashed"</span>,color<span class="op">=</span><span class="st">"lime"</span>)</span>
-<span id="cb53-13"><a href="#cb53-13" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">2</span>].set_xticks(ticks<span class="op">=</span> [<span class="fl">0.5</span>,<span class="fl">2.5</span>,<span class="fl">4.5</span>],labels<span class="op">=</span>[<span class="vs">r'${\bf g}_t \odot {\bf i}_t$'</span>,<span class="vs">r'${\bf c}_{t-1} \odot {\bf f}_t$'</span>,<span class="vs">r'${\bf c}_t$'</span>])<span class="op">;</span></span>
-<span id="cb53-14"><a href="#cb53-14" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li><span class="math inline">\({\boldsymbol c}_t\)</span>의 경우 원래 출력값이 -1, 1 사이라는 보장은 없으나, 이 예제의 경우에는 거의 -1, 1 사이임.</li>
+<li><code>matshow</code>로 시각화할때 <code>vmin=-1</code>, <code>vmax=1</code>로 설정해도 <span class="math inline">\({\boldsymbol c}_t\)</span>를 표현함에 부족함이 없을듯</li>
+</ul>
+<div id="20c4d4a6-2449-4540-a458-7993f1f58bbc" class="cell" data-tags="[]" data-execution_count="33">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>fig,ax <span class="op">=</span> plt.subplots(<span class="dv">1</span>,<span class="dv">3</span>,figsize<span class="op">=</span>(<span class="dv">10</span>,<span class="dv">10</span>))</span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">0</span>].matshow(mat1,cmap<span class="op">=</span><span class="st">'bwr'</span>,vmin<span class="op">=-</span><span class="dv">1</span>,vmax<span class="op">=</span><span class="dv">1</span>)<span class="op">;</span></span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">0</span>].axvline(x<span class="op">=</span><span class="fl">1.5</span>,linestyle<span class="op">=</span><span class="st">"dashed"</span>,color<span class="op">=</span><span class="st">"lime"</span>)</span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">0</span>].axvline(x<span class="op">=</span><span class="fl">3.5</span>,linestyle<span class="op">=</span><span class="st">"dashed"</span>,color<span class="op">=</span><span class="st">"lime"</span>)</span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">0</span>].set_xticks(ticks<span class="op">=</span> [<span class="fl">0.5</span>,<span class="fl">2.5</span>,<span class="fl">4.5</span>],labels<span class="op">=</span>[<span class="vs">r'${\bf g}_t$'</span>,<span class="vs">r'${\bf i}_t$'</span>,<span class="vs">r'${\bf g}_t \odot {\bf i}_t$'</span>])<span class="op">;</span></span>
+<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">1</span>].matshow(mat2,cmap<span class="op">=</span><span class="st">'bwr'</span>,vmin<span class="op">=-</span><span class="dv">1</span>,vmax<span class="op">=</span><span class="dv">1</span>)<span class="op">;</span></span>
+<span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">1</span>].axvline(x<span class="op">=</span><span class="fl">1.5</span>,linestyle<span class="op">=</span><span class="st">"dashed"</span>,color<span class="op">=</span><span class="st">"lime"</span>)</span>
+<span id="cb39-8"><a href="#cb39-8" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">1</span>].axvline(x<span class="op">=</span><span class="fl">3.5</span>,linestyle<span class="op">=</span><span class="st">"dashed"</span>,color<span class="op">=</span><span class="st">"lime"</span>)</span>
+<span id="cb39-9"><a href="#cb39-9" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">1</span>].set_xticks(ticks<span class="op">=</span> [<span class="fl">0.5</span>,<span class="fl">2.5</span>,<span class="fl">4.5</span>],labels<span class="op">=</span>[<span class="vs">r'${\bf c}_{t-1}$'</span>,<span class="vs">r'${\bf f}_t$'</span>,<span class="vs">r'${\bf c}_{t-1} \odot {\bf f}_t$'</span>])<span class="op">;</span></span>
+<span id="cb39-10"><a href="#cb39-10" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">2</span>].matshow(mat3,cmap<span class="op">=</span><span class="st">'bwr'</span>,vmin<span class="op">=-</span><span class="dv">1</span>,vmax<span class="op">=</span><span class="dv">1</span>)<span class="op">;</span></span>
+<span id="cb39-11"><a href="#cb39-11" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">2</span>].axvline(x<span class="op">=</span><span class="fl">1.5</span>,linestyle<span class="op">=</span><span class="st">"dashed"</span>,color<span class="op">=</span><span class="st">"lime"</span>)</span>
+<span id="cb39-12"><a href="#cb39-12" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">2</span>].axvline(x<span class="op">=</span><span class="fl">3.5</span>,linestyle<span class="op">=</span><span class="st">"dashed"</span>,color<span class="op">=</span><span class="st">"lime"</span>)</span>
+<span id="cb39-13"><a href="#cb39-13" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">2</span>].set_xticks(ticks<span class="op">=</span> [<span class="fl">0.5</span>,<span class="fl">2.5</span>,<span class="fl">4.5</span>],labels<span class="op">=</span>[<span class="vs">r'${\bf g}_t \odot {\bf i}_t$'</span>,<span class="vs">r'${\bf c}_{t-1} \odot {\bf f}_t$'</span>,<span class="vs">r'${\bf c}_t$'</span>])<span class="op">;</span></span>
+<span id="cb39-14"><a href="#cb39-14" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="13wk-1_files/figure-html/cell-40-output-1.png" class="img-fluid figure-img"></p>
+<p><img src="13wk-1_files/figure-html/cell-31-output-1.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
@@ -758,20 +716,20 @@ tensor([ 0.1318, -0.5482, -0.4901, -0.3653,  0.3199,  0.2844, -0.4189,  0.2136],
 </section>
 <section id="c.-시각화2-boldsymbol-g_t-to-boldsymbol-h_t" class="level2">
 <h2 class="anchored" data-anchor-id="c.-시각화2-boldsymbol-g_t-to-boldsymbol-h_t">C. 시각화2: <span class="math inline">\({\boldsymbol g}_t \to {\boldsymbol h}_{t}\)</span></h2>
-<div id="9285937a-8abc-4c8f-8a40-f3048b9731a8" class="cell" data-tags="[]" data-execution_count="17">
-<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>mat <span class="op">=</span> torch.concat([g[:<span class="dv">8</span>],c[:<span class="dv">8</span>],o[:<span class="dv">8</span>],c[:<span class="dv">8</span>]<span class="op">*</span>o[:<span class="dv">8</span>],h[:<span class="dv">8</span>]],axis<span class="op">=</span><span class="dv">1</span>).data</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="42001553-4640-4a69-a8ec-69b8f0e0846a" class="cell" data-tags="[]" data-execution_count="44">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>mat <span class="op">=</span> torch.concat([g[:<span class="dv">8</span>],tanh(c[:<span class="dv">8</span>]),o[:<span class="dv">8</span>],h[:<span class="dv">8</span>]],axis<span class="op">=</span><span class="dv">1</span>).data</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cd867a54-e1df-43c8-8a58-1152acea1f52" class="cell" data-tags="[]" data-execution_count="18">
-<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a>plt.matshow(mat.data,cmap<span class="op">=</span><span class="st">'bwr'</span>,vmin<span class="op">=-</span><span class="dv">1</span>,vmax<span class="op">=</span><span class="dv">1</span>)</span>
-<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>plt.xticks([<span class="fl">0.5</span>,<span class="fl">2.5</span>,<span class="fl">4.5</span>,<span class="fl">6.5</span>,<span class="fl">8.5</span>],[<span class="vs">r'${\bf g}_t$'</span>,<span class="vs">r'${\bf c}_t$'</span>,<span class="vs">r'${\bf o}_t$'</span>,<span class="vs">r'${\bf o}_t \odot {\bf c}_t$'</span>,<span class="vs">r'${\bf h}_t$'</span>])<span class="op">;</span></span>
-<span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a>plt.axvline(x<span class="op">=</span><span class="fl">1.5</span>,color<span class="op">=</span><span class="st">"lime"</span>,linewidth<span class="op">=</span><span class="dv">3</span>)</span>
-<span id="cb55-4"><a href="#cb55-4" aria-hidden="true" tabindex="-1"></a>plt.axvline(x<span class="op">=</span><span class="fl">3.5</span>,linestyle<span class="op">=</span><span class="st">"dashed"</span>,color<span class="op">=</span><span class="st">"lime"</span>)</span>
-<span id="cb55-5"><a href="#cb55-5" aria-hidden="true" tabindex="-1"></a>plt.axvline(x<span class="op">=</span><span class="fl">5.5</span>,linestyle<span class="op">=</span><span class="st">"dashed"</span>,color<span class="op">=</span><span class="st">"lime"</span>)</span>
-<span id="cb55-6"><a href="#cb55-6" aria-hidden="true" tabindex="-1"></a>plt.axvline(x<span class="op">=</span><span class="fl">7.5</span>,color<span class="op">=</span><span class="st">"lime"</span>,linewidth<span class="op">=</span><span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="2dc8a94f-ecfc-46ec-9874-e6ce310b78a0" class="cell" data-tags="[]" data-execution_count="46">
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>plt.matshow(mat.data,cmap<span class="op">=</span><span class="st">'bwr'</span>,vmin<span class="op">=-</span><span class="dv">1</span>,vmax<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>plt.xticks([<span class="fl">0.5</span>,<span class="fl">2.5</span>,<span class="fl">4.5</span>,<span class="fl">6.5</span>],[<span class="vs">r'${\bf g}_t$'</span>,<span class="vs">r'$tanh({\bf c}_t)$'</span>,<span class="vs">r'${\bf o}_t$'</span>,<span class="vs">r'${\bf h}_t$'</span>])<span class="op">;</span></span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>plt.axvline(x<span class="op">=</span><span class="fl">1.5</span>,color<span class="op">=</span><span class="st">"lime"</span>,linewidth<span class="op">=</span><span class="dv">3</span>)</span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>plt.axvline(x<span class="op">=</span><span class="fl">3.5</span>,linestyle<span class="op">=</span><span class="st">"dashed"</span>,color<span class="op">=</span><span class="st">"lime"</span>)</span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>plt.axvline(x<span class="op">=</span><span class="fl">5.5</span>,linestyle<span class="op">=</span><span class="st">"dashed"</span>,color<span class="op">=</span><span class="st">"lime"</span>)</span>
+<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a>plt.axvline(x<span class="op">=</span><span class="fl">7.5</span>,color<span class="op">=</span><span class="st">"lime"</span>,linewidth<span class="op">=</span><span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="13wk-1_files/figure-html/cell-42-output-1.png" class="img-fluid figure-img"></p>
+<p><img src="13wk-1_files/figure-html/cell-33-output-1.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
@@ -784,9 +742,9 @@ tensor([ 0.1318, -0.5482, -0.4901, -0.3653,  0.3199,  0.2844, -0.4189,  0.2136],
 <p><span class="math inline">\({\tt ifgo} = {\boldsymbol x}_t  \big[{\bf W}_{ii} | {\bf W}_{if}| {\bf W}_{ig} |{\bf W}_{io}\big] + {\boldsymbol h}_{t-1}  \big[ {\bf W}_{hi}|{\bf W}_{hf} |{\bf W}_{hg} | {\bf W}_{ho} \big] + bias\)</span></p>
 <p><span class="math inline">\(=\big[{\boldsymbol x}_t{\bf W}_{ii} + {\boldsymbol h}_{t-1}{\bf W}_{hi} ~\big|~ {\boldsymbol x}_t{\bf W}_{if}+ {\boldsymbol h}_{t-1}{\bf W}_{hf}~ \big|~ {\boldsymbol x}_t{\bf W}_{ig} + {\boldsymbol h}_{t-1}{\bf W}_{hg}  ~\big|~ {\boldsymbol x}_t{\bf W}_{io} + {\boldsymbol h}_{t-1}{\bf W}_{ho} \big] + bias\)</span></p>
 <p>참고: 위의 수식은 아래코드에 해당하는 부분</p>
-<div class="sourceCode" id="cb56"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>ifgo <span class="op">=</span> Xt <span class="op">@</span> lstm_cell.weight_ih.T <span class="op">+\</span></span>
-<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a>       ht <span class="op">@</span> lstm_cell.weight_hh.T <span class="op">+\</span></span>
-<span id="cb56-3"><a href="#cb56-3" aria-hidden="true" tabindex="-1"></a>       lstm_cell.bias_ih <span class="op">+</span> lstm_cell.bias_hh</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb42"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>ifgo <span class="op">=</span> Xt <span class="op">@</span> lstm_cell.weight_ih.T <span class="op">+\</span></span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>       ht <span class="op">@</span> lstm_cell.weight_hh.T <span class="op">+\</span></span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>       lstm_cell.bias_ih <span class="op">+</span> lstm_cell.bias_hh</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p><strong>(step2)</strong> decompose <span class="math inline">\({\tt ifgo}\)</span> and get <span class="math inline">\({\boldsymbol i}_t\)</span>, <span class="math inline">\({\boldsymbol f}_t\)</span>, <span class="math inline">\({\boldsymbol g}_t\)</span>, <span class="math inline">\({\boldsymbol o}_t\)</span></p>
 <p><span class="math inline">\({\boldsymbol i}_t = \sigma({\boldsymbol x}_t {\bf W}_{ii} + {\boldsymbol h}_{t-1} {\bf W}_{hi} +bias )\)</span></p>
 <p><span class="math inline">\({\boldsymbol f}_t = \sigma({\boldsymbol x}_t {\bf W}_{if} + {\boldsymbol h}_{t-1} {\bf W}_{hf} +bias )\)</span></p>
@@ -794,7 +752,7 @@ tensor([ 0.1318, -0.5482, -0.4901, -0.3653,  0.3199,  0.2844, -0.4189,  0.2136],
 <p><span class="math inline">\({\boldsymbol o}_t = \sigma({\boldsymbol x}_t {\bf W}_{io} + {\boldsymbol h}_{t-1} {\bf W}_{ho} +bias )\)</span></p>
 <p><strong>(step3)</strong> calculate <span class="math inline">\({\boldsymbol c}_t\)</span> and <span class="math inline">\({\boldsymbol h}_t\)</span></p>
 <p><span class="math inline">\({\boldsymbol c}_t = {\boldsymbol i}_t \odot {\boldsymbol g}_t+ {\boldsymbol f}_t \odot {\boldsymbol c}_{t-1}\)</span></p>
-<p><span class="math inline">\({\boldsymbol h}_t = \tanh({\boldsymbol o}_t \odot {\boldsymbol c}_t)\)</span></p>
+<p><span class="math inline">\({\boldsymbol h}_t = {\boldsymbol o}_t \odot \tanh({\boldsymbol c}_t)\)</span></p>
 </section>
 <section id="e.-lstm의-알고리즘-리뷰-ii-느낌위주" class="level2">
 <h2 class="anchored" data-anchor-id="e.-lstm의-알고리즘-리뷰-ii-느낌위주">E. LSTM의 알고리즘 리뷰 II (느낌위주)</h2>
