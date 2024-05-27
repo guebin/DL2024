@@ -2,6 +2,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/posts/13wk-1.html",
       "/posts/12wk-2.html",
       "/posts/12wk-1.html",
       "/posts/11wk-2.html",
@@ -20,8 +21,7 @@
       "/posts/02wk-2.html",
       "/posts/02wk-1.html",
       "/posts/01wk-2.html",
-      "/posts/01wk-1.html",
-      "/posts/13wk-1.html"
+      "/posts/01wk-1.html"
     ]
   }
 ]
