@@ -795,8 +795,7 @@ ot = tensor([0.6216, 0.4072], grad_fn=&lt;SigmoidBackward0&gt;)</code></pre>
 <ul>
 <li>비판: 아키텍처에 대한 이론적 근거는 없음. 장기기억을 위하여 꼭 LSTM같은 구조일 필요는 없음. (게이트는 꼭3개이어야 하는지?)</li>
 </ul>
-<p><code>-</code> 답변2: 아키텍처상으로 LSTM은 RNN을 포함함. 그래서 이론적으로 LSTM의 성능이 RNN보다 떨어질 이유는 없음.</p>
-<p><code>-</code> 답변3: 저는 사실 아까 살펴본 아래의 이유로 이해하고 있습니다.</p>
+<p><code>-</code> 답변2: 저는 사실 아까 살펴본 아래의 이유로 이해하고 있습니다.</p>
 <ul>
 <li>실험적으로 살펴보니 LSTM이 RNN보다 장기기억에 유리했음.</li>
 <li>그 이유: RNN은 <span class="math inline">\({\boldsymbol h}_t\)</span>의 값이 -1 혹은 1로 결정되는 경우가 많았음. 그러나 경우에 따라서는 <span class="math inline">\({\boldsymbol h}_t\)</span>이 -1~1의 값을 가지는 것이 문맥적 뉘앙스를 포착하기에는 유리한데 LSTM이 이러한 방식으로 학습되는 경우가 많았음.</li>
