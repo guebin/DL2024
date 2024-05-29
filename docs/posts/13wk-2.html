@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.533">
+<meta name="generator" content="quarto-1.4.520">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -106,33 +106,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
-
 <link rel="stylesheet" href="../styles.css">
 </head>
 
@@ -186,10 +159,10 @@ window.Quarto = {
   <li><a href="#game1-bandit-게임" id="toc-game1-bandit-게임" class="nav-link" data-scroll-target="#game1-bandit-게임">5. Game1: <code>Bandit</code> 게임</a>
   <ul class="collapse">
   <li><a href="#a.-게임설명-및-원시코드" id="toc-a.-게임설명-및-원시코드" class="nav-link" data-scroll-target="#a.-게임설명-및-원시코드">A. 게임설명 및 원시코드</a></li>
-  <li><a href="#b.-수정1-action_space의-수정" id="toc-b.-수정1-action_space의-수정" class="nav-link" data-scroll-target="#b.-수정1-action_space의-수정">B. 수정1: <code>action_space</code>의 수정</a></li>
-  <li><a href="#c.-수정2-env-클래스구현" id="toc-c.-수정2-env-클래스구현" class="nav-link" data-scroll-target="#c.-수정2-env-클래스구현">C. 수정2: <code>Env</code> 클래스구현</a></li>
-  <li><a href="#d.-수정3-agent-클래스-구현-랜덤행동" id="toc-d.-수정3-agent-클래스-구현-랜덤행동" class="nav-link" data-scroll-target="#d.-수정3-agent-클래스-구현-랜덤행동">D. 수정3: <code>Agent</code> 클래스 구현 (랜덤행동)</a></li>
-  <li><a href="#e.-수정4-agent.learn-구현" id="toc-e.-수정4-agent.learn-구현" class="nav-link" data-scroll-target="#e.-수정4-agent.learn-구현">E. 수정4: <code>Agent.learn()</code> 구현</a></li>
+  <li><a href="#b.-수정1-action_space-수정" id="toc-b.-수정1-action_space-수정" class="nav-link" data-scroll-target="#b.-수정1-action_space-수정">B. 수정1: <code>action_space</code> 수정</a></li>
+  <li><a href="#c.-수정2-env-구현" id="toc-c.-수정2-env-구현" class="nav-link" data-scroll-target="#c.-수정2-env-구현">C. 수정2: <code>Env</code> 구현</a></li>
+  <li><a href="#d.-수정3-agent-구현-인간지능" id="toc-d.-수정3-agent-구현-인간지능" class="nav-link" data-scroll-target="#d.-수정3-agent-구현-인간지능">D. 수정3: <code>Agent</code> 구현 (인간지능)</a></li>
+  <li><a href="#e.-수정4-agent-구현-인공지능" id="toc-e.-수정4-agent-구현-인공지능" class="nav-link" data-scroll-target="#e.-수정4-agent-구현-인공지능">E. 수정4: <code>Agent</code> 구현 (인공지능)</a></li>
   </ul></li>
   </ul>
 <div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="13wk-2.out.ipynb" download="13wk-2.out.ipynb"><i class="bi bi-journal-code"></i>Jupyter</a></li></ul></div></nav>
@@ -472,8 +445,8 @@ n_try = 19  action= 1   reward= 100 reward20= 1900  </code></pre>
 </div>
 </div>
 </section>
-<section id="b.-수정1-action_space의-수정" class="level2">
-<h2 class="anchored" data-anchor-id="b.-수정1-action_space의-수정">B. 수정1: <code>action_space</code>의 수정</h2>
+<section id="b.-수정1-action_space-수정" class="level2">
+<h2 class="anchored" data-anchor-id="b.-수정1-action_space-수정">B. 수정1: <code>action_space</code> 수정</h2>
 <div id="ef224ee2-c37f-46cc-aeac-3ba69e84e798" class="cell" data-tags="[]" data-execution_count="38">
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>action_space <span class="op">=</span> gym.spaces.Discrete(<span class="dv">2</span>)</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>action_space</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -592,8 +565,8 @@ n_try = 50  action= 0   reward= 1   reward20= 911   </code></pre>
 </div>
 </div>
 </section>
-<section id="c.-수정2-env-클래스구현" class="level2">
-<h2 class="anchored" data-anchor-id="c.-수정2-env-클래스구현">C. 수정2: <code>Env</code> 클래스구현</h2>
+<section id="c.-수정2-env-구현" class="level2">
+<h2 class="anchored" data-anchor-id="c.-수정2-env-구현">C. 수정2: <code>Env</code> 구현</h2>
 <p><code>-</code> env 클래스 선언</p>
 <div id="c6091a16-b766-4546-aa94-877ed2653c52" class="cell" data-tags="[]" data-execution_count="44">
 <div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Bandit: </span>
@@ -643,8 +616,8 @@ n_try = 19  action= 1   reward= 100 reward20= 1900  </code></pre>
 </div>
 </div>
 </section>
-<section id="d.-수정3-agent-클래스-구현-랜덤행동" class="level2">
-<h2 class="anchored" data-anchor-id="d.-수정3-agent-클래스-구현-랜덤행동">D. 수정3: <code>Agent</code> 클래스 구현 (랜덤행동)</h2>
+<section id="d.-수정3-agent-구현-인간지능" class="level2">
+<h2 class="anchored" data-anchor-id="d.-수정3-agent-구현-인간지능">D. 수정3: <code>Agent</code> 구현 (인간지능)</h2>
 <p><code>-</code> Agent 클래스를 만들자. (액션을 하고, 환경에서 받은 reward를 간직)</p>
 <div id="0e5d87ae-8fe3-417d-848a-f49786c2b2ed" class="cell" data-tags="[]" data-execution_count="46">
 <div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Agent:</span>
@@ -787,8 +760,8 @@ n_try = 50  action= 0   reward= 1   reward20= 812   </code></pre>
 </div>
 </div>
 </section>
-<section id="e.-수정4-agent.learn-구현" class="level2 page-columns page-full">
-<h2 class="anchored" data-anchor-id="e.-수정4-agent.learn-구현">E. 수정4: <code>Agent.learn()</code> 구현</h2>
+<section id="e.-수정4-agent-구현-인공지능" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="e.-수정4-agent-구현-인공지능">E. 수정4: <code>Agent</code> 구현 (인공지능)</h2>
 <p><code>-</code> Game1에 대한 생각:</p>
 <ul>
 <li>사실 강화학습은 “환경을 이해 <span class="math inline">\(\to\)</span> 행동을 결정” 의 과정에서 <span class="math inline">\(\to\)</span>의 과정을 수식화 한 것이다.</li>
@@ -1106,6 +1079,27 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       }
     }
     stripColumnClz(note)
+    const typesetMath = (el) => {
+      if (window.MathJax) {
+        // MathJax Typeset
+        window.MathJax.typeset([el]);
+      } else if (window.katex) {
+        // KaTeX Render
+        var mathElements = el.getElementsByClassName("math");
+        var macros = [];
+        for (var i = 0; i < mathElements.length; i++) {
+          var texText = mathElements[i].firstChild;
+          if (mathElements[i].tagName == "SPAN") {
+            window.katex.render(texText.data, mathElements[i], {
+              displayMode: mathElements[i].classList.contains('display'),
+              throwOnError: false,
+              macros: macros,
+              fleqn: false
+            });
+          }
+        }
+      }
+    }
     if (id === null || id.startsWith('sec-')) {
       // Special case sections, only their first couple elements
       const container = document.createElement("div");
@@ -1120,14 +1114,10 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             break;
           }
         }
-        if (window.Quarto?.typesetMath) {
-          window.Quarto.typesetMath(container);
-        }
+        typesetMath(container);
         return container.innerHTML
       } else {
-        if (window.Quarto?.typesetMath) {
-          window.Quarto.typesetMath(note);
-        }
+        typesetMath(note);
         return note.innerHTML;
       }
     } else {
@@ -1136,9 +1126,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       if (anchorLink) {
         anchorLink.remove();
       }
-      if (window.Quarto?.typesetMath) {
-        window.Quarto.typesetMath(note);
-      }
+      typesetMath(note);
       return note.innerHTML;
     }
   }
