@@ -186,9 +186,9 @@ window.Quarto = {
   <li><a href="#game1-bandit-게임" id="toc-game1-bandit-게임" class="nav-link" data-scroll-target="#game1-bandit-게임">5. Game1: <code>Bandit</code> 게임</a>
   <ul class="collapse">
   <li><a href="#a.-게임설명-및-원시코드" id="toc-a.-게임설명-및-원시코드" class="nav-link" data-scroll-target="#a.-게임설명-및-원시코드">A. 게임설명 및 원시코드</a></li>
-  <li><a href="#c.-수정1-env-구현" id="toc-c.-수정1-env-구현" class="nav-link" data-scroll-target="#c.-수정1-env-구현">C. 수정1: <code>Env</code> 구현</a></li>
-  <li><a href="#d.-수정2-agent-구현-인간지능" id="toc-d.-수정2-agent-구현-인간지능" class="nav-link" data-scroll-target="#d.-수정2-agent-구현-인간지능">D. 수정2: <code>Agent</code> 구현 (인간지능)</a></li>
-  <li><a href="#e.-수정3-agent-구현-인공지능" id="toc-e.-수정3-agent-구현-인공지능" class="nav-link" data-scroll-target="#e.-수정3-agent-구현-인공지능">E. 수정3: <code>Agent</code> 구현 (인공지능)</a></li>
+  <li><a href="#b.-수정1-env-구현" id="toc-b.-수정1-env-구현" class="nav-link" data-scroll-target="#b.-수정1-env-구현">B. 수정1: <code>Env</code> 구현</a></li>
+  <li><a href="#c.-수정2-agent-구현-인간지능" id="toc-c.-수정2-agent-구현-인간지능" class="nav-link" data-scroll-target="#c.-수정2-agent-구현-인간지능">C. 수정2: <code>Agent</code> 구현 (인간지능)</a></li>
+  <li><a href="#d.-수정3-agent-구현-인공지능" id="toc-d.-수정3-agent-구현-인공지능" class="nav-link" data-scroll-target="#d.-수정3-agent-구현-인공지능">D. 수정3: <code>Agent</code> 구현 (인공지능)</a></li>
   </ul></li>
   </ul>
 <div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="13wk-2.out.ipynb" download="13wk-2.out.ipynb"><i class="bi bi-journal-code"></i>Jupyter</a></li></ul></div></nav>
@@ -265,18 +265,18 @@ window.Quarto = {
 <h1>5. Game1: <code>Bandit</code> 게임</h1>
 <section id="a.-게임설명-및-원시코드" class="level2 page-columns page-full">
 <h2 class="anchored" data-anchor-id="a.-게임설명-및-원시코드">A. 게임설명 및 원시코드</h2>
-<p><code>-</code> 문제설명: 두 개의 버튼이 있다. <code>버튼0</code>을 누르면 1의 보상을, <code>버튼1</code>을 누르면 100의 보상을 준다고 가정</p>
+<p><code>-</code> 문제설명: 두 개의 버튼이 있다. <code>버튼0</code>을 누르면 1의 보상을, <code>버튼1</code>을 누르면 10의 보상을 준다고 가정</p>
 <p><code>-</code> 처음에 어떤 행동을 해야 하는가?</p>
 <ul>
 <li>처음에는 아는게 없음</li>
 <li>일단 “아무거나” 눌러보자.</li>
 </ul>
 <p><code>-</code> 버튼을 아무거나 누르는 코드를 작성해보자.</p>
-<div id="cd4a7dbb-f420-479c-a420-4097bb2bad59" class="cell" data-tags="[]" data-execution_count="3">
+<div id="cd4a7dbb-f420-479c-a420-4097bb2bad59" class="cell" data-tags="[]" data-execution_count="36">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>action_space <span class="op">=</span> [<span class="st">'버튼0'</span>, <span class="st">'버튼1'</span>] </span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>action <span class="op">=</span> np.random.choice(action_space)</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>action</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="3">
+<div class="cell-output cell-output-display" data-execution_count="36">
 <pre><code>'버튼0'</code></pre>
 </div>
 </div>
@@ -284,69 +284,69 @@ window.Quarto = {
 <p><code>action_space</code> 와 <code>action</code> 이라는 용어를 기억할 것</p>
 </blockquote>
 <p><code>-</code> 버튼을 누른 행위에 따른 보상을 구현하자. 함수를 구현해보자.</p>
-<div id="61b66eff-ec7c-4884-9e55-0a61279495a8" class="cell" data-tags="[]" data-execution_count="4">
+<div id="61b66eff-ec7c-4884-9e55-0a61279495a8" class="cell" data-tags="[]" data-execution_count="37">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> action <span class="op">==</span> <span class="st">'버튼0'</span>: <span class="co"># button0을 눌렀다면 </span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    reward <span class="op">=</span> <span class="dv">1</span> </span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    reward <span class="op">=</span> <span class="dv">1</span></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>: <span class="co"># button1을 눌렀다면 </span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    reward <span class="op">=</span> <span class="dv">100</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    reward <span class="op">=</span> <span class="dv">10</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <blockquote class="blockquote">
 <p><code>reward</code>라는 용어를 기억할 것</p>
 </blockquote>
-<div id="d81e4baa-7bb5-4dfd-a786-488ac021a364" class="cell" data-tags="[]" data-execution_count="5">
+<div id="d81e4baa-7bb5-4dfd-a786-488ac021a364" class="cell" data-tags="[]" data-execution_count="38">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>reward</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="5">
+<div class="cell-output cell-output-display" data-execution_count="38">
 <pre><code>1</code></pre>
 </div>
 </div>
 <p><code>-</code> 아무버튼이나 10번정도 눌러보면서 데이터를 쌓아보자.</p>
-<div id="d1e676d0-b3b8-427d-ace9-a887ff371c9e" class="cell" data-tags="[]" data-execution_count="6">
+<div id="d1e676d0-b3b8-427d-ace9-a887ff371c9e" class="cell" data-tags="[]" data-execution_count="41">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>):</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    action <span class="op">=</span> np.random.choice(action_space)</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> action <span class="op">==</span> <span class="st">'버튼0'</span>: </span>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>        reward <span class="op">=</span> <span class="dv">1</span> </span>
 <span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>: </span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>        reward <span class="op">=</span> <span class="dv">100</span>     </span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>        reward <span class="op">=</span> <span class="dv">10</span>    </span>
 <span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(action,reward) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>버튼0 1
-버튼1 100
+버튼1 10
 버튼0 1
+버튼1 10
+버튼1 10
 버튼0 1
-버튼0 1
-버튼0 1
-버튼0 1
-버튼1 100
-버튼1 100
-버튼1 100</code></pre>
+버튼1 10
+버튼1 10
+버튼1 10
+버튼1 10</code></pre>
 </div>
 </div>
-<p><code>-</code> 깨달았음: <code>버튼0</code>을 누르면 1점을 받고, <code>버튼1</code>을 누르면 100점을 받는 “환경(environment)”이구나? <span class="math inline">\(\to\)</span> <code>버튼1</code>을 누르는 “동작(=action)”을 해야하는 상황이구나?</p>
+<p><code>-</code> 깨달았음: <code>버튼0</code>을 누르면 1점을 받고, <code>버튼1</code>을 누르면 10점을 받는 “환경(environment)”이구나? <span class="math inline">\(\to\)</span> <code>버튼1</code>을 누르는 “동작(=action)”을 해야하는 상황이구나?</p>
 <ul>
 <li>여기에서 <span class="math inline">\(\to\)</span>의 과정을 체계화 시킨 학문이 강화학습</li>
 </ul>
 <blockquote class="blockquote">
 <p><code>environment</code>라는 용어를 기억할 것</p>
 </blockquote>
-<div id="84bb28cb-bae0-4364-b208-43f88a1e8690" class="cell" data-tags="[]" data-execution_count="7">
+<div id="84bb28cb-bae0-4364-b208-43f88a1e8690" class="cell" data-tags="[]" data-execution_count="42">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>):</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    action <span class="op">=</span> action_space[<span class="dv">1</span>]</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> action <span class="op">==</span> <span class="st">'버튼0'</span>: </span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>        reward <span class="op">=</span> <span class="dv">1</span> </span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>        reward <span class="op">=</span> <span class="dv">1</span></span>
 <span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>: </span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>        reward <span class="op">=</span> <span class="dv">100</span>     </span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>        reward <span class="op">=</span> <span class="dv">10</span>   </span>
 <span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(action,reward) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>버튼1 100
-버튼1 100
-버튼1 100
-버튼1 100
-버튼1 100
-버튼1 100
-버튼1 100
-버튼1 100
-버튼1 100
-버튼1 100</code></pre>
+<pre><code>버튼1 10
+버튼1 10
+버튼1 10
+버튼1 10
+버튼1 10
+버튼1 10
+버튼1 10
+버튼1 10
+버튼1 10
+버튼1 10</code></pre>
 </div>
 </div>
 <ul>
@@ -371,20 +371,20 @@ window.Quarto = {
 <li>게임클리어조건: (1) 20번은 그냥 진행 (2) 최근 20번의 보상의 평균이 95점 이상이면 게임이 클리어 되었다고 생각하자.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></li>
 </ul>
 <div class="no-row-height column-margin column-container"><li id="fn1"><p><sup>1</sup>&nbsp;<code>버튼1</code>을 눌러야 하는건 맞지만 몇번의 실수는 눈감아 주자는 의미</p></li></div><p><code>-</code> 원시코드1: 환경을 이해하지 못한 에이전트 – 게임을 클리어할 수 없다.</p>
-<div id="88406414-89f3-44bc-bdd7-bc1b43788f74" class="cell" data-tags="[]" data-execution_count="8">
+<div id="88406414-89f3-44bc-bdd7-bc1b43788f74" class="cell" data-tags="[]" data-execution_count="127">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>action_space <span class="op">=</span> [<span class="dv">0</span>,<span class="dv">1</span>] </span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>rewards <span class="op">=</span> [] </span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> t <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">50</span>): <span class="co"># 10000번을 해도 못깸  </span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> t <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>,<span class="dv">51</span>): <span class="co"># 10000번을 해도 못깸  </span></span>
 <span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    action <span class="op">=</span> np.random.choice(action_space) <span class="co"># 무지한자의 행동 (찍어) </span></span>
 <span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> action <span class="op">==</span> <span class="dv">0</span>: </span>
 <span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>        reward <span class="op">=</span> <span class="dv">1</span> </span>
 <span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>        rewards.append(reward)</span>
 <span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>: </span>
-<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>        reward <span class="op">=</span> <span class="dv">100</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>        reward <span class="op">=</span> <span class="dv">10</span></span>
 <span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>        rewards.append(reward)</span>
 <span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>    <span class="co">#--# </span></span>
 <span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(</span>
-<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>        <span class="ss">f"n_try = </span><span class="sc">{</span>t<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ch">\t</span><span class="ss">"</span></span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>        <span class="ss">f"n_try = </span><span class="sc">{</span>t<span class="sc">}</span><span class="ch">\t</span><span class="ss">"</span></span>
 <span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>        <span class="ss">f"action = </span><span class="sc">{</span>action<span class="sc">}</span><span class="ch">\t</span><span class="ss">"</span></span>
 <span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>        <span class="ss">f"reward = </span><span class="sc">{</span>reward<span class="sc">}</span><span class="ch">\t</span><span class="ss">"</span></span>
 <span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>        <span class="ss">f"mean(recent_rewards) = </span><span class="sc">{</span>np<span class="sc">.</span>mean(rewards[<span class="op">-</span><span class="dv">20</span>:])<span class="sc">}</span><span class="ss">"</span></span>
@@ -392,78 +392,82 @@ window.Quarto = {
 <span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>    <span class="co">#--#</span></span>
 <span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> t <span class="op">&lt;</span> <span class="dv">20</span>:</span>
 <span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>        <span class="cf">pass</span></span>
-<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
-<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> np.mean(rewards[<span class="op">-</span><span class="dv">20</span>:]) <span class="op">&gt;=</span> <span class="dv">95</span>:</span>
-<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a>            <span class="cf">break</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> t <span class="op">==</span> <span class="dv">20</span>:</span>
+<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">'--'</span>)</span>
+<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> np.mean(rewards[<span class="op">-</span><span class="dv">20</span>:]) <span class="op">&gt;=</span> <span class="dv">95</span>:</span>
+<span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="st">'Game Clear'</span>)</span>
+<span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a>            <span class="cf">break</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>n_try = 1   action = 0  reward = 1  mean(recent_rewards) = 1.0
-n_try = 2   action = 0  reward = 1  mean(recent_rewards) = 1.0
-n_try = 3   action = 0  reward = 1  mean(recent_rewards) = 1.0
-n_try = 4   action = 0  reward = 1  mean(recent_rewards) = 1.0
-n_try = 5   action = 0  reward = 1  mean(recent_rewards) = 1.0
-n_try = 6   action = 0  reward = 1  mean(recent_rewards) = 1.0
-n_try = 7   action = 1  reward = 100    mean(recent_rewards) = 15.142857142857142
-n_try = 8   action = 0  reward = 1  mean(recent_rewards) = 13.375
-n_try = 9   action = 0  reward = 1  mean(recent_rewards) = 12.0
-n_try = 10  action = 0  reward = 1  mean(recent_rewards) = 10.9
-n_try = 11  action = 1  reward = 100    mean(recent_rewards) = 19.0
-n_try = 12  action = 1  reward = 100    mean(recent_rewards) = 25.75
-n_try = 13  action = 1  reward = 100    mean(recent_rewards) = 31.46153846153846
-n_try = 14  action = 1  reward = 100    mean(recent_rewards) = 36.357142857142854
-n_try = 15  action = 1  reward = 100    mean(recent_rewards) = 40.6
-n_try = 16  action = 1  reward = 100    mean(recent_rewards) = 44.3125
-n_try = 17  action = 1  reward = 100    mean(recent_rewards) = 47.588235294117645
-n_try = 18  action = 0  reward = 1  mean(recent_rewards) = 45.0
-n_try = 19  action = 1  reward = 100    mean(recent_rewards) = 47.89473684210526
-n_try = 20  action = 1  reward = 100    mean(recent_rewards) = 50.5
-n_try = 21  action = 0  reward = 1  mean(recent_rewards) = 50.5
-n_try = 22  action = 1  reward = 100    mean(recent_rewards) = 55.45
-n_try = 23  action = 1  reward = 100    mean(recent_rewards) = 60.4
-n_try = 24  action = 1  reward = 100    mean(recent_rewards) = 65.35
-n_try = 25  action = 0  reward = 1  mean(recent_rewards) = 65.35
-n_try = 26  action = 1  reward = 100    mean(recent_rewards) = 70.3
-n_try = 27  action = 1  reward = 100    mean(recent_rewards) = 70.3
-n_try = 28  action = 1  reward = 100    mean(recent_rewards) = 75.25
-n_try = 29  action = 0  reward = 1  mean(recent_rewards) = 75.25
-n_try = 30  action = 1  reward = 100    mean(recent_rewards) = 80.2
-n_try = 31  action = 1  reward = 100    mean(recent_rewards) = 80.2
-n_try = 32  action = 1  reward = 100    mean(recent_rewards) = 80.2
-n_try = 33  action = 0  reward = 1  mean(recent_rewards) = 75.25
-n_try = 34  action = 0  reward = 1  mean(recent_rewards) = 70.3
-n_try = 35  action = 1  reward = 100    mean(recent_rewards) = 70.3
-n_try = 36  action = 1  reward = 100    mean(recent_rewards) = 70.3
-n_try = 37  action = 0  reward = 1  mean(recent_rewards) = 65.35
-n_try = 38  action = 1  reward = 100    mean(recent_rewards) = 70.3
-n_try = 39  action = 0  reward = 1  mean(recent_rewards) = 65.35
-n_try = 40  action = 1  reward = 100    mean(recent_rewards) = 65.35
-n_try = 41  action = 1  reward = 100    mean(recent_rewards) = 70.3
-n_try = 42  action = 1  reward = 100    mean(recent_rewards) = 70.3
-n_try = 43  action = 1  reward = 100    mean(recent_rewards) = 70.3
-n_try = 44  action = 1  reward = 100    mean(recent_rewards) = 70.3
-n_try = 45  action = 1  reward = 100    mean(recent_rewards) = 75.25
-n_try = 46  action = 0  reward = 1  mean(recent_rewards) = 70.3
-n_try = 47  action = 0  reward = 1  mean(recent_rewards) = 65.35
-n_try = 48  action = 0  reward = 1  mean(recent_rewards) = 60.4
-n_try = 49  action = 1  reward = 100    mean(recent_rewards) = 65.35
-n_try = 50  action = 0  reward = 1  mean(recent_rewards) = 60.4</code></pre>
+<pre><code>n_try = 1   action = 1  reward = 10 mean(recent_rewards) = 10.0
+n_try = 2   action = 0  reward = 1  mean(recent_rewards) = 5.5
+n_try = 3   action = 1  reward = 10 mean(recent_rewards) = 7.0
+n_try = 4   action = 1  reward = 10 mean(recent_rewards) = 7.75
+n_try = 5   action = 1  reward = 10 mean(recent_rewards) = 8.2
+n_try = 6   action = 0  reward = 1  mean(recent_rewards) = 7.0
+n_try = 7   action = 0  reward = 1  mean(recent_rewards) = 6.142857142857143
+n_try = 8   action = 1  reward = 10 mean(recent_rewards) = 6.625
+n_try = 9   action = 0  reward = 1  mean(recent_rewards) = 6.0
+n_try = 10  action = 0  reward = 1  mean(recent_rewards) = 5.5
+n_try = 11  action = 0  reward = 1  mean(recent_rewards) = 5.090909090909091
+n_try = 12  action = 0  reward = 1  mean(recent_rewards) = 4.75
+n_try = 13  action = 0  reward = 1  mean(recent_rewards) = 4.461538461538462
+n_try = 14  action = 1  reward = 10 mean(recent_rewards) = 4.857142857142857
+n_try = 15  action = 1  reward = 10 mean(recent_rewards) = 5.2
+n_try = 16  action = 1  reward = 10 mean(recent_rewards) = 5.5
+n_try = 17  action = 0  reward = 1  mean(recent_rewards) = 5.235294117647059
+n_try = 18  action = 1  reward = 10 mean(recent_rewards) = 5.5
+n_try = 19  action = 0  reward = 1  mean(recent_rewards) = 5.2631578947368425
+n_try = 20  action = 0  reward = 1  mean(recent_rewards) = 5.05
+--
+n_try = 21  action = 1  reward = 10 mean(recent_rewards) = 5.05
+n_try = 22  action = 1  reward = 10 mean(recent_rewards) = 5.5
+n_try = 23  action = 1  reward = 10 mean(recent_rewards) = 5.5
+n_try = 24  action = 0  reward = 1  mean(recent_rewards) = 5.05
+n_try = 25  action = 1  reward = 10 mean(recent_rewards) = 5.05
+n_try = 26  action = 0  reward = 1  mean(recent_rewards) = 5.05
+n_try = 27  action = 1  reward = 10 mean(recent_rewards) = 5.5
+n_try = 28  action = 1  reward = 10 mean(recent_rewards) = 5.5
+n_try = 29  action = 1  reward = 10 mean(recent_rewards) = 5.95
+n_try = 30  action = 0  reward = 1  mean(recent_rewards) = 5.95
+n_try = 31  action = 0  reward = 1  mean(recent_rewards) = 5.95
+n_try = 32  action = 1  reward = 10 mean(recent_rewards) = 6.4
+n_try = 33  action = 0  reward = 1  mean(recent_rewards) = 6.4
+n_try = 34  action = 1  reward = 10 mean(recent_rewards) = 6.4
+n_try = 35  action = 0  reward = 1  mean(recent_rewards) = 5.95
+n_try = 36  action = 0  reward = 1  mean(recent_rewards) = 5.5
+n_try = 37  action = 0  reward = 1  mean(recent_rewards) = 5.5
+n_try = 38  action = 1  reward = 10 mean(recent_rewards) = 5.5
+n_try = 39  action = 0  reward = 1  mean(recent_rewards) = 5.5
+n_try = 40  action = 0  reward = 1  mean(recent_rewards) = 5.5
+n_try = 41  action = 1  reward = 10 mean(recent_rewards) = 5.5
+n_try = 42  action = 1  reward = 10 mean(recent_rewards) = 5.5
+n_try = 43  action = 1  reward = 10 mean(recent_rewards) = 5.5
+n_try = 44  action = 0  reward = 1  mean(recent_rewards) = 5.5
+n_try = 45  action = 1  reward = 10 mean(recent_rewards) = 5.5
+n_try = 46  action = 0  reward = 1  mean(recent_rewards) = 5.5
+n_try = 47  action = 0  reward = 1  mean(recent_rewards) = 5.05
+n_try = 48  action = 0  reward = 1  mean(recent_rewards) = 4.6
+n_try = 49  action = 0  reward = 1  mean(recent_rewards) = 4.15
+n_try = 50  action = 0  reward = 1  mean(recent_rewards) = 4.15</code></pre>
 </div>
 </div>
 <p><code>-</code> 원시코드2: 환경을 깨달은 에이전트 – 게임클리어</p>
-<div id="a2f7b8d7-ba44-4bc7-987d-bd2660890203" class="cell" data-tags="[]" data-execution_count="9">
+<div id="a2f7b8d7-ba44-4bc7-987d-bd2660890203" class="cell" data-tags="[]" data-execution_count="129">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>action_space <span class="op">=</span> [<span class="dv">0</span>,<span class="dv">1</span>]</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>rewards <span class="op">=</span> [] </span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> t <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">50</span>): </span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> t <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>,<span class="dv">51</span>): </span>
 <span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">#action = np.random.choice(action_space) # 무지한자의 행동 (찍어) </span></span>
 <span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>    action <span class="op">=</span> <span class="dv">1</span> <span class="co"># 환경을 이해한 에이전트의 행동</span></span>
 <span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> action <span class="op">==</span> <span class="dv">0</span>: </span>
 <span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>        reward <span class="op">=</span> <span class="dv">1</span> </span>
 <span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>        rewards.append(reward)</span>
 <span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>: </span>
-<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>        reward <span class="op">=</span> <span class="dv">100</span></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>        reward <span class="op">=</span> <span class="dv">10</span></span>
 <span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>        rewards.append(reward)</span>
 <span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>    <span class="co">#--# </span></span>
 <span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(</span>
-<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>        <span class="ss">f"n_try = </span><span class="sc">{</span>t<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ch">\t</span><span class="ss">"</span></span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>        <span class="ss">f"n_try = </span><span class="sc">{</span>t<span class="sc">}</span><span class="ch">\t</span><span class="ss">"</span></span>
 <span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a>        <span class="ss">f"action = </span><span class="sc">{</span>action<span class="sc">}</span><span class="ch">\t</span><span class="ss">"</span></span>
 <span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a>        <span class="ss">f"reward = </span><span class="sc">{</span>reward<span class="sc">}</span><span class="ch">\t</span><span class="ss">"</span></span>
 <span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a>        <span class="ss">f"mean(recent_rewards) = </span><span class="sc">{</span>np<span class="sc">.</span>mean(rewards[<span class="op">-</span><span class="dv">20</span>:])<span class="sc">}</span><span class="ss">"</span></span>
@@ -471,57 +475,62 @@ n_try = 50  action = 0  reward = 1  mean(recent_rewards) = 60.4</code></pre>
 <span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a>    <span class="co">#--#</span></span>
 <span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> t <span class="op">&lt;</span> <span class="dv">20</span>:</span>
 <span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a>        <span class="cf">pass</span></span>
-<span id="cb15-22"><a href="#cb15-22" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
-<span id="cb15-23"><a href="#cb15-23" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> np.mean(rewards[<span class="op">-</span><span class="dv">20</span>:]) <span class="op">&gt;=</span> <span class="dv">95</span>:</span>
-<span id="cb15-24"><a href="#cb15-24" aria-hidden="true" tabindex="-1"></a>            <span class="cf">break</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb15-22"><a href="#cb15-22" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> t <span class="op">==</span> <span class="dv">20</span>:</span>
+<span id="cb15-23"><a href="#cb15-23" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">'--'</span>)</span>
+<span id="cb15-24"><a href="#cb15-24" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb15-25"><a href="#cb15-25" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> np.mean(rewards[<span class="op">-</span><span class="dv">20</span>:]) <span class="op">&gt;=</span> <span class="fl">9.5</span>:</span>
+<span id="cb15-26"><a href="#cb15-26" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="st">'Game Clear'</span>)</span>
+<span id="cb15-27"><a href="#cb15-27" aria-hidden="true" tabindex="-1"></a>            <span class="cf">break</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>n_try = 1   action = 1  reward = 100    mean(recent_rewards) = 100.0
-n_try = 2   action = 1  reward = 100    mean(recent_rewards) = 100.0
-n_try = 3   action = 1  reward = 100    mean(recent_rewards) = 100.0
-n_try = 4   action = 1  reward = 100    mean(recent_rewards) = 100.0
-n_try = 5   action = 1  reward = 100    mean(recent_rewards) = 100.0
-n_try = 6   action = 1  reward = 100    mean(recent_rewards) = 100.0
-n_try = 7   action = 1  reward = 100    mean(recent_rewards) = 100.0
-n_try = 8   action = 1  reward = 100    mean(recent_rewards) = 100.0
-n_try = 9   action = 1  reward = 100    mean(recent_rewards) = 100.0
-n_try = 10  action = 1  reward = 100    mean(recent_rewards) = 100.0
-n_try = 11  action = 1  reward = 100    mean(recent_rewards) = 100.0
-n_try = 12  action = 1  reward = 100    mean(recent_rewards) = 100.0
-n_try = 13  action = 1  reward = 100    mean(recent_rewards) = 100.0
-n_try = 14  action = 1  reward = 100    mean(recent_rewards) = 100.0
-n_try = 15  action = 1  reward = 100    mean(recent_rewards) = 100.0
-n_try = 16  action = 1  reward = 100    mean(recent_rewards) = 100.0
-n_try = 17  action = 1  reward = 100    mean(recent_rewards) = 100.0
-n_try = 18  action = 1  reward = 100    mean(recent_rewards) = 100.0
-n_try = 19  action = 1  reward = 100    mean(recent_rewards) = 100.0
-n_try = 20  action = 1  reward = 100    mean(recent_rewards) = 100.0
-n_try = 21  action = 1  reward = 100    mean(recent_rewards) = 100.0</code></pre>
+<pre><code>n_try = 1   action = 1  reward = 10 mean(recent_rewards) = 10.0
+n_try = 2   action = 1  reward = 10 mean(recent_rewards) = 10.0
+n_try = 3   action = 1  reward = 10 mean(recent_rewards) = 10.0
+n_try = 4   action = 1  reward = 10 mean(recent_rewards) = 10.0
+n_try = 5   action = 1  reward = 10 mean(recent_rewards) = 10.0
+n_try = 6   action = 1  reward = 10 mean(recent_rewards) = 10.0
+n_try = 7   action = 1  reward = 10 mean(recent_rewards) = 10.0
+n_try = 8   action = 1  reward = 10 mean(recent_rewards) = 10.0
+n_try = 9   action = 1  reward = 10 mean(recent_rewards) = 10.0
+n_try = 10  action = 1  reward = 10 mean(recent_rewards) = 10.0
+n_try = 11  action = 1  reward = 10 mean(recent_rewards) = 10.0
+n_try = 12  action = 1  reward = 10 mean(recent_rewards) = 10.0
+n_try = 13  action = 1  reward = 10 mean(recent_rewards) = 10.0
+n_try = 14  action = 1  reward = 10 mean(recent_rewards) = 10.0
+n_try = 15  action = 1  reward = 10 mean(recent_rewards) = 10.0
+n_try = 16  action = 1  reward = 10 mean(recent_rewards) = 10.0
+n_try = 17  action = 1  reward = 10 mean(recent_rewards) = 10.0
+n_try = 18  action = 1  reward = 10 mean(recent_rewards) = 10.0
+n_try = 19  action = 1  reward = 10 mean(recent_rewards) = 10.0
+n_try = 20  action = 1  reward = 10 mean(recent_rewards) = 10.0
+--
+n_try = 21  action = 1  reward = 10 mean(recent_rewards) = 10.0
+Game Clear</code></pre>
 </div>
 </div>
 </section>
-<section id="c.-수정1-env-구현" class="level2">
-<h2 class="anchored" data-anchor-id="c.-수정1-env-구현">C. 수정1: <code>Env</code> 구현</h2>
+<section id="b.-수정1-env-구현" class="level2">
+<h2 class="anchored" data-anchor-id="b.-수정1-env-구현">B. 수정1: <code>Env</code> 구현</h2>
 <p><code>-</code> <code>Bandit</code> 클래스 선언 + <code>.step()</code> 구현</p>
-<div id="c6091a16-b766-4546-aa94-877ed2653c52" class="cell" data-tags="[]" data-execution_count="10">
+<div id="c6091a16-b766-4546-aa94-877ed2653c52" class="cell" data-tags="[]" data-execution_count="130">
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Bandit: </span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> step(<span class="va">self</span>, action):</span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> action <span class="op">==</span> <span class="dv">0</span>:</span>
 <span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> <span class="dv">1</span> </span>
 <span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>: </span>
-<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> <span class="dv">100</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> <span class="dv">10</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="28fb2c07-c995-4270-8f44-352b16fa9ca0" class="cell" data-tags="[]" data-execution_count="11">
+<div id="28fb2c07-c995-4270-8f44-352b16fa9ca0" class="cell" data-tags="[]" data-execution_count="135">
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>action_space <span class="op">=</span> [<span class="dv">0</span>,<span class="dv">1</span>]</span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>env <span class="op">=</span> Bandit()</span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>rewards <span class="op">=</span> []</span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> t <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">50</span>): </span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> t <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>,<span class="dv">51</span>): </span>
 <span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>    action <span class="op">=</span> np.random.choice(action_space)</span>
 <span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>    <span class="co">#action = 1</span></span>
 <span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>    reward <span class="op">=</span> env.step(action)</span>
 <span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>    rewards.append(reward)</span>
 <span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>    <span class="co">#--# </span></span>
 <span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(</span>
-<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>        <span class="ss">f"n_try = </span><span class="sc">{</span>t<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ch">\t</span><span class="ss">"</span></span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>        <span class="ss">f"n_try = </span><span class="sc">{</span>t<span class="sc">}</span><span class="ch">\t</span><span class="ss">"</span></span>
 <span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>        <span class="ss">f"action = </span><span class="sc">{</span>action<span class="sc">}</span><span class="ch">\t</span><span class="ss">"</span></span>
 <span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>        <span class="ss">f"reward = </span><span class="sc">{</span>reward<span class="sc">}</span><span class="ch">\t</span><span class="ss">"</span></span>
 <span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>        <span class="ss">f"mean(recent_rewards) = </span><span class="sc">{</span>np<span class="sc">.</span>mean(rewards[<span class="op">-</span><span class="dv">20</span>:])<span class="sc">}</span><span class="ss">"</span></span>
@@ -529,71 +538,75 @@ n_try = 21  action = 1  reward = 100    mean(recent_rewards) = 100.0</code></pre
 <span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a>    <span class="co">#--#</span></span>
 <span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> t <span class="op">&lt;</span> <span class="dv">20</span>:</span>
 <span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a>        <span class="cf">pass</span></span>
-<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
-<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> np.mean(rewards[<span class="op">-</span><span class="dv">20</span>:]) <span class="op">&gt;=</span> <span class="dv">95</span>:</span>
-<span id="cb18-21"><a href="#cb18-21" aria-hidden="true" tabindex="-1"></a>            <span class="cf">break</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> t <span class="op">==</span> <span class="dv">20</span>:</span>
+<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">"---"</span>)</span>
+<span id="cb18-21"><a href="#cb18-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb18-22"><a href="#cb18-22" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> np.mean(rewards[<span class="op">-</span><span class="dv">20</span>:]) <span class="op">&gt;=</span> <span class="fl">9.5</span>:</span>
+<span id="cb18-23"><a href="#cb18-23" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="st">"Game Clear"</span>)</span>
+<span id="cb18-24"><a href="#cb18-24" aria-hidden="true" tabindex="-1"></a>            <span class="cf">break</span>  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>n_try = 1   action = 1  reward = 100    mean(recent_rewards) = 100.0
-n_try = 2   action = 0  reward = 1  mean(recent_rewards) = 50.5
-n_try = 3   action = 0  reward = 1  mean(recent_rewards) = 34.0
-n_try = 4   action = 1  reward = 100    mean(recent_rewards) = 50.5
-n_try = 5   action = 1  reward = 100    mean(recent_rewards) = 60.4
-n_try = 6   action = 1  reward = 100    mean(recent_rewards) = 67.0
-n_try = 7   action = 1  reward = 100    mean(recent_rewards) = 71.71428571428571
-n_try = 8   action = 0  reward = 1  mean(recent_rewards) = 62.875
-n_try = 9   action = 0  reward = 1  mean(recent_rewards) = 56.0
-n_try = 10  action = 1  reward = 100    mean(recent_rewards) = 60.4
-n_try = 11  action = 1  reward = 100    mean(recent_rewards) = 64.0
-n_try = 12  action = 0  reward = 1  mean(recent_rewards) = 58.75
-n_try = 13  action = 1  reward = 100    mean(recent_rewards) = 61.92307692307692
-n_try = 14  action = 1  reward = 100    mean(recent_rewards) = 64.64285714285714
-n_try = 15  action = 0  reward = 1  mean(recent_rewards) = 60.4
-n_try = 16  action = 1  reward = 100    mean(recent_rewards) = 62.875
-n_try = 17  action = 0  reward = 1  mean(recent_rewards) = 59.23529411764706
-n_try = 18  action = 0  reward = 1  mean(recent_rewards) = 56.0
-n_try = 19  action = 1  reward = 100    mean(recent_rewards) = 58.31578947368421
-n_try = 20  action = 1  reward = 100    mean(recent_rewards) = 60.4
-n_try = 21  action = 0  reward = 1  mean(recent_rewards) = 55.45
-n_try = 22  action = 0  reward = 1  mean(recent_rewards) = 55.45
-n_try = 23  action = 1  reward = 100    mean(recent_rewards) = 60.4
-n_try = 24  action = 1  reward = 100    mean(recent_rewards) = 60.4
-n_try = 25  action = 0  reward = 1  mean(recent_rewards) = 55.45
-n_try = 26  action = 1  reward = 100    mean(recent_rewards) = 55.45
-n_try = 27  action = 1  reward = 100    mean(recent_rewards) = 55.45
-n_try = 28  action = 1  reward = 100    mean(recent_rewards) = 60.4
-n_try = 29  action = 1  reward = 100    mean(recent_rewards) = 65.35
-n_try = 30  action = 0  reward = 1  mean(recent_rewards) = 60.4
-n_try = 31  action = 1  reward = 100    mean(recent_rewards) = 60.4
-n_try = 32  action = 0  reward = 1  mean(recent_rewards) = 60.4
-n_try = 33  action = 1  reward = 100    mean(recent_rewards) = 60.4
-n_try = 34  action = 0  reward = 1  mean(recent_rewards) = 55.45
-n_try = 35  action = 0  reward = 1  mean(recent_rewards) = 55.45
-n_try = 36  action = 1  reward = 100    mean(recent_rewards) = 55.45
-n_try = 37  action = 1  reward = 100    mean(recent_rewards) = 60.4
-n_try = 38  action = 1  reward = 100    mean(recent_rewards) = 65.35
-n_try = 39  action = 1  reward = 100    mean(recent_rewards) = 65.35
-n_try = 40  action = 1  reward = 100    mean(recent_rewards) = 65.35
-n_try = 41  action = 0  reward = 1  mean(recent_rewards) = 65.35
-n_try = 42  action = 1  reward = 100    mean(recent_rewards) = 70.3
-n_try = 43  action = 1  reward = 100    mean(recent_rewards) = 70.3
-n_try = 44  action = 0  reward = 1  mean(recent_rewards) = 65.35
-n_try = 45  action = 1  reward = 100    mean(recent_rewards) = 70.3
-n_try = 46  action = 1  reward = 100    mean(recent_rewards) = 70.3
-n_try = 47  action = 1  reward = 100    mean(recent_rewards) = 70.3
-n_try = 48  action = 0  reward = 1  mean(recent_rewards) = 65.35
-n_try = 49  action = 1  reward = 100    mean(recent_rewards) = 65.35
-n_try = 50  action = 1  reward = 100    mean(recent_rewards) = 70.3</code></pre>
+<pre><code>n_try = 1   action = 0  reward = 1  mean(recent_rewards) = 1.0
+n_try = 2   action = 0  reward = 1  mean(recent_rewards) = 1.0
+n_try = 3   action = 0  reward = 1  mean(recent_rewards) = 1.0
+n_try = 4   action = 0  reward = 1  mean(recent_rewards) = 1.0
+n_try = 5   action = 1  reward = 10 mean(recent_rewards) = 2.8
+n_try = 6   action = 1  reward = 10 mean(recent_rewards) = 4.0
+n_try = 7   action = 0  reward = 1  mean(recent_rewards) = 3.5714285714285716
+n_try = 8   action = 0  reward = 1  mean(recent_rewards) = 3.25
+n_try = 9   action = 1  reward = 10 mean(recent_rewards) = 4.0
+n_try = 10  action = 1  reward = 10 mean(recent_rewards) = 4.6
+n_try = 11  action = 1  reward = 10 mean(recent_rewards) = 5.090909090909091
+n_try = 12  action = 1  reward = 10 mean(recent_rewards) = 5.5
+n_try = 13  action = 1  reward = 10 mean(recent_rewards) = 5.846153846153846
+n_try = 14  action = 0  reward = 1  mean(recent_rewards) = 5.5
+n_try = 15  action = 0  reward = 1  mean(recent_rewards) = 5.2
+n_try = 16  action = 0  reward = 1  mean(recent_rewards) = 4.9375
+n_try = 17  action = 1  reward = 10 mean(recent_rewards) = 5.235294117647059
+n_try = 18  action = 0  reward = 1  mean(recent_rewards) = 5.0
+n_try = 19  action = 0  reward = 1  mean(recent_rewards) = 4.7894736842105265
+n_try = 20  action = 1  reward = 10 mean(recent_rewards) = 5.05
+---
+n_try = 21  action = 1  reward = 10 mean(recent_rewards) = 5.5
+n_try = 22  action = 0  reward = 1  mean(recent_rewards) = 5.5
+n_try = 23  action = 1  reward = 10 mean(recent_rewards) = 5.95
+n_try = 24  action = 1  reward = 10 mean(recent_rewards) = 6.4
+n_try = 25  action = 0  reward = 1  mean(recent_rewards) = 5.95
+n_try = 26  action = 0  reward = 1  mean(recent_rewards) = 5.5
+n_try = 27  action = 0  reward = 1  mean(recent_rewards) = 5.5
+n_try = 28  action = 0  reward = 1  mean(recent_rewards) = 5.5
+n_try = 29  action = 1  reward = 10 mean(recent_rewards) = 5.5
+n_try = 30  action = 1  reward = 10 mean(recent_rewards) = 5.5
+n_try = 31  action = 0  reward = 1  mean(recent_rewards) = 5.05
+n_try = 32  action = 0  reward = 1  mean(recent_rewards) = 4.6
+n_try = 33  action = 0  reward = 1  mean(recent_rewards) = 4.15
+n_try = 34  action = 0  reward = 1  mean(recent_rewards) = 4.15
+n_try = 35  action = 1  reward = 10 mean(recent_rewards) = 4.6
+n_try = 36  action = 0  reward = 1  mean(recent_rewards) = 4.6
+n_try = 37  action = 1  reward = 10 mean(recent_rewards) = 4.6
+n_try = 38  action = 0  reward = 1  mean(recent_rewards) = 4.6
+n_try = 39  action = 0  reward = 1  mean(recent_rewards) = 4.6
+n_try = 40  action = 0  reward = 1  mean(recent_rewards) = 4.15
+n_try = 41  action = 1  reward = 10 mean(recent_rewards) = 4.15
+n_try = 42  action = 0  reward = 1  mean(recent_rewards) = 4.15
+n_try = 43  action = 1  reward = 10 mean(recent_rewards) = 4.15
+n_try = 44  action = 0  reward = 1  mean(recent_rewards) = 3.7
+n_try = 45  action = 0  reward = 1  mean(recent_rewards) = 3.7
+n_try = 46  action = 1  reward = 10 mean(recent_rewards) = 4.15
+n_try = 47  action = 0  reward = 1  mean(recent_rewards) = 4.15
+n_try = 48  action = 0  reward = 1  mean(recent_rewards) = 4.15
+n_try = 49  action = 1  reward = 10 mean(recent_rewards) = 4.15
+n_try = 50  action = 0  reward = 1  mean(recent_rewards) = 3.7</code></pre>
 </div>
 </div>
 </section>
-<section id="d.-수정2-agent-구현-인간지능" class="level2">
-<h2 class="anchored" data-anchor-id="d.-수정2-agent-구현-인간지능">D. 수정2: <code>Agent</code> 구현 (인간지능)</h2>
+<section id="c.-수정2-agent-구현-인간지능" class="level2">
+<h2 class="anchored" data-anchor-id="c.-수정2-agent-구현-인간지능">C. 수정2: <code>Agent</code> 구현 (인간지능)</h2>
 <p><code>-</code> Agent 클래스 설계</p>
 <ul>
 <li>액션을 하고, 본인의 행동과 환경에서 받은 reward를 기억</li>
 <li><code>.act()</code>함수와 <code>.save_experience()</code>함수 구현</li>
 </ul>
-<div id="0e5d87ae-8fe3-417d-848a-f49786c2b2ed" class="cell" data-tags="[]" data-execution_count="12">
+<div id="0e5d87ae-8fe3-417d-848a-f49786c2b2ed" class="cell" data-tags="[]" data-execution_count="136">
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Agent:</span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>):</span>
 <span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.action_space <span class="op">=</span> [<span class="dv">0</span>,<span class="dv">1</span>]</span>
@@ -610,68 +623,68 @@ n_try = 50  action = 1  reward = 100    mean(recent_rewards) = 70.3</code></pre>
 </div>
 <p>— 대충 아래와 같은 느낌으로 코드가 돌아가요 —</p>
 <p><strong>시점0</strong>: init</p>
-<div id="6ee01a47-2ecc-41c9-9344-419f06f89d09" class="cell" data-tags="[]" data-execution_count="13">
+<div id="6ee01a47-2ecc-41c9-9344-419f06f89d09" class="cell" data-tags="[]" data-execution_count="137">
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>env <span class="op">=</span> Bandit()</span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>agent <span class="op">=</span> Agent() </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="43397ed8-1846-4db8-85e5-feab67bb12f1" class="cell" data-tags="[]" data-execution_count="14">
+<div id="43397ed8-1846-4db8-85e5-feab67bb12f1" class="cell" data-tags="[]" data-execution_count="138">
 <div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>agent.action, agent.reward</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="14">
+<div class="cell-output cell-output-display" data-execution_count="138">
 <pre><code>(None, None)</code></pre>
 </div>
 </div>
 <p><strong>시점1</strong>: agent &gt;&gt; env</p>
-<div id="94b910e3-9d0d-4e32-bfe4-1ea5bc7a537b" class="cell" data-tags="[]" data-execution_count="15">
+<div id="94b910e3-9d0d-4e32-bfe4-1ea5bc7a537b" class="cell" data-tags="[]" data-execution_count="139">
 <div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>agent.act()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="88ca0c67-6c67-461b-adad-5781c23e366a" class="cell" data-tags="[]" data-execution_count="16">
+<div id="88ca0c67-6c67-461b-adad-5781c23e366a" class="cell" data-tags="[]" data-execution_count="140">
 <div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>agent.action, agent.reward</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="16">
+<div class="cell-output cell-output-display" data-execution_count="140">
 <pre><code>(1, None)</code></pre>
 </div>
 </div>
-<div id="390746fe-70f2-42ff-97e7-02872bf725fe" class="cell" data-tags="[]" data-execution_count="17">
+<div id="390746fe-70f2-42ff-97e7-02872bf725fe" class="cell" data-tags="[]" data-execution_count="141">
 <div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>env.agent_action <span class="op">=</span> agent.action</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p><strong>시점2</strong>: agent &lt;&lt; env</p>
-<div id="0c06f08a-96f0-454f-bb0e-76f3b80650a0" class="cell" data-tags="[]" data-execution_count="18">
+<div id="0c06f08a-96f0-454f-bb0e-76f3b80650a0" class="cell" data-tags="[]" data-execution_count="142">
 <div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>agent.reward <span class="op">=</span> env.step(env.agent_action)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="92121832-fc74-40ca-885b-1b7ebbc0b2ef" class="cell" data-tags="[]" data-execution_count="19">
+<div id="92121832-fc74-40ca-885b-1b7ebbc0b2ef" class="cell" data-tags="[]" data-execution_count="143">
 <div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>agent.action, agent.reward, env.agent_action</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="19">
-<pre><code>(1, 100, 1)</code></pre>
+<div class="cell-output cell-output-display" data-execution_count="143">
+<pre><code>(1, 10, 1)</code></pre>
 </div>
 </div>
-<div id="5de5658f-352b-4080-a452-c7b9ceb32181" class="cell" data-tags="[]" data-execution_count="20">
+<div id="5de5658f-352b-4080-a452-c7b9ceb32181" class="cell" data-tags="[]" data-execution_count="144">
 <div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>agent.actions,agent.rewards</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="20">
+<div class="cell-output cell-output-display" data-execution_count="144">
 <pre><code>([], [])</code></pre>
 </div>
 </div>
-<div id="5e3ea513-38ff-42a0-b298-c2b17347e30c" class="cell" data-tags="[]" data-execution_count="21">
+<div id="5e3ea513-38ff-42a0-b298-c2b17347e30c" class="cell" data-tags="[]" data-execution_count="145">
 <div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>agent.save_experience()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="89f2ead3-14ff-4db7-91b7-e7444900a2ae" class="cell" data-tags="[]" data-execution_count="22">
+<div id="89f2ead3-14ff-4db7-91b7-e7444900a2ae" class="cell" data-tags="[]" data-execution_count="146">
 <div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>agent.actions,agent.rewards</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="22">
-<pre><code>([1], [100])</code></pre>
+<div class="cell-output cell-output-display" data-execution_count="146">
+<pre><code>([1], [10])</code></pre>
 </div>
 </div>
 <p>– 전체코드 –</p>
-<div id="94d5f2d2-b38f-472c-97b1-a64c58f68455" class="cell" data-tags="[]" data-execution_count="23">
+<div id="94d5f2d2-b38f-472c-97b1-a64c58f68455" class="cell" data-tags="[]" data-execution_count="148">
 <div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>env <span class="op">=</span> Bandit() </span>
 <span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>agent <span class="op">=</span> Agent()</span>
-<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> t <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">50</span>): </span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> t <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>,<span class="dv">51</span>): </span>
 <span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>    <span class="co"># step1: agent &gt;&gt; env </span></span>
 <span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>    agent.act() </span>
 <span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a>    env.agent_action <span class="op">=</span> agent.action</span>
 <span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># step2: agent &lt;&lt; env </span></span>
 <span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a>    agent.reward <span class="op">=</span> env.step(env.agent_action)</span>
-<span id="cb36-9"><a href="#cb36-9" aria-hidden="true" tabindex="-1"></a>    agent.save_experience() </span>
+<span id="cb36-9"><a href="#cb36-9" aria-hidden="true" tabindex="-1"></a>    agent.save_experience()  </span>
 <span id="cb36-10"><a href="#cb36-10" aria-hidden="true" tabindex="-1"></a>    <span class="co">#--# </span></span>
 <span id="cb36-11"><a href="#cb36-11" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(</span>
-<span id="cb36-12"><a href="#cb36-12" aria-hidden="true" tabindex="-1"></a>        <span class="ss">f"n_try = </span><span class="sc">{</span>t<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ch">\t</span><span class="ss">"</span></span>
+<span id="cb36-12"><a href="#cb36-12" aria-hidden="true" tabindex="-1"></a>        <span class="ss">f"n_try = </span><span class="sc">{</span>t<span class="sc">}</span><span class="ch">\t</span><span class="ss">"</span></span>
 <span id="cb36-13"><a href="#cb36-13" aria-hidden="true" tabindex="-1"></a>        <span class="ss">f"action = </span><span class="sc">{</span>agent<span class="sc">.</span>action<span class="sc">}</span><span class="ch">\t</span><span class="ss">"</span></span>
 <span id="cb36-14"><a href="#cb36-14" aria-hidden="true" tabindex="-1"></a>        <span class="ss">f"reward = </span><span class="sc">{</span>agent<span class="sc">.</span>reward<span class="sc">}</span><span class="ch">\t</span><span class="ss">"</span></span>
 <span id="cb36-15"><a href="#cb36-15" aria-hidden="true" tabindex="-1"></a>        <span class="ss">f"mean(recent_rewards) = </span><span class="sc">{</span>np<span class="sc">.</span>mean(agent.rewards[<span class="op">-</span><span class="dv">20</span>:])<span class="sc">}</span><span class="ss">"</span></span>
@@ -680,64 +693,65 @@ n_try = 50  action = 1  reward = 100    mean(recent_rewards) = 70.3</code></pre>
 <span id="cb36-18"><a href="#cb36-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> t <span class="op">&lt;</span> <span class="dv">20</span>:</span>
 <span id="cb36-19"><a href="#cb36-19" aria-hidden="true" tabindex="-1"></a>        <span class="cf">pass</span></span>
 <span id="cb36-20"><a href="#cb36-20" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
-<span id="cb36-21"><a href="#cb36-21" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> np.mean(rewards[<span class="op">-</span><span class="dv">20</span>:]) <span class="op">&gt;=</span> <span class="dv">95</span>:</span>
-<span id="cb36-22"><a href="#cb36-22" aria-hidden="true" tabindex="-1"></a>            <span class="cf">break</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb36-21"><a href="#cb36-21" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> np.mean(agent.rewards[<span class="op">-</span><span class="dv">20</span>:]) <span class="op">&gt;=</span> <span class="fl">9.5</span>:</span>
+<span id="cb36-22"><a href="#cb36-22" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="st">"Game Clear"</span>)</span>
+<span id="cb36-23"><a href="#cb36-23" aria-hidden="true" tabindex="-1"></a>            <span class="cf">break</span>  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>n_try = 1   action = 0  reward = 1  mean(recent_rewards) = 1.0
-n_try = 2   action = 0  reward = 1  mean(recent_rewards) = 1.0
-n_try = 3   action = 1  reward = 100    mean(recent_rewards) = 34.0
-n_try = 4   action = 0  reward = 1  mean(recent_rewards) = 25.75
-n_try = 5   action = 0  reward = 1  mean(recent_rewards) = 20.8
-n_try = 6   action = 0  reward = 1  mean(recent_rewards) = 17.5
-n_try = 7   action = 0  reward = 1  mean(recent_rewards) = 15.142857142857142
-n_try = 8   action = 0  reward = 1  mean(recent_rewards) = 13.375
-n_try = 9   action = 0  reward = 1  mean(recent_rewards) = 12.0
-n_try = 10  action = 0  reward = 1  mean(recent_rewards) = 10.9
-n_try = 11  action = 0  reward = 1  mean(recent_rewards) = 10.0
-n_try = 12  action = 0  reward = 1  mean(recent_rewards) = 9.25
-n_try = 13  action = 1  reward = 100    mean(recent_rewards) = 16.23076923076923
-n_try = 14  action = 0  reward = 1  mean(recent_rewards) = 15.142857142857142
-n_try = 15  action = 1  reward = 100    mean(recent_rewards) = 20.8
-n_try = 16  action = 0  reward = 1  mean(recent_rewards) = 19.5625
-n_try = 17  action = 0  reward = 1  mean(recent_rewards) = 18.470588235294116
-n_try = 18  action = 1  reward = 100    mean(recent_rewards) = 23.0
-n_try = 19  action = 1  reward = 100    mean(recent_rewards) = 27.05263157894737
-n_try = 20  action = 0  reward = 1  mean(recent_rewards) = 25.75
-n_try = 21  action = 1  reward = 100    mean(recent_rewards) = 30.7
-n_try = 22  action = 0  reward = 1  mean(recent_rewards) = 30.7
-n_try = 23  action = 0  reward = 1  mean(recent_rewards) = 25.75
-n_try = 24  action = 1  reward = 100    mean(recent_rewards) = 30.7
-n_try = 25  action = 0  reward = 1  mean(recent_rewards) = 30.7
-n_try = 26  action = 0  reward = 1  mean(recent_rewards) = 30.7
-n_try = 27  action = 1  reward = 100    mean(recent_rewards) = 35.65
-n_try = 28  action = 0  reward = 1  mean(recent_rewards) = 35.65
-n_try = 29  action = 0  reward = 1  mean(recent_rewards) = 35.65
-n_try = 30  action = 1  reward = 100    mean(recent_rewards) = 40.6
-n_try = 31  action = 0  reward = 1  mean(recent_rewards) = 40.6
-n_try = 32  action = 1  reward = 100    mean(recent_rewards) = 45.55
-n_try = 33  action = 0  reward = 1  mean(recent_rewards) = 40.6
-n_try = 34  action = 0  reward = 1  mean(recent_rewards) = 40.6
-n_try = 35  action = 1  reward = 100    mean(recent_rewards) = 40.6
-n_try = 36  action = 0  reward = 1  mean(recent_rewards) = 40.6
-n_try = 37  action = 1  reward = 100    mean(recent_rewards) = 45.55
-n_try = 38  action = 1  reward = 100    mean(recent_rewards) = 45.55
-n_try = 39  action = 0  reward = 1  mean(recent_rewards) = 40.6
-n_try = 40  action = 0  reward = 1  mean(recent_rewards) = 40.6
-n_try = 41  action = 1  reward = 100    mean(recent_rewards) = 40.6
-n_try = 42  action = 0  reward = 1  mean(recent_rewards) = 40.6
-n_try = 43  action = 1  reward = 100    mean(recent_rewards) = 45.55
-n_try = 44  action = 1  reward = 100    mean(recent_rewards) = 45.55
-n_try = 45  action = 0  reward = 1  mean(recent_rewards) = 45.55
-n_try = 46  action = 1  reward = 100    mean(recent_rewards) = 50.5
-n_try = 47  action = 0  reward = 1  mean(recent_rewards) = 45.55
-n_try = 48  action = 0  reward = 1  mean(recent_rewards) = 45.55
-n_try = 49  action = 0  reward = 1  mean(recent_rewards) = 45.55
-n_try = 50  action = 1  reward = 100    mean(recent_rewards) = 45.55</code></pre>
+n_try = 2   action = 1  reward = 10 mean(recent_rewards) = 5.5
+n_try = 3   action = 1  reward = 10 mean(recent_rewards) = 7.0
+n_try = 4   action = 1  reward = 10 mean(recent_rewards) = 7.75
+n_try = 5   action = 0  reward = 1  mean(recent_rewards) = 6.4
+n_try = 6   action = 0  reward = 1  mean(recent_rewards) = 5.5
+n_try = 7   action = 1  reward = 10 mean(recent_rewards) = 6.142857142857143
+n_try = 8   action = 1  reward = 10 mean(recent_rewards) = 6.625
+n_try = 9   action = 0  reward = 1  mean(recent_rewards) = 6.0
+n_try = 10  action = 0  reward = 1  mean(recent_rewards) = 5.5
+n_try = 11  action = 1  reward = 10 mean(recent_rewards) = 5.909090909090909
+n_try = 12  action = 0  reward = 1  mean(recent_rewards) = 5.5
+n_try = 13  action = 0  reward = 1  mean(recent_rewards) = 5.153846153846154
+n_try = 14  action = 0  reward = 1  mean(recent_rewards) = 4.857142857142857
+n_try = 15  action = 1  reward = 10 mean(recent_rewards) = 5.2
+n_try = 16  action = 0  reward = 1  mean(recent_rewards) = 4.9375
+n_try = 17  action = 1  reward = 10 mean(recent_rewards) = 5.235294117647059
+n_try = 18  action = 0  reward = 1  mean(recent_rewards) = 5.0
+n_try = 19  action = 1  reward = 10 mean(recent_rewards) = 5.2631578947368425
+n_try = 20  action = 1  reward = 10 mean(recent_rewards) = 5.5
+n_try = 21  action = 0  reward = 1  mean(recent_rewards) = 5.5
+n_try = 22  action = 1  reward = 10 mean(recent_rewards) = 5.5
+n_try = 23  action = 1  reward = 10 mean(recent_rewards) = 5.5
+n_try = 24  action = 1  reward = 10 mean(recent_rewards) = 5.5
+n_try = 25  action = 1  reward = 10 mean(recent_rewards) = 5.95
+n_try = 26  action = 1  reward = 10 mean(recent_rewards) = 6.4
+n_try = 27  action = 1  reward = 10 mean(recent_rewards) = 6.4
+n_try = 28  action = 0  reward = 1  mean(recent_rewards) = 5.95
+n_try = 29  action = 0  reward = 1  mean(recent_rewards) = 5.95
+n_try = 30  action = 1  reward = 10 mean(recent_rewards) = 6.4
+n_try = 31  action = 1  reward = 10 mean(recent_rewards) = 6.4
+n_try = 32  action = 1  reward = 10 mean(recent_rewards) = 6.85
+n_try = 33  action = 0  reward = 1  mean(recent_rewards) = 6.85
+n_try = 34  action = 0  reward = 1  mean(recent_rewards) = 6.85
+n_try = 35  action = 0  reward = 1  mean(recent_rewards) = 6.4
+n_try = 36  action = 0  reward = 1  mean(recent_rewards) = 6.4
+n_try = 37  action = 0  reward = 1  mean(recent_rewards) = 5.95
+n_try = 38  action = 0  reward = 1  mean(recent_rewards) = 5.95
+n_try = 39  action = 0  reward = 1  mean(recent_rewards) = 5.5
+n_try = 40  action = 0  reward = 1  mean(recent_rewards) = 5.05
+n_try = 41  action = 0  reward = 1  mean(recent_rewards) = 5.05
+n_try = 42  action = 1  reward = 10 mean(recent_rewards) = 5.05
+n_try = 43  action = 1  reward = 10 mean(recent_rewards) = 5.05
+n_try = 44  action = 1  reward = 10 mean(recent_rewards) = 5.05
+n_try = 45  action = 1  reward = 10 mean(recent_rewards) = 5.05
+n_try = 46  action = 1  reward = 10 mean(recent_rewards) = 5.05
+n_try = 47  action = 1  reward = 10 mean(recent_rewards) = 5.05
+n_try = 48  action = 1  reward = 10 mean(recent_rewards) = 5.5
+n_try = 49  action = 0  reward = 1  mean(recent_rewards) = 5.5
+n_try = 50  action = 1  reward = 10 mean(recent_rewards) = 5.5</code></pre>
 </div>
 </div>
 </section>
-<section id="e.-수정3-agent-구현-인공지능" class="level2 page-columns page-full">
-<h2 class="anchored" data-anchor-id="e.-수정3-agent-구현-인공지능">E. 수정3: <code>Agent</code> 구현 (인공지능)</h2>
+<section id="d.-수정3-agent-구현-인공지능" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="d.-수정3-agent-구현-인공지능">D. 수정3: <code>Agent</code> 구현 (인공지능)</h2>
 <p><code>-</code> 지금까지 풀이의 한계</p>
 <ul>
 <li>사실 강화학습은 “환경을 이해 <span class="math inline">\(\to\)</span> 행동을 결정” 의 과정에서 “<span class="math inline">\(\to\)</span>”의 과정을 수식화 한 것이다.</li>
@@ -751,7 +765,7 @@ n_try = 50  action = 1  reward = 100    mean(recent_rewards) = 45.55</code></pre
 <thead>
 <tr class="header">
 <th style="text-align: center;">행동</th>
-<th style="text-align: center;">보상평균</th>
+<th style="text-align: center;">보상(추정값)</th>
 </tr>
 </thead>
 <tbody>
@@ -775,45 +789,45 @@ n_try = 50  action = 1  reward = 100    mean(recent_rewards) = 45.55</code></pre
 <p>여기에서 <code>q_table</code>, <code>policy</code>라는 용어를 기억하세요.</p>
 </blockquote>
 <p><code>-</code> <code>q_table</code>을 계산하는 코드 예시</p>
-<div id="f725954b-d1fa-47e9-ab79-46ec3a53eef2" class="cell" data-tags="[]" data-execution_count="24">
-<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>agent.actions <span class="op">=</span> [<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">0</span>] </span>
-<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>agent.rewards <span class="op">=</span> [<span class="dv">1</span>,<span class="dv">101</span>,<span class="dv">102</span>,<span class="dv">1</span>,<span class="dv">99</span>,<span class="dv">1</span>,<span class="fl">1.2</span>] </span>
+<div id="f725954b-d1fa-47e9-ab79-46ec3a53eef2" class="cell" data-tags="[]" data-execution_count="96">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>agent.actions <span class="op">=</span> [<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>,  <span class="dv">0</span>, <span class="dv">1</span>,   <span class="dv">0</span>, <span class="dv">0</span>] </span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>agent.rewards <span class="op">=</span> [<span class="dv">1</span>, <span class="dv">9</span>, <span class="dv">10</span>, <span class="dv">1</span>, <span class="fl">9.5</span>, <span class="dv">1</span>, <span class="fl">1.2</span>] </span>
 <span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>actions <span class="op">=</span> np.array(agent.actions)</span>
 <span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>rewards <span class="op">=</span> np.array(agent.rewards)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="2ca4712f-f522-431c-b71d-816820b5f6b2" class="cell" data-tags="[]" data-execution_count="25">
+<div id="2ca4712f-f522-431c-b71d-816820b5f6b2" class="cell" data-tags="[]" data-execution_count="97">
 <div class="sourceCode cell-code" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>q0 <span class="op">=</span> rewards[actions <span class="op">==</span> <span class="dv">0</span>].mean()</span>
 <span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>q1 <span class="op">=</span> rewards[actions <span class="op">==</span> <span class="dv">1</span>].mean()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="0f400b80-ff55-4b0c-bb7c-6bf4eded24f6" class="cell" data-tags="[]" data-execution_count="26">
+<div id="0f400b80-ff55-4b0c-bb7c-6bf4eded24f6" class="cell" data-tags="[]" data-execution_count="98">
 <div class="sourceCode cell-code" id="cb40"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>agent.q <span class="op">=</span> np.array([q0,q1]) </span>
 <span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>agent.q</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="26">
-<pre><code>array([  1.05      , 100.66666667])</code></pre>
+<div class="cell-output cell-output-display" data-execution_count="98">
+<pre><code>array([1.05, 9.5 ])</code></pre>
 </div>
 </div>
-<div id="3d52e620-b8ed-42de-a1a1-7d5961ccbccb" class="cell" data-tags="[]" data-execution_count="27">
+<div id="3d52e620-b8ed-42de-a1a1-7d5961ccbccb" class="cell" data-tags="[]" data-execution_count="99">
 <div class="sourceCode cell-code" id="cb42"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>prob <span class="op">=</span> agent.q <span class="op">/</span> agent.q.<span class="bu">sum</span>()</span>
 <span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>prob </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="27">
-<pre><code>array([0.01032279, 0.98967721])</code></pre>
+<div class="cell-output cell-output-display" data-execution_count="99">
+<pre><code>array([0.09952607, 0.90047393])</code></pre>
 </div>
 </div>
-<div id="3ef3f7fe-29a4-473b-bfac-3bb00c45b045" class="cell" data-tags="[]" data-execution_count="28">
+<div id="3ef3f7fe-29a4-473b-bfac-3bb00c45b045" class="cell" data-tags="[]" data-execution_count="100">
 <div class="sourceCode cell-code" id="cb44"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>action <span class="op">=</span> np.random.choice([<span class="dv">0</span>,<span class="dv">1</span>], p<span class="op">=</span> prob)</span>
 <span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>action</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="28">
+<div class="cell-output cell-output-display" data-execution_count="100">
 <pre><code>1</code></pre>
 </div>
 </div>
 <p><code>-</code> 최종코드정리</p>
-<div id="a218caa5-b032-4e57-ab22-cca6b2c8ab02" class="cell" data-tags="[]" data-execution_count="29">
+<div id="a218caa5-b032-4e57-ab22-cca6b2c8ab02" class="cell" data-tags="[]" data-execution_count="101">
 <div class="sourceCode cell-code" id="cb46"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Bandit: </span>
 <span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> step(<span class="va">self</span>, action):</span>
 <span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> action <span class="op">==</span> <span class="dv">0</span>:</span>
 <span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> <span class="dv">1</span> </span>
 <span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>: </span>
-<span id="cb46-6"><a href="#cb46-6" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> <span class="dv">100</span> </span>
+<span id="cb46-6"><a href="#cb46-6" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> <span class="dv">10</span></span>
 <span id="cb46-7"><a href="#cb46-7" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Agent:</span>
 <span id="cb46-8"><a href="#cb46-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>):</span>
 <span id="cb46-9"><a href="#cb46-9" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.action_space <span class="op">=</span> [<span class="dv">0</span>,<span class="dv">1</span>]</span>
@@ -843,7 +857,7 @@ n_try = 50  action = 1  reward = 100    mean(recent_rewards) = 45.55</code></pre
 <span id="cb46-33"><a href="#cb46-33" aria-hidden="true" tabindex="-1"></a>            q1 <span class="op">=</span> rewards[actions <span class="op">==</span> <span class="dv">1</span>].mean()</span>
 <span id="cb46-34"><a href="#cb46-34" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.q_table <span class="op">=</span> np.array([q0,q1]) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="23269b00-b8b6-4e57-89b2-963594874899" class="cell" data-tags="[]" data-execution_count="30">
+<div id="23269b00-b8b6-4e57-89b2-963594874899" class="cell" data-tags="[]" data-execution_count="105">
 <div class="sourceCode cell-code" id="cb47"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>env <span class="op">=</span> Bandit() </span>
 <span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>agent <span class="op">=</span> Agent()</span>
 <span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> t <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">50</span>): </span>
@@ -867,59 +881,51 @@ n_try = 50  action = 1  reward = 100    mean(recent_rewards) = 45.55</code></pre
 <span id="cb47-21"><a href="#cb47-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> t <span class="op">&lt;</span> <span class="dv">20</span>:</span>
 <span id="cb47-22"><a href="#cb47-22" aria-hidden="true" tabindex="-1"></a>        <span class="cf">pass</span></span>
 <span id="cb47-23"><a href="#cb47-23" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
-<span id="cb47-24"><a href="#cb47-24" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> np.mean(rewards[<span class="op">-</span><span class="dv">20</span>:]) <span class="op">&gt;=</span> <span class="dv">95</span>:</span>
-<span id="cb47-25"><a href="#cb47-25" aria-hidden="true" tabindex="-1"></a>            <span class="cf">break</span>  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb47-24"><a href="#cb47-24" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> np.mean(agent.rewards[<span class="op">-</span><span class="dv">20</span>:]) <span class="op">&gt;=</span> <span class="fl">9.5</span>:</span>
+<span id="cb47-25"><a href="#cb47-25" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="st">"Game Clear"</span>)</span>
+<span id="cb47-26"><a href="#cb47-26" aria-hidden="true" tabindex="-1"></a>            <span class="cf">break</span>  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>n_try = 1   action = 0  reward = 1  mean(recent_rewards) = 1.0
 n_try = 2   action = 0  reward = 1  mean(recent_rewards) = 1.0
-n_try = 3   action = 1  reward = 100    mean(recent_rewards) = 34.0
-n_try = 4   action = 1  reward = 100    mean(recent_rewards) = 50.5
-n_try = 5   action = 1  reward = 100    mean(recent_rewards) = 60.4
-n_try = 6   action = 0  reward = 1  mean(recent_rewards) = 50.5
-n_try = 7   action = 1  reward = 100    mean(recent_rewards) = 57.57142857142857
-n_try = 8   action = 1  reward = 100    mean(recent_rewards) = 62.875
-n_try = 9   action = 0  reward = 1  mean(recent_rewards) = 56.0
-n_try = 10  action = 1  reward = 100    mean(recent_rewards) = 60.4
-n_try = 11  action = 1  reward = 100    mean(recent_rewards) = 64.0
-n_try = 12  action = 1  reward = 100    mean(recent_rewards) = 67.0
-n_try = 13  action = 0  reward = 1  mean(recent_rewards) = 61.92307692307692
-n_try = 14  action = 0  reward = 1  mean(recent_rewards) = 57.57142857142857
-n_try = 15  action = 1  reward = 100    mean(recent_rewards) = 60.4
-n_try = 16  action = 1  reward = 100    mean(recent_rewards) = 62.875
-n_try = 17  action = 1  reward = 100    mean(recent_rewards) = 65.05882352941177
-n_try = 18  action = 1  reward = 100    mean(recent_rewards) = 67.0
-n_try = 19  action = 0  reward = 1  mean(recent_rewards) = 63.526315789473685
-n_try = 20  action = 1  reward = 100    mean(recent_rewards) = 65.35
-n_try = 21  action = 1  reward = 100    mean(recent_rewards) = 70.3
-n_try = 22  action = 1  reward = 100    mean(recent_rewards) = 75.25
-n_try = 23  action = 1  reward = 100    mean(recent_rewards) = 75.25
-n_try = 24  action = 1  reward = 100    mean(recent_rewards) = 75.25
-n_try = 25  action = 1  reward = 100    mean(recent_rewards) = 75.25
-n_try = 26  action = 1  reward = 100    mean(recent_rewards) = 80.2
-n_try = 27  action = 1  reward = 100    mean(recent_rewards) = 80.2
-n_try = 28  action = 1  reward = 100    mean(recent_rewards) = 80.2
-n_try = 29  action = 1  reward = 100    mean(recent_rewards) = 85.15
-n_try = 30  action = 1  reward = 100    mean(recent_rewards) = 85.15
-n_try = 31  action = 1  reward = 100    mean(recent_rewards) = 85.15
-n_try = 32  action = 1  reward = 100    mean(recent_rewards) = 85.15
-n_try = 33  action = 1  reward = 100    mean(recent_rewards) = 90.1
-n_try = 34  action = 1  reward = 100    mean(recent_rewards) = 95.05
-n_try = 35  action = 1  reward = 100    mean(recent_rewards) = 95.05
-n_try = 36  action = 1  reward = 100    mean(recent_rewards) = 95.05
-n_try = 37  action = 1  reward = 100    mean(recent_rewards) = 95.05
-n_try = 38  action = 1  reward = 100    mean(recent_rewards) = 95.05
-n_try = 39  action = 1  reward = 100    mean(recent_rewards) = 100.0
-n_try = 40  action = 1  reward = 100    mean(recent_rewards) = 100.0
-n_try = 41  action = 1  reward = 100    mean(recent_rewards) = 100.0
-n_try = 42  action = 1  reward = 100    mean(recent_rewards) = 100.0
-n_try = 43  action = 1  reward = 100    mean(recent_rewards) = 100.0
-n_try = 44  action = 1  reward = 100    mean(recent_rewards) = 100.0
-n_try = 45  action = 1  reward = 100    mean(recent_rewards) = 100.0
-n_try = 46  action = 1  reward = 100    mean(recent_rewards) = 100.0
-n_try = 47  action = 1  reward = 100    mean(recent_rewards) = 100.0
-n_try = 48  action = 1  reward = 100    mean(recent_rewards) = 100.0
-n_try = 49  action = 1  reward = 100    mean(recent_rewards) = 100.0
-n_try = 50  action = 1  reward = 100    mean(recent_rewards) = 100.0</code></pre>
+n_try = 3   action = 1  reward = 10 mean(recent_rewards) = 4.0
+n_try = 4   action = 0  reward = 1  mean(recent_rewards) = 3.25
+n_try = 5   action = 1  reward = 10 mean(recent_rewards) = 4.6
+n_try = 6   action = 0  reward = 1  mean(recent_rewards) = 4.0
+n_try = 7   action = 0  reward = 1  mean(recent_rewards) = 3.5714285714285716
+n_try = 8   action = 0  reward = 1  mean(recent_rewards) = 3.25
+n_try = 9   action = 0  reward = 1  mean(recent_rewards) = 3.0
+n_try = 10  action = 0  reward = 1  mean(recent_rewards) = 2.8
+n_try = 11  action = 0  reward = 1  mean(recent_rewards) = 2.6363636363636362
+n_try = 12  action = 0  reward = 1  mean(recent_rewards) = 2.5
+n_try = 13  action = 0  reward = 1  mean(recent_rewards) = 2.3846153846153846
+n_try = 14  action = 0  reward = 1  mean(recent_rewards) = 2.2857142857142856
+n_try = 15  action = 1  reward = 10 mean(recent_rewards) = 2.8
+n_try = 16  action = 0  reward = 1  mean(recent_rewards) = 2.6875
+n_try = 17  action = 0  reward = 1  mean(recent_rewards) = 2.588235294117647
+n_try = 18  action = 1  reward = 10 mean(recent_rewards) = 3.0
+n_try = 19  action = 0  reward = 1  mean(recent_rewards) = 2.8947368421052633
+n_try = 20  action = 0  reward = 1  mean(recent_rewards) = 2.8
+n_try = 21  action = 1  reward = 10 mean(recent_rewards) = 3.25
+n_try = 22  action = 1  reward = 10 mean(recent_rewards) = 3.7
+n_try = 23  action = 1  reward = 10 mean(recent_rewards) = 3.7
+n_try = 24  action = 1  reward = 10 mean(recent_rewards) = 4.15
+n_try = 25  action = 1  reward = 10 mean(recent_rewards) = 4.15
+n_try = 26  action = 1  reward = 10 mean(recent_rewards) = 4.6
+n_try = 27  action = 1  reward = 10 mean(recent_rewards) = 5.05
+n_try = 28  action = 1  reward = 10 mean(recent_rewards) = 5.5
+n_try = 29  action = 1  reward = 10 mean(recent_rewards) = 5.95
+n_try = 30  action = 1  reward = 10 mean(recent_rewards) = 6.4
+n_try = 31  action = 1  reward = 10 mean(recent_rewards) = 6.85
+n_try = 32  action = 1  reward = 10 mean(recent_rewards) = 7.3
+n_try = 33  action = 1  reward = 10 mean(recent_rewards) = 7.75
+n_try = 34  action = 1  reward = 10 mean(recent_rewards) = 8.2
+n_try = 35  action = 1  reward = 10 mean(recent_rewards) = 8.2
+n_try = 36  action = 1  reward = 10 mean(recent_rewards) = 8.65
+n_try = 37  action = 0  reward = 1  mean(recent_rewards) = 8.65
+n_try = 38  action = 1  reward = 10 mean(recent_rewards) = 8.65
+n_try = 39  action = 1  reward = 10 mean(recent_rewards) = 9.1
+n_try = 40  action = 1  reward = 10 mean(recent_rewards) = 9.55
+Game Clear</code></pre>
 </div>
 </div>
 
