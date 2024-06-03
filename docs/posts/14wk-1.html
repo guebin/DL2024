@@ -2798,29 +2798,29 @@ ZAQgAEAyAhAAIBkBCACQjAAEAEjm/wEa4XppN4vzqQAAAABJRU5ErkJggg==\
 <li><code>.learn()</code>: 데이터로에서 학습 –&gt; 패스</li>
 </ul>
 <p><code>-</code> 첫번째 시도</p>
-<div id="e146d5e8-4c91-45ce-990f-f501db858092" class="cell" data-tags="[]" data-execution_count="26">
+<div id="e146d5e8-4c91-45ce-990f-f501db858092" class="cell" data-tags="[]" data-execution_count="189">
 <div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> AgentRandom:</span>
 <span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>,env):</span>
 <span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.action_space <span class="op">=</span> env.action_space</span>
 <span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.state_spcae <span class="op">=</span> env.state_space </span>
-<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.n_experiences <span class="op">=</span> <span class="dv">0</span> </span>
-<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.n_episodes <span class="op">=</span> <span class="dv">0</span> </span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>        <span class="co"># episode-wise info </span></span>
 <span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.score <span class="op">=</span> <span class="dv">0</span> </span>
-<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a>        <span class="co"># episode-wise info </span></span>
-<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.scores <span class="op">=</span> [] </span>
-<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.playtimes <span class="op">=</span> []</span>
-<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.scores <span class="op">=</span> [] </span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.playtimes <span class="op">=</span> []</span>
+<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.n_episodes <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.n_experiences <span class="op">=</span> <span class="dv">0</span> </span>
+<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a>        </span>
 <span id="cb29-13"><a href="#cb29-13" aria-hidden="true" tabindex="-1"></a>        <span class="co"># time-wise info</span></span>
 <span id="cb29-14"><a href="#cb29-14" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.current_state <span class="op">=</span> <span class="va">None</span> </span>
-<span id="cb29-15"><a href="#cb29-15" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.action <span class="op">=</span> <span class="va">None</span> </span>
+<span id="cb29-15"><a href="#cb29-15" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.action <span class="op">=</span> <span class="va">None</span>         </span>
 <span id="cb29-16"><a href="#cb29-16" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.reward <span class="op">=</span> <span class="va">None</span> </span>
 <span id="cb29-17"><a href="#cb29-17" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.next_state <span class="op">=</span> <span class="va">None</span>         </span>
 <span id="cb29-18"><a href="#cb29-18" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.terminated <span class="op">=</span> <span class="va">None</span> </span>
 <span id="cb29-19"><a href="#cb29-19" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb29-20"><a href="#cb29-20" aria-hidden="true" tabindex="-1"></a>        <span class="co"># replay_buffer </span></span>
-<span id="cb29-21"><a href="#cb29-21" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.actions <span class="op">=</span> []</span>
-<span id="cb29-22"><a href="#cb29-22" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.current_states <span class="op">=</span> [] </span>
+<span id="cb29-21"><a href="#cb29-21" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.current_states <span class="op">=</span> [] </span>
+<span id="cb29-22"><a href="#cb29-22" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.actions <span class="op">=</span> []</span>
 <span id="cb29-23"><a href="#cb29-23" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.rewards <span class="op">=</span> []</span>
 <span id="cb29-24"><a href="#cb29-24" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.next_states <span class="op">=</span> [] </span>
 <span id="cb29-25"><a href="#cb29-25" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.terminations <span class="op">=</span> [] </span>
@@ -2834,16 +2834,17 @@ ZAQgAEAyAhAAIBkBCACQjAAEAEjm/wEa4XppN4vzqQAAAABJRU5ErkJggg==\
 <span id="cb29-33"><a href="#cb29-33" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.rewards.append(<span class="va">self</span>.reward)</span>
 <span id="cb29-34"><a href="#cb29-34" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.next_states.append(<span class="va">self</span>.next_state)</span>
 <span id="cb29-35"><a href="#cb29-35" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.terminations.append(<span class="va">self</span>.terminated) </span>
-<span id="cb29-36"><a href="#cb29-36" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.n_experiences <span class="op">+=</span> <span class="dv">1</span> </span>
-<span id="cb29-37"><a href="#cb29-37" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.score <span class="op">=</span> <span class="va">self</span>.score <span class="op">+</span> <span class="va">self</span>.reward </span>
-<span id="cb29-38"><a href="#cb29-38" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb29-39"><a href="#cb29-39" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> learn(<span class="va">self</span>):</span>
-<span id="cb29-40"><a href="#cb29-40" aria-hidden="true" tabindex="-1"></a>        <span class="cf">pass</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb29-36"><a href="#cb29-36" aria-hidden="true" tabindex="-1"></a>        <span class="co">#--#</span></span>
+<span id="cb29-37"><a href="#cb29-37" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.n_experiences <span class="op">+=</span> <span class="dv">1</span> </span>
+<span id="cb29-38"><a href="#cb29-38" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.score <span class="op">=</span> <span class="va">self</span>.score <span class="op">+</span> <span class="va">self</span>.reward </span>
+<span id="cb29-39"><a href="#cb29-39" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb29-40"><a href="#cb29-40" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> learn(<span class="va">self</span>):</span>
+<span id="cb29-41"><a href="#cb29-41" aria-hidden="true" tabindex="-1"></a>        <span class="cf">pass</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="b.-환경과-상호작용" class="level2">
 <h2 class="anchored" data-anchor-id="b.-환경과-상호작용">B. 환경과 상호작용</h2>
-<div id="1d53c7dc-4e20-4e65-9d10-56b071baef9a" class="cell" data-tags="[]" data-execution_count="27">
+<div id="1d53c7dc-4e20-4e65-9d10-56b071baef9a" class="cell" data-tags="[]" data-execution_count="190">
 <div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>env <span class="op">=</span> GridWorld() </span>
 <span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>agent <span class="op">=</span> AgentRandom(env) </span>
 <span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">20</span>):</span>
@@ -2874,44 +2875,44 @@ ZAQgAEAyAhAAIBkBCACQjAAEAEjm/wEa4XppN4vzqQAAAABJRU5ErkJggg==\
 <span id="cb30-28"><a href="#cb30-28" aria-hidden="true" tabindex="-1"></a>        <span class="ss">f"Playtime: </span><span class="sc">{</span>agent<span class="sc">.</span>playtimes[<span class="op">-</span><span class="dv">1</span>]<span class="sc">}</span><span class="ss">"</span></span>
 <span id="cb30-29"><a href="#cb30-29" aria-hidden="true" tabindex="-1"></a>    )   </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Epsiode: 1  Score: -11  Playtime: 2
+<pre><code>Epsiode: 1  Score: -10  Playtime: 1
 Epsiode: 2  Score: -10  Playtime: 1
-Epsiode: 3  Score: -11  Playtime: 2
-Epsiode: 4  Score: -10  Playtime: 1
-Epsiode: 5  Score: 87   Playtime: 14
-Epsiode: 6  Score: -22  Playtime: 13
-Epsiode: 7  Score: -10  Playtime: 1
-Epsiode: 8  Score: -10  Playtime: 1
-Epsiode: 9  Score: -11  Playtime: 2
+Epsiode: 3  Score: -10  Playtime: 1
+Epsiode: 4  Score: -12  Playtime: 3
+Epsiode: 5  Score: -11  Playtime: 2
+Epsiode: 6  Score: -14  Playtime: 5
+Epsiode: 7  Score: -11  Playtime: 2
+Epsiode: 8  Score: -20  Playtime: 11
+Epsiode: 9  Score: -10  Playtime: 1
 Epsiode: 10     Score: -10  Playtime: 1
-Epsiode: 11     Score: -10  Playtime: 1
-Epsiode: 12     Score: -10  Playtime: 1
-Epsiode: 13     Score: -13  Playtime: 4
+Epsiode: 11     Score: -14  Playtime: 5
+Epsiode: 12     Score: -16  Playtime: 7
+Epsiode: 13     Score: -10  Playtime: 1
 Epsiode: 14     Score: -10  Playtime: 1
-Epsiode: 15     Score: -17  Playtime: 8
-Epsiode: 16     Score: -10  Playtime: 1
-Epsiode: 17     Score: -19  Playtime: 10
+Epsiode: 15     Score: -11  Playtime: 2
+Epsiode: 16     Score: -17  Playtime: 8
+Epsiode: 17     Score: -10  Playtime: 1
 Epsiode: 18     Score: -10  Playtime: 1
-Epsiode: 19     Score: -13  Playtime: 4
-Epsiode: 20     Score: -12  Playtime: 3</code></pre>
+Epsiode: 19     Score: -10  Playtime: 1
+Epsiode: 20     Score: -10  Playtime: 1</code></pre>
 </div>
 </div>
 </section>
 <section id="c.-상호작용결과-시각화" class="level2">
 <h2 class="anchored" data-anchor-id="c.-상호작용결과-시각화">C. 상호작용결과 시각화</h2>
-<div id="39b306fe-1afb-4a96-9908-f931d1e96e8c" class="cell" data-execution_count="28">
+<div id="39b306fe-1afb-4a96-9908-f931d1e96e8c" class="cell" data-execution_count="191">
 <div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="bu">sum</span>(agent.playtimes[:<span class="dv">18</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="28">
-<pre><code>65</code></pre>
+<div class="cell-output cell-output-display" data-execution_count="191">
+<pre><code>54</code></pre>
 </div>
 </div>
-<div id="c93e1dd8-ceff-4789-8809-244f639a2d09" class="cell" data-execution_count="29">
+<div id="c93e1dd8-ceff-4789-8809-244f639a2d09" class="cell" data-execution_count="192">
 <div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="bu">sum</span>(agent.playtimes[:<span class="dv">19</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="29">
-<pre><code>69</code></pre>
+<div class="cell-output cell-output-display" data-execution_count="192">
+<pre><code>55</code></pre>
 </div>
 </div>
-<div id="e251a785-472d-45ce-9aa8-9e5086fdd5d4" class="cell" data-tags="[]" data-execution_count="30">
+<div id="e251a785-472d-45ce-9aa8-9e5086fdd5d4" class="cell" data-tags="[]" data-execution_count="193">
 <div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>states <span class="op">=</span> [np.array([<span class="dv">0</span>,<span class="dv">0</span>])] <span class="op">+</span> agent.next_states[<span class="dv">76</span>:<span class="dv">84</span>]</span>
 <span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>show(states)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
@@ -3099,36 +3100,36 @@ input[type=range].anim-slider {
 </style>
 
 <div class="animation">
-  <img id="_anim_imgb02f13b77e1843208496b8eed86750e3">
+  <img id="_anim_imga87b89d810184098b6ce54989ebb4aa3">
   <div class="anim-controls">
-    <input id="_anim_sliderb02f13b77e1843208496b8eed86750e3" type="range" class="anim-slider" name="points" min="0" max="1" step="1" value="0" oninput="animb02f13b77e1843208496b8eed86750e3.set_frame(parseInt(this.value));">
+    <input id="_anim_slidera87b89d810184098b6ce54989ebb4aa3" type="range" class="anim-slider" name="points" min="0" max="1" step="1" value="0" oninput="anima87b89d810184098b6ce54989ebb4aa3.set_frame(parseInt(this.value));">
     <div class="anim-buttons">
-      <button title="Decrease speed" aria-label="Decrease speed" onclick="animb02f13b77e1843208496b8eed86750e3.slower()">
+      <button title="Decrease speed" aria-label="Decrease speed" onclick="anima87b89d810184098b6ce54989ebb4aa3.slower()">
           <i class="fa fa-minus"></i></button>
-      <button title="First frame" aria-label="First frame" onclick="animb02f13b77e1843208496b8eed86750e3.first_frame()">
+      <button title="First frame" aria-label="First frame" onclick="anima87b89d810184098b6ce54989ebb4aa3.first_frame()">
         <i class="fa fa-fast-backward"></i></button>
-      <button title="Previous frame" aria-label="Previous frame" onclick="animb02f13b77e1843208496b8eed86750e3.previous_frame()">
+      <button title="Previous frame" aria-label="Previous frame" onclick="anima87b89d810184098b6ce54989ebb4aa3.previous_frame()">
           <i class="fa fa-step-backward"></i></button>
-      <button title="Play backwards" aria-label="Play backwards" onclick="animb02f13b77e1843208496b8eed86750e3.reverse_animation()">
+      <button title="Play backwards" aria-label="Play backwards" onclick="anima87b89d810184098b6ce54989ebb4aa3.reverse_animation()">
           <i class="fa fa-play fa-flip-horizontal"></i></button>
-      <button title="Pause" aria-label="Pause" onclick="animb02f13b77e1843208496b8eed86750e3.pause_animation()">
+      <button title="Pause" aria-label="Pause" onclick="anima87b89d810184098b6ce54989ebb4aa3.pause_animation()">
           <i class="fa fa-pause"></i></button>
-      <button title="Play" aria-label="Play" onclick="animb02f13b77e1843208496b8eed86750e3.play_animation()">
+      <button title="Play" aria-label="Play" onclick="anima87b89d810184098b6ce54989ebb4aa3.play_animation()">
           <i class="fa fa-play"></i></button>
-      <button title="Next frame" aria-label="Next frame" onclick="animb02f13b77e1843208496b8eed86750e3.next_frame()">
+      <button title="Next frame" aria-label="Next frame" onclick="anima87b89d810184098b6ce54989ebb4aa3.next_frame()">
           <i class="fa fa-step-forward"></i></button>
-      <button title="Last frame" aria-label="Last frame" onclick="animb02f13b77e1843208496b8eed86750e3.last_frame()">
+      <button title="Last frame" aria-label="Last frame" onclick="anima87b89d810184098b6ce54989ebb4aa3.last_frame()">
           <i class="fa fa-fast-forward"></i></button>
-      <button title="Increase speed" aria-label="Increase speed" onclick="animb02f13b77e1843208496b8eed86750e3.faster()">
+      <button title="Increase speed" aria-label="Increase speed" onclick="anima87b89d810184098b6ce54989ebb4aa3.faster()">
           <i class="fa fa-plus"></i></button>
     </div>
-    <form title="Repetition mode" aria-label="Repetition mode" action="#n" name="_anim_loop_selectb02f13b77e1843208496b8eed86750e3" class="anim-state">
-      <input type="radio" name="state" value="once" id="_anim_radio1_b02f13b77e1843208496b8eed86750e3">
-      <label for="_anim_radio1_b02f13b77e1843208496b8eed86750e3">Once</label>
-      <input type="radio" name="state" value="loop" id="_anim_radio2_b02f13b77e1843208496b8eed86750e3" checked="">
-      <label for="_anim_radio2_b02f13b77e1843208496b8eed86750e3">Loop</label>
-      <input type="radio" name="state" value="reflect" id="_anim_radio3_b02f13b77e1843208496b8eed86750e3">
-      <label for="_anim_radio3_b02f13b77e1843208496b8eed86750e3">Reflect</label>
+    <form title="Repetition mode" aria-label="Repetition mode" action="#n" name="_anim_loop_selecta87b89d810184098b6ce54989ebb4aa3" class="anim-state">
+      <input type="radio" name="state" value="once" id="_anim_radio1_a87b89d810184098b6ce54989ebb4aa3">
+      <label for="_anim_radio1_a87b89d810184098b6ce54989ebb4aa3">Once</label>
+      <input type="radio" name="state" value="loop" id="_anim_radio2_a87b89d810184098b6ce54989ebb4aa3" checked="">
+      <label for="_anim_radio2_a87b89d810184098b6ce54989ebb4aa3">Loop</label>
+      <input type="radio" name="state" value="reflect" id="_anim_radio3_a87b89d810184098b6ce54989ebb4aa3">
+      <label for="_anim_radio3_a87b89d810184098b6ce54989ebb4aa3">Reflect</label>
     </form>
   </div>
 </div>
@@ -3138,9 +3139,9 @@ input[type=range].anim-slider {
   /* Instantiate the Animation class. */
   /* The IDs given should match those used in the template above. */
   (function() {
-    var img_id = "_anim_imgb02f13b77e1843208496b8eed86750e3";
-    var slider_id = "_anim_sliderb02f13b77e1843208496b8eed86750e3";
-    var loop_select_id = "_anim_loop_selectb02f13b77e1843208496b8eed86750e3";
+    var img_id = "_anim_imga87b89d810184098b6ce54989ebb4aa3";
+    var slider_id = "_anim_slidera87b89d810184098b6ce54989ebb4aa3";
+    var loop_select_id = "_anim_loop_selecta87b89d810184098b6ce54989ebb4aa3";
     var frames = new Array(1);
     
   frames[0] = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAoAAAAHgCAYAAAA10dzkAAAAOXRFWHRTb2Z0d2FyZQBNYXRwbG90\
@@ -3279,7 +3280,7 @@ YII=\
     /* set a timeout to make sure all the above elements are created before
        the object is initialized. */
     setTimeout(function() {
-        animb02f13b77e1843208496b8eed86750e3 = new Animation(frames, img_id, slider_id, 200.0,
+        anima87b89d810184098b6ce54989ebb4aa3 = new Animation(frames, img_id, slider_id, 200.0,
                                  loop_select_id);
     }, 0);
   })()
@@ -3296,7 +3297,7 @@ YII=\
 <section id="a.-환경의-이해" class="level2">
 <h2 class="anchored" data-anchor-id="a.-환경의-이해">A. 환경의 이해</h2>
 <p><code>-</code> 무작위로 10000판을 진행해보자.</p>
-<div id="40b12099-567e-419d-b629-d34f01810511" class="cell" data-tags="[]" data-execution_count="31">
+<div id="40b12099-567e-419d-b629-d34f01810511" class="cell" data-tags="[]" data-execution_count="194">
 <div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10000</span>):</span>
 <span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Step1: 에피소드 준비 </span></span>
 <span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>    agent.current_state <span class="op">=</span> env.reset()</span>
@@ -3319,30 +3320,30 @@ YII=\
 <span id="cb37-20"><a href="#cb37-20" aria-hidden="true" tabindex="-1"></a>    agent.playtimes.append(t<span class="op">+</span><span class="dv">1</span>)</span>
 <span id="cb37-21"><a href="#cb37-21" aria-hidden="true" tabindex="-1"></a>    agent.n_episodes <span class="op">=</span> agent.n_episodes <span class="op">+</span> <span class="dv">1</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="ceba972e-030e-4bd1-ae1d-5367cea52107" class="cell" data-tags="[]" data-execution_count="32">
+<div id="ceba972e-030e-4bd1-ae1d-5367cea52107" class="cell" data-tags="[]" data-execution_count="195">
 <div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>agent.n_experiences</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="32">
-<pre><code>32230</code></pre>
+<div class="cell-output cell-output-display" data-execution_count="195">
+<pre><code>32759</code></pre>
 </div>
 </div>
 <p><code>-</code> 데이터관찰</p>
-<div id="907a43bc-1644-4ad2-ba8f-f9296035721a" class="cell" data-tags="[]" data-execution_count="33">
+<div id="907a43bc-1644-4ad2-ba8f-f9296035721a" class="cell" data-tags="[]" data-execution_count="196">
 <div class="sourceCode cell-code" id="cb40"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"에이전트: 현재상태/행동 = </span><span class="sc">{</span>agent<span class="sc">.</span>current_states[<span class="dv">0</span>]<span class="sc">}</span><span class="ss"> / </span><span class="sc">{</span>agent<span class="sc">.</span>actions[<span class="dv">0</span>]<span class="sc">}</span><span class="ss">"</span>)</span>
 <span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"환경: 보상/다음상태 = </span><span class="sc">{</span>agent<span class="sc">.</span>rewards[<span class="dv">0</span>]<span class="sc">}</span><span class="ss"> / </span><span class="sc">{</span>agent<span class="sc">.</span>next_states[<span class="dv">0</span>]<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>에이전트: 현재상태/행동 = [0 0] / 1
-환경: 보상/다음상태 = -1 / [0 1]</code></pre>
+<pre><code>에이전트: 현재상태/행동 = [0 0] / 3
+환경: 보상/다음상태 = -10 / [ 0 -1]</code></pre>
 </div>
 </div>
-<div id="57ae01f6-3178-477f-ba2b-b708a91338c4" class="cell" data-tags="[]" data-execution_count="34">
+<div id="57ae01f6-3178-477f-ba2b-b708a91338c4" class="cell" data-tags="[]" data-execution_count="197">
 <div class="sourceCode cell-code" id="cb42"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"에이전트: 현재상태/행동 = </span><span class="sc">{</span>agent<span class="sc">.</span>current_states[<span class="dv">1</span>]<span class="sc">}</span><span class="ss"> / </span><span class="sc">{</span>agent<span class="sc">.</span>actions[<span class="dv">1</span>]<span class="sc">}</span><span class="ss">"</span>)</span>
 <span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"환경: 보상/다음상태 = </span><span class="sc">{</span>agent<span class="sc">.</span>rewards[<span class="dv">1</span>]<span class="sc">}</span><span class="ss"> / </span><span class="sc">{</span>agent<span class="sc">.</span>next_states[<span class="dv">1</span>]<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>에이전트: 현재상태/행동 = [0 1] / 2
-환경: 보상/다음상태 = -10 / [-1  1]</code></pre>
+<pre><code>에이전트: 현재상태/행동 = [0 0] / 2
+환경: 보상/다음상태 = -10 / [-1  0]</code></pre>
 </div>
 </div>
-<div id="9fdc44e3-02df-4b0b-a4e4-39765d50e7c2" class="cell" data-tags="[]" data-execution_count="35">
+<div id="9fdc44e3-02df-4b0b-a4e4-39765d50e7c2" class="cell" data-tags="[]" data-execution_count="198">
 <div class="sourceCode cell-code" id="cb44"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"에이전트: 현재상태/행동 = </span><span class="sc">{</span>agent<span class="sc">.</span>current_states[<span class="dv">2</span>]<span class="sc">}</span><span class="ss"> / </span><span class="sc">{</span>agent<span class="sc">.</span>actions[<span class="dv">2</span>]<span class="sc">}</span><span class="ss">"</span>)</span>
 <span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"환경: 보상/다음상태 = </span><span class="sc">{</span>agent<span class="sc">.</span>rewards[<span class="dv">2</span>]<span class="sc">}</span><span class="ss"> / </span><span class="sc">{</span>agent<span class="sc">.</span>next_states[<span class="dv">2</span>]<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -3350,24 +3351,24 @@ YII=\
 환경: 보상/다음상태 = -10 / [ 0 -1]</code></pre>
 </div>
 </div>
-<div id="69c21c21-3995-4167-8741-becd4ac9a2a1" class="cell" data-tags="[]" data-execution_count="36">
+<div id="69c21c21-3995-4167-8741-becd4ac9a2a1" class="cell" data-tags="[]" data-execution_count="199">
 <div class="sourceCode cell-code" id="cb46"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"에이전트: 현재상태/행동 = </span><span class="sc">{</span>agent<span class="sc">.</span>current_states[<span class="dv">3</span>]<span class="sc">}</span><span class="ss"> / </span><span class="sc">{</span>agent<span class="sc">.</span>actions[<span class="dv">3</span>]<span class="sc">}</span><span class="ss">"</span>)</span>
 <span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"환경: 보상/다음상태 = </span><span class="sc">{</span>agent<span class="sc">.</span>rewards[<span class="dv">3</span>]<span class="sc">}</span><span class="ss"> / </span><span class="sc">{</span>agent<span class="sc">.</span>next_states[<span class="dv">3</span>]<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>에이전트: 현재상태/행동 = [0 0] / 1
-환경: 보상/다음상태 = -1 / [0 1]</code></pre>
+<pre><code>에이전트: 현재상태/행동 = [0 0] / 0
+환경: 보상/다음상태 = -1 / [1 0]</code></pre>
 </div>
 </div>
-<div id="4288e684-decd-4056-83bd-9f2a0b79ec35" class="cell" data-tags="[]" data-execution_count="37">
+<div id="4288e684-decd-4056-83bd-9f2a0b79ec35" class="cell" data-tags="[]" data-execution_count="200">
 <div class="sourceCode cell-code" id="cb48"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"에이전트: 현재상태/행동 = </span><span class="sc">{</span>agent<span class="sc">.</span>current_states[<span class="dv">4</span>]<span class="sc">}</span><span class="ss"> / </span><span class="sc">{</span>agent<span class="sc">.</span>actions[<span class="dv">4</span>]<span class="sc">}</span><span class="ss">"</span>)</span>
 <span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"환경: 보상/다음상태 = </span><span class="sc">{</span>agent<span class="sc">.</span>rewards[<span class="dv">4</span>]<span class="sc">}</span><span class="ss"> / </span><span class="sc">{</span>agent<span class="sc">.</span>next_states[<span class="dv">4</span>]<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>에이전트: 현재상태/행동 = [0 1] / 2
-환경: 보상/다음상태 = -10 / [-1  1]</code></pre>
+<pre><code>에이전트: 현재상태/행동 = [1 0] / 2
+환경: 보상/다음상태 = -1 / [0 0]</code></pre>
 </div>
 </div>
 <p><code>-</code> 환경을 이해하기 위한 기록 (1)</p>
-<div id="dc434942-f67f-4c5f-8315-6a6f2da7a175" class="cell" data-tags="[]" data-execution_count="38">
+<div id="dc434942-f67f-4c5f-8315-6a6f2da7a175" class="cell" data-tags="[]" data-execution_count="201">
 <div class="sourceCode cell-code" id="cb50"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>q_table <span class="op">=</span> np.zeros([<span class="dv">4</span>,<span class="dv">4</span>,<span class="dv">4</span>])</span>
 <span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>count <span class="op">=</span> np.zeros([<span class="dv">4</span>,<span class="dv">4</span>,<span class="dv">4</span>])</span>
 <span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(agent.n_experiences):</span>
@@ -3376,20 +3377,20 @@ YII=\
 <span id="cb50-6"><a href="#cb50-6" aria-hidden="true" tabindex="-1"></a>    q_table[s1,s2,a] <span class="op">=</span> q_table[s1,s2,a] <span class="op">+</span> agent.rewards[i] </span>
 <span id="cb50-7"><a href="#cb50-7" aria-hidden="true" tabindex="-1"></a>    count[s1,s2,a] <span class="op">=</span> count[s1,s2,a] <span class="op">+</span> <span class="dv">1</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="6a2698f4-75cd-463b-9256-c84a23793b1a" class="cell" data-tags="[]" data-execution_count="39">
+<div id="6a2698f4-75cd-463b-9256-c84a23793b1a" class="cell" data-tags="[]" data-execution_count="202">
 <div class="sourceCode cell-code" id="cb51"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>count[count <span class="op">==</span> <span class="dv">0</span>] <span class="op">=</span> <span class="fl">0.01</span> </span>
 <span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>q_table <span class="op">=</span> q_table<span class="op">/</span>count</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="b0da7c22-98c3-421f-888c-a441da28700d" class="cell" data-tags="[]" data-execution_count="40">
+<div id="b0da7c22-98c3-421f-888c-a441da28700d" class="cell" data-tags="[]" data-execution_count="203">
 <div class="sourceCode cell-code" id="cb52"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>q_table[:,:,<span class="dv">3</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="40">
+<div class="cell-output cell-output-display" data-execution_count="203">
 <pre><code>array([[-10.,  -1.,  -1.,  -1.],
        [-10.,  -1.,  -1.,  -1.],
        [-10.,  -1.,  -1.,  -1.],
        [-10.,  -1.,  -1.,   0.]])</code></pre>
 </div>
 </div>
-<div id="c7575209-a13d-4851-a793-dc61bd46f5da" class="cell" data-tags="[]" data-execution_count="41">
+<div id="c7575209-a13d-4851-a793-dc61bd46f5da" class="cell" data-tags="[]" data-execution_count="204">
 <div class="sourceCode cell-code" id="cb54"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> a <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">4</span>):</span>
 <span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(</span>
 <span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a>        <span class="ss">f"action = </span><span class="sc">{</span>a<span class="sc">}</span><span class="ss">/</span><span class="sc">{</span>action_to_direction2[a]<span class="sc">}</span><span class="ch">\n</span><span class="ss">"</span> </span>
@@ -3427,7 +3428,7 @@ action-value function =
 </div>
 </div>
 <p><code>-</code> 환경을 이해하기 위한 기록 (2)</p>
-<div id="914e7423-5d32-4b5a-9a2c-3cf0324e721a" class="cell" data-tags="[]" data-execution_count="42">
+<div id="914e7423-5d32-4b5a-9a2c-3cf0324e721a" class="cell" data-tags="[]" data-execution_count="205">
 <div class="sourceCode cell-code" id="cb56"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>q_table <span class="op">=</span> np.zeros([<span class="dv">4</span>,<span class="dv">4</span>,<span class="dv">4</span>])</span>
 <span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(agent.n_experiences):</span>
 <span id="cb56-3"><a href="#cb56-3" aria-hidden="true" tabindex="-1"></a>    s1,s2 <span class="op">=</span> agent.current_states[i]</span>
@@ -3437,16 +3438,16 @@ action-value function =
 <span id="cb56-7"><a href="#cb56-7" aria-hidden="true" tabindex="-1"></a>    diff <span class="op">=</span> q <span class="op">-</span> q_hat <span class="co"># 실제답과 풀이한값의 차이 = 오차피드백값 </span></span>
 <span id="cb56-8"><a href="#cb56-8" aria-hidden="true" tabindex="-1"></a>    q_table[s1,s2,a] <span class="op">=</span> q_hat <span class="op">+</span> <span class="fl">0.05</span> <span class="op">*</span> diff <span class="co">## 새로운답 = 원래답 + 오차피드백값 </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="ee91f34f-f6d3-4a49-9d99-9a087d2275a5" class="cell" data-tags="[]" data-execution_count="43">
+<div id="ee91f34f-f6d3-4a49-9d99-9a087d2275a5" class="cell" data-tags="[]" data-execution_count="206">
 <div class="sourceCode cell-code" id="cb57"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a>q_table[:,:,<span class="dv">0</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="43">
-<pre><code>array([[-1.        , -1.        , -0.99999998, -0.99787757],
-       [-1.        , -1.        , -0.99999998, -0.99872922],
-       [-0.99999999, -0.99999999, -0.99998743, 99.15219633],
-       [-9.97524506, -9.99712887, -9.79723453,  0.        ]])</code></pre>
+<div class="cell-output cell-output-display" data-execution_count="206">
+<pre><code>array([[-1.        , -1.        , -1.        , -0.99911257],
+       [-1.        , -1.        , -0.99999998, -0.99972724],
+       [-1.        , -0.99999999, -0.99999418, 99.40794708],
+       [-9.99156942, -9.99520468, -9.91945865,  0.        ]])</code></pre>
 </div>
 </div>
-<div id="0d2778f3-b24b-4a2b-9abd-78f1a687e9ca" class="cell" data-tags="[]" data-execution_count="44">
+<div id="0d2778f3-b24b-4a2b-9abd-78f1a687e9ca" class="cell" data-tags="[]" data-execution_count="207">
 <div class="sourceCode cell-code" id="cb59"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> a <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">4</span>):</span>
 <span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(</span>
 <span id="cb59-3"><a href="#cb59-3" aria-hidden="true" tabindex="-1"></a>        <span class="ss">f"action = </span><span class="sc">{</span>a<span class="sc">}</span><span class="ss">/</span><span class="sc">{</span>action_to_direction2[a]<span class="sc">}</span><span class="ch">\n</span><span class="ss">"</span> </span>
@@ -3457,21 +3458,21 @@ action-value function =
 action-value function = 
  [[ -1.    -1.    -1.    -1.  ]
  [ -1.    -1.    -1.    -1.  ]
- [ -1.    -1.    -1.    99.15]
- [ -9.98 -10.    -9.8    0.  ]]
+ [ -1.    -1.    -1.    99.41]
+ [ -9.99 -10.    -9.92   0.  ]]
 
 action = 1/right
 action-value function = 
- [[-1.   -1.   -1.   -9.96]
- [-1.   -1.   -1.   -9.98]
- [-1.   -1.   -1.   -9.91]
- [-1.   -1.   99.38  0.  ]]
+ [[-1.   -1.   -1.   -9.98]
+ [-1.   -1.   -1.   -9.99]
+ [-1.   -1.   -1.   -9.94]
+ [-1.   -1.   99.8   0.  ]]
 
 action = 2/up
 action-value function = 
- [[-10.   -10.   -10.    -9.98]
+ [[-10.   -10.   -10.    -9.99]
  [ -1.    -1.    -1.    -1.  ]
- [ -1.    -1.    -1.    -0.98]
+ [ -1.    -1.    -1.    -0.99]
  [ -1.    -1.    -0.99   0.  ]]
 
 action = 3/left
@@ -3479,7 +3480,7 @@ action-value function =
  [[-10.    -1.    -1.    -1.  ]
  [-10.    -1.    -1.    -1.  ]
  [-10.    -1.    -1.    -0.99]
- [ -9.99  -1.    -0.99   0.  ]]
+ [ -9.97  -1.    -0.99   0.  ]]
 </code></pre>
 </div>
 </div>
@@ -3487,30 +3488,30 @@ action-value function =
 <section id="b.-환경의-깊은-이해" class="level2 page-columns page-full">
 <h2 class="anchored" data-anchor-id="b.-환경의-깊은-이해">B. 환경의 깊은 이해</h2>
 <p><code>-</code> action=1 일때 각 state의 가치 (=기대보상)</p>
-<div id="a1214644-c901-4eb9-8d32-563df474baf2" class="cell" data-tags="[]" data-execution_count="45">
+<div id="a1214644-c901-4eb9-8d32-563df474baf2" class="cell" data-tags="[]" data-execution_count="208">
 <div class="sourceCode cell-code" id="cb61"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a>q_table[:,:,<span class="dv">1</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="45">
-<pre><code>array([[-1.        , -1.        , -0.99999998, -9.9645516 ],
-       [-1.        , -1.        , -0.99999997, -9.98357707],
-       [-0.99999998, -0.99999999, -0.99998201, -9.90606054],
-       [-0.99866234, -0.99915694, 99.3767864 ,  0.        ]])</code></pre>
+<div class="cell-output cell-output-display" data-execution_count="208">
+<pre><code>array([[-1.        , -1.        , -1.        , -9.97983695],
+       [-1.        , -1.        , -1.        , -9.9949523 ],
+       [-0.99999997, -0.99999998, -0.99999122, -9.94375497],
+       [-0.99866234, -0.99968187, 99.79836949,  0.        ]])</code></pre>
 </div>
 </div>
 <p><code>-</code> 분석1</p>
-<div id="08ca1c41-211a-4c55-85e9-bce10f20b3d5" class="cell" data-tags="[]" data-execution_count="46">
+<div id="08ca1c41-211a-4c55-85e9-bce10f20b3d5" class="cell" data-tags="[]" data-execution_count="209">
 <div class="sourceCode cell-code" id="cb63"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a>q_table[<span class="dv">3</span>,<span class="dv">2</span>,<span class="dv">1</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="46">
-<pre><code>99.37678639785956</code></pre>
+<div class="cell-output cell-output-display" data-execution_count="209">
+<pre><code>99.79836949402369</code></pre>
 </div>
 </div>
 <ul>
 <li>상태 (3,2)에서 행동 1을 하게되면 100의 보상을 얻으므로 기대보상값은 100근처 –&gt; 합리적임</li>
 </ul>
 <p><code>-</code> 분석2</p>
-<div id="0586f726-9795-4435-89aa-f73dd145c176" class="cell" data-tags="[]" data-execution_count="47">
+<div id="0586f726-9795-4435-89aa-f73dd145c176" class="cell" data-tags="[]" data-execution_count="210">
 <div class="sourceCode cell-code" id="cb65"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a>q_table[<span class="dv">3</span>,<span class="dv">1</span>,<span class="dv">1</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="47">
-<pre><code>-0.9991569418525077</code></pre>
+<div class="cell-output cell-output-display" data-execution_count="210">
+<pre><code>-0.999681868970897</code></pre>
 </div>
 </div>
 <ul>
