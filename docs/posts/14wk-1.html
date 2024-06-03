@@ -3549,7 +3549,7 @@ action-value function =
 <p><code>-</code> 즉 <span class="math inline">\(q(s,a)\)</span>는 모든 <span class="math inline">\(s\)</span>, <span class="math inline">\(a\)</span>에 대하여</p>
 <p><span class="math display">\[q(s,a) \approx \text{reward}(s,a) + 0.99 \times \max_{a}q(s',a)\]</span></p>
 <p>가 성립한다면 <span class="math inline">\(q(s,a)\)</span>는 타당하게 추정된 것이라 볼 수 있다. 물론 수식을 좀 더 엄밀하게 쓰면 (terminated, not-terminated 로 나누어 쓰면) 아래와 같다.</p>
-<p><span class="math display">\[q(s,a) \approx \begin{cases}  \text{reward}(s,a) + 0.99 \times \max_{a}q(s',a) &amp; \text{$s$ is not in terminated state} \\ \text{reward}(s,a) &amp; \text{$s$ is in terminated-state} \end{cases}\]</span></p>
+<p><span class="math display">\[q(s,a) \approx \begin{cases}  \text{reward}(s,a) + 0.99 \times \max_{a}q(s',a) &amp; \text{not terminated} \\ \text{reward}(s,a) &amp; \text{terminated} \end{cases}\]</span></p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
