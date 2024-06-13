@@ -167,12 +167,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#agentrandom" id="toc-agentrandom" class="nav-link" data-scroll-target="#agentrandom">6. <code>AgentRandom</code></a></li>
   <li><a href="#agentexplorer" id="toc-agentexplorer" class="nav-link" data-scroll-target="#agentexplorer">7. <code>AgentExplorer</code></a>
   <ul class="collapse">
-  <li><a href="#b.-클래스의-설계" id="toc-b.-클래스의-설계" class="nav-link" data-scroll-target="#b.-클래스의-설계">B. 클래스의 설계</a></li>
-  </ul></li>
-  <li><a href="#agentexplorer-1" id="toc-agentexplorer-1" class="nav-link" data-scroll-target="#agentexplorer-1">7. <code>AgentExplorer</code></a>
-  <ul class="collapse">
   <li><a href="#a.-q_net" id="toc-a.-q_net" class="nav-link" data-scroll-target="#a.-q_net">A. <code>q_net</code></a></li>
-  <li><a href="#b.-클래스의-설계-1" id="toc-b.-클래스의-설계-1" class="nav-link" data-scroll-target="#b.-클래스의-설계-1">B. 클래스의 설계</a></li>
+  <li><a href="#b.-클래스의-설계" id="toc-b.-클래스의-설계" class="nav-link" data-scroll-target="#b.-클래스의-설계">B. 클래스의 설계</a></li>
   <li><a href="#c.-환경과-상호작용" id="toc-c.-환경과-상호작용" class="nav-link" data-scroll-target="#c.-환경과-상호작용">C. 환경과 상호작용</a></li>
   </ul></li>
   <li><a href="#a1.-신경망관련-용어" id="toc-a1.-신경망관련-용어" class="nav-link" data-scroll-target="#a1.-신경망관련-용어">A1. 신경망관련 용어</a></li>
@@ -365,9 +361,34 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h1>4. LunarLander</h1>
 <p><code>-</code> ref: <a href="https://gymnasium.farama.org/environments/box2d/lunar_lander/" class="uri">https://gymnasium.farama.org/environments/box2d/lunar_lander/</a></p>
 <p><code>-</code> Lunar Lander: 요약</p>
-<p><strong>Observation Space (관찰 공간)</strong> – 8개의 연속적인 변수 1. 착륙선의 x 좌표 2. 착륙선의 y 좌표 3. 착륙선의 x 속도 4. 착륙선의 y 속도 5. 착륙선의 각도 6. 착륙선의 각속도 7. 왼쪽 다리가 땅에 닿아있는지 여부 (1 또는 0) 8. 오른쪽 다리가 땅에 닿아있는지 여부 (1 또는 0)</p>
-<p><strong>Action Space (행동 공간)</strong> – 4개의 이산적인 행동 1. {0 : 아무 행동도 하지 않음} 2. {1 : 왼쪽 엔진 발사 (오른쪽으로 기울임)} 3. {2 : 메인 엔진 발사 (위로 밀어 올림)} 4. {3 : 오른쪽 엔진 발사 (왼쪽으로 기울임)}</p>
-<p><strong>Reward (보상)</strong> - <strong>거리 보상</strong>: 착륙 패드에 가까울수록 보상 증가 - <strong>속도 보상</strong>: 속도가 낮을수록 보상 증가 - <strong>각도 보상</strong>: 각도가 수직에 가까울수록 보상 증가 - <strong>착륙 다리 보상</strong>: 다리가 착륙 패드에 닿으면 보상 - <strong>연료 사용 패널티</strong>: 엔진 사용 시 패널티 - <strong>안전한 착륙 보상</strong>: 안정적으로 착륙 시 큰 보상 (+100~+140) - <strong>충돌 패널티</strong>: 착륙 패드 이외의 장소에 충돌 시 패널티 (-100)</p>
+<p><strong>Observation Space (State Space)</strong> – 8개의 변수</p>
+<ol type="1">
+<li>착륙선의 x 좌표</li>
+<li>착륙선의 y 좌표</li>
+<li>착륙선의 x 속도</li>
+<li>착륙선의 y 속도</li>
+<li>착륙선의 각도</li>
+<li>착륙선의 각속도</li>
+<li>왼쪽 다리가 땅에 닿아있는지 여부 (1 또는 0)</li>
+<li>오른쪽 다리가 땅에 닿아있는지 여부 (1 또는 0)</li>
+</ol>
+<p><strong>Action Space</strong> – 4개의 변수</p>
+<ol type="1">
+<li>{0 : 아무 행동도 하지 않음}</li>
+<li>{1 : 왼쪽 엔진 발사 (오른쪽으로 기울임)}</li>
+<li>{2 : 메인 엔진 발사 (위로 밀어 올림)}</li>
+<li>{3 : 오른쪽 엔진 발사 (왼쪽으로 기울임)}</li>
+</ol>
+<p><strong>Reward</strong></p>
+<ul>
+<li><strong>거리 보상</strong>: 착륙 패드에 가까울수록 보상 증가</li>
+<li><strong>속도 보상</strong>: 속도가 낮을수록 보상 증가</li>
+<li><strong>각도 보상</strong>: 각도가 수직에 가까울수록 보상 증가</li>
+<li><strong>착륙 다리 보상</strong>: 다리가 착륙 패드에 닿으면 보상</li>
+<li><strong>연료 사용 패널티</strong>: 엔진 사용 시 패널티</li>
+<li><strong>안전한 착륙 보상</strong>: 안정적으로 착륙 시 큰 보상 (+100~+140)</li>
+<li><strong>충돌 패널티</strong>: 착륙 패드 이외의 장소에 충돌 시 패널티 (-100)</li>
+</ul>
 <p><code>-</code> 환경생성</p>
 <div id="33a2796d-86c5-4e97-863f-1abaa6f19b71" class="cell" data-tags="[]" data-execution_count="85">
 <div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>env <span class="op">=</span> gym.make(<span class="st">"LunarLander-v2"</span>,render_mode <span class="op">=</span> <span class="st">'rgb_array'</span>)</span>
@@ -3212,6 +3233,8 @@ QmCC\
 </section>
 <section id="agentexplorer" class="level1">
 <h1>7. <code>AgentExplorer</code></h1>
+<section id="a.-q_net" class="level2">
+<h2 class="anchored" data-anchor-id="a.-q_net">A. <code>q_net</code></h2>
 <p><code>-</code> 전략: 4x4에서 <code>q_table</code>에 대응하는 정보가 있으면 된다. 그런데 <code>q_table</code>와 같이 테이블 형식으로는 힘들것 같다. <span class="math inline">\(\to\)</span> <code>q_net</code>를 만들자.</p>
 <ul>
 <li>4x4 grid: 상태공간의 차원은 2차원이며 가질수 있는 값은 16개, 각 상태공간에서 할수 있는 행동이 4개 -&gt; 총 16*4의 경우의 수에 대한 reward만 조사하면 되었음</li>
@@ -3361,6 +3384,7 @@ QmCC\
 <span id="cb69-5"><a href="#cb69-5" aria-hidden="true" tabindex="-1"></a>    s <span class="op">=</span> torch.tensor(agent.current_state)</span>
 <span id="cb69-6"><a href="#cb69-6" aria-hidden="true" tabindex="-1"></a>    agent.q_net(s).argmax().item()    </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+</section>
 <section id="b.-클래스의-설계" class="level2">
 <h2 class="anchored" data-anchor-id="b.-클래스의-설계">B. 클래스의 설계</h2>
 <div id="df5ee74a-5ede-4860-bdd1-894e3f16b2c8" class="cell" data-execution_count="16">
@@ -3417,337 +3441,50 @@ QmCC\
 <span id="cb70-51"><a href="#cb70-51" aria-hidden="true" tabindex="-1"></a>                <span class="va">self</span>.optimizr.step()</span>
 <span id="cb70-52"><a href="#cb70-52" aria-hidden="true" tabindex="-1"></a>                <span class="va">self</span>.optimizr.zero_grad() </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="b22fb206-6853-469b-9a0b-24dfa409c7de" class="cell" data-tags="[]" data-execution_count="30">
-<div class="sourceCode cell-code" id="cb71"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a>env <span class="op">=</span> gym.make(<span class="st">"LunarLander-v2"</span>,render_mode <span class="op">=</span> <span class="st">'rgb_array'</span>)</span>
-<span id="cb71-2"><a href="#cb71-2" aria-hidden="true" tabindex="-1"></a>agent <span class="op">=</span> AgentRandom(env)</span>
-<span id="cb71-3"><a href="#cb71-3" aria-hidden="true" tabindex="-1"></a><span class="co">#--#</span></span>
-<span id="cb71-4"><a href="#cb71-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">500</span>):</span>
-<span id="cb71-5"><a href="#cb71-5" aria-hidden="true" tabindex="-1"></a>    agent.current_state,_ <span class="op">=</span> env.reset()</span>
-<span id="cb71-6"><a href="#cb71-6" aria-hidden="true" tabindex="-1"></a>    agent.score <span class="op">=</span> <span class="dv">0</span> </span>
-<span id="cb71-7"><a href="#cb71-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> t <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">100</span>):</span>
-<span id="cb71-8"><a href="#cb71-8" aria-hidden="true" tabindex="-1"></a>        <span class="co"># step1: 행동</span></span>
-<span id="cb71-9"><a href="#cb71-9" aria-hidden="true" tabindex="-1"></a>        agent.act()</span>
-<span id="cb71-10"><a href="#cb71-10" aria-hidden="true" tabindex="-1"></a>        <span class="co"># step2: 보상</span></span>
-<span id="cb71-11"><a href="#cb71-11" aria-hidden="true" tabindex="-1"></a>        agent.next_state, agent.reward, agent.terminated,_,_ <span class="op">=</span> env.step(agent.action)</span>
-<span id="cb71-12"><a href="#cb71-12" aria-hidden="true" tabindex="-1"></a>        <span class="co"># step3: 저장 &amp; 학습</span></span>
-<span id="cb71-13"><a href="#cb71-13" aria-hidden="true" tabindex="-1"></a>        agent.save_experience()</span>
-<span id="cb71-14"><a href="#cb71-14" aria-hidden="true" tabindex="-1"></a>        agent.learn()</span>
-<span id="cb71-15"><a href="#cb71-15" aria-hidden="true" tabindex="-1"></a>        <span class="co"># step4: </span></span>
-<span id="cb71-16"><a href="#cb71-16" aria-hidden="true" tabindex="-1"></a>        agent.current_state <span class="op">=</span> agent.next_state</span>
-<span id="cb71-17"><a href="#cb71-17" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> agent.terminated: <span class="cf">break</span></span>
-<span id="cb71-18"><a href="#cb71-18" aria-hidden="true" tabindex="-1"></a>    agent.scores.append(agent.score) </span>
-<span id="cb71-19"><a href="#cb71-19" aria-hidden="true" tabindex="-1"></a>    agent.playtimes.append(t<span class="op">+</span><span class="dv">1</span>)</span>
-<span id="cb71-20"><a href="#cb71-20" aria-hidden="true" tabindex="-1"></a>    agent.n_episodes <span class="op">=</span> agent.n_episodes <span class="op">+</span> <span class="dv">1</span> </span>
-<span id="cb71-21"><a href="#cb71-21" aria-hidden="true" tabindex="-1"></a>    <span class="co">#---#</span></span>
-<span id="cb71-22"><a href="#cb71-22" aria-hidden="true" tabindex="-1"></a>    logfreq <span class="op">=</span> <span class="dv">100</span></span>
-<span id="cb71-23"><a href="#cb71-23" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (agent.n_episodes <span class="op">%</span> logfreq) <span class="op">==</span> <span class="dv">0</span>: </span>
-<span id="cb71-24"><a href="#cb71-24" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(</span>
-<span id="cb71-25"><a href="#cb71-25" aria-hidden="true" tabindex="-1"></a>            <span class="ss">f"에피소드:</span><span class="sc">{</span>agent<span class="sc">.</span>n_episodes<span class="sc">}</span><span class="ch">\t</span><span class="ss">"</span></span>
-<span id="cb71-26"><a href="#cb71-26" aria-hidden="true" tabindex="-1"></a>            <span class="ss">f"경험(t):</span><span class="sc">{</span>agent<span class="sc">.</span>n_experiences<span class="sc">}</span><span class="ch">\t</span><span class="ss">"</span></span>
-<span id="cb71-27"><a href="#cb71-27" aria-hidden="true" tabindex="-1"></a>            <span class="ss">f"점수(에피소드):</span><span class="sc">{</span>np<span class="sc">.</span>mean(agent.scores[<span class="op">-</span>logfreq:])<span class="sc">:.2f}</span><span class="ch">\t</span><span class="ss">"</span></span>
-<span id="cb71-28"><a href="#cb71-28" aria-hidden="true" tabindex="-1"></a>            <span class="ss">f"게임시간(에피소드):</span><span class="sc">{</span>np<span class="sc">.</span>mean(agent.playtimes[<span class="op">-</span>logfreq:])<span class="sc">:.2f}</span><span class="ch">\t</span><span class="ss">"</span></span>
-<span id="cb71-29"><a href="#cb71-29" aria-hidden="true" tabindex="-1"></a>        )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>에피소드:100    경험(t):8723  점수(에피소드):-144.40    게임시간(에피소드):87.23    
-에피소드:200    경험(t):17482 점수(에피소드):-149.34    게임시간(에피소드):87.59    
-에피소드:300    경험(t):26252 점수(에피소드):-170.12    게임시간(에피소드):87.70    
-에피소드:400    경험(t):35031 점수(에피소드):-137.26    게임시간(에피소드):87.79    
-에피소드:500    경험(t):43879 점수(에피소드):-141.48    게임시간(에피소드):88.48    </code></pre>
-</div>
-</div>
-</section>
-</section>
-<section id="agentexplorer-1" class="level1">
-<h1>7. <code>AgentExplorer</code></h1>
-<section id="a.-q_net" class="level2">
-<h2 class="anchored" data-anchor-id="a.-q_net">A. <code>q_net</code></h2>
-<p><code>-</code> 원래는 <code>agent.q</code> 에 해당하는 것임. 이전에서는 <code>agent.q</code>를 (4,4,4) shape의 numpy array 를 사용했는데 여기서는 동일방식을 쓰기 어려움</p>
-<ul>
-<li>4x4 grid: 상태공간의 차원은 2차원이며 가질수 있는 값은 16개, 각 상태공간에서 할수 있는 행동이 4개 -&gt; 총 16*4의 경우의 수에 대한 reward만 조사하면 되었음</li>
-<li>LunarLander: 상태공간의 차원은 8차원이지만 가질수 있는 값의 범위는 무한대 -&gt; 무수히 많은 경우에 대한 reward 값을 조사하는건 현실적으로 불가능</li>
-</ul>
-<p><code>-</code> 4x4 코드</p>
-<div class="sourceCode" id="cb73"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> AgentGreedy(AgentRandom):</span>
-<span id="cb73-2"><a href="#cb73-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>,env):</span>
-<span id="cb73-3"><a href="#cb73-3" aria-hidden="true" tabindex="-1"></a>        <span class="bu">super</span>().<span class="fu">__init__</span>(env)</span>
-<span id="cb73-4"><a href="#cb73-4" aria-hidden="true" tabindex="-1"></a>        <span class="co">#--#</span></span>
-<span id="cb73-5"><a href="#cb73-5" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.q_table <span class="op">=</span> np.zeros([<span class="dv">4</span>,<span class="dv">4</span>,<span class="dv">4</span>])</span>
-<span id="cb73-6"><a href="#cb73-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> learn(<span class="va">self</span>): <span class="co"># q_table </span></span>
-<span id="cb73-7"><a href="#cb73-7" aria-hidden="true" tabindex="-1"></a>        s1,s2 <span class="op">=</span> <span class="va">self</span>.current_state</span>
-<span id="cb73-8"><a href="#cb73-8" aria-hidden="true" tabindex="-1"></a>        ss1,ss2 <span class="op">=</span> <span class="va">self</span>.next_state</span>
-<span id="cb73-9"><a href="#cb73-9" aria-hidden="true" tabindex="-1"></a>        a <span class="op">=</span> <span class="va">self</span>.action</span>
-<span id="cb73-10"><a href="#cb73-10" aria-hidden="true" tabindex="-1"></a>        r <span class="op">=</span> <span class="va">self</span>.reward</span>
-<span id="cb73-11"><a href="#cb73-11" aria-hidden="true" tabindex="-1"></a>        q_hat <span class="op">=</span> <span class="va">self</span>.q_table[s1,s2,a] </span>
-<span id="cb73-12"><a href="#cb73-12" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="va">self</span>.terminated:</span>
-<span id="cb73-13"><a href="#cb73-13" aria-hidden="true" tabindex="-1"></a>            q <span class="op">=</span> r </span>
-<span id="cb73-14"><a href="#cb73-14" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
-<span id="cb73-15"><a href="#cb73-15" aria-hidden="true" tabindex="-1"></a>            future_reward <span class="op">=</span> <span class="va">self</span>.q_table[ss1,ss2,:].<span class="bu">max</span>()</span>
-<span id="cb73-16"><a href="#cb73-16" aria-hidden="true" tabindex="-1"></a>            q <span class="op">=</span> r <span class="op">+</span> <span class="fl">0.99</span> <span class="op">*</span> future_reward </span>
-<span id="cb73-17"><a href="#cb73-17" aria-hidden="true" tabindex="-1"></a>        diff <span class="op">=</span> q <span class="op">-</span> q_hat</span>
-<span id="cb73-18"><a href="#cb73-18" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.q_table[s1,s2,a] <span class="op">=</span> q_hat <span class="op">+</span> <span class="fl">0.05</span> <span class="op">*</span> diff         </span>
-<span id="cb73-19"><a href="#cb73-19" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> act(<span class="va">self</span>):</span>
-<span id="cb73-20"><a href="#cb73-20" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="va">self</span>.n_experiences <span class="op">&lt;</span> <span class="dv">3000</span>:</span>
-<span id="cb73-21"><a href="#cb73-21" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.action <span class="op">=</span> <span class="va">self</span>.action_space.sample()</span>
-<span id="cb73-22"><a href="#cb73-22" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>: </span>
-<span id="cb73-23"><a href="#cb73-23" aria-hidden="true" tabindex="-1"></a>            s1,s2 <span class="op">=</span> <span class="va">self</span>.current_state </span>
-<span id="cb73-24"><a href="#cb73-24" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.action <span class="op">=</span> <span class="va">self</span>.q_table[s1,s2,:].argmax()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p><code>수정 1</code>. <code>agent.q_table</code> 에 대응하는 과정</p>
-<div id="9d21f88b-bf06-4f1c-9f94-723163310d8c" class="cell" data-tags="[]" data-execution_count="32">
-<div class="sourceCode cell-code" id="cb74"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a>agent.q_net <span class="op">=</span> torch.nn.Sequential(</span>
-<span id="cb74-2"><a href="#cb74-2" aria-hidden="true" tabindex="-1"></a>    torch.nn.Linear(<span class="dv">8</span>,<span class="dv">256</span>),</span>
-<span id="cb74-3"><a href="#cb74-3" aria-hidden="true" tabindex="-1"></a>    torch.nn.ReLU(),</span>
-<span id="cb74-4"><a href="#cb74-4" aria-hidden="true" tabindex="-1"></a>    torch.nn.Linear(<span class="dv">256</span>,<span class="dv">128</span>),</span>
-<span id="cb74-5"><a href="#cb74-5" aria-hidden="true" tabindex="-1"></a>    torch.nn.ReLU(),</span>
-<span id="cb74-6"><a href="#cb74-6" aria-hidden="true" tabindex="-1"></a>    torch.nn.Linear(<span class="dv">128</span>,<span class="dv">64</span>),</span>
-<span id="cb74-7"><a href="#cb74-7" aria-hidden="true" tabindex="-1"></a>    torch.nn.ReLU(),</span>
-<span id="cb74-8"><a href="#cb74-8" aria-hidden="true" tabindex="-1"></a>    torch.nn.Linear(<span class="dv">64</span>,<span class="dv">4</span>)</span>
-<span id="cb74-9"><a href="#cb74-9" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div id="b85c25c3-03f6-4fca-8592-663b07acc658" class="cell" data-tags="[]" data-execution_count="33">
-<div class="sourceCode cell-code" id="cb75"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a>agent.q_net <span class="co"># &lt;- 8개의 숫자가 입력으로 오면 4개의 숫자를 리턴하는 함수 </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="33">
-<pre><code>Sequential(
-  (0): Linear(in_features=8, out_features=256, bias=True)
-  (1): ReLU()
-  (2): Linear(in_features=256, out_features=128, bias=True)
-  (3): ReLU()
-  (4): Linear(in_features=128, out_features=64, bias=True)
-  (5): ReLU()
-  (6): Linear(in_features=64, out_features=4, bias=True)
-)</code></pre>
-</div>
-</div>
-<div id="6fef26bf-9bbd-408d-b90c-d36853670e24" class="cell" data-tags="[]" data-execution_count="35">
-<div class="sourceCode cell-code" id="cb77"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb77-1"><a href="#cb77-1" aria-hidden="true" tabindex="-1"></a>s <span class="op">=</span> torch.tensor(agent.current_state)</span>
-<span id="cb77-2"><a href="#cb77-2" aria-hidden="true" tabindex="-1"></a>agent.q_net(s)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="35">
-<pre><code>tensor([ 0.0359, -0.0010, -0.0519, -0.0496], grad_fn=&lt;ViewBackward0&gt;)</code></pre>
-</div>
-</div>
-<ul>
-<li>q_net은 8개의 숫자가 입력으로 오면 4개의 숫자가 리턴되는 함수이다.</li>
-<li>해석을 하면 8개의 숫자는 state를 나타내는 숫자로 이해할 수 있고 4개의 숫자는 각 action에 대한 q값으로 해석할 수 있다.</li>
-<li>하지만 이 숫자가 합리적인건 아님 (아무숫자임)</li>
-<li>q_net의 특징: 고정된 함수가 아니고 데이터를 이용하여 점점 더 그럴듯한 숫자를 뱉어내도록 학습할 수 있는 함수이다. (뉴럴네트워크)</li>
-</ul>
-<p><code>2</code>. <code>q_hat</code></p>
-<div id="546fa364-c191-4c62-b9de-2658b0e43c37" class="cell" data-tags="[]" data-execution_count="36">
-<div class="sourceCode cell-code" id="cb79"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a>s <span class="op">=</span> torch.tensor(agent.current_state)</span>
-<span id="cb79-2"><a href="#cb79-2" aria-hidden="true" tabindex="-1"></a>agent.q_net(s)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="36">
-<pre><code>tensor([ 0.0359, -0.0010, -0.0519, -0.0496], grad_fn=&lt;ViewBackward0&gt;)</code></pre>
-</div>
-</div>
-<div id="55c0f6d5-acee-40db-908e-7dda5c416957" class="cell" data-tags="[]" data-execution_count="38">
-<div class="sourceCode cell-code" id="cb81"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb81-1"><a href="#cb81-1" aria-hidden="true" tabindex="-1"></a>s <span class="op">=</span> torch.tensor(agent.current_state)</span>
-<span id="cb81-2"><a href="#cb81-2" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> torch.tensor(agent.action)</span>
-<span id="cb81-3"><a href="#cb81-3" aria-hidden="true" tabindex="-1"></a>agent.q_net(s)[a]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="38">
-<pre><code>tensor(0.0359, grad_fn=&lt;SelectBackward0&gt;)</code></pre>
-</div>
-</div>
-<div id="65071fbe-0637-484a-bc91-4896f9d16c11" class="cell" data-tags="[]" data-execution_count="48">
-<div class="sourceCode cell-code" id="cb83"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb83-1"><a href="#cb83-1" aria-hidden="true" tabindex="-1"></a>s <span class="op">=</span> torch.tensor(agent.current_state)</span>
-<span id="cb83-2"><a href="#cb83-2" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> torch.tensor(agent.action)</span>
-<span id="cb83-3"><a href="#cb83-3" aria-hidden="true" tabindex="-1"></a>ss <span class="op">=</span> torch.tensor(agent.next_state)</span>
-<span id="cb83-4"><a href="#cb83-4" aria-hidden="true" tabindex="-1"></a>r <span class="op">=</span> torch.tensor(agent.reward)</span>
-<span id="cb83-5"><a href="#cb83-5" aria-hidden="true" tabindex="-1"></a><span class="co">#--#</span></span>
-<span id="cb83-6"><a href="#cb83-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(</span>
-<span id="cb83-7"><a href="#cb83-7" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"state = </span><span class="sc">{</span>s<span class="sc">}</span><span class="ch">\n</span><span class="ss">"</span></span>
-<span id="cb83-8"><a href="#cb83-8" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"q_value(cucurrent_state,:) = </span><span class="sc">{</span>agent<span class="sc">.</span>q_net(s)<span class="sc">.</span>data<span class="sc">}</span><span class="ch">\n</span><span class="ss">"</span></span>
-<span id="cb83-9"><a href="#cb83-9" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"action = </span><span class="sc">{</span>a<span class="sc">}</span><span class="ch">\n</span><span class="ss">"</span></span>
-<span id="cb83-10"><a href="#cb83-10" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"q_value(cucurrent_state,action) = </span><span class="sc">{</span>agent<span class="sc">.</span>q_net(s)[a]<span class="sc">}</span><span class="ss">"</span></span>
-<span id="cb83-11"><a href="#cb83-11" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>state = tensor([ 0.8697, -0.1577,  1.4517, -0.0860, -0.9939, -1.4546,  1.0000,  0.0000])
-q_value(cucurrent_state,:) = tensor([ 0.0359, -0.0010, -0.0519, -0.0496])
-action = 0
-q_value(cucurrent_state,action) = 0.03591235727071762</code></pre>
-</div>
-</div>
-<div id="71e589f3-1e9f-4970-9002-9137a103c961" class="cell" data-tags="[]" data-execution_count="49">
-<div class="sourceCode cell-code" id="cb85"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb85-1"><a href="#cb85-1" aria-hidden="true" tabindex="-1"></a>s <span class="op">=</span> torch.tensor(agent.current_state)</span>
-<span id="cb85-2"><a href="#cb85-2" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> torch.tensor(agent.action)</span>
-<span id="cb85-3"><a href="#cb85-3" aria-hidden="true" tabindex="-1"></a>ss <span class="op">=</span> torch.tensor(agent.next_state)</span>
-<span id="cb85-4"><a href="#cb85-4" aria-hidden="true" tabindex="-1"></a>r <span class="op">=</span> torch.tensor(agent.reward)</span>
-<span id="cb85-5"><a href="#cb85-5" aria-hidden="true" tabindex="-1"></a><span class="co">#--#</span></span>
-<span id="cb85-6"><a href="#cb85-6" aria-hidden="true" tabindex="-1"></a>qhat <span class="op">=</span> agent.q_net(s)[a]</span>
-<span id="cb85-7"><a href="#cb85-7" aria-hidden="true" tabindex="-1"></a>qhat</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="49">
-<pre><code>tensor(0.0359, grad_fn=&lt;SelectBackward0&gt;)</code></pre>
-</div>
-</div>
-<p><code>3</code>. <code>q</code> (<span class="math inline">\(q = r + 0.99 \times {\tt future\_reward}\)</span>)</p>
-<div id="9dfb27a0-a220-407a-a435-e9fc0300acf2" class="cell" data-tags="[]" data-execution_count="50">
-<div class="sourceCode cell-code" id="cb87"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb87-1"><a href="#cb87-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> agent.terminated:</span>
-<span id="cb87-2"><a href="#cb87-2" aria-hidden="true" tabindex="-1"></a>    q <span class="op">=</span> agent.reward</span>
-<span id="cb87-3"><a href="#cb87-3" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:</span>
-<span id="cb87-4"><a href="#cb87-4" aria-hidden="true" tabindex="-1"></a>    future_reward <span class="op">=</span> agent.q_net(s).<span class="bu">max</span>().data</span>
-<span id="cb87-5"><a href="#cb87-5" aria-hidden="true" tabindex="-1"></a>    q <span class="op">=</span> agent.reward <span class="op">+</span> <span class="fl">0.99</span> <span class="op">*</span> future_reward </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div id="911f8074-ca82-4741-b90d-7d2167316343" class="cell" data-tags="[]" data-execution_count="51">
-<div class="sourceCode cell-code" id="cb88"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb88-1"><a href="#cb88-1" aria-hidden="true" tabindex="-1"></a>q</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="51">
-<pre><code>-100</code></pre>
-</div>
-</div>
-<p><code>4</code>. <code>q_hat</code> 을 점점 <code>q</code> 와 비슷하게 만드는 과정</p>
-<div id="1c411ab9-d658-4d3e-8cf4-2960ef556e51" class="cell" data-tags="[]" data-execution_count="52">
-<div class="sourceCode cell-code" id="cb90"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb90-1"><a href="#cb90-1" aria-hidden="true" tabindex="-1"></a>exp <span class="op">=</span> <span class="bu">list</span>(<span class="bu">zip</span>(</span>
-<span id="cb90-2"><a href="#cb90-2" aria-hidden="true" tabindex="-1"></a>    agent.current_states,</span>
-<span id="cb90-3"><a href="#cb90-3" aria-hidden="true" tabindex="-1"></a>    agent.actions,</span>
-<span id="cb90-4"><a href="#cb90-4" aria-hidden="true" tabindex="-1"></a>    agent.rewards,</span>
-<span id="cb90-5"><a href="#cb90-5" aria-hidden="true" tabindex="-1"></a>    agent.next_states,</span>
-<span id="cb90-6"><a href="#cb90-6" aria-hidden="true" tabindex="-1"></a>    agent.terminations</span>
-<span id="cb90-7"><a href="#cb90-7" aria-hidden="true" tabindex="-1"></a>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div id="e6b6e04a-dfd8-4e97-a11c-874d40f8e3eb" class="cell" data-tags="[]" data-execution_count="55">
-<div class="sourceCode cell-code" id="cb91"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb91-1"><a href="#cb91-1" aria-hidden="true" tabindex="-1"></a>agent.batch_size <span class="op">=</span> <span class="dv">4</span> </span>
-<span id="cb91-2"><a href="#cb91-2" aria-hidden="true" tabindex="-1"></a>batch <span class="op">=</span> random.sample(exp,agent.batch_size)</span>
-<span id="cb91-3"><a href="#cb91-3" aria-hidden="true" tabindex="-1"></a>batch[<span class="dv">0</span>] <span class="co"># s,a,r,ss,terminated</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="55">
-<pre><code>(tensor([-0.1722,  0.9442, -0.4140, -0.7549,  0.2740,  0.0801,  0.0000,  0.0000]),
- tensor(1),
- tensor(-1.9576),
- tensor([-0.1764,  0.9266, -0.4233, -0.7838,  0.2800,  0.1206,  0.0000,  0.0000]),
- tensor(False))</code></pre>
-</div>
-</div>
-<div id="f39d003e-61b0-41e7-8ffc-bece41dc42b0" class="cell" data-tags="[]" data-execution_count="56">
-<div class="sourceCode cell-code" id="cb93"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb93-1"><a href="#cb93-1" aria-hidden="true" tabindex="-1"></a>agent.optimizr <span class="op">=</span> torch.optim.Adam(agent.q_net.parameters())</span>
-<span id="cb93-2"><a href="#cb93-2" aria-hidden="true" tabindex="-1"></a><span class="co">#--#</span></span>
-<span id="cb93-3"><a href="#cb93-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> epoc <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">5</span>):</span>
-<span id="cb93-4"><a href="#cb93-4" aria-hidden="true" tabindex="-1"></a>    memory <span class="op">=</span> <span class="bu">list</span>(<span class="bu">zip</span>(agent.current_states,agent.actions,agent.rewards,agent.next_states,agent.terminations))</span>
-<span id="cb93-5"><a href="#cb93-5" aria-hidden="true" tabindex="-1"></a>    batch <span class="op">=</span> random.sample(memory,<span class="dv">4</span>)</span>
-<span id="cb93-6"><a href="#cb93-6" aria-hidden="true" tabindex="-1"></a>    <span class="co">## 1~2 </span></span>
-<span id="cb93-7"><a href="#cb93-7" aria-hidden="true" tabindex="-1"></a>    loss <span class="op">=</span> <span class="dv">0</span> </span>
-<span id="cb93-8"><a href="#cb93-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> s,a,r,ss,terminated <span class="kw">in</span> batch:</span>
-<span id="cb93-9"><a href="#cb93-9" aria-hidden="true" tabindex="-1"></a>        <span class="co"># 1. q_hat을 구한다. </span></span>
-<span id="cb93-10"><a href="#cb93-10" aria-hidden="true" tabindex="-1"></a>        q_hat <span class="op">=</span> agent.q_net(s)[a]</span>
-<span id="cb93-11"><a href="#cb93-11" aria-hidden="true" tabindex="-1"></a>        <span class="co"># 2. loss를 계산한다. 그런데 q가 없네? </span></span>
-<span id="cb93-12"><a href="#cb93-12" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> terminated: </span>
-<span id="cb93-13"><a href="#cb93-13" aria-hidden="true" tabindex="-1"></a>            q <span class="op">=</span> r</span>
-<span id="cb93-14"><a href="#cb93-14" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>: </span>
-<span id="cb93-15"><a href="#cb93-15" aria-hidden="true" tabindex="-1"></a>            future_reward <span class="op">=</span> agent.q_net(ss).<span class="bu">max</span>().data</span>
-<span id="cb93-16"><a href="#cb93-16" aria-hidden="true" tabindex="-1"></a>            q <span class="op">=</span> r <span class="op">+</span> <span class="fl">0.99</span> <span class="op">*</span> future_reward</span>
-<span id="cb93-17"><a href="#cb93-17" aria-hidden="true" tabindex="-1"></a>        loss <span class="op">=</span> loss <span class="op">+</span> (q_hat<span class="op">-</span>q)<span class="op">**</span><span class="dv">2</span></span>
-<span id="cb93-18"><a href="#cb93-18" aria-hidden="true" tabindex="-1"></a>    loss <span class="op">=</span> loss<span class="op">/</span>agent.batch_size</span>
-<span id="cb93-19"><a href="#cb93-19" aria-hidden="true" tabindex="-1"></a>    <span class="co">## 3 </span></span>
-<span id="cb93-20"><a href="#cb93-20" aria-hidden="true" tabindex="-1"></a>    loss.backward()</span>
-<span id="cb93-21"><a href="#cb93-21" aria-hidden="true" tabindex="-1"></a>    <span class="co">## 4 </span></span>
-<span id="cb93-22"><a href="#cb93-22" aria-hidden="true" tabindex="-1"></a>    agent.optimizr.step()</span>
-<span id="cb93-23"><a href="#cb93-23" aria-hidden="true" tabindex="-1"></a>    agent.optimizr.zero_grad()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p><code>5</code>. 행동..?</p>
-<div id="83497267-d8ae-4e31-8428-669a74ca27d2" class="cell" data-tags="[]" data-execution_count="57">
-<div class="sourceCode cell-code" id="cb94"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb94-1"><a href="#cb94-1" aria-hidden="true" tabindex="-1"></a>agent.q_net(s).argmax()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="57">
-<pre><code>tensor(2)</code></pre>
-</div>
-</div>
-<div id="f5af2ff0-e5da-4f24-ae7c-f5ad73097cb2" class="cell" data-tags="[]" data-execution_count="61">
-<div class="sourceCode cell-code" id="cb96"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb96-1"><a href="#cb96-1" aria-hidden="true" tabindex="-1"></a>agent.eps <span class="op">=</span> <span class="fl">0.5</span> </span>
-<span id="cb96-2"><a href="#cb96-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> np.random.rand() <span class="op">&lt;</span> agent.eps:</span>
-<span id="cb96-3"><a href="#cb96-3" aria-hidden="true" tabindex="-1"></a>    agent.action <span class="op">=</span> agent.action_space.sample() </span>
-<span id="cb96-4"><a href="#cb96-4" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:</span>
-<span id="cb96-5"><a href="#cb96-5" aria-hidden="true" tabindex="-1"></a>    s <span class="op">=</span> torch.tensor(agent.current_state)</span>
-<span id="cb96-6"><a href="#cb96-6" aria-hidden="true" tabindex="-1"></a>    agent.action <span class="op">=</span> agent.q_net(s).argmax().item()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</section>
-<section id="b.-클래스의-설계-1" class="level2">
-<h2 class="anchored" data-anchor-id="b.-클래스의-설계-1">B. 클래스의 설계</h2>
-<div id="06546d6b-a125-417b-9e10-b5421c8a9869" class="cell" data-tags="[]" data-execution_count="62">
-<div class="sourceCode cell-code" id="cb97"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb97-1"><a href="#cb97-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> AgentExplorer(AgentRandom):</span>
-<span id="cb97-2"><a href="#cb97-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>,env):</span>
-<span id="cb97-3"><a href="#cb97-3" aria-hidden="true" tabindex="-1"></a>        <span class="bu">super</span>().<span class="fu">__init__</span>(env)</span>
-<span id="cb97-4"><a href="#cb97-4" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.eps <span class="op">=</span> <span class="dv">0</span></span>
-<span id="cb97-5"><a href="#cb97-5" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.q_net <span class="op">=</span> torch.nn.Sequential(</span>
-<span id="cb97-6"><a href="#cb97-6" aria-hidden="true" tabindex="-1"></a>            torch.nn.Linear(<span class="dv">8</span>,<span class="dv">256</span>), </span>
-<span id="cb97-7"><a href="#cb97-7" aria-hidden="true" tabindex="-1"></a>            torch.nn.ReLU(),</span>
-<span id="cb97-8"><a href="#cb97-8" aria-hidden="true" tabindex="-1"></a>            torch.nn.Linear(<span class="dv">256</span>,<span class="dv">128</span>),</span>
-<span id="cb97-9"><a href="#cb97-9" aria-hidden="true" tabindex="-1"></a>            torch.nn.ReLU(),</span>
-<span id="cb97-10"><a href="#cb97-10" aria-hidden="true" tabindex="-1"></a>            torch.nn.Linear(<span class="dv">128</span>,<span class="dv">64</span>),</span>
-<span id="cb97-11"><a href="#cb97-11" aria-hidden="true" tabindex="-1"></a>            torch.nn.ReLU(),</span>
-<span id="cb97-12"><a href="#cb97-12" aria-hidden="true" tabindex="-1"></a>            torch.nn.Linear(<span class="dv">64</span>,<span class="dv">4</span>)</span>
-<span id="cb97-13"><a href="#cb97-13" aria-hidden="true" tabindex="-1"></a>        )</span>
-<span id="cb97-14"><a href="#cb97-14" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.batch_size <span class="op">=</span> <span class="dv">64</span></span>
-<span id="cb97-15"><a href="#cb97-15" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.optimizr <span class="op">=</span> torch.optim.Adam(<span class="va">self</span>.q_net.parameters(),lr<span class="op">=</span><span class="fl">0.0001</span>)</span>
-<span id="cb97-16"><a href="#cb97-16" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> act(<span class="va">self</span>):</span>
-<span id="cb97-17"><a href="#cb97-17" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> np.random.rand() <span class="op">&lt;</span> <span class="va">self</span>.eps:</span>
-<span id="cb97-18"><a href="#cb97-18" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.action <span class="op">=</span> <span class="va">self</span>.action_space.sample() </span>
-<span id="cb97-19"><a href="#cb97-19" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
-<span id="cb97-20"><a href="#cb97-20" aria-hidden="true" tabindex="-1"></a>            s <span class="op">=</span> torch.tensor(<span class="va">self</span>.current_state)</span>
-<span id="cb97-21"><a href="#cb97-21" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.action <span class="op">=</span> <span class="va">self</span>.q_net(s).argmax().item()</span>
-<span id="cb97-22"><a href="#cb97-22" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> learn(<span class="va">self</span>):</span>
-<span id="cb97-23"><a href="#cb97-23" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="va">self</span>.n_experiences <span class="op">&lt;</span> <span class="va">self</span>.buffer_size: </span>
-<span id="cb97-24"><a href="#cb97-24" aria-hidden="true" tabindex="-1"></a>            <span class="cf">pass</span> </span>
-<span id="cb97-25"><a href="#cb97-25" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>: </span>
-<span id="cb97-26"><a href="#cb97-26" aria-hidden="true" tabindex="-1"></a>            <span class="cf">for</span> epoc <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>):</span>
-<span id="cb97-27"><a href="#cb97-27" aria-hidden="true" tabindex="-1"></a>                memory <span class="op">=</span> <span class="bu">list</span>(<span class="bu">zip</span>(<span class="va">self</span>.current_states,<span class="va">self</span>.actions,<span class="va">self</span>.rewards,<span class="va">self</span>.next_states,<span class="va">self</span>.terminations))</span>
-<span id="cb97-28"><a href="#cb97-28" aria-hidden="true" tabindex="-1"></a>                batch <span class="op">=</span> random.sample(memory,<span class="va">self</span>.batch_size)</span>
-<span id="cb97-29"><a href="#cb97-29" aria-hidden="true" tabindex="-1"></a>                <span class="co">## 1~2 </span></span>
-<span id="cb97-30"><a href="#cb97-30" aria-hidden="true" tabindex="-1"></a>                loss <span class="op">=</span> <span class="dv">0</span> </span>
-<span id="cb97-31"><a href="#cb97-31" aria-hidden="true" tabindex="-1"></a>                <span class="cf">for</span> s,a,r,ss,terminated <span class="kw">in</span> batch:</span>
-<span id="cb97-32"><a href="#cb97-32" aria-hidden="true" tabindex="-1"></a>                    <span class="co"># 1. q_hat을 구한다. </span></span>
-<span id="cb97-33"><a href="#cb97-33" aria-hidden="true" tabindex="-1"></a>                    q_hat <span class="op">=</span> <span class="va">self</span>.q_net(s)[a]</span>
-<span id="cb97-34"><a href="#cb97-34" aria-hidden="true" tabindex="-1"></a>                    <span class="co"># 2. loss를 계산한다. 그런데 q가 없네? </span></span>
-<span id="cb97-35"><a href="#cb97-35" aria-hidden="true" tabindex="-1"></a>                    <span class="cf">if</span> terminated: </span>
-<span id="cb97-36"><a href="#cb97-36" aria-hidden="true" tabindex="-1"></a>                        q <span class="op">=</span> r</span>
-<span id="cb97-37"><a href="#cb97-37" aria-hidden="true" tabindex="-1"></a>                    <span class="cf">else</span>: </span>
-<span id="cb97-38"><a href="#cb97-38" aria-hidden="true" tabindex="-1"></a>                        future_reward <span class="op">=</span> agent.q_net(ss).<span class="bu">max</span>().data</span>
-<span id="cb97-39"><a href="#cb97-39" aria-hidden="true" tabindex="-1"></a>                        q <span class="op">=</span> r <span class="op">+</span> <span class="fl">0.99</span><span class="op">*</span>future_reward</span>
-<span id="cb97-40"><a href="#cb97-40" aria-hidden="true" tabindex="-1"></a>                    loss <span class="op">=</span> loss <span class="op">+</span> (q_hat<span class="op">-</span>q)<span class="op">**</span><span class="dv">2</span></span>
-<span id="cb97-41"><a href="#cb97-41" aria-hidden="true" tabindex="-1"></a>                loss <span class="op">=</span> loss<span class="op">/</span><span class="va">self</span>.batch_size</span>
-<span id="cb97-42"><a href="#cb97-42" aria-hidden="true" tabindex="-1"></a>                <span class="co">## 3 </span></span>
-<span id="cb97-43"><a href="#cb97-43" aria-hidden="true" tabindex="-1"></a>                loss.backward()</span>
-<span id="cb97-44"><a href="#cb97-44" aria-hidden="true" tabindex="-1"></a>                <span class="co">## 4 </span></span>
-<span id="cb97-45"><a href="#cb97-45" aria-hidden="true" tabindex="-1"></a>                <span class="va">self</span>.optimizr.step()</span>
-<span id="cb97-46"><a href="#cb97-46" aria-hidden="true" tabindex="-1"></a>                <span class="va">self</span>.optimizr.zero_grad()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
 </section>
 <section id="c.-환경과-상호작용" class="level2">
 <h2 class="anchored" data-anchor-id="c.-환경과-상호작용">C. 환경과 상호작용</h2>
 <div id="f4801de3-ee06-4857-83cd-951ffb3dfac1" class="cell" data-tags="[]" data-execution_count="70">
-<div class="sourceCode cell-code" id="cb98"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb98-1"><a href="#cb98-1" aria-hidden="true" tabindex="-1"></a>env <span class="op">=</span> gym.make(<span class="st">"LunarLander-v2"</span>,render_mode <span class="op">=</span> <span class="st">'rgb_array'</span>)</span>
-<span id="cb98-2"><a href="#cb98-2" aria-hidden="true" tabindex="-1"></a>agent <span class="op">=</span> AgentExplorer(env)</span>
-<span id="cb98-3"><a href="#cb98-3" aria-hidden="true" tabindex="-1"></a>agent.eps <span class="op">=</span> <span class="dv">1</span> </span>
-<span id="cb98-4"><a href="#cb98-4" aria-hidden="true" tabindex="-1"></a><span class="co">#--#</span></span>
-<span id="cb98-5"><a href="#cb98-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">2000</span>): </span>
-<span id="cb98-6"><a href="#cb98-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># STEP1: 에피소드 준비 </span></span>
-<span id="cb98-7"><a href="#cb98-7" aria-hidden="true" tabindex="-1"></a>    agent.current_state,_ <span class="op">=</span> env.reset()</span>
-<span id="cb98-8"><a href="#cb98-8" aria-hidden="true" tabindex="-1"></a>    agent.score <span class="op">=</span> <span class="dv">0</span></span>
-<span id="cb98-9"><a href="#cb98-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># STEP2: 에피소드 진행 </span></span>
-<span id="cb98-10"><a href="#cb98-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> t <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>,<span class="dv">1001</span>):</span>
-<span id="cb98-11"><a href="#cb98-11" aria-hidden="true" tabindex="-1"></a>        <span class="co">## step1: 행동 </span></span>
-<span id="cb98-12"><a href="#cb98-12" aria-hidden="true" tabindex="-1"></a>        agent.act()</span>
-<span id="cb98-13"><a href="#cb98-13" aria-hidden="true" tabindex="-1"></a>        <span class="co">## step2: 보상</span></span>
-<span id="cb98-14"><a href="#cb98-14" aria-hidden="true" tabindex="-1"></a>        agent.next_state, agent.reward, agent.terminated, _, _ <span class="op">=</span> env.step(agent.action)</span>
-<span id="cb98-15"><a href="#cb98-15" aria-hidden="true" tabindex="-1"></a>        <span class="co">## step3: 저장 &amp; 학습 </span></span>
-<span id="cb98-16"><a href="#cb98-16" aria-hidden="true" tabindex="-1"></a>        agent.save_experience()</span>
-<span id="cb98-17"><a href="#cb98-17" aria-hidden="true" tabindex="-1"></a>        agent.learn()</span>
-<span id="cb98-18"><a href="#cb98-18" aria-hidden="true" tabindex="-1"></a>        <span class="co">## step4: </span></span>
-<span id="cb98-19"><a href="#cb98-19" aria-hidden="true" tabindex="-1"></a>        agent.current_state <span class="op">=</span> agent.next_state </span>
-<span id="cb98-20"><a href="#cb98-20" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> agent.terminated: <span class="cf">break</span> </span>
-<span id="cb98-21"><a href="#cb98-21" aria-hidden="true" tabindex="-1"></a>    <span class="co"># STEP3: 다음에피소드준비 </span></span>
-<span id="cb98-22"><a href="#cb98-22" aria-hidden="true" tabindex="-1"></a>    agent.scores.append(agent.score) </span>
-<span id="cb98-23"><a href="#cb98-23" aria-hidden="true" tabindex="-1"></a>    agent.playtimes.append(t) </span>
-<span id="cb98-24"><a href="#cb98-24" aria-hidden="true" tabindex="-1"></a>    agent.n_episodes <span class="op">=</span> agent.n_episodes <span class="op">+</span> <span class="dv">1</span></span>
-<span id="cb98-25"><a href="#cb98-25" aria-hidden="true" tabindex="-1"></a>    agent.eps <span class="op">=</span> agent.eps <span class="op">*</span> <span class="fl">0.995</span> </span>
-<span id="cb98-26"><a href="#cb98-26" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> np.mean(agent.scores[<span class="op">-</span><span class="dv">100</span>:]) <span class="op">&gt;</span> <span class="dv">200</span>: </span>
-<span id="cb98-27"><a href="#cb98-27" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"---game cleared in </span><span class="sc">{</span>agent<span class="sc">.</span>n_episodes<span class="sc">}</span><span class="ss"> episodes! ---"</span>)</span>
-<span id="cb98-28"><a href="#cb98-28" aria-hidden="true" tabindex="-1"></a>        torch.save(agent.q_net.state_dict(),<span class="ss">f"q_net_final.pth"</span>)</span>
-<span id="cb98-29"><a href="#cb98-29" aria-hidden="true" tabindex="-1"></a>        <span class="cf">break</span> </span>
-<span id="cb98-30"><a href="#cb98-30" aria-hidden="true" tabindex="-1"></a>    <span class="co">#---#</span></span>
-<span id="cb98-31"><a href="#cb98-31" aria-hidden="true" tabindex="-1"></a>    logfreq <span class="op">=</span> <span class="dv">100</span></span>
-<span id="cb98-32"><a href="#cb98-32" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (agent.n_episodes <span class="op">%</span> logfreq) <span class="op">==</span> <span class="dv">0</span>: </span>
-<span id="cb98-33"><a href="#cb98-33" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(</span>
-<span id="cb98-34"><a href="#cb98-34" aria-hidden="true" tabindex="-1"></a>            <span class="ss">f"에피소드:</span><span class="sc">{</span>agent<span class="sc">.</span>n_episodes<span class="sc">}</span><span class="ch">\t</span><span class="ss">"</span></span>
-<span id="cb98-35"><a href="#cb98-35" aria-hidden="true" tabindex="-1"></a>            <span class="ss">f"경험(t):</span><span class="sc">{</span>agent<span class="sc">.</span>n_experiences<span class="sc">}</span><span class="ch">\t</span><span class="ss">"</span>            </span>
-<span id="cb98-36"><a href="#cb98-36" aria-hidden="true" tabindex="-1"></a>            <span class="ss">f"점수(에피소드):</span><span class="sc">{</span>np<span class="sc">.</span>mean(agent.scores[<span class="op">-</span>logfreq:])<span class="sc">:.2f}</span><span class="ch">\t</span><span class="ss">"</span></span>
-<span id="cb98-37"><a href="#cb98-37" aria-hidden="true" tabindex="-1"></a>            <span class="ss">f"게임시간(에피소드):</span><span class="sc">{</span>np<span class="sc">.</span>mean(agent.playtimes[<span class="op">-</span>logfreq:])<span class="sc">:.2f}</span><span class="ch">\t</span><span class="ss">"</span></span>
-<span id="cb98-38"><a href="#cb98-38" aria-hidden="true" tabindex="-1"></a>            <span class="ss">f"돌발행동(에피소드):</span><span class="sc">{</span>agent<span class="sc">.</span>eps<span class="sc">:.2f}</span><span class="ss">"</span></span>
-<span id="cb98-39"><a href="#cb98-39" aria-hidden="true" tabindex="-1"></a>        )</span>
-<span id="cb98-40"><a href="#cb98-40" aria-hidden="true" tabindex="-1"></a>        torch.save(agent.q_net.state_dict(),<span class="ss">f"q_net_</span><span class="sc">{</span>agent<span class="sc">.</span>n_episodes<span class="sc">}</span><span class="ss">.pth"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb71"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a>env <span class="op">=</span> gym.make(<span class="st">"LunarLander-v2"</span>,render_mode <span class="op">=</span> <span class="st">'rgb_array'</span>)</span>
+<span id="cb71-2"><a href="#cb71-2" aria-hidden="true" tabindex="-1"></a>agent <span class="op">=</span> AgentExplorer(env)</span>
+<span id="cb71-3"><a href="#cb71-3" aria-hidden="true" tabindex="-1"></a>agent.eps <span class="op">=</span> <span class="dv">1</span> </span>
+<span id="cb71-4"><a href="#cb71-4" aria-hidden="true" tabindex="-1"></a><span class="co">#--#</span></span>
+<span id="cb71-5"><a href="#cb71-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">2000</span>): </span>
+<span id="cb71-6"><a href="#cb71-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># STEP1: 에피소드 준비 </span></span>
+<span id="cb71-7"><a href="#cb71-7" aria-hidden="true" tabindex="-1"></a>    agent.current_state,_ <span class="op">=</span> env.reset()</span>
+<span id="cb71-8"><a href="#cb71-8" aria-hidden="true" tabindex="-1"></a>    agent.score <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb71-9"><a href="#cb71-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># STEP2: 에피소드 진행 </span></span>
+<span id="cb71-10"><a href="#cb71-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> t <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>,<span class="dv">1001</span>):</span>
+<span id="cb71-11"><a href="#cb71-11" aria-hidden="true" tabindex="-1"></a>        <span class="co">## step1: 행동 </span></span>
+<span id="cb71-12"><a href="#cb71-12" aria-hidden="true" tabindex="-1"></a>        agent.act()</span>
+<span id="cb71-13"><a href="#cb71-13" aria-hidden="true" tabindex="-1"></a>        <span class="co">## step2: 보상</span></span>
+<span id="cb71-14"><a href="#cb71-14" aria-hidden="true" tabindex="-1"></a>        agent.next_state, agent.reward, agent.terminated, _, _ <span class="op">=</span> env.step(agent.action)</span>
+<span id="cb71-15"><a href="#cb71-15" aria-hidden="true" tabindex="-1"></a>        <span class="co">## step3: 저장 &amp; 학습 </span></span>
+<span id="cb71-16"><a href="#cb71-16" aria-hidden="true" tabindex="-1"></a>        agent.save_experience()</span>
+<span id="cb71-17"><a href="#cb71-17" aria-hidden="true" tabindex="-1"></a>        agent.learn()</span>
+<span id="cb71-18"><a href="#cb71-18" aria-hidden="true" tabindex="-1"></a>        <span class="co">## step4: </span></span>
+<span id="cb71-19"><a href="#cb71-19" aria-hidden="true" tabindex="-1"></a>        agent.current_state <span class="op">=</span> agent.next_state </span>
+<span id="cb71-20"><a href="#cb71-20" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> agent.terminated: <span class="cf">break</span> </span>
+<span id="cb71-21"><a href="#cb71-21" aria-hidden="true" tabindex="-1"></a>    <span class="co"># STEP3: 다음에피소드준비 </span></span>
+<span id="cb71-22"><a href="#cb71-22" aria-hidden="true" tabindex="-1"></a>    agent.scores.append(agent.score) </span>
+<span id="cb71-23"><a href="#cb71-23" aria-hidden="true" tabindex="-1"></a>    agent.playtimes.append(t) </span>
+<span id="cb71-24"><a href="#cb71-24" aria-hidden="true" tabindex="-1"></a>    agent.n_episodes <span class="op">=</span> agent.n_episodes <span class="op">+</span> <span class="dv">1</span></span>
+<span id="cb71-25"><a href="#cb71-25" aria-hidden="true" tabindex="-1"></a>    agent.eps <span class="op">=</span> agent.eps <span class="op">*</span> <span class="fl">0.995</span> </span>
+<span id="cb71-26"><a href="#cb71-26" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> np.mean(agent.scores[<span class="op">-</span><span class="dv">100</span>:]) <span class="op">&gt;</span> <span class="dv">200</span>: </span>
+<span id="cb71-27"><a href="#cb71-27" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"---game cleared in </span><span class="sc">{</span>agent<span class="sc">.</span>n_episodes<span class="sc">}</span><span class="ss"> episodes! ---"</span>)</span>
+<span id="cb71-28"><a href="#cb71-28" aria-hidden="true" tabindex="-1"></a>        torch.save(agent.q_net.state_dict(),<span class="ss">f"q_net_final.pth"</span>)</span>
+<span id="cb71-29"><a href="#cb71-29" aria-hidden="true" tabindex="-1"></a>        <span class="cf">break</span> </span>
+<span id="cb71-30"><a href="#cb71-30" aria-hidden="true" tabindex="-1"></a>    <span class="co">#---#</span></span>
+<span id="cb71-31"><a href="#cb71-31" aria-hidden="true" tabindex="-1"></a>    logfreq <span class="op">=</span> <span class="dv">100</span></span>
+<span id="cb71-32"><a href="#cb71-32" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (agent.n_episodes <span class="op">%</span> logfreq) <span class="op">==</span> <span class="dv">0</span>: </span>
+<span id="cb71-33"><a href="#cb71-33" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(</span>
+<span id="cb71-34"><a href="#cb71-34" aria-hidden="true" tabindex="-1"></a>            <span class="ss">f"에피소드:</span><span class="sc">{</span>agent<span class="sc">.</span>n_episodes<span class="sc">}</span><span class="ch">\t</span><span class="ss">"</span></span>
+<span id="cb71-35"><a href="#cb71-35" aria-hidden="true" tabindex="-1"></a>            <span class="ss">f"경험(t):</span><span class="sc">{</span>agent<span class="sc">.</span>n_experiences<span class="sc">}</span><span class="ch">\t</span><span class="ss">"</span>            </span>
+<span id="cb71-36"><a href="#cb71-36" aria-hidden="true" tabindex="-1"></a>            <span class="ss">f"점수(에피소드):</span><span class="sc">{</span>np<span class="sc">.</span>mean(agent.scores[<span class="op">-</span>logfreq:])<span class="sc">:.2f}</span><span class="ch">\t</span><span class="ss">"</span></span>
+<span id="cb71-37"><a href="#cb71-37" aria-hidden="true" tabindex="-1"></a>            <span class="ss">f"게임시간(에피소드):</span><span class="sc">{</span>np<span class="sc">.</span>mean(agent.playtimes[<span class="op">-</span>logfreq:])<span class="sc">:.2f}</span><span class="ch">\t</span><span class="ss">"</span></span>
+<span id="cb71-38"><a href="#cb71-38" aria-hidden="true" tabindex="-1"></a>            <span class="ss">f"돌발행동(에피소드):</span><span class="sc">{</span>agent<span class="sc">.</span>eps<span class="sc">:.2f}</span><span class="ss">"</span></span>
+<span id="cb71-39"><a href="#cb71-39" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb71-40"><a href="#cb71-40" aria-hidden="true" tabindex="-1"></a>        torch.save(agent.q_net.state_dict(),<span class="ss">f"q_net_</span><span class="sc">{</span>agent<span class="sc">.</span>n_episodes<span class="sc">}</span><span class="ss">.pth"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>에피소드:100    경험(t):10838 점수(에피소드):-176.71    게임시간(에피소드):108.38   돌발행동(에피소드):0.61
 에피소드:200    경험(t):51270 점수(에피소드):-56.40 게임시간(에피소드):404.32   돌발행동(에피소드):0.37
@@ -3758,30 +3495,30 @@ q_value(cucurrent_state,action) = 0.03591235727071762</code></pre>
 </div>
 <hr>
 <p><strong><em>아래코드 실행하면 제가 실습에 사용한 파일 받아올수있어요</em></strong></p>
-<div class="sourceCode" id="cb100"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb100-1"><a href="#cb100-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>wget https:<span class="op">//</span>github.com<span class="op">/</span>guebin<span class="op">/</span>DL2024<span class="op">/</span>raw<span class="op">/</span>main<span class="op">/</span>posts<span class="op">/</span>LunarLander<span class="op">/</span>q_net_100.pth</span>
-<span id="cb100-2"><a href="#cb100-2" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>wget https:<span class="op">//</span>github.com<span class="op">/</span>guebin<span class="op">/</span>DL2024<span class="op">/</span>raw<span class="op">/</span>main<span class="op">/</span>posts<span class="op">/</span>LunarLander<span class="op">/</span>q_net_200.pth</span>
-<span id="cb100-3"><a href="#cb100-3" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>wget https:<span class="op">//</span>github.com<span class="op">/</span>guebin<span class="op">/</span>DL2024<span class="op">/</span>raw<span class="op">/</span>main<span class="op">/</span>posts<span class="op">/</span>LunarLander<span class="op">/</span>q_net_300.pth</span>
-<span id="cb100-4"><a href="#cb100-4" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>wget https:<span class="op">//</span>github.com<span class="op">/</span>guebin<span class="op">/</span>DL2024<span class="op">/</span>raw<span class="op">/</span>main<span class="op">/</span>posts<span class="op">/</span>LunarLander<span class="op">/</span>q_net_400.pth</span>
-<span id="cb100-5"><a href="#cb100-5" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>wget https:<span class="op">//</span>github.com<span class="op">/</span>guebin<span class="op">/</span>DL2024<span class="op">/</span>raw<span class="op">/</span>main<span class="op">/</span>posts<span class="op">/</span>LunarLander<span class="op">/</span>q_net_final.pth</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb73"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>wget https:<span class="op">//</span>github.com<span class="op">/</span>guebin<span class="op">/</span>DL2024<span class="op">/</span>raw<span class="op">/</span>main<span class="op">/</span>posts<span class="op">/</span>LunarLander<span class="op">/</span>q_net_100.pth</span>
+<span id="cb73-2"><a href="#cb73-2" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>wget https:<span class="op">//</span>github.com<span class="op">/</span>guebin<span class="op">/</span>DL2024<span class="op">/</span>raw<span class="op">/</span>main<span class="op">/</span>posts<span class="op">/</span>LunarLander<span class="op">/</span>q_net_200.pth</span>
+<span id="cb73-3"><a href="#cb73-3" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>wget https:<span class="op">//</span>github.com<span class="op">/</span>guebin<span class="op">/</span>DL2024<span class="op">/</span>raw<span class="op">/</span>main<span class="op">/</span>posts<span class="op">/</span>LunarLander<span class="op">/</span>q_net_300.pth</span>
+<span id="cb73-4"><a href="#cb73-4" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>wget https:<span class="op">//</span>github.com<span class="op">/</span>guebin<span class="op">/</span>DL2024<span class="op">/</span>raw<span class="op">/</span>main<span class="op">/</span>posts<span class="op">/</span>LunarLander<span class="op">/</span>q_net_400.pth</span>
+<span id="cb73-5"><a href="#cb73-5" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>wget https:<span class="op">//</span>github.com<span class="op">/</span>guebin<span class="op">/</span>DL2024<span class="op">/</span>raw<span class="op">/</span>main<span class="op">/</span>posts<span class="op">/</span>LunarLander<span class="op">/</span>q_net_final.pth</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <hr>
 <div id="043e8f48-7e6c-4055-820c-a35e1b94b064" class="cell" data-tags="[]" data-execution_count="31">
-<div class="sourceCode cell-code" id="cb101"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb101-1"><a href="#cb101-1" aria-hidden="true" tabindex="-1"></a>agent_dummy <span class="op">=</span> AgentExplorer(env) </span>
-<span id="cb101-2"><a href="#cb101-2" aria-hidden="true" tabindex="-1"></a><span class="co">#agent_dummy.q_net = agent.q_net # 비법전수 </span></span>
-<span id="cb101-3"><a href="#cb101-3" aria-hidden="true" tabindex="-1"></a>agent_dummy.q_net.load_state_dict(torch.load(<span class="st">"q_net_final.pth"</span>))</span>
-<span id="cb101-4"><a href="#cb101-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb101-5"><a href="#cb101-5" aria-hidden="true" tabindex="-1"></a>agent_dummy.current_state, _ <span class="op">=</span> env.reset()</span>
-<span id="cb101-6"><a href="#cb101-6" aria-hidden="true" tabindex="-1"></a>agent_dummy.terminated <span class="op">=</span> <span class="va">False</span> </span>
-<span id="cb101-7"><a href="#cb101-7" aria-hidden="true" tabindex="-1"></a>ims <span class="op">=</span> [] </span>
-<span id="cb101-8"><a href="#cb101-8" aria-hidden="true" tabindex="-1"></a>ims.append(env.render())</span>
-<span id="cb101-9"><a href="#cb101-9" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> t <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1001</span>):</span>
-<span id="cb101-10"><a href="#cb101-10" aria-hidden="true" tabindex="-1"></a>    agent_dummy.act() </span>
-<span id="cb101-11"><a href="#cb101-11" aria-hidden="true" tabindex="-1"></a>    agent_dummy.next_state, agent_dummy.reward, agent_dummy.terminated, _, _  <span class="op">=</span> env.step(agent_dummy.action)</span>
-<span id="cb101-12"><a href="#cb101-12" aria-hidden="true" tabindex="-1"></a>    ims.append(env.render())</span>
-<span id="cb101-13"><a href="#cb101-13" aria-hidden="true" tabindex="-1"></a>    agent_dummy.current_state <span class="op">=</span> agent_dummy.next_state</span>
-<span id="cb101-14"><a href="#cb101-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> agent_dummy.terminated: <span class="cf">break</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb74"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a>agent_dummy <span class="op">=</span> AgentExplorer(env) </span>
+<span id="cb74-2"><a href="#cb74-2" aria-hidden="true" tabindex="-1"></a><span class="co">#agent_dummy.q_net = agent.q_net # 비법전수 </span></span>
+<span id="cb74-3"><a href="#cb74-3" aria-hidden="true" tabindex="-1"></a>agent_dummy.q_net.load_state_dict(torch.load(<span class="st">"q_net_final.pth"</span>))</span>
+<span id="cb74-4"><a href="#cb74-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb74-5"><a href="#cb74-5" aria-hidden="true" tabindex="-1"></a>agent_dummy.current_state, _ <span class="op">=</span> env.reset()</span>
+<span id="cb74-6"><a href="#cb74-6" aria-hidden="true" tabindex="-1"></a>agent_dummy.terminated <span class="op">=</span> <span class="va">False</span> </span>
+<span id="cb74-7"><a href="#cb74-7" aria-hidden="true" tabindex="-1"></a>ims <span class="op">=</span> [] </span>
+<span id="cb74-8"><a href="#cb74-8" aria-hidden="true" tabindex="-1"></a>ims.append(env.render())</span>
+<span id="cb74-9"><a href="#cb74-9" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> t <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1001</span>):</span>
+<span id="cb74-10"><a href="#cb74-10" aria-hidden="true" tabindex="-1"></a>    agent_dummy.act() </span>
+<span id="cb74-11"><a href="#cb74-11" aria-hidden="true" tabindex="-1"></a>    agent_dummy.next_state, agent_dummy.reward, agent_dummy.terminated, _, _  <span class="op">=</span> env.step(agent_dummy.action)</span>
+<span id="cb74-12"><a href="#cb74-12" aria-hidden="true" tabindex="-1"></a>    ims.append(env.render())</span>
+<span id="cb74-13"><a href="#cb74-13" aria-hidden="true" tabindex="-1"></a>    agent_dummy.current_state <span class="op">=</span> agent_dummy.next_state</span>
+<span id="cb74-14"><a href="#cb74-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> agent_dummy.terminated: <span class="cf">break</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div id="de9ee484-ac4c-42f6-a51e-dac36ffe1a70" class="cell" data-tags="[]" data-execution_count="32">
-<div class="sourceCode cell-code" id="cb102"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb102-1"><a href="#cb102-1" aria-hidden="true" tabindex="-1"></a>show(ims)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb75"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a>show(ims)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
@@ -13351,14 +13088,14 @@ p5KKZ+owcFMAAAAASUVORK5CYII=\
 <li>RNN: 순환신경망</li>
 </ul>
 <p><code># 예시1</code> – MLP, DNN</p>
-<div class="sourceCode" id="cb103"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb103-1"><a href="#cb103-1" aria-hidden="true" tabindex="-1"></a>net <span class="op">=</span> torch.nn.Sequential(</span>
-<span id="cb103-2"><a href="#cb103-2" aria-hidden="true" tabindex="-1"></a>    torch.nn.Linear(in_features<span class="op">=</span><span class="dv">1</span>,out_features<span class="op">=</span><span class="dv">2</span>),</span>
-<span id="cb103-3"><a href="#cb103-3" aria-hidden="true" tabindex="-1"></a>    torch.nn.ReLU(),</span>
-<span id="cb103-4"><a href="#cb103-4" aria-hidden="true" tabindex="-1"></a>    torch.nn.Linear(in_features<span class="op">=</span><span class="dv">2</span>,out_features<span class="op">=</span><span class="dv">2</span>),</span>
-<span id="cb103-5"><a href="#cb103-5" aria-hidden="true" tabindex="-1"></a>    torch.nn.ReLU(),</span>
-<span id="cb103-6"><a href="#cb103-6" aria-hidden="true" tabindex="-1"></a>    torch.nn.Linear(in_features<span class="op">=</span><span class="dv">2</span>,out_features<span class="op">=</span><span class="dv">1</span>),    </span>
-<span id="cb103-7"><a href="#cb103-7" aria-hidden="true" tabindex="-1"></a>    torch.nn.Sigmoid()</span>
-<span id="cb103-8"><a href="#cb103-8" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb76"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a>net <span class="op">=</span> torch.nn.Sequential(</span>
+<span id="cb76-2"><a href="#cb76-2" aria-hidden="true" tabindex="-1"></a>    torch.nn.Linear(in_features<span class="op">=</span><span class="dv">1</span>,out_features<span class="op">=</span><span class="dv">2</span>),</span>
+<span id="cb76-3"><a href="#cb76-3" aria-hidden="true" tabindex="-1"></a>    torch.nn.ReLU(),</span>
+<span id="cb76-4"><a href="#cb76-4" aria-hidden="true" tabindex="-1"></a>    torch.nn.Linear(in_features<span class="op">=</span><span class="dv">2</span>,out_features<span class="op">=</span><span class="dv">2</span>),</span>
+<span id="cb76-5"><a href="#cb76-5" aria-hidden="true" tabindex="-1"></a>    torch.nn.ReLU(),</span>
+<span id="cb76-6"><a href="#cb76-6" aria-hidden="true" tabindex="-1"></a>    torch.nn.Linear(in_features<span class="op">=</span><span class="dv">2</span>,out_features<span class="op">=</span><span class="dv">1</span>),    </span>
+<span id="cb76-7"><a href="#cb76-7" aria-hidden="true" tabindex="-1"></a>    torch.nn.Sigmoid()</span>
+<span id="cb76-8"><a href="#cb76-8" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <ul>
 <li>ANN: O</li>
 <li>MLP: O</li>
@@ -13368,12 +13105,12 @@ p5KKZ+owcFMAAAAASUVORK5CYII=\
 </ul>
 <p><code>#</code></p>
 <p><code># 예시2</code> – MLP, Shallow Network</p>
-<div class="sourceCode" id="cb104"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb104-1"><a href="#cb104-1" aria-hidden="true" tabindex="-1"></a>net <span class="op">=</span> torch.nn.Sequential(</span>
-<span id="cb104-2"><a href="#cb104-2" aria-hidden="true" tabindex="-1"></a>    torch.nn.Linear(in_features<span class="op">=</span><span class="dv">1</span>,out_features<span class="op">=</span><span class="dv">2</span>),</span>
-<span id="cb104-3"><a href="#cb104-3" aria-hidden="true" tabindex="-1"></a>    torch.nn.ReLU(),</span>
-<span id="cb104-4"><a href="#cb104-4" aria-hidden="true" tabindex="-1"></a>    torch.nn.Linear(in_features<span class="op">=</span><span class="dv">2</span>,out_features<span class="op">=</span><span class="dv">1</span>),</span>
-<span id="cb104-5"><a href="#cb104-5" aria-hidden="true" tabindex="-1"></a>    torch.nn.Sigmoid()</span>
-<span id="cb104-6"><a href="#cb104-6" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb77"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb77-1"><a href="#cb77-1" aria-hidden="true" tabindex="-1"></a>net <span class="op">=</span> torch.nn.Sequential(</span>
+<span id="cb77-2"><a href="#cb77-2" aria-hidden="true" tabindex="-1"></a>    torch.nn.Linear(in_features<span class="op">=</span><span class="dv">1</span>,out_features<span class="op">=</span><span class="dv">2</span>),</span>
+<span id="cb77-3"><a href="#cb77-3" aria-hidden="true" tabindex="-1"></a>    torch.nn.ReLU(),</span>
+<span id="cb77-4"><a href="#cb77-4" aria-hidden="true" tabindex="-1"></a>    torch.nn.Linear(in_features<span class="op">=</span><span class="dv">2</span>,out_features<span class="op">=</span><span class="dv">1</span>),</span>
+<span id="cb77-5"><a href="#cb77-5" aria-hidden="true" tabindex="-1"></a>    torch.nn.Sigmoid()</span>
+<span id="cb77-6"><a href="#cb77-6" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <ul>
 <li>ANN: O</li>
 <li>MLP: O</li>
@@ -13383,14 +13120,14 @@ p5KKZ+owcFMAAAAASUVORK5CYII=\
 </ul>
 <p><code>#</code></p>
 <p><code># 예시3</code> – MLP, DNN, Wide NN</p>
-<div class="sourceCode" id="cb105"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb105-1"><a href="#cb105-1" aria-hidden="true" tabindex="-1"></a>net <span class="op">=</span> torch.nn.Sequential(</span>
-<span id="cb105-2"><a href="#cb105-2" aria-hidden="true" tabindex="-1"></a>    torch.nn.Linear(in_features<span class="op">=</span><span class="dv">1</span>,out_features<span class="op">=</span><span class="dv">1048576</span>),</span>
-<span id="cb105-3"><a href="#cb105-3" aria-hidden="true" tabindex="-1"></a>    torch.nn.ReLU(),</span>
-<span id="cb105-4"><a href="#cb105-4" aria-hidden="true" tabindex="-1"></a>    torch.nn.Linear(in_features<span class="op">=</span><span class="dv">1048576</span>,out_features<span class="op">=</span><span class="dv">1048576</span>),</span>
-<span id="cb105-5"><a href="#cb105-5" aria-hidden="true" tabindex="-1"></a>    torch.nn.ReLU(),</span>
-<span id="cb105-6"><a href="#cb105-6" aria-hidden="true" tabindex="-1"></a>    torch.nn.Linear(in_features<span class="op">=</span><span class="dv">1048576</span>,out_features<span class="op">=</span><span class="dv">1</span>),</span>
-<span id="cb105-7"><a href="#cb105-7" aria-hidden="true" tabindex="-1"></a>    torch.nn.Sigmoid(),    </span>
-<span id="cb105-8"><a href="#cb105-8" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb78"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb78-1"><a href="#cb78-1" aria-hidden="true" tabindex="-1"></a>net <span class="op">=</span> torch.nn.Sequential(</span>
+<span id="cb78-2"><a href="#cb78-2" aria-hidden="true" tabindex="-1"></a>    torch.nn.Linear(in_features<span class="op">=</span><span class="dv">1</span>,out_features<span class="op">=</span><span class="dv">1048576</span>),</span>
+<span id="cb78-3"><a href="#cb78-3" aria-hidden="true" tabindex="-1"></a>    torch.nn.ReLU(),</span>
+<span id="cb78-4"><a href="#cb78-4" aria-hidden="true" tabindex="-1"></a>    torch.nn.Linear(in_features<span class="op">=</span><span class="dv">1048576</span>,out_features<span class="op">=</span><span class="dv">1048576</span>),</span>
+<span id="cb78-5"><a href="#cb78-5" aria-hidden="true" tabindex="-1"></a>    torch.nn.ReLU(),</span>
+<span id="cb78-6"><a href="#cb78-6" aria-hidden="true" tabindex="-1"></a>    torch.nn.Linear(in_features<span class="op">=</span><span class="dv">1048576</span>,out_features<span class="op">=</span><span class="dv">1</span>),</span>
+<span id="cb78-7"><a href="#cb78-7" aria-hidden="true" tabindex="-1"></a>    torch.nn.Sigmoid(),    </span>
+<span id="cb78-8"><a href="#cb78-8" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <ul>
 <li>ANN: O</li>
 <li>MLP: O</li>
@@ -13399,27 +13136,27 @@ p5KKZ+owcFMAAAAASUVORK5CYII=\
 <li>RNN: X (순환구조가 없으므로)</li>
 </ul>
 <p><code># 예시4</code> – CNN</p>
-<div class="sourceCode" id="cb106"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb106-1"><a href="#cb106-1" aria-hidden="true" tabindex="-1"></a>net <span class="op">=</span> torch.nn.Sequential(</span>
-<span id="cb106-2"><a href="#cb106-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Layer1</span></span>
-<span id="cb106-3"><a href="#cb106-3" aria-hidden="true" tabindex="-1"></a>    torch.nn.Conv2d(<span class="dv">1</span>, <span class="dv">64</span>, kernel_size<span class="op">=</span><span class="dv">4</span>, stride<span class="op">=</span><span class="dv">2</span>, padding<span class="op">=</span><span class="dv">1</span>, bias<span class="op">=</span><span class="va">False</span>),</span>
-<span id="cb106-4"><a href="#cb106-4" aria-hidden="true" tabindex="-1"></a>    torch.nn.LeakyReLU(<span class="fl">0.2</span>),</span>
-<span id="cb106-5"><a href="#cb106-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Layer2</span></span>
-<span id="cb106-6"><a href="#cb106-6" aria-hidden="true" tabindex="-1"></a>    torch.nn.Conv2d(<span class="dv">64</span>, <span class="dv">128</span>, kernel_size<span class="op">=</span><span class="dv">4</span>, stride<span class="op">=</span><span class="dv">2</span>, padding<span class="op">=</span><span class="dv">1</span>, bias<span class="op">=</span><span class="va">False</span>),</span>
-<span id="cb106-7"><a href="#cb106-7" aria-hidden="true" tabindex="-1"></a>    torch.nn.BatchNorm2d(<span class="dv">128</span>),</span>
-<span id="cb106-8"><a href="#cb106-8" aria-hidden="true" tabindex="-1"></a>    torch.nn.LeakyReLU(<span class="fl">0.2</span>),</span>
-<span id="cb106-9"><a href="#cb106-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Layer3</span></span>
-<span id="cb106-10"><a href="#cb106-10" aria-hidden="true" tabindex="-1"></a>    torch.nn.Conv2d(<span class="dv">128</span>, <span class="dv">256</span>, kernel_size<span class="op">=</span><span class="dv">4</span>, stride<span class="op">=</span><span class="dv">2</span>, padding<span class="op">=</span><span class="dv">1</span>, bias<span class="op">=</span><span class="va">False</span>),</span>
-<span id="cb106-11"><a href="#cb106-11" aria-hidden="true" tabindex="-1"></a>    torch.nn.BatchNorm2d(<span class="dv">256</span>),</span>
-<span id="cb106-12"><a href="#cb106-12" aria-hidden="true" tabindex="-1"></a>    torch.nn.LeakyReLU(<span class="fl">0.2</span>),</span>
-<span id="cb106-13"><a href="#cb106-13" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Layer4</span></span>
-<span id="cb106-14"><a href="#cb106-14" aria-hidden="true" tabindex="-1"></a>    torch.nn.Conv2d(<span class="dv">256</span>, <span class="dv">512</span>, kernel_size<span class="op">=</span><span class="dv">4</span>, stride<span class="op">=</span><span class="dv">2</span>, padding<span class="op">=</span><span class="dv">1</span>, bias<span class="op">=</span><span class="va">False</span>),</span>
-<span id="cb106-15"><a href="#cb106-15" aria-hidden="true" tabindex="-1"></a>    torch.nn.BatchNorm2d(<span class="dv">512</span>),</span>
-<span id="cb106-16"><a href="#cb106-16" aria-hidden="true" tabindex="-1"></a>    torch.nn.LeakyReLU(<span class="fl">0.2</span>),</span>
-<span id="cb106-17"><a href="#cb106-17" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Layer5</span></span>
-<span id="cb106-18"><a href="#cb106-18" aria-hidden="true" tabindex="-1"></a>    torch.nn.Conv2d(<span class="dv">512</span>, <span class="dv">1</span>, kernel_size<span class="op">=</span><span class="dv">4</span>, stride<span class="op">=</span><span class="dv">1</span>, padding<span class="op">=</span><span class="dv">0</span>, bias<span class="op">=</span><span class="va">False</span>),</span>
-<span id="cb106-19"><a href="#cb106-19" aria-hidden="true" tabindex="-1"></a>    torch.nn.Sigmoid(),</span>
-<span id="cb106-20"><a href="#cb106-20" aria-hidden="true" tabindex="-1"></a>    torch.nn.Flatten()</span>
-<span id="cb106-21"><a href="#cb106-21" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb79"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a>net <span class="op">=</span> torch.nn.Sequential(</span>
+<span id="cb79-2"><a href="#cb79-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Layer1</span></span>
+<span id="cb79-3"><a href="#cb79-3" aria-hidden="true" tabindex="-1"></a>    torch.nn.Conv2d(<span class="dv">1</span>, <span class="dv">64</span>, kernel_size<span class="op">=</span><span class="dv">4</span>, stride<span class="op">=</span><span class="dv">2</span>, padding<span class="op">=</span><span class="dv">1</span>, bias<span class="op">=</span><span class="va">False</span>),</span>
+<span id="cb79-4"><a href="#cb79-4" aria-hidden="true" tabindex="-1"></a>    torch.nn.LeakyReLU(<span class="fl">0.2</span>),</span>
+<span id="cb79-5"><a href="#cb79-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Layer2</span></span>
+<span id="cb79-6"><a href="#cb79-6" aria-hidden="true" tabindex="-1"></a>    torch.nn.Conv2d(<span class="dv">64</span>, <span class="dv">128</span>, kernel_size<span class="op">=</span><span class="dv">4</span>, stride<span class="op">=</span><span class="dv">2</span>, padding<span class="op">=</span><span class="dv">1</span>, bias<span class="op">=</span><span class="va">False</span>),</span>
+<span id="cb79-7"><a href="#cb79-7" aria-hidden="true" tabindex="-1"></a>    torch.nn.BatchNorm2d(<span class="dv">128</span>),</span>
+<span id="cb79-8"><a href="#cb79-8" aria-hidden="true" tabindex="-1"></a>    torch.nn.LeakyReLU(<span class="fl">0.2</span>),</span>
+<span id="cb79-9"><a href="#cb79-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Layer3</span></span>
+<span id="cb79-10"><a href="#cb79-10" aria-hidden="true" tabindex="-1"></a>    torch.nn.Conv2d(<span class="dv">128</span>, <span class="dv">256</span>, kernel_size<span class="op">=</span><span class="dv">4</span>, stride<span class="op">=</span><span class="dv">2</span>, padding<span class="op">=</span><span class="dv">1</span>, bias<span class="op">=</span><span class="va">False</span>),</span>
+<span id="cb79-11"><a href="#cb79-11" aria-hidden="true" tabindex="-1"></a>    torch.nn.BatchNorm2d(<span class="dv">256</span>),</span>
+<span id="cb79-12"><a href="#cb79-12" aria-hidden="true" tabindex="-1"></a>    torch.nn.LeakyReLU(<span class="fl">0.2</span>),</span>
+<span id="cb79-13"><a href="#cb79-13" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Layer4</span></span>
+<span id="cb79-14"><a href="#cb79-14" aria-hidden="true" tabindex="-1"></a>    torch.nn.Conv2d(<span class="dv">256</span>, <span class="dv">512</span>, kernel_size<span class="op">=</span><span class="dv">4</span>, stride<span class="op">=</span><span class="dv">2</span>, padding<span class="op">=</span><span class="dv">1</span>, bias<span class="op">=</span><span class="va">False</span>),</span>
+<span id="cb79-15"><a href="#cb79-15" aria-hidden="true" tabindex="-1"></a>    torch.nn.BatchNorm2d(<span class="dv">512</span>),</span>
+<span id="cb79-16"><a href="#cb79-16" aria-hidden="true" tabindex="-1"></a>    torch.nn.LeakyReLU(<span class="fl">0.2</span>),</span>
+<span id="cb79-17"><a href="#cb79-17" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Layer5</span></span>
+<span id="cb79-18"><a href="#cb79-18" aria-hidden="true" tabindex="-1"></a>    torch.nn.Conv2d(<span class="dv">512</span>, <span class="dv">1</span>, kernel_size<span class="op">=</span><span class="dv">4</span>, stride<span class="op">=</span><span class="dv">1</span>, padding<span class="op">=</span><span class="dv">0</span>, bias<span class="op">=</span><span class="va">False</span>),</span>
+<span id="cb79-19"><a href="#cb79-19" aria-hidden="true" tabindex="-1"></a>    torch.nn.Sigmoid(),</span>
+<span id="cb79-20"><a href="#cb79-20" aria-hidden="true" tabindex="-1"></a>    torch.nn.Flatten()</span>
+<span id="cb79-21"><a href="#cb79-21" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <ul>
 <li>ANN: O</li>
 <li>MLP: X (합성곱연결이 포함되어있으므로, MLP가 아님, 완전연결만 포함해야 MLP임)<br>
@@ -13430,14 +13167,14 @@ p5KKZ+owcFMAAAAASUVORK5CYII=\
 </ul>
 <p><code>#</code></p>
 <p><code># 예시5</code> – CNN</p>
-<div class="sourceCode" id="cb107"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb107-1"><a href="#cb107-1" aria-hidden="true" tabindex="-1"></a>net <span class="op">=</span> torch.nn.Sequential(</span>
-<span id="cb107-2"><a href="#cb107-2" aria-hidden="true" tabindex="-1"></a>    torch.nn.Conv2d(<span class="dv">1</span>,<span class="dv">16</span>,(<span class="dv">5</span>,<span class="dv">5</span>)),</span>
-<span id="cb107-3"><a href="#cb107-3" aria-hidden="true" tabindex="-1"></a>    torch.nn.ReLU(),</span>
-<span id="cb107-4"><a href="#cb107-4" aria-hidden="true" tabindex="-1"></a>    torch.nn.MaxPool2d((<span class="dv">2</span>,<span class="dv">2</span>)),</span>
-<span id="cb107-5"><a href="#cb107-5" aria-hidden="true" tabindex="-1"></a>    torch.nn.Flatten(),</span>
-<span id="cb107-6"><a href="#cb107-6" aria-hidden="true" tabindex="-1"></a>    torch.nn.Linear(<span class="dv">2304</span>,<span class="dv">1</span>),</span>
-<span id="cb107-7"><a href="#cb107-7" aria-hidden="true" tabindex="-1"></a>    torch.nn.Sigmoid()</span>
-<span id="cb107-8"><a href="#cb107-8" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb80"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb80-1"><a href="#cb80-1" aria-hidden="true" tabindex="-1"></a>net <span class="op">=</span> torch.nn.Sequential(</span>
+<span id="cb80-2"><a href="#cb80-2" aria-hidden="true" tabindex="-1"></a>    torch.nn.Conv2d(<span class="dv">1</span>,<span class="dv">16</span>,(<span class="dv">5</span>,<span class="dv">5</span>)),</span>
+<span id="cb80-3"><a href="#cb80-3" aria-hidden="true" tabindex="-1"></a>    torch.nn.ReLU(),</span>
+<span id="cb80-4"><a href="#cb80-4" aria-hidden="true" tabindex="-1"></a>    torch.nn.MaxPool2d((<span class="dv">2</span>,<span class="dv">2</span>)),</span>
+<span id="cb80-5"><a href="#cb80-5" aria-hidden="true" tabindex="-1"></a>    torch.nn.Flatten(),</span>
+<span id="cb80-6"><a href="#cb80-6" aria-hidden="true" tabindex="-1"></a>    torch.nn.Linear(<span class="dv">2304</span>,<span class="dv">1</span>),</span>
+<span id="cb80-7"><a href="#cb80-7" aria-hidden="true" tabindex="-1"></a>    torch.nn.Sigmoid()</span>
+<span id="cb80-8"><a href="#cb80-8" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <ul>
 <li>ANN: O</li>
 <li>MLP: X</li>
@@ -13450,16 +13187,16 @@ p5KKZ+owcFMAAAAASUVORK5CYII=\
 </blockquote>
 <p><code>#</code></p>
 <p><code># 예시6</code> – RNN</p>
-<div class="sourceCode" id="cb108"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb108-1"><a href="#cb108-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Net(torch.nn.Module):</span>
-<span id="cb108-2"><a href="#cb108-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>):</span>
-<span id="cb108-3"><a href="#cb108-3" aria-hidden="true" tabindex="-1"></a>        <span class="bu">super</span>().<span class="fu">__init__</span>()</span>
-<span id="cb108-4"><a href="#cb108-4" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.rnn <span class="op">=</span> torch.nn.RNN(<span class="dv">4</span>,<span class="dv">2</span>)</span>
-<span id="cb108-5"><a href="#cb108-5" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.linr <span class="op">=</span> torch.nn.Linear(<span class="dv">2</span>,<span class="dv">2</span>) </span>
-<span id="cb108-6"><a href="#cb108-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> forward(<span class="va">self</span>,X):</span>
-<span id="cb108-7"><a href="#cb108-7" aria-hidden="true" tabindex="-1"></a>        h <span class="op">=</span> <span class="va">self</span>.rnn(X) </span>
-<span id="cb108-8"><a href="#cb108-8" aria-hidden="true" tabindex="-1"></a>        netout <span class="op">=</span> <span class="va">self</span>.linr(h)</span>
-<span id="cb108-9"><a href="#cb108-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> netout </span>
-<span id="cb108-10"><a href="#cb108-10" aria-hidden="true" tabindex="-1"></a>net <span class="op">=</span> Net()     </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb81"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb81-1"><a href="#cb81-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Net(torch.nn.Module):</span>
+<span id="cb81-2"><a href="#cb81-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>):</span>
+<span id="cb81-3"><a href="#cb81-3" aria-hidden="true" tabindex="-1"></a>        <span class="bu">super</span>().<span class="fu">__init__</span>()</span>
+<span id="cb81-4"><a href="#cb81-4" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.rnn <span class="op">=</span> torch.nn.RNN(<span class="dv">4</span>,<span class="dv">2</span>)</span>
+<span id="cb81-5"><a href="#cb81-5" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.linr <span class="op">=</span> torch.nn.Linear(<span class="dv">2</span>,<span class="dv">2</span>) </span>
+<span id="cb81-6"><a href="#cb81-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> forward(<span class="va">self</span>,X):</span>
+<span id="cb81-7"><a href="#cb81-7" aria-hidden="true" tabindex="-1"></a>        h <span class="op">=</span> <span class="va">self</span>.rnn(X) </span>
+<span id="cb81-8"><a href="#cb81-8" aria-hidden="true" tabindex="-1"></a>        netout <span class="op">=</span> <span class="va">self</span>.linr(h)</span>
+<span id="cb81-9"><a href="#cb81-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> netout </span>
+<span id="cb81-10"><a href="#cb81-10" aria-hidden="true" tabindex="-1"></a>net <span class="op">=</span> Net()     </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <ul>
 <li>ANN: O</li>
 <li>MLP: X</li>
