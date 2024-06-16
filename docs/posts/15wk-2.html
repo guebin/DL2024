@@ -157,7 +157,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul>
   <li><a href="#추천시스템-30점" id="toc-추천시스템-30점" class="nav-link active" data-scroll-target="#추천시스템-30점"><code>1</code>. 추천시스템 – 30점</a></li>
   <li><a href="#hello-30점" id="toc-hello-30점" class="nav-link" data-scroll-target="#hello-30점">2. <code>hello</code> – 30점</a></li>
-  <li><a href="#frozenlake" id="toc-frozenlake" class="nav-link" data-scroll-target="#frozenlake">3. <code>FrozenLake</code></a></li>
+  <li><a href="#frozenlake-30점" id="toc-frozenlake-30점" class="nav-link" data-scroll-target="#frozenlake-30점">3. <code>FrozenLake</code> – 30점</a></li>
   <li><a href="#ox-10점" id="toc-ox-10점" class="nav-link" data-scroll-target="#ox-10점">4. O/X – 10점</a></li>
   </ul>
 <div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="15wk-2.out.ipynb" download="15wk-2.out.ipynb"><i class="bi bi-journal-code"></i>Jupyter</a></li></ul></div></nav>
@@ -865,8 +865,8 @@ epoch: 5     val_loss: 0.7517</code></pre>
 <p>이 문제는 전체적으로 <a href="https://guebin.github.io/DL2022/posts/2022-11-29-13wk-2-final.html" class="uri">https://guebin.github.io/DL2022/posts/2022-11-29-13wk-2-final.html</a> 의 1번과 비슷하니 해당문제 정답을 참고하셔도 됩니다. (근데 뭔가 제가 다시보니까 데이터정리하는 방식등이 미묘하게 좀 바껴있어서요, 올해 강의노트에서 보고 베끼는게 좋을것 같습니다. 이건 뭐 알아서하세요)</p>
 </blockquote>
 </section>
-<section id="frozenlake" class="level1">
-<h1>3. <code>FrozenLake</code></h1>
+<section id="frozenlake-30점" class="level1">
+<h1>3. <code>FrozenLake</code> – 30점</h1>
 <p>ref: <a href="https://www.gymlibrary.dev/environments/toy_text/frozen_lake/" class="uri">https://www.gymlibrary.dev/environments/toy_text/frozen_lake/</a></p>
 <p>아래는 OpenAI Gym 라이브러리에서 제공하는 환경 Frozen Lake를 구체화하여 변수 <code>env</code>에 저장하는 코드이다.</p>
 <div id="0c7c25ed-4b19-4d5e-8157-248fdd13e419" class="cell" data-tags="[]" data-execution_count="39">
@@ -9310,7 +9310,7 @@ QyuAGo1Go9FoNGOGVgA1Go1Go9FoxgytAGo0Go1Go9GMGf8/445h8QmAgaYAAAAASUVORK5CYII=\
 </div>
 <p><strong>힌트3</strong>: <code>q_net</code>의 첫 레이어는 <code>torch.nn.Embedding()</code>을 이용하라.</p>
 <ul>
-<li>상태공간(state space)이 0~15일텐데, <code>상태1 x 2 = 상태2</code>, <code>상태3 + 상태2 = 상태1</code> 와 같은 관계가 성립한다고 보기 어려우므로 상태공간은 범주형변수로 봐야겠죠?</li>
+<li>상태공간(state space)이 0~15일텐데, <code>상태1 x 2 = 상태2</code>, <code>상태3 + 상태2 = 상태5</code> 와 같은 관계가 성립한다고 보기 어려우므로 상태공간은 범주형변수로 봐야겠죠?</li>
 </ul>
 </section>
 <section id="ox-10점" class="level1">
