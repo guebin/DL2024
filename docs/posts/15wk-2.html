@@ -436,7 +436,8 @@ Archive:  ml-20m.zip
 <div id="99826b7b-0b66-4162-80d3-cd1b9d611a32" class="cell" data-tags="[]" data-execution_count="126">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>X_train,X_val,y_train,y_val <span class="op">=</span> sklearn.model_selection.train_test_split(X,y,test_size<span class="op">=</span><span class="fl">0.1</span>,random_state<span class="op">=</span><span class="dv">42</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p><strong>(힌트)</strong> 아래의 코드를 이용하라.</p>
+<p><strong>힌트1</strong>: 11wk-1, 5-A (풀이2)를 참고하세요</p>
+<p><strong>힌트2</strong>: 아래의 코드를 이용하라.</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Net(torch.nn.Module):</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>):</span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>        <span class="bu">super</span>().<span class="fu">__init__</span>()</span>
@@ -872,10 +873,27 @@ epoch: 5     val_loss: 0.7517</code></pre>
 <div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>env <span class="op">=</span> gym.make(<span class="st">'FrozenLake-v1'</span>, desc<span class="op">=</span><span class="va">None</span>, map_name<span class="op">=</span><span class="st">"4x4"</span>, is_slippery<span class="op">=</span><span class="va">False</span>, render_mode<span class="op">=</span><span class="st">'rgb_array'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Frozen Lake 환경은 강화학습(RL) 실험을 위한 간단한 시뮬레이션 환경으로 에이전트가 얼어붙은 호수 위를 안전하게 건너 목표 지점에 도달하는 것이 목표이다. 주요 특징은 다음과 같다.</p>
-<p><code>1</code>. <strong>환경 구성</strong>: - 격자형(grid) 환경으로 이루어져 있으며, 각 격자는 4x4 또는 8x8의 형태를 가질 수 있다. (문제에서는 4x4) - 격자는 시작 지점(Start), 목표 지점(Goal), 얼음(Ice), 그리고 구멍(Hole)으로 구성된다. - 에이전트는 시작 지점에서 목표 지점까지 이동해야 한다.</p>
-<p><code>2</code>. <strong>에이전트의 동작</strong>: - 에이전트는 상, 하, 좌, 우로 이동할 수 있다. - 얼음 위에서는 자유롭게 이동할 수 있지만, 구멍에 빠지면 에피소드가 종료된다.</p>
-<p><code>3</code>. <strong>보상 체계</strong>: - 에이전트가 목표 지점에 도달하면 +1의 보상을 받는다. - 그 외에는 보상이 없다(0 보상). - 구멍에 빠지거나 목표 지점에 도달하지 못하면 보상은 없다.</p>
-<p><code>4</code>. <strong>목표</strong>: - 에이전트는 강화학습 알고리즘을 사용하여 최적의 경로를 학습하고, 가능한 한 구멍에 빠지지 않고 목표 지점에 도달하는 것이다.</p>
+<p><code>1</code>. <strong>환경 구성</strong>:</p>
+<ul>
+<li>격자형(grid) 환경으로 이루어져 있으며, 각 격자는 4x4 또는 8x8의 형태를 가질 수 있다. (문제에서는 4x4)</li>
+<li>격자는 시작 지점(Start), 목표 지점(Goal), 얼음(Ice), 그리고 구멍(Hole)으로 구성된다.</li>
+<li>에이전트는 시작 지점에서 목표 지점까지 이동해야 한다.</li>
+</ul>
+<p><code>2</code>. <strong>에이전트의 동작</strong>:</p>
+<ul>
+<li>에이전트는 상, 하, 좌, 우로 이동할 수 있다.</li>
+<li>얼음 위에서는 자유롭게 이동할 수 있지만, 구멍에 빠지면 에피소드가 종료된다.</li>
+</ul>
+<p><code>3</code>. <strong>보상 체계</strong>:</p>
+<ul>
+<li>에이전트가 목표 지점에 도달하면 +1의 보상을 받는다.</li>
+<li>그 외에는 보상이 없다(0 보상).</li>
+<li>구멍에 빠지거나 목표 지점에 도달하지 못하면 보상은 없다.</li>
+</ul>
+<p><code>4</code>. <strong>목표</strong>:</p>
+<ul>
+<li>에이전트는 강화학습 알고리즘을 사용하여 최적의 경로를 학습하고, 가능한 한 구멍에 빠지지 않고 목표 지점에 도달하는 것이다.</li>
+</ul>
 <p>아래는 <code>show</code> 함수이며, 이는 <code>env</code>의 현재상태를 렌더링해주는 역할을 한다.</p>
 <div id="c3418082-d016-4695-8b37-8e7e737d9ec8" class="cell" data-execution_count="35">
 <div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> show(ims):</span>
@@ -9249,7 +9267,8 @@ QyuAGo1Go9FoNGOGVgA1Go1Go9FoxgytAGo0Go1Go9GMGf8/445h8QmAgaYAAAAASUVORK5CYII=\
 </script>
 </div>
 </div>
-<p><strong>힌트1:</strong> 아래의 에이전트를 설계에 이용하라.</p>
+<p><strong>힌트1:</strong> 14wk-1,2 의 코드가 아닌 15wk-1 의 코드를 참고하세요</p>
+<p><strong>힌트2:</strong> 아래의 에이전트를 설계에 이용하라.</p>
 <div id="0860d4fd-fd27-4c01-a220-232537313c8d" class="cell" data-tags="[]" data-execution_count="31">
 <div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> AgentRandom: </span>
 <span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>,env):</span>
@@ -9289,9 +9308,9 @@ QyuAGo1Go9FoNGOGVgA1Go1Go9FoxgytAGo0Go1Go9GMGf8/445h8QmAgaYAAAAASUVORK5CYII=\
 <span id="cb29-36"><a href="#cb29-36" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.n_experiences <span class="op">=</span> <span class="va">self</span>.n_experiences <span class="op">+</span> <span class="dv">1</span> </span>
 <span id="cb29-37"><a href="#cb29-37" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.score <span class="op">=</span> <span class="va">self</span>.score <span class="op">+</span> <span class="va">self</span>.reward</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p><strong>힌트2</strong>: <code>q_net</code>의 첫 레이어는 <code>torch.nn.Embedding()</code>을 이용하라.</p>
+<p><strong>힌트3</strong>: <code>q_net</code>의 첫 레이어는 <code>torch.nn.Embedding()</code>을 이용하라.</p>
 <ul>
-<li>상태공간(state space)가 0~15일텐데, 상태 0에서 +1 하면 상태1을 의미하는게 아니기 때문에 상태공간은 카테고리로 봐야겠죠?</li>
+<li>상태공간(state space)이 0~15일텐데, <code>상태1 x 2 = 상태2</code>, <code>상태3 + 상태2 = 상태1</code> 와 같은 관계가 성립한다고 보기 어려우므로 상태공간은 범주형변수로 봐야겠죠?</li>
 </ul>
 </section>
 <section id="ox-10점" class="level1">
