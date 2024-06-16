@@ -477,7 +477,6 @@ epoch: 5     val_loss: 0.7334</code></pre>
 <ul>
 <li>전체적으로 우상향 <span class="math inline">\(\to\)</span> 그럭저럭 잘맞춤</li>
 </ul>
-<p><code>(풀이)</code></p>
 <p><code>(2)</code> 아래는 유저 2303번에 대한 정보이다.</p>
 <div id="2fbb0f1d-53f2-4c53-9bcf-78b53484fd02" class="cell" data-tags="[]" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>df_train.query(<span class="st">"userId == 2303"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -811,7 +810,6 @@ epoch: 5     val_loss: 0.7334</code></pre>
 </div>
 </div>
 <p>유저 2303에게 이 영화를 추천하면 어떠한 평점을 줄까? (1)에서 학습한 네트워크로 예측하여 보라.</p>
-<p><code>(풀이)</code></p>
 <section id="hello-30점" class="level1">
 <h1>2. <code>hello</code> – 30점</h1>
 <p>아래와 같이 hello가 반복되는 자료가 있다고 하자.</p>
@@ -823,9 +821,7 @@ epoch: 5     val_loss: 0.7334</code></pre>
 </div>
 </div>
 <p><code>(1)</code> <code>torch.nn.RNN()</code>을 이용하여 다음문자를 예측하는 신경망을 설계하고 학습하라. – 12wk-2, 3-C 참고</p>
-<p><code>(풀이)</code></p>
 <p><code>(2)</code> <code>torch.nn.RNNCell()</code>을 이용하여 다음문자를 예측하는 신경망을 설계하고 학습하라. – 12wk-1, hw 참고</p>
-<p><code>(풀이)</code></p>
 <p><code>(3)</code> <code>(2)</code>의 결과와 동일한 적합값을 출력하는 신경망을 직접설계한뒤 학습시켜라. (초기값을 적절하게 설정할 것)</p>
 <div class="sourceCode" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> rNNCell(torch.nn.Module):</span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>):</span>
@@ -841,11 +837,8 @@ epoch: 5     val_loss: 0.7334</code></pre>
 <li>class를 이용하지 않으면 점수없음.</li>
 <li><code>torch.nn.RNN()</code>, <code>torch.nn.RNNCell()</code> 을 이용한 네트워크를 학습시킬시 점수 없음. (초기값을 셋팅하는 용도로는 torch.nn.RNN(), torch.nn.RNNCell()을 코드에 포함시키는 것이 가능)</li>
 </ul>
-<p><code>(풀이)</code></p>
 <p><code>(4)</code> <code>torch.nn.LSTM()</code>을 이용하여 다음문자를 예측하는 신경망을 설계하고 학습하라. – 13wk-1, 4-C 참고</p>
-<p><code>(풀이)</code></p>
 <p><code>(5)</code> <code>torch.nn.LSTMCell()</code>을 이용하여 다음문자를 예측하는 신경망을 설계하고 학습하라. – 13wk-1, 4-A 참고</p>
-<p><code>(풀이)</code></p>
 <p><code>(6)</code> <code>(5)</code>’의 결과와 동일한 적합값을 출력하는 신경망을 직접설계한 뒤 학습시켜라. (초기값을 적절하게 설정할 것) – 13wk-1, 4-B 참고</p>
 <ul>
 <li>class를 이용하지 않아도 무방함.</li>
@@ -854,7 +847,6 @@ epoch: 5     val_loss: 0.7334</code></pre>
 <blockquote class="blockquote">
 <p>이 문제는 전체적으로 <a href="https://guebin.github.io/DL2022/posts/2022-11-29-13wk-2-final.html" class="uri">https://guebin.github.io/DL2022/posts/2022-11-29-13wk-2-final.html</a> 의 1번과 비슷하니 해당문제 정답을 참고하셔도 됩니다. (근데 제가 다시보니까 데이터정리하는 방식등이 미묘하게 좀 바껴있어서요, 올해 강의노트에서 보고 베끼는게 좋을것 같습니다. 이건 뭐 알아서하세요)</p>
 </blockquote>
-<p><code>(풀이)</code></p>
 </section>
 <section id="frozenlake-30점" class="level1">
 <h1>3. <code>FrozenLake</code> – 30점</h1>
@@ -902,7 +894,7 @@ epoch: 5     val_loss: 0.7334</code></pre>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="15wk-2_files/figure-html/cell-22-output-1.png" class="img-fluid figure-img"></p>
+<p><img src="15wk-2_files/figure-html/cell-14-output-1.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
@@ -9303,7 +9295,6 @@ QyuAGo1Go9FoNGOGVgA1Go1Go9FoxgytAGo0Go1Go9GMGf8/445h8QmAgaYAAAAASUVORK5CYII=\
 <ul>
 <li>상태공간(state space)이 0~15일텐데, <code>상태1 x 2 = 상태2</code>, <code>상태3 + 상태2 = 상태5</code> 와 같은 관계가 성립한다고 보기 어려우므로 상태공간은 범주형변수로 봐야겠죠?</li>
 </ul>
-<p><code>(풀이)</code></p>
 </section>
 <section id="ox-10점" class="level1">
 <h1>4. O/X – 10점</h1>
