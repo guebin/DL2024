@@ -223,12 +223,43 @@ Archive:  ml-20m.zip
 </div>
 </div>
 <p>MovieLens 20M 데이터셋은 GroupLens Research에서 제공하는 영화 평점 데이터셋으로, 영화 추천 시스템 연구에 널리 사용된다. 이 데이터셋은 약 2천만 개의 영화 평점과 메타데이터를 포함하고 있다. 주요 파일과 그 내용은 다음과 같다:</p>
-<p><code>1</code>. <strong>ratings.csv</strong>: - <strong>userId</strong>: 사용자의 고유 ID - <strong>movieId</strong>: 영화의 고유 ID - <strong>rating</strong>: 사용자가 부여한 평점 (1.0에서 5.0 사이의 값) - <strong>timestamp</strong>: 평점이 부여된 시간 (유닉스 타임스탬프 형식)</p>
-<p><code>2</code>. <strong>movies.csv</strong>: - <strong>movieId</strong>: 영화의 고유 ID - <strong>title</strong>: 영화 제목 - <strong>genres</strong>: 영화 장르 (여러 개의 장르가 ’|’로 구분됨)</p>
-<p><code>3</code>. <strong>tags.csv</strong>: - <strong>userId</strong>: 사용자의 고유 ID - <strong>movieId</strong>: 영화의 고유 ID - <strong>tag</strong>: 사용자가 부여한 태그 - <strong>timestamp</strong>: 태그가 부여된 시간 (유닉스 타임스탬프 형식)</p>
-<p><code>4</code>. <strong>genome-scores.csv</strong>: - <strong>movieId</strong>: 영화의 고유 ID - <strong>tagId</strong>: 태그의 고유 ID - <strong>relevance</strong>: 해당 태그가 영화에 얼마나 관련 있는지 나타내는 점수 (0.0에서 1.0 사이의 값)</p>
-<p><code>5</code>. <strong>genome-tags.csv</strong>: - <strong>tagId</strong>: 태그의 고유 ID - <strong>tag</strong>: 태그의 이름</p>
-<p><code>6</code>. <strong>links.csv</strong>: - <strong>movieId</strong>: 영화의 고유 ID - <strong>imdbId</strong>: IMDB에서의 영화 ID - <strong>tmdbId</strong>: TMDB에서의 영화 ID</p>
+<p><code>1</code>. <strong>ratings.csv</strong>:</p>
+<ul>
+<li><strong>userId</strong>: 사용자의 고유 ID</li>
+<li><strong>movieId</strong>: 영화의 고유 ID</li>
+<li><strong>rating</strong>: 사용자가 부여한 평점 (1.0에서 5.0 사이의 값)</li>
+<li><strong>timestamp</strong>: 평점이 부여된 시간 (유닉스 타임스탬프 형식)</li>
+</ul>
+<p><code>2</code>. <strong>movies.csv</strong>:</p>
+<ul>
+<li><strong>movieId</strong>: 영화의 고유 ID</li>
+<li><strong>title</strong>: 영화 제목</li>
+<li><strong>genres</strong>: 영화 장르 (여러 개의 장르가 ’|’로 구분됨)</li>
+</ul>
+<p><code>3</code>. <strong>tags.csv</strong>:</p>
+<ul>
+<li><strong>userId</strong>: 사용자의 고유 ID</li>
+<li><strong>movieId</strong>: 영화의 고유 ID</li>
+<li><strong>tag</strong>: 사용자가 부여한 태그</li>
+<li><strong>timestamp</strong>: 태그가 부여된 시간 (유닉스 타임스탬프 형식)</li>
+</ul>
+<p><code>4</code>. <strong>genome-scores.csv</strong>:</p>
+<ul>
+<li><strong>movieId</strong>: 영화의 고유 ID</li>
+<li><strong>tagId</strong>: 태그의 고유 ID</li>
+<li><strong>relevance</strong>: 해당 태그가 영화에 얼마나 관련 있는지 나타내는 점수 (0.0에서 1.0 사이의 값)</li>
+</ul>
+<p><code>5</code>. <strong>genome-tags.csv</strong>:</p>
+<ul>
+<li><strong>tagId</strong>: 태그의 고유 ID</li>
+<li><strong>tag</strong>: 태그의 이름</li>
+</ul>
+<p><code>6</code>. <strong>links.csv</strong>:</p>
+<ul>
+<li><strong>movieId</strong>: 영화의 고유 ID</li>
+<li><strong>imdbId</strong>: IMDB에서의 영화 ID</li>
+<li><strong>tmdbId</strong>: TMDB에서의 영화 ID</li>
+</ul>
 <p>이중에서 1,2의 데이터만 사용하여 추천시스템을 설계하기로 하자.</p>
 <div id="aeb208a3-89b4-4faa-ac05-49e8825b448e" class="cell" data-tags="[]" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">43052</span>)</span>
